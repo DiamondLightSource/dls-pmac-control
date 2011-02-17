@@ -1,0 +1,985 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>formGather</class>
+<comment>Python:qwtInstalled = True
+Python:try:
+Python:	from qwt import *
+Python:except:
+Python:	print "Did not manage to import qwt. Trying Qwt4.Qwt"
+Python:	try:
+Python:		from Qwt4.Qwt import *
+Python:	except:
+Python:		print "Did not find Qwt4.Qwt module installed. Giving up."
+Python:		qwtInstalled = False</comment>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>formGather</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>608</width>
+            <height>429</height>
+        </rect>
+    </property>
+    <property name="minimumSize">
+        <size>
+            <width>600</width>
+            <height>400</height>
+        </size>
+    </property>
+    <property name="caption">
+        <string>Data Gather</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QTabWidget" row="0" column="0">
+            <property name="name">
+                <cstring>tabWidget2</cstring>
+            </property>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>tab</cstring>
+                </property>
+                <attribute name="title">
+                    <string>gather</string>
+                </attribute>
+                <grid>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="QwtPlot" row="0" column="0" rowspan="1" colspan="5">
+                        <property name="name">
+                            <cstring>qwtPlot</cstring>
+                        </property>
+                        <property name="autoReplot">
+                            <bool>true</bool>
+                        </property>
+                        <property name="canvasBackground">
+                            <color>
+                                <red>255</red>
+                                <green>255</green>
+                                <blue>255</blue>
+                            </color>
+                        </property>
+                        <property name="yRightAxis" stdset="0">
+                            <bool>true</bool>
+                        </property>
+                        <property name="title">
+                            <string>data gather</string>
+                        </property>
+                    </widget>
+                    <spacer row="1" column="3">
+                        <property name="name">
+                            <cstring>spacer3</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>200</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <widget class="QPushButton" row="1" column="0">
+                        <property name="name">
+                            <cstring>btnSetup</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
+                        <property name="text">
+                            <string>setup</string>
+                        </property>
+                    </widget>
+                    <widget class="QPushButton" row="1" column="4">
+                        <property name="name">
+                            <cstring>btnSave</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
+                        <property name="text">
+                            <string>save data...</string>
+                        </property>
+                    </widget>
+                    <widget class="QPushButton" row="1" column="1">
+                        <property name="name">
+                            <cstring>btnTrigger</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
+                        <property name="text">
+                            <string>trigger</string>
+                        </property>
+                    </widget>
+                    <widget class="QPushButton" row="1" column="2">
+                        <property name="name">
+                            <cstring>btnCollect</cstring>
+                        </property>
+                        <property name="enabled">
+                            <bool>false</bool>
+                        </property>
+                        <property name="text">
+                            <string>collect</string>
+                        </property>
+                    </widget>
+                </grid>
+            </widget>
+            <widget class="QWidget">
+                <property name="name">
+                    <cstring>tab</cstring>
+                </property>
+                <attribute name="title">
+                    <string>configure</string>
+                </attribute>
+                <grid>
+                    <property name="name">
+                        <cstring>unnamed</cstring>
+                    </property>
+                    <widget class="QLabel" row="0" column="0">
+                        <property name="name">
+                            <cstring>textLabel2</cstring>
+                        </property>
+                        <property name="text">
+                            <string># of samples:</string>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" row="0" column="1">
+                        <property name="name">
+                            <cstring>lneNumberSamples</cstring>
+                        </property>
+                        <property name="minimumSize">
+                            <size>
+                                <width>60</width>
+                                <height>0</height>
+                            </size>
+                        </property>
+                        <property name="maximumSize">
+                            <size>
+                                <width>100</width>
+                                <height>32767</height>
+                            </size>
+                        </property>
+                        <property name="text">
+                            <string>10</string>
+                        </property>
+                    </widget>
+                    <spacer row="0" column="5">
+                        <property name="name">
+                            <cstring>spacer10</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>60</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <widget class="QLineEdit" row="0" column="4">
+                        <property name="name">
+                            <cstring>lneSampleTime</cstring>
+                        </property>
+                        <property name="minimumSize">
+                            <size>
+                                <width>60</width>
+                                <height>0</height>
+                            </size>
+                        </property>
+                        <property name="maximumSize">
+                            <size>
+                                <width>100</width>
+                                <height>32767</height>
+                            </size>
+                        </property>
+                        <property name="text">
+                            <string>10</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="0" column="3">
+                        <property name="name">
+                            <cstring>textLabel2_2</cstring>
+                        </property>
+                        <property name="text">
+                            <string>sample time [servo cycles]</string>
+                        </property>
+                    </widget>
+                    <spacer row="0" column="2">
+                        <property name="name">
+                            <cstring>spacer10_2</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>40</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <spacer row="4" column="2">
+                        <property name="name">
+                            <cstring>spacer9</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Vertical</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>20</width>
+                                <height>50</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <spacer row="3" column="1" rowspan="1" colspan="5">
+                        <property name="name">
+                            <cstring>spacer11</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>460</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <widget class="QPushButton" row="3" column="0">
+                        <property name="name">
+                            <cstring>btnApplyConf</cstring>
+                        </property>
+                        <property name="text">
+                            <string>Apply</string>
+                        </property>
+                    </widget>
+                    <widget class="QGroupBox" row="2" column="0" rowspan="1" colspan="6">
+                        <property name="name">
+                            <cstring>groupBox3</cstring>
+                        </property>
+                        <property name="title">
+                            <string>configure data gathering </string>
+                        </property>
+                        <grid>
+                            <property name="name">
+                                <cstring>unnamed</cstring>
+                            </property>
+                            <widget class="QCheckBox" row="0" column="0">
+                                <property name="name">
+                                    <cstring>chkPlot1</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" row="0" column="1">
+                                <property name="name">
+                                    <cstring>spbAxis1</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="maxValue">
+                                    <number>32</number>
+                                </property>
+                                <property name="minValue">
+                                    <number>1</number>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="1" column="0">
+                                <property name="name">
+                                    <cstring>chkPlot2</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" row="1" column="1">
+                                <property name="name">
+                                    <cstring>spbAxis2</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="maxValue">
+                                    <number>32</number>
+                                </property>
+                                <property name="minValue">
+                                    <number>1</number>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" row="2" column="1">
+                                <property name="name">
+                                    <cstring>spbAxis3</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="maxValue">
+                                    <number>32</number>
+                                </property>
+                                <property name="minValue">
+                                    <number>1</number>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="2" column="0">
+                                <property name="name">
+                                    <cstring>chkPlot3</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" row="3" column="1">
+                                <property name="name">
+                                    <cstring>spbAxis4</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="maxValue">
+                                    <number>32</number>
+                                </property>
+                                <property name="minValue">
+                                    <number>1</number>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="3" column="0">
+                                <property name="name">
+                                    <cstring>chkPlot4</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                            </widget>
+                            <widget class="QSpinBox" row="4" column="1">
+                                <property name="name">
+                                    <cstring>spbAxis5</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="maxValue">
+                                    <number>32</number>
+                                </property>
+                                <property name="minValue">
+                                    <number>1</number>
+                                </property>
+                            </widget>
+                            <widget class="QCheckBox" row="4" column="0">
+                                <property name="name">
+                                    <cstring>chkPlot5</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="text">
+                                    <string></string>
+                                </property>
+                            </widget>
+                            <spacer row="0" column="5">
+                                <property name="name">
+                                    <cstring>spacer4</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>170</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <spacer row="1" column="5">
+                                <property name="name">
+                                    <cstring>spacer4_2</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>170</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <spacer row="2" column="5">
+                                <property name="name">
+                                    <cstring>spacer4_3</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>170</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <spacer row="3" column="5">
+                                <property name="name">
+                                    <cstring>spacer4_4</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>170</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <spacer row="4" column="5">
+                                <property name="name">
+                                    <cstring>spacer4_5</cstring>
+                                </property>
+                                <property name="orientation">
+                                    <enum>Horizontal</enum>
+                                </property>
+                                <property name="sizeType">
+                                    <enum>Expanding</enum>
+                                </property>
+                                <property name="sizeHint">
+                                    <size>
+                                        <width>170</width>
+                                        <height>20</height>
+                                    </size>
+                                </property>
+                            </spacer>
+                            <widget class="QComboBox" row="0" column="4">
+                                <property name="name">
+                                    <cstring>cmbDataSource1</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="1" column="4">
+                                <property name="name">
+                                    <cstring>cmbDataSource2</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="2" column="4">
+                                <property name="name">
+                                    <cstring>cmbDataSource3</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="3" column="4">
+                                <property name="name">
+                                    <cstring>cmbDataSource4</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="4" column="4">
+                                <property name="name">
+                                    <cstring>cmbDataSource5</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="0" column="3">
+                                <item>
+                                    <property name="text">
+                                        <string>red</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>blue</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>magenta</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>green</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>cyan</string>
+                                    </property>
+                                </item>
+                                <property name="name">
+                                    <cstring>cmbCol1</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="1" column="3">
+                                <item>
+                                    <property name="text">
+                                        <string>red</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>blue</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>magenta</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>green</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>cyan</string>
+                                    </property>
+                                </item>
+                                <property name="name">
+                                    <cstring>cmbCol2</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="currentItem">
+                                    <number>1</number>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="2" column="3">
+                                <item>
+                                    <property name="text">
+                                        <string>red</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>blue</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>magenta</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>green</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>cyan</string>
+                                    </property>
+                                </item>
+                                <property name="name">
+                                    <cstring>cmbCol3</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="currentItem">
+                                    <number>2</number>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="3" column="3">
+                                <item>
+                                    <property name="text">
+                                        <string>red</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>blue</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>magenta</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>green</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>cyan</string>
+                                    </property>
+                                </item>
+                                <property name="name">
+                                    <cstring>cmbCol4</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="currentItem">
+                                    <number>3</number>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="4" column="3">
+                                <item>
+                                    <property name="text">
+                                        <string>red</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>blue</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>magenta</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>green</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>cyan</string>
+                                    </property>
+                                </item>
+                                <property name="name">
+                                    <cstring>cmbCol5</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                                <property name="currentItem">
+                                    <number>4</number>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="0" column="2">
+                                <item>
+                                    <property name="text">
+                                        <string>left</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>right</string>
+                                    </property>
+                                </item>
+                                <property name="name">
+                                    <cstring>cmbXaxis1</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="1" column="2">
+                                <item>
+                                    <property name="text">
+                                        <string>left</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>right</string>
+                                    </property>
+                                </item>
+                                <property name="name">
+                                    <cstring>cmbXaxis2</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="2" column="2">
+                                <item>
+                                    <property name="text">
+                                        <string>left</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>right</string>
+                                    </property>
+                                </item>
+                                <property name="name">
+                                    <cstring>cmbXaxis3</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="3" column="2">
+                                <item>
+                                    <property name="text">
+                                        <string>left</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>right</string>
+                                    </property>
+                                </item>
+                                <property name="name">
+                                    <cstring>cmbXaxis4</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                            </widget>
+                            <widget class="QComboBox" row="4" column="2">
+                                <item>
+                                    <property name="text">
+                                        <string>left</string>
+                                    </property>
+                                </item>
+                                <item>
+                                    <property name="text">
+                                        <string>right</string>
+                                    </property>
+                                </item>
+                                <property name="name">
+                                    <cstring>cmbXaxis5</cstring>
+                                </property>
+                                <property name="focusPolicy">
+                                    <enum>NoFocus</enum>
+                                </property>
+                            </widget>
+                        </grid>
+                    </widget>
+                    <spacer row="1" column="5">
+                        <property name="name">
+                            <cstring>spacer11_2</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>40</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <spacer row="1" column="2">
+                        <property name="name">
+                            <cstring>spacer12</cstring>
+                        </property>
+                        <property name="orientation">
+                            <enum>Horizontal</enum>
+                        </property>
+                        <property name="sizeType">
+                            <enum>Expanding</enum>
+                        </property>
+                        <property name="sizeHint">
+                            <size>
+                                <width>40</width>
+                                <height>20</height>
+                            </size>
+                        </property>
+                    </spacer>
+                    <widget class="QLabel" row="1" column="3">
+                        <property name="name">
+                            <cstring>textLabel1</cstring>
+                        </property>
+                        <property name="text">
+                            <string>sample frequency [kHz]:</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="1" column="4">
+                        <property name="name">
+                            <cstring>txtLblFreq</cstring>
+                        </property>
+                        <property name="text">
+                            <string>kHz</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="1" column="1">
+                        <property name="name">
+                            <cstring>txtLblSignalLen</cstring>
+                        </property>
+                        <property name="text">
+                            <string>ms</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" row="1" column="0">
+                        <property name="name">
+                            <cstring>textLabel1_2</cstring>
+                        </property>
+                        <property name="text">
+                            <string>signal length:</string>
+                        </property>
+                    </widget>
+                </grid>
+            </widget>
+        </widget>
+    </grid>
+</widget>
+<customwidgets>
+</customwidgets>
+<connections>
+    <connection>
+        <sender>btnCollect</sender>
+        <signal>clicked()</signal>
+        <receiver>formGather</receiver>
+        <slot>collectClicked()</slot>
+    </connection>
+    <connection>
+        <sender>btnSave</sender>
+        <signal>clicked()</signal>
+        <receiver>formGather</receiver>
+        <slot>saveClicked()</slot>
+    </connection>
+    <connection>
+        <sender>btnTrigger</sender>
+        <signal>clicked()</signal>
+        <receiver>formGather</receiver>
+        <slot>triggerClicked()</slot>
+    </connection>
+    <connection>
+        <sender>btnApplyConf</sender>
+        <signal>clicked()</signal>
+        <receiver>formGather</receiver>
+        <slot>applyConfigClicked()</slot>
+    </connection>
+    <connection>
+        <sender>btnSetup</sender>
+        <signal>clicked()</signal>
+        <receiver>formGather</receiver>
+        <slot>setupClicked()</slot>
+    </connection>
+    <connection>
+        <sender>tabWidget2</sender>
+        <signal>selected(const QString&amp;)</signal>
+        <receiver>formGather</receiver>
+        <slot>changedTab()</slot>
+    </connection>
+    <connection>
+        <sender>lneSampleTime</sender>
+        <signal>returnPressed()</signal>
+        <receiver>formGather</receiver>
+        <slot>servoCyclesChanged()</slot>
+    </connection>
+    <connection>
+        <sender>lneNumberSamples</sender>
+        <signal>returnPressed()</signal>
+        <receiver>formGather</receiver>
+        <slot>changedNoSamples()</slot>
+    </connection>
+</connections>
+<tabstops>
+    <tabstop>tabWidget2</tabstop>
+    <tabstop>btnSetup</tabstop>
+    <tabstop>btnTrigger</tabstop>
+    <tabstop>btnCollect</tabstop>
+    <tabstop>btnSave</tabstop>
+    <tabstop>lneNumberSamples</tabstop>
+    <tabstop>lneSampleTime</tabstop>
+    <tabstop>btnApplyConf</tabstop>
+    <tabstop>chkPlot1</tabstop>
+    <tabstop>spbAxis1</tabstop>
+    <tabstop>cmbXaxis1</tabstop>
+    <tabstop>cmbCol1</tabstop>
+    <tabstop>cmbDataSource1</tabstop>
+    <tabstop>chkPlot2</tabstop>
+    <tabstop>spbAxis2</tabstop>
+    <tabstop>cmbXaxis2</tabstop>
+    <tabstop>cmbCol2</tabstop>
+    <tabstop>cmbDataSource2</tabstop>
+    <tabstop>chkPlot3</tabstop>
+    <tabstop>spbAxis3</tabstop>
+    <tabstop>cmbXaxis3</tabstop>
+    <tabstop>cmbCol3</tabstop>
+    <tabstop>cmbDataSource3</tabstop>
+    <tabstop>chkPlot4</tabstop>
+    <tabstop>spbAxis4</tabstop>
+    <tabstop>cmbXaxis4</tabstop>
+    <tabstop>cmbCol4</tabstop>
+    <tabstop>cmbDataSource4</tabstop>
+    <tabstop>chkPlot5</tabstop>
+    <tabstop>spbAxis5</tabstop>
+    <tabstop>cmbXaxis5</tabstop>
+    <tabstop>cmbCol5</tabstop>
+    <tabstop>cmbDataSource5</tabstop>
+</tabstops>
+<slots>
+    <slot>collectClicked()</slot>
+    <slot>setupClicked()</slot>
+    <slot>saveClicked()</slot>
+    <slot>triggerClicked()</slot>
+    <slot>applyConfigClicked()</slot>
+    <slot>changedTab()</slot>
+    <slot>servoCyclesChanged()</slot>
+    <slot>changedNoSamples()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+<includehints>
+    <includehint>qwt_plot.h</includehint>
+    <includehint>qwt_scale.h</includehint>
+    <includehint>qwt_scale.h</includehint>
+    <includehint>qwt_scale.h</includehint>
+</includehints>
+</UI>

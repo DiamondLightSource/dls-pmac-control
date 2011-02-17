@@ -12,7 +12,7 @@ setup(
     author = 'fgz73762',
     author_email = 'fgz73762@rl.ac.uk',    
     packages = ['dls_pmaccontrol'],
-#    entry_points = {'console_scripts': ['test-python-hello-world = dls_pmaccontrol.dls_pmaccontrol:main']}, # this makes a script
-#    include_package_data = True, # use this to include non python files
+    entry_points = {'console_scripts': [
+        'dls-motor-control.py = dls_motorcontrol.motor:main']},
     zip_safe = False
     )        

@@ -1,0 +1,105 @@
+<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
+<class>formEnergise</class>
+<widget class="QDialog">
+    <property name="name">
+        <cstring>formEnergise</cstring>
+    </property>
+    <property name="geometry">
+        <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>192</width>
+            <height>322</height>
+        </rect>
+    </property>
+    <property name="caption">
+        <string>Energise axis</string>
+    </property>
+    <grid>
+        <property name="name">
+            <cstring>unnamed</cstring>
+        </property>
+        <widget class="QPushButton" row="2" column="0">
+            <property name="name">
+                <cstring>btnSend</cstring>
+            </property>
+            <property name="text">
+                <string>send</string>
+            </property>
+        </widget>
+        <widget class="QPushButton" row="2" column="1">
+            <property name="name">
+                <cstring>btnClose</cstring>
+            </property>
+            <property name="text">
+                <string>close</string>
+            </property>
+        </widget>
+        <widget class="QButtonGroup" row="0" column="0" rowspan="1" colspan="2">
+            <property name="name">
+                <cstring>chkGroup</cstring>
+            </property>
+            <property name="title">
+                <string>Axis</string>
+            </property>
+            <grid>
+                <property name="name">
+                    <cstring>unnamed</cstring>
+                </property>
+            </grid>
+        </widget>
+        <spacer row="1" column="1">
+            <property name="name">
+                <cstring>spacer4</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Vertical</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>20</width>
+                    <height>16</height>
+                </size>
+            </property>
+        </spacer>
+        <spacer row="1" column="0">
+            <property name="name">
+                <cstring>spacer4_2</cstring>
+            </property>
+            <property name="orientation">
+                <enum>Vertical</enum>
+            </property>
+            <property name="sizeType">
+                <enum>Expanding</enum>
+            </property>
+            <property name="sizeHint">
+                <size>
+                    <width>20</width>
+                    <height>16</height>
+                </size>
+            </property>
+        </spacer>
+    </grid>
+</widget>
+<connections>
+    <connection>
+        <sender>btnClose</sender>
+        <signal>clicked()</signal>
+        <receiver>formEnergise</receiver>
+        <slot>close()</slot>
+    </connection>
+    <connection>
+        <sender>btnSend</sender>
+        <signal>clicked()</signal>
+        <receiver>formEnergise</receiver>
+        <slot>sendCommand()</slot>
+    </connection>
+</connections>
+<slots>
+    <slot>sendCommand()</slot>
+</slots>
+<layoutdefaults spacing="6" margin="11"/>
+</UI>
