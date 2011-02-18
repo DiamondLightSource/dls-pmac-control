@@ -1,1084 +1,1261 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>ControlForm</class>
-<widget class="QMainWindow">
-    <property name="name">
-        <cstring>ControlForm</cstring>
-    </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>680</width>
-            <height>840</height>
-        </rect>
-    </property>
-    <property name="font">
-        <font>
-        </font>
-    </property>
-    <property name="caption">
-        <string>Delta Tau motor controller</string>
-    </property>
-    <vbox>
-        <property name="name">
-            <cstring>unnamed</cstring>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ControlForm</class>
+ <widget class="QMainWindow" name="ControlForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>698</width>
+    <height>775</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font/>
+  </property>
+  <property name="windowTitle">
+   <string>Delta Tau motor controller</string>
+  </property>
+  <widget class="QWidget" name="widget">
+   <layout class="QVBoxLayout">
+    <item>
+     <layout class="QGridLayout">
+      <item row="0" column="1">
+       <widget class="QGroupBox" name="grpJog">
+        <property name="title">
+         <string>Jog ribbon</string>
         </property>
-        <widget class="QLayoutWidget">
-            <property name="name">
-                <cstring>layout20</cstring>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QGroupBox" row="0" column="1">
-                    <property name="name">
-                        <cstring>grpJog</cstring>
-                    </property>
-                    <property name="title">
-                        <string>Jog ribbon</string>
-                    </property>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QPushButton" row="2" column="0">
-                            <property name="name">
-                                <cstring>btnStatus</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>status...</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="2" column="1" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>btnSettings</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>settings...</string>
-                            </property>
-                        </widget>
-                        <widget class="QLayoutWidget" row="1" column="0" rowspan="1" colspan="5">
-                            <property name="name">
-                                <cstring>layout9</cstring>
-                            </property>
-                            <grid>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="QLabel" row="2" column="0">
-                                    <property name="name">
-                                        <cstring>textLabel6</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>position:</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLineEdit" row="1" column="1">
-                                    <property name="name">
-                                        <cstring>lneJogTo</cstring>
-                                    </property>
-                                    <property name="enabled">
-                                        <bool>false</bool>
-                                    </property>
-                                    <property name="text">
-                                        <string>0</string>
-                                    </property>
-                                    <property name="alignment">
-                                        <set>AlignRight</set>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="0" column="0">
-                                    <property name="name">
-                                        <cstring>textLabel5</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>distance:</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="2" column="1">
-                                    <property name="name">
-                                        <cstring>lblPosition</cstring>
-                                    </property>
-                                    <property name="frameShape">
-                                        <enum>Box</enum>
-                                    </property>
-                                    <property name="frameShadow">
-                                        <enum>Sunken</enum>
-                                    </property>
-                                    <property name="text">
-                                        <string>0</string>
-                                    </property>
-                                    <property name="alignment">
-                                        <set>AlignVCenter|AlignRight</set>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="4" column="0">
-                                    <property name="name">
-                                        <cstring>textLabel8</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>fol. error:</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="2" column="2">
-                                    <property name="name">
-                                        <cstring>textLabel4_2_2</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>cts</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="4" column="1">
-                                    <property name="name">
-                                        <cstring>lblFolErr</cstring>
-                                    </property>
-                                    <property name="frameShape">
-                                        <enum>Box</enum>
-                                    </property>
-                                    <property name="frameShadow">
-                                        <enum>Sunken</enum>
-                                    </property>
-                                    <property name="text">
-                                        <string>0</string>
-                                    </property>
-                                    <property name="alignment">
-                                        <set>AlignVCenter|AlignRight</set>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="3" column="1">
-                                    <property name="name">
-                                        <cstring>lblVelo</cstring>
-                                    </property>
-                                    <property name="frameShape">
-                                        <enum>Box</enum>
-                                    </property>
-                                    <property name="frameShadow">
-                                        <enum>Sunken</enum>
-                                    </property>
-                                    <property name="text">
-                                        <string>0</string>
-                                    </property>
-                                    <property name="alignment">
-                                        <set>AlignVCenter|AlignRight</set>
-                                    </property>
-                                </widget>
-                                <widget class="QLineEdit" row="0" column="1">
-                                    <property name="name">
-                                        <cstring>lneJogDist</cstring>
-                                    </property>
-                                    <property name="enabled">
-                                        <bool>false</bool>
-                                    </property>
-                                    <property name="text">
-                                        <string>1000</string>
-                                    </property>
-                                    <property name="alignment">
-                                        <set>AlignRight</set>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="4" column="2">
-                                    <property name="name">
-                                        <cstring>textLabel4_2_2_3</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>cts</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="3" column="3">
-                                    <property name="name">
-                                        <cstring>pixLoLim</cstring>
-                                    </property>
-                                    <property name="maximumSize">
-                                        <size>
-                                            <width>20</width>
-                                            <height>20</height>
-                                        </size>
-                                    </property>
-                                    <property name="pixmap">
-                                        <pixmap>image0</pixmap>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="3" column="0">
-                                    <property name="name">
-                                        <cstring>textLabel7</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>velocity:</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="1" column="2">
-                                    <property name="name">
-                                        <cstring>textLabel4_2</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>cts</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="3" column="4">
-                                    <property name="name">
-                                        <cstring>lblLoLim</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>LO limit</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="2" column="3">
-                                    <property name="name">
-                                        <cstring>pixHiLim</cstring>
-                                    </property>
-                                    <property name="maximumSize">
-                                        <size>
-                                            <width>25</width>
-                                            <height>25</height>
-                                        </size>
-                                    </property>
-                                    <property name="pixmap">
-                                        <pixmap>image0</pixmap>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="3" column="2">
-                                    <property name="name">
-                                        <cstring>textLabel4_2_2_2</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>cts/s</string>
-                                    </property>
-                                </widget>
-                                <widget class="QCheckBox" row="0" column="3" rowspan="1" colspan="2">
-                                    <property name="name">
-                                        <cstring>chkJogInc</cstring>
-                                    </property>
-                                    <property name="enabled">
-                                        <bool>false</bool>
-                                    </property>
-                                    <property name="text">
-                                        <string>jog incrementally</string>
-                                    </property>
-                                    <property name="checked">
-                                        <bool>true</bool>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="0" column="2">
-                                    <property name="name">
-                                        <cstring>textLabel4</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>cts</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="2" column="4">
-                                    <property name="name">
-                                        <cstring>lblHiLim</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>HI limit</string>
-                                    </property>
-                                </widget>
-                                <widget class="QPushButton" row="1" column="3" rowspan="1" colspan="2">
-                                    <property name="name">
-                                        <cstring>btnJogTo</cstring>
-                                    </property>
-                                    <property name="enabled">
-                                        <bool>false</bool>
-                                    </property>
-                                    <property name="text">
-                                        <string>go</string>
-                                    </property>
-                                    <property name="toolTip" stdset="0">
-                                        <string>Jog to position</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="1" column="0">
-                                    <property name="name">
-                                        <cstring>textLabel3</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>jog to:</string>
-                                    </property>
-                                </widget>
-                            </grid>
-                        </widget>
-                        <widget class="QPushButton" row="2" column="3" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>btnKillMotor</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>kill motor</string>
-                            </property>
-                        </widget>
-                        <widget class="QSpinBox" row="0" column="0">
-                            <property name="name">
-                                <cstring>spnJogMotor</cstring>
-                            </property>
-                            <property name="font">
-                                <font>
-                                    <pointsize>16</pointsize>
-                                </font>
-                            </property>
-                            <property name="maxValue">
-                                <number>32</number>
-                            </property>
-                            <property name="minValue">
-                                <number>1</number>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>Choose the motor to jog</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="0" column="1">
-                            <property name="name">
-                                <cstring>btnJogNeg</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>jog neg</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="0" column="4">
-                            <property name="name">
-                                <cstring>btnJogStop</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>stop</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="0" column="2">
-                            <property name="name">
-                                <cstring>btnHome</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>home</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="0" column="3">
-                            <property name="name">
-                                <cstring>btnJogPos</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>jog pos</string>
-                            </property>
-                        </widget>
-                    </grid>
-                </widget>
-                <widget class="QFrame" row="1" column="0" rowspan="1" colspan="2">
-                    <property name="name">
-                        <cstring>frame3</cstring>
-                    </property>
-                    <property name="frameShape">
-                        <enum>GroupBoxPanel</enum>
-                    </property>
-                    <property name="frameShadow">
-                        <enum>Sunken</enum>
-                    </property>
-                    <grid>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QPushButton" row="1" column="4">
-                            <property name="name">
-                                <cstring>btnSave</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>backup...</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="1" column="3">
-                            <property name="name">
-                                <cstring>btnGlobalStatus</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>Global Status...</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="0" column="3">
-                            <property name="name">
-                                <cstring>btnCSStatus</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>CS Status...</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="0" column="5" rowspan="2" colspan="1">
-                            <property name="name">
-                                <cstring>btnKillAll</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="paletteForegroundColor">
-                                <color>
-                                    <red>255</red>
-                                    <green>0</green>
-                                    <blue>0</blue>
-                                </color>
-                            </property>
-                            <property name="text">
-                                <string>KILL ALL!</string>
-                            </property>
-                            <property name="toolTip" stdset="0">
-                                <string>Kill All (CTRL-K) motion by opening servo loops and setting zero velocity</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="0" column="2">
-                            <property name="name">
-                                <cstring>btnGather</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>gather...</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="0" column="4">
-                            <property name="name">
-                                <cstring>btnLoadFile</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>load pmc...</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="0" column="0" rowspan="1" colspan="2">
-                            <property name="name">
-                                <cstring>btnPollingStatus</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>disable polling</string>
-                            </property>
-                            <property name="toggleButton">
-                                <bool>false</bool>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="1" column="0">
-                            <property name="name">
-                                <cstring>pixPolling</cstring>
-                            </property>
-                            <property name="maximumSize">
-                                <size>
-                                    <width>25</width>
-                                    <height>25</height>
-                                </size>
-                            </property>
-                            <property name="pixmap">
-                                <pixmap>image1</pixmap>
-                            </property>
-                        </widget>
-                        <widget class="QLabel" row="1" column="1">
-                            <property name="name">
-                                <cstring>lblLoLim_2</cstring>
-                            </property>
-                            <property name="text">
-                                <string>polling</string>
-                            </property>
-                        </widget>
-                        <widget class="QPushButton" row="1" column="2">
-                            <property name="name">
-                                <cstring>btnEnergise</cstring>
-                            </property>
-                            <property name="enabled">
-                                <bool>false</bool>
-                            </property>
-                            <property name="text">
-                                <string>energise...</string>
-                            </property>
-                        </widget>
-                    </grid>
-                </widget>
-                <widget class="QGroupBox" row="0" column="0">
-                    <property name="name">
-                        <cstring>groupBox1</cstring>
-                    </property>
-                    <property name="title">
-                        <string>Connection to PMAC</string>
-                    </property>
-                    <vbox>
-                        <property name="name">
-                            <cstring>unnamed</cstring>
-                        </property>
-                        <widget class="QButtonGroup">
-                            <property name="name">
-                                <cstring>btnGroupProtocol</cstring>
-                            </property>
-                            <property name="title">
-                                <string>Protocol</string>
-                            </property>
-                            <vbox>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="QRadioButton">
-                                    <property name="name">
-                                        <cstring>rbUseTerminalServer</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>serial via terminal server</string>
-                                    </property>
-                                    <property name="checked">
-                                        <bool>true</bool>
-                                    </property>
-                                </widget>
-                                <widget class="QRadioButton">
-                                    <property name="name">
-                                        <cstring>rbUseSocket</cstring>
-                                    </property>
-                                    <property name="enabled">
-                                        <bool>true</bool>
-                                    </property>
-                                    <property name="text">
-                                        <string>TCP/IP over network</string>
-                                    </property>
-                                </widget>
-                            </vbox>
-                        </widget>
-                        <widget class="QLayoutWidget">
-                            <property name="name">
-                                <cstring>layout11</cstring>
-                            </property>
-                            <grid>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="QLineEdit" row="1" column="1">
-                                    <property name="name">
-                                        <cstring>lnePort</cstring>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="1" column="0">
-                                    <property name="name">
-                                        <cstring>textLabel2</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>port:</string>
-                                    </property>
-                                </widget>
-                                <widget class="QLineEdit" row="0" column="1">
-                                    <property name="name">
-                                        <cstring>lneServer</cstring>
-                                    </property>
-                                </widget>
-                                <widget class="QLabel" row="0" column="0">
-                                    <property name="name">
-                                        <cstring>textLabel1</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>server:</string>
-                                    </property>
-                                </widget>
-                            </grid>
-                        </widget>
-                        <widget class="QLayoutWidget">
-                            <property name="name">
-                                <cstring>layout8</cstring>
-                            </property>
-                            <hbox>
-                                <property name="name">
-                                    <cstring>unnamed</cstring>
-                                </property>
-                                <widget class="QPushButton">
-                                    <property name="name">
-                                        <cstring>btnDisconnect</cstring>
-                                    </property>
-                                    <property name="enabled">
-                                        <bool>false</bool>
-                                    </property>
-                                    <property name="text">
-                                        <string>disconnect</string>
-                                    </property>
-                                </widget>
-                                <widget class="QPushButton">
-                                    <property name="name">
-                                        <cstring>btnConnect</cstring>
-                                    </property>
-                                    <property name="text">
-                                        <string>connect</string>
-                                    </property>
-                                </widget>
-                            </hbox>
-                        </widget>
-                        <widget class="QLabel">
-                            <property name="name">
-                                <cstring>lblIdentity</cstring>
-                            </property>
-                            <property name="sizePolicy">
-                                <sizepolicy>
-                                    <hsizetype>7</hsizetype>
-                                    <vsizetype>5</vsizetype>
-                                    <horstretch>0</horstretch>
-                                    <verstretch>0</verstretch>
-                                </sizepolicy>
-                            </property>
-                            <property name="backgroundMode">
-                                <enum>PaletteBackground</enum>
-                            </property>
-                            <property name="frameShape">
-                                <enum>Box</enum>
-                            </property>
-                            <property name="frameShadow">
-                                <enum>Sunken</enum>
-                            </property>
-                            <property name="text">
-                                <string>Test</string>
-                            </property>
-                        </widget>
-                    </vbox>
-                </widget>
-            </grid>
-        </widget>
-        <widget class="QSplitter">
-            <property name="name">
-                <cstring>splitter1</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Vertical</enum>
-            </property>
-            <widget class="QTable">
-                <column>
-                    <property name="text">
-                        <string>position</string>
-                    </property>
-                </column>
-                <column>
-                    <property name="text">
-                        <string>velocity</string>
-                    </property>
-                </column>
-                <column>
-                    <property name="text">
-                        <string>foll. error</string>
-                    </property>
-                </column>
-                <column>
-                    <property name="text">
-                        <string>hi lim</string>
-                    </property>
-                </column>
-                <column>
-                    <property name="text">
-                        <string>lo lim</string>
-                    </property>
-                </column>
-                <property name="name">
-                    <cstring>table</cstring>
-                </property>
-                <property name="sizePolicy">
-                    <sizepolicy>
-                        <hsizetype>7</hsizetype>
-                        <vsizetype>7</vsizetype>
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                    </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                    <size>
-                        <width>0</width>
-                        <height>100</height>
-                    </size>
-                </property>
-                <property name="maximumSize">
-                    <size>
-                        <width>32767</width>
-                        <height>32767</height>
-                    </size>
-                </property>
-                <property name="font">
-                    <font>
-                        <pointsize>8</pointsize>
-                    </font>
-                </property>
-                <property name="resizePolicy">
-                    <enum>Default</enum>
-                </property>
-                <property name="vScrollBarMode">
-                    <enum>AlwaysOn</enum>
-                </property>
-                <property name="hScrollBarMode">
-                    <enum>AlwaysOff</enum>
-                </property>
-                <property name="dragAutoScroll">
-                    <bool>false</bool>
-                </property>
-                <property name="numRows">
-                    <number>32</number>
-                </property>
-                <property name="numCols">
-                    <number>5</number>
-                </property>
-                <property name="rowMovingEnabled">
-                    <bool>false</bool>
-                </property>
-                <property name="columnMovingEnabled">
-                    <bool>false</bool>
-                </property>
-                <property name="readOnly">
-                    <bool>true</bool>
-                </property>
-                <property name="selectionMode">
-                    <enum>NoSelection</enum>
-                </property>
-                <property name="focusStyle">
-                    <enum>FollowStyle</enum>
-                </property>
+        <layout class="QGridLayout">
+         <item row="2" column="0">
+          <widget class="QPushButton" name="btnStatus">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>status...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1" colspan="2">
+          <widget class="QPushButton" name="btnSettings">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>settings...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="5">
+          <layout class="QGridLayout">
+           <item row="2" column="0">
+            <widget class="QLabel" name="textLabel6">
+             <property name="text">
+              <string>position:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
             </widget>
-            <widget class="QTextEdit">
-                <property name="name">
-                    <cstring>txtShell</cstring>
-                </property>
-                <property name="enabled">
-                    <bool>true</bool>
-                </property>
-                <property name="font">
-                    <font>
-                        <family>Courier</family>
-                        <pointsize>8</pointsize>
-                    </font>
-                </property>
-                <property name="vScrollBarMode">
-                    <enum>AlwaysOn</enum>
-                </property>
-                <property name="hScrollBarMode">
-                    <enum>AlwaysOff</enum>
-                </property>
-                <property name="textFormat">
-                    <enum>LogText</enum>
-                </property>
-                <property name="readOnly">
-                    <bool>true</bool>
-                </property>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lneJogTo">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight</set>
+             </property>
             </widget>
-        </widget>
-        <widget class="QLayoutWidget">
-            <property name="name">
-                <cstring>layout12</cstring>
-            </property>
-            <hbox>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-                <widget class="QLineEdit">
-                    <property name="name">
-                        <cstring>lneSend</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                </widget>
-                <widget class="QPushButton">
-                    <property name="name">
-                        <cstring>btnSend</cstring>
-                    </property>
-                    <property name="enabled">
-                        <bool>false</bool>
-                    </property>
-                    <property name="text">
-                        <string>send</string>
-                    </property>
-                </widget>
-                <widget class="QCheckBox">
-                    <property name="name">
-                        <cstring>chkShowAll</cstring>
-                    </property>
-                    <property name="text">
-                        <string>show all commands sent</string>
-                    </property>
-                </widget>
-            </hbox>
-        </widget>
-    </vbox>
-</widget>
-<toolbars>
-</toolbars>
-<images>
-    <image name="image0">
-        <data format="PNG" length="351">89504e470d0a1a0a0000000d49484452000000140000001408060000008d891d0d0000012649444154388da594316e843010451f284814d6a6d832556e0037f18d80f36c939be01ba44ab9052b5642da822dd6b6061882957cc9b235f63c7d9b61b2799ed953d7759bcda669b2dd0420d380127469db182faa0a006bed2e7801d4409fe2f07702380203ecd2b60b88d4cdcfd715b8effb08cd658284bdfb2175f2f319288de1e11c00755dc79be5d29d84a1acd792d08dc3f06601f0e1472a34b8ccb5d2f88fde82bb70ddc13bfa1187860348690c9377996b07869d75b2437895c4496c68a09b125b6be1f0b7841418f8c2aeeb7a7e38c73931e96ecc26368d234555bd1c5a6b29aa2afe017f85f57d9fe570dc41eec6c471a4f851acb57c0157e72813123577b0ea36a1da1f89d0000374e01a0aa8e0691c01bddba80d56034b69a043e01a2ca581829e3d5d9a7bf49dd1ad0000000049454e44ae426082</data>
-    </image>
-    <image name="image1">
-        <data format="PNG" length="333">89504e470d0a1a0a0000000d49484452000000140000001408060000008d891d0d0000011449444154388da594311283201045bf4c8a5866d2a5ce01e426de48ed7337388075ba4c4aec4821ac8b2e8149fe0c2303eee303cb36de7be4344dd361721886261b00a091801c343e461aefee1d00a0effb2c38018aa01b8b7bfa22988011363ec614c2e5c27aefd4b131860214ff3f815d43e36ac3dc05400bd8d90200b4d6b433956c95c3a2f6d064810d7a7048671601e7d02aa1d1a59252e31f297217b7fb0a334b687cacc2a5127f7865fa153a51cff9ed167320573e9dd4e1b7800a1810125b6beded6cd7fcaad1228cb935d115b03ea1eeded10bf815668c691450ae2074e3126c273ac3c4e5827a087307ecaa4dcc763b5ba02dbb89300032f0000564b05b3f52b5110bac0866924045e01ecc2581a23e9a2098423a9191510000000049454e44ae426082</data>
-    </image>
-</images>
-<connections>
-    <connection>
-        <sender>spnJogMotor</sender>
-        <signal>valueChanged(int)</signal>
-        <receiver>ControlForm</receiver>
-        <slot>jogChangeMotor(int)</slot>
-    </connection>
-    <connection>
-        <sender>btnJogNeg</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>jogNeg()</slot>
-    </connection>
-    <connection>
-        <sender>btnJogPos</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>jogPos()</slot>
-    </connection>
-    <connection>
-        <sender>btnJogStop</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>jogStop()</slot>
-    </connection>
-    <connection>
-        <sender>btnJogTo</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>jogGoToPosition()</slot>
-    </connection>
-    <connection>
-        <sender>btnLoadFile</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>pmacLoadConfig()</slot>
-    </connection>
-    <connection>
-        <sender>btnPollingStatus</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>pmacPollingStatus()</slot>
-    </connection>
-    <connection>
-        <sender>btnGather</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>dataGather()</slot>
-    </connection>
-    <connection>
-        <sender>btnSend</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>sendSingleCommand()</slot>
-    </connection>
-    <connection>
-        <sender>lneSend</sender>
-        <signal>returnPressed()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>sendSingleCommand()</slot>
-    </connection>
-    <connection>
-        <sender>table</sender>
-        <signal>doubleClicked(int,int,int,const QPoint&amp;)</signal>
-        <receiver>ControlForm</receiver>
-        <slot>chooseMotorFromTable(int,int)</slot>
-    </connection>
-    <connection>
-        <sender>lneJogTo</sender>
-        <signal>returnPressed()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>jogGoToPosition()</slot>
-    </connection>
-    <connection>
-        <sender>chkJogInc</sender>
-        <signal>toggled(bool)</signal>
-        <receiver>ControlForm</receiver>
-        <slot>jogIncrementally(bool)</slot>
-    </connection>
-    <connection>
-        <sender>btnEnergise</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>pmacEnergiseAxis()</slot>
-    </connection>
-    <connection>
-        <sender>btnKillAll</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>killAllMotors()</slot>
-    </connection>
-    <connection>
-        <sender>lneServer</sender>
-        <signal>returnPressed()</signal>
-        <receiver>lnePort</receiver>
-        <slot>selectAll()</slot>
-    </connection>
-    <connection>
-        <sender>lneServer</sender>
-        <signal>returnPressed()</signal>
-        <receiver>lnePort</receiver>
-        <slot>setFocus()</slot>
-    </connection>
-    <connection>
-        <sender>lnePort</sender>
-        <signal>returnPressed()</signal>
-        <receiver>rbUseTerminalServer</receiver>
-        <slot>setFocus()</slot>
-    </connection>
-    <connection>
-        <sender>btnStatus</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>statusScreen()</slot>
-    </connection>
-    <connection>
-        <sender>btnSettings</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>jogParameters()</slot>
-    </connection>
-    <connection>
-        <sender>btnKillMotor</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>killMotor()</slot>
-    </connection>
-    <connection>
-        <sender>btnSave</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>pmacSave()</slot>
-    </connection>
-    <connection>
-        <sender>btnCSStatus</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>CSStatusScreen()</slot>
-    </connection>
-    <connection>
-        <sender>btnGlobalStatus</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>GlobalStatusScreen()</slot>
-    </connection>
-    <connection>
-        <sender>rbUseTerminalServer</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>useTerminalServerConnection()</slot>
-    </connection>
-    <connection>
-        <sender>rbUseSocket</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>useSocketConnection()</slot>
-    </connection>
-    <connection>
-        <sender>btnDisconnect</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>remoteDisconnect()</slot>
-    </connection>
-    <connection>
-        <sender>btnConnect</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>remoteConnect()</slot>
-    </connection>
-    <connection>
-        <sender>btnHome</sender>
-        <signal>clicked()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>jogHome()</slot>
-    </connection>
-    <connection>
-        <sender>lnePort</sender>
-        <signal>returnPressed()</signal>
-        <receiver>ControlForm</receiver>
-        <slot>remoteConnect()</slot>
-    </connection>
-</connections>
-<tabstops>
-    <tabstop>rbUseTerminalServer</tabstop>
-    <tabstop>lneServer</tabstop>
-    <tabstop>lnePort</tabstop>
-    <tabstop>btnConnect</tabstop>
-    <tabstop>btnDisconnect</tabstop>
-    <tabstop>spnJogMotor</tabstop>
-    <tabstop>chkJogInc</tabstop>
-    <tabstop>lneJogDist</tabstop>
-    <tabstop>btnJogNeg</tabstop>
-    <tabstop>btnJogPos</tabstop>
-    <tabstop>btnJogStop</tabstop>
-    <tabstop>lneJogTo</tabstop>
-    <tabstop>btnJogTo</tabstop>
-    <tabstop>btnLoadFile</tabstop>
-    <tabstop>btnSave</tabstop>
-    <tabstop>btnPollingStatus</tabstop>
-    <tabstop>btnGather</tabstop>
-    <tabstop>lneSend</tabstop>
-    <tabstop>btnSend</tabstop>
-    <tabstop>chkShowAll</tabstop>
-    <tabstop>table</tabstop>
-    <tabstop>txtShell</tabstop>
-    <tabstop>btnStatus</tabstop>
-    <tabstop>btnSettings</tabstop>
-    <tabstop>btnKillMotor</tabstop>
-    <tabstop>btnHome</tabstop>
-    <tabstop>btnGlobalStatus</tabstop>
-    <tabstop>btnCSStatus</tabstop>
-    <tabstop>btnKillAll</tabstop>
-    <tabstop>btnEnergise</tabstop>
-</tabstops>
-<includes>
-    <include location="local" impldecl="in implementation">formControl.ui.h</include>
-</includes>
-<slots>
-    <slot>telnetConnect()</slot>
-    <slot>telnetDisconnect()</slot>
-    <slot>jogNeg()</slot>
-    <slot>jogPos()</slot>
-    <slot>jogStop()</slot>
-    <slot>jogHome()</slot>
-    <slot>jogGoToPosition()</slot>
-    <slot>jogParameters()</slot>
-    <slot>jogChangeMotor( int newMotor )</slot>
-    <slot>dataGather()</slot>
-    <slot>pmacSave()</slot>
-    <slot>pmacLoadConfig()</slot>
-    <slot>jogNegContinousStart()</slot>
-    <slot>jogPosContinousStart()</slot>
-    <slot>sendSingleCommand()</slot>
-    <slot>chooseMotorFromTable( int row, int col )</slot>
-    <slot>jogIncrementally( bool )</slot>
-    <slot>pmacEnergiseAxis()</slot>
-    <slot>killAllMotors()</slot>
-    <slot>statusScreen()</slot>
-    <slot>motDisableLimits( int )</slot>
-    <slot>killMotor()</slot>
-    <slot>pmacPollingStatus()</slot>
-    <slot>sendSingleCommand( const QString &amp; )</slot>
-    <slot>CSStatusScreen()</slot>
-    <slot>GlobalStatusScreen()</slot>
-    <slot>useTerminalServerConnection()</slot>
-    <slot>useSocketConnection()</slot>
-    <slot>remoteDisconnect()</slot>
-    <slot>remoteConnect()</slot>
-</slots>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="textLabel5">
+             <property name="text">
+              <string>distance:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="lblPosition">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="textLabel8">
+             <property name="text">
+              <string>fol. error:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="QLabel" name="textLabel4_2_2">
+             <property name="text">
+              <string>cts</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="lblFolErr">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="lblVelo">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <property name="frameShadow">
+              <enum>QFrame::Sunken</enum>
+             </property>
+             <property name="text">
+              <string>0</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lneJogDist">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>1000</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight</set>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="QLabel" name="textLabel4_2_2_3">
+             <property name="text">
+              <string>cts</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="QLabel" name="pixLoLim">
+             <property name="maximumSize">
+              <size>
+               <width>20</width>
+               <height>20</height>
+              </size>
+             </property>
+             <property name="pixmap">
+              <pixmap>redLedOff.png</pixmap>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="textLabel7">
+             <property name="text">
+              <string>velocity:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QLabel" name="textLabel4_2">
+             <property name="text">
+              <string>cts</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="4">
+            <widget class="QLabel" name="lblLoLim">
+             <property name="text">
+              <string>LO limit</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3">
+            <widget class="QLabel" name="pixHiLim">
+             <property name="maximumSize">
+              <size>
+               <width>25</width>
+               <height>25</height>
+              </size>
+             </property>
+             <property name="pixmap">
+              <pixmap>redLedOff.png</pixmap>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLabel" name="textLabel4_2_2_2">
+             <property name="text">
+              <string>cts/s</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3" colspan="2">
+            <widget class="QCheckBox" name="chkJogInc">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>jog incrementally</string>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="textLabel4">
+             <property name="text">
+              <string>cts</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="4">
+            <widget class="QLabel" name="lblHiLim">
+             <property name="text">
+              <string>HI limit</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3" colspan="2">
+            <widget class="QPushButton" name="btnJogTo">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="toolTip">
+              <string>Jog to position</string>
+             </property>
+             <property name="text">
+              <string>go</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="textLabel3">
+             <property name="text">
+              <string>jog to:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="2" column="3" colspan="2">
+          <widget class="QPushButton" name="btnKillMotor">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>kill motor</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QSpinBox" name="spnJogMotor">
+           <property name="font">
+            <font>
+             <pointsize>16</pointsize>
+            </font>
+           </property>
+           <property name="toolTip">
+            <string>Choose the motor to jog</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>32</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QPushButton" name="btnJogNeg">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>jog neg</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="btnJogStop">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>stop</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="btnHome">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>home</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="btnJogPos">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>jog pos</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <widget class="QFrame" name="frame3">
+        <property name="frameShape">
+         <enum>QFrame::Box</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Sunken</enum>
+        </property>
+        <layout class="QGridLayout">
+         <item row="1" column="4">
+          <widget class="QPushButton" name="btnSave">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>backup...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="3">
+          <widget class="QPushButton" name="btnGlobalStatus">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>Global Status...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="btnCSStatus">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>CS Status...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5" rowspan="2">
+          <widget class="QPushButton" name="btnKillAll">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>Kill All (CTRL-K) motion by opening servo loops and setting zero velocity</string>
+           </property>
+           <property name="text">
+            <string>KILL ALL!</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="btnGather">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>gather...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="btnLoadFile">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>load pmc...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="2">
+          <widget class="QPushButton" name="btnPollingStatus">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>disable polling</string>
+           </property>
+           <property name="checkable">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="pixPolling">
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="pixmap">
+            <pixmap>greenLedOff.png</pixmap>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="lblLoLim_2">
+           <property name="text">
+            <string>polling</string>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QPushButton" name="btnEnergise">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="text">
+            <string>energise...</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="groupBox1">
+        <property name="title">
+         <string>Connection to PMAC</string>
+        </property>
+        <layout class="QVBoxLayout">
+         <item>
+          <widget class="QGroupBox" name="btnGroupProtocol">
+           <property name="title">
+            <string>Protocol</string>
+           </property>
+           <layout class="QVBoxLayout">
+            <item>
+             <widget class="QRadioButton" name="rbUseTerminalServer">
+              <property name="text">
+               <string>serial via terminal server</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="rbUseSocket">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="text">
+               <string>TCP/IP over network</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item>
+          <layout class="QGridLayout">
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="lnePort"/>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="textLabel2">
+             <property name="text">
+              <string>port:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="lneServer"/>
+           </item>
+           <item row="0" column="0">
+            <widget class="QLabel" name="textLabel1">
+             <property name="text">
+              <string>server:</string>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout">
+           <item>
+            <widget class="QPushButton" name="btnDisconnect">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>disconnect</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnConnect">
+             <property name="text">
+              <string>connect</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblIdentity">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::Box</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Sunken</enum>
+           </property>
+           <property name="text">
+            <string>Test</string>
+           </property>
+           <property name="wordWrap">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QSplitter" name="splitter1">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <widget class="QTableWidget" name="table">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>32767</width>
+         <height>32767</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::NoSelection</enum>
+       </property>
+       <property name="dragAutoScroll" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="numRows" stdset="0">
+        <number>32</number>
+       </property>
+       <property name="numCols" stdset="0">
+        <number>5</number>
+       </property>
+       <property name="rowMovingEnabled" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="columnMovingEnabled" stdset="0">
+        <bool>false</bool>
+       </property>
+       <property name="readOnly" stdset="0">
+        <bool>true</bool>
+       </property>
+       <column>
+        <property name="text">
+         <string>position</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>velocity</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>foll. error</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>hi lim</string>
+        </property>
+       </column>
+       <column>
+        <property name="text">
+         <string>lo lim</string>
+        </property>
+       </column>
+      </widget>
+      <widget class="QTextEdit" name="txtShell">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="font">
+        <font>
+         <family>Courier</family>
+         <pointsize>8</pointsize>
+        </font>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout">
+      <item>
+       <widget class="QLineEdit" name="lneSend">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnSend">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>send</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QCheckBox" name="chkShowAll">
+        <property name="text">
+         <string>show all commands sent</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>rbUseTerminalServer</tabstop>
+  <tabstop>lneServer</tabstop>
+  <tabstop>lnePort</tabstop>
+  <tabstop>btnConnect</tabstop>
+  <tabstop>btnDisconnect</tabstop>
+  <tabstop>spnJogMotor</tabstop>
+  <tabstop>chkJogInc</tabstop>
+  <tabstop>lneJogDist</tabstop>
+  <tabstop>btnJogNeg</tabstop>
+  <tabstop>btnJogPos</tabstop>
+  <tabstop>btnJogStop</tabstop>
+  <tabstop>lneJogTo</tabstop>
+  <tabstop>btnJogTo</tabstop>
+  <tabstop>btnLoadFile</tabstop>
+  <tabstop>btnSave</tabstop>
+  <tabstop>btnPollingStatus</tabstop>
+  <tabstop>btnGather</tabstop>
+  <tabstop>lneSend</tabstop>
+  <tabstop>btnSend</tabstop>
+  <tabstop>chkShowAll</tabstop>
+  <tabstop>table</tabstop>
+  <tabstop>txtShell</tabstop>
+  <tabstop>btnStatus</tabstop>
+  <tabstop>btnSettings</tabstop>
+  <tabstop>btnKillMotor</tabstop>
+  <tabstop>btnHome</tabstop>
+  <tabstop>btnGlobalStatus</tabstop>
+  <tabstop>btnCSStatus</tabstop>
+  <tabstop>btnKillAll</tabstop>
+  <tabstop>btnEnergise</tabstop>
+ </tabstops>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>spnJogMotor</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>ControlForm</receiver>
+   <slot>jogChangeMotor(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnJogNeg</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>jogNeg()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnJogPos</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>jogPos()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnJogStop</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>jogStop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnJogTo</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>jogGoToPosition()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnLoadFile</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>pmacLoadConfig()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnPollingStatus</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>pmacPollingStatus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnGather</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>dataGather()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnSend</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>sendSingleCommand()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneSend</sender>
+   <signal>returnPressed()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>sendSingleCommand()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>table</sender>
+   <signal>doubleClicked(int,int,int,QPoint)</signal>
+   <receiver>ControlForm</receiver>
+   <slot>chooseMotorFromTable(int,int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneJogTo</sender>
+   <signal>returnPressed()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>jogGoToPosition()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>chkJogInc</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>ControlForm</receiver>
+   <slot>jogIncrementally(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnEnergise</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>pmacEnergiseAxis()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnKillAll</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>killAllMotors()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneServer</sender>
+   <signal>returnPressed()</signal>
+   <receiver>lnePort</receiver>
+   <slot>selectAll()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneServer</sender>
+   <signal>returnPressed()</signal>
+   <receiver>lnePort</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lnePort</sender>
+   <signal>returnPressed()</signal>
+   <receiver>rbUseTerminalServer</receiver>
+   <slot>setFocus()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnStatus</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>statusScreen()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnSettings</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>jogParameters()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnKillMotor</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>killMotor()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnSave</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>pmacSave()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnCSStatus</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>CSStatusScreen()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnGlobalStatus</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>GlobalStatusScreen()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rbUseTerminalServer</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>useTerminalServerConnection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rbUseSocket</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>useSocketConnection()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnDisconnect</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>remoteDisconnect()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnConnect</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>remoteConnect()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnHome</sender>
+   <signal>clicked()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>jogHome()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lnePort</sender>
+   <signal>returnPressed()</signal>
+   <receiver>ControlForm</receiver>
+   <slot>remoteConnect()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

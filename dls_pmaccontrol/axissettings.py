@@ -1,42 +1,44 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from qt import *
-from formAxisSettings import formAxisSettings
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+from formAxisSettings import Ui_formAxisSettings
 
-class axissettingsform(formAxisSettings):
+class axissettingsform(QDialog, Ui_formAxisSettings):
 
-	def __init__(self, parent = None, currentMotor = 1, name = None,modal = 0,fl = 0):
-		formAxisSettings.__init__(self,parent,name,modal,fl)
+	def __init__(self, parent = None, currentMotor = 1):
+		QDialog.__init__(self,parent)
+		self.setupUi(self)
 		
 		self.currentMotor = currentMotor
 		self.parent = parent
 		
-		QToolTip.add(self.lneIx11, """Fatal following error [1/16 cts]""")
-		QToolTip.add(self.lneIx12, """Warning following error limit [1/16 cts]""")
-		QToolTip.add(self.lneIx13, """Positive soft limit position [cts]""")
-		QToolTip.add(self.lneIx14, """Negative soft limit position [cts]""")
-		QToolTip.add(self.lneIx15, "Decceleration rate on position\nlimit or abort [cts/msec2]")
-		QToolTip.add(self.lneIx16, "Maximum velocity in LINEAR motion programs [cts/msec]")
-		QToolTip.add(self.lneIx17, "Maximum acceleration in motion programs [cts/msec2]")
-		QToolTip.add(self.lneIx19, "Maximum jog/home acceleration [cts/msec2]")
-		QToolTip.add(self.lneIx20, "Jog/Home Acceleration Time [msec]")
-		QToolTip.add(self.lneIx21, "Jog/Home S-Curve Time [msec]\n(DLS: Try to avoid using this one!)")
-		QToolTip.add(self.lneIx22, "Jog velocity [cts/msec]")
-		QToolTip.add(self.lneIx23, "Home velocity and direction [cts/msec]")
-		QToolTip.add(self.lneIx24, "Flag Mode Control (limits)")
-		QToolTip.add(self.lneIx25, "Flag Address")
-		QToolTip.add(self.lneIx26, "Home offset [1/16 cts]")
+		self.lneIx11.setToolTip("""Fatal following error [1/16 cts]""")
+		self.lneIx12.setToolTip("""Warning following error limit [1/16 cts]""")
+		self.lneIx13.setToolTip("""Positive soft limit position [cts]""")
+		self.lneIx14.setToolTip("""Negative soft limit position [cts]""")
+		self.lneIx15.setToolTip("Decceleration rate on position\nlimit or abort [cts/msec2]")
+		self.lneIx16.setToolTip("Maximum velocity in LINEAR motion programs [cts/msec]")
+		self.lneIx17.setToolTip("Maximum acceleration in motion programs [cts/msec2]")
+		self.lneIx19.setToolTip("Maximum jog/home acceleration [cts/msec2]")
+		self.lneIx20.setToolTip("Jog/Home Acceleration Time [msec]")
+		self.lneIx21.setToolTip("Jog/Home S-Curve Time [msec]\n(DLS: Try to avoid using this one!)")
+		self.lneIx22.setToolTip("Jog velocity [cts/msec]")
+		self.lneIx23.setToolTip("Home velocity and direction [cts/msec]")
+		self.lneIx24.setToolTip("Flag Mode Control (limits)")
+		self.lneIx25.setToolTip("Flag Address")
+		self.lneIx26.setToolTip("Home offset [1/16 cts]")
 
-		QToolTip.add(self.lneIx30, "PID Proportional Gain")
-		QToolTip.add(self.lneIx31, "PID Derivative Gain")
-		QToolTip.add(self.lneIx32, "PID Velocity Feedforward Gain")
-		QToolTip.add(self.lneIx33, "PID Integral Gain")
-		QToolTip.add(self.lneIx34, "PID Integration Mode [0 or 1]")
-		QToolTip.add(self.lneIx35, "PID Acceleration Feedforward Gain")
-		QToolTip.add(self.lneIx65, "Deadband Size [1/16 cts]")
-		QToolTip.add(self.lneLoopSelect, "Encoder/Timer n Decode Control\n7: Closed loop stepper\n8: Open loop stepper")
-		QToolTip.add(self.lneCaptureOn, """Encoder n Capture Control
+		self.lneIx30.setToolTip("PID Proportional Gain")
+		self.lneIx31.setToolTip("PID Derivative Gain")
+		self.lneIx32.setToolTip("PID Velocity Feedforward Gain")
+		self.lneIx33.setToolTip("PID Integral Gain")
+		self.lneIx34.setToolTip("PID Integration Mode [0 or 1]")
+		self.lneIx35.setToolTip("PID Acceleration Feedforward Gain")
+		self.lneIx65.setToolTip("Deadband Size [1/16 cts]")
+		self.lneLoopSelect.setToolTip("Encoder/Timer n Decode Control\n7: Closed loop stepper\n8: Open loop stepper")
+		self.lneCaptureOn.setToolTip("""Encoder n Capture Control
 0: Immediate capture
 1: Capture on Index (CHCn) high
 2: Capture on Flag high
@@ -53,12 +55,12 @@ class axissettingsform(formAxisSettings):
 13: Capture on Index (CHCn) low
 14: Capture on Flag low
 """)
-		QToolTip.add(self.lneCaptureFlag, """Capture n Flag Select Control
+		self.lneCaptureFlag.setToolTip("""Capture n Flag Select Control
 0: Home Flag
 1: positive limit flag
 2: Negative limit flag
 3: User flag""")
-		QToolTip.add(self.lneOutputMode, """Output n Mode Select (DLS: use 2 for steppers)
+		self.lneOutputMode.setToolTip("""Output n Mode Select (DLS: use 2 for steppers)
 0 = Outputs A & B are PWM; Output C is PWM
 1 = Outputs A & B are DAC; Output C is PWM
 2 = Outputs A & B are PWM; Output C is PFM
@@ -96,7 +98,7 @@ class axissettingsform(formAxisSettings):
 		return (loopSelect, captureOn, captureFlag, outputMode)
 	
 	def axisUpdate(self):
-		selectedTabIndex = self.tabAxisSetup.currentPageIndex()
+		selectedTabIndex = self.tabAxisSetup.currentIndex()
 		if selectedTabIndex == 0:
 			# The "definition and safety" tab is selected
 			self._updateAxisSetupIVars(self.definitionIvars + self.safetyIvars)

@@ -1,14 +1,16 @@
-#!/bin/env dls-python2.4
+#!/bin/env dls-python2.6
 # -*- coding: utf-8 -*-
 
 import sys
-from qt import *
-from formCSStatus import formCSStatus
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+from formCSStatus import Ui_formCSStatus
 
-class CSStatusForm(formCSStatus):
+class CSStatusForm(QDialog, Ui_formCSStatus):
 
-	def __init__(self, parent, name = None,modal = 0,fl = 0):
-		formCSStatus.__init__(self,parent,name,modal,fl)
+	def __init__(self, parent):
+		QDialog.__init__(self,parent)
+		self.setupUi(self)
 		
 		self.greenLedOn = parent.greenLedOn
 		self.greenLedOff = parent.greenLedOff
@@ -16,7 +18,7 @@ class CSStatusForm(formCSStatus):
 		self.redLedOff = parent.redLedOff
 		self._feed = 100
 		
-		ledGroupLayout = QGridLayout(self.ledGroup.layout())
+		ledGroupLayout = self.ledGroup.layout()
 		ledGroupLayout.setAlignment(Qt.AlignTop)
 		self.lstLeds = []
 		self.lstLabels = []
@@ -352,7 +354,7 @@ class CSStatusForm(formCSStatus):
 				ledGroupLayout.addWidget( self.lstLabels[i], bit, word*2 + 1)
 				self.lstLeds[i].setPixmap( self.greenLedOff )
 				self.lstLabels[i].setText( self.lstLabelTexts[i] )
-				QToolTip.add(self.lstLabels[i], self.lstTooltips[i])
+				self.lstLabels[i].setToolTip(self.lstTooltips[i])
 			
 	def changeCS(self, CS):
 		self.parent().pmac.CSNum = CS

@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 import sys
-from qt import *
-from formGlobalStatus import formGlobalStatus
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+from formGlobalStatus import Ui_formGlobalStatus
 
-class GlobalStatusForm(formGlobalStatus):
-	def __init__(self, parent, name = None,modal = 0,fl = 0):
-		formGlobalStatus.__init__(self,parent,name,modal,fl)
+class GlobalStatusForm(QDialog, Ui_formGlobalStatus):
+	def __init__(self, parent):
+		QDialog.__init__(self,parent)
+		self.setupUi(self)
 		
 		self.greenLedOn = parent.greenLedOn
 		self.greenLedOff = parent.greenLedOff
 		self.redLedOn = parent.redLedOn
 		self.redLedOff = parent.redLedOff
 		
-		ledGroupLayout = QGridLayout(self.ledGroup.layout())
+		ledGroupLayout = self.ledGroup.layout()
 		ledGroupLayout.setAlignment(Qt.AlignTop)
 		self.lstLeds = []
 		self.lstLabels = []
@@ -226,7 +228,7 @@ class GlobalStatusForm(formGlobalStatus):
 				ledGroupLayout.addWidget( self.lstLabels[bit], row, 4 )
 			self.lstLeds[bit].setPixmap( self.greenLedOff )
 			self.lstLabels[bit].setText( self.lstLabelTexts[bit] )
-			QToolTip.add(self.lstLabels[bit], self.lstTooltips[bit])
+			self.lstLabels[bit].setToolTip(self.lstTooltips[bit])
 			
 	def updateStatus(self, statusHexWord):
 		#print "update status: dec = " + str(statusHexWord)

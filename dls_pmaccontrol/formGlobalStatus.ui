@@ -1,75 +1,31 @@
-<!DOCTYPE UI><UI version="3.3" stdsetdef="1">
-<class>formGlobalStatus</class>
-<widget class="QDialog">
-    <property name="name">
-        <cstring>formGlobalStatus</cstring>
-    </property>
-    <property name="geometry">
-        <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>192</width>
-            <height>322</height>
-        </rect>
-    </property>
-    <property name="caption">
-        <string>Status bits</string>
-    </property>
-    <grid>
-        <property name="name">
-            <cstring>unnamed</cstring>
-        </property>
-        <widget class="QButtonGroup" row="0" column="0" rowspan="1" colspan="2">
-            <property name="name">
-                <cstring>ledGroup</cstring>
-            </property>
-            <property name="title">
-                <string>Global Status</string>
-            </property>
-            <grid>
-                <property name="name">
-                    <cstring>unnamed</cstring>
-                </property>
-            </grid>
-        </widget>
-        <spacer row="1" column="1">
-            <property name="name">
-                <cstring>spacer4</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Vertical</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>20</width>
-                    <height>16</height>
-                </size>
-            </property>
-        </spacer>
-        <spacer row="1" column="0">
-            <property name="name">
-                <cstring>spacer4_2</cstring>
-            </property>
-            <property name="orientation">
-                <enum>Vertical</enum>
-            </property>
-            <property name="sizeType">
-                <enum>Expanding</enum>
-            </property>
-            <property name="sizeHint">
-                <size>
-                    <width>20</width>
-                    <height>16</height>
-                </size>
-            </property>
-        </spacer>
-    </grid>
-</widget>
-<slots>
-    <slot>sendCommand()</slot>
-</slots>
-<layoutdefaults spacing="6" margin="11"/>
-</UI>
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>formGlobalStatus</class>
+ <widget class="QDialog" name="formGlobalStatus">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>122</width>
+    <height>144</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Status bits</string>
+  </property>
+  <layout class="QGridLayout">
+   <item row="0" column="0" colspan="2">
+    <widget class="QGroupBox" name="ledGroup">
+     <property name="title">
+      <string>Global Status</string>
+     </property>
+     <layout class="QGridLayout"/>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <resources/>
+ <connections/>
+</ui>

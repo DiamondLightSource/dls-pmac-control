@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from qt import *
-from formStatus import formStatus
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+from formStatus import Ui_formStatus
 
 
-class statusform(formStatus):
+class statusform(QDialog, Ui_formStatus):
 
-	def __init__(self, parent, axis, name = None,modal = 0,fl = 0):
-		formStatus.__init__(self,parent,name,modal,fl)
+	def __init__(self, parent, axis):
+		QDialog.__init__(self,parent)
+		self.setupUi(self)
 		
 		self.currentAxis = axis
 		self.greenLedOn = parent.greenLedOn
@@ -18,7 +20,7 @@ class statusform(formStatus):
 		
 		self.ledGroup.setTitle("Axis "+str(axis))
 		
-		ledGroupLayout = QGridLayout(self.ledGroup.layout())
+		ledGroupLayout = self.ledGroup.layout()
 		ledGroupLayout.setAlignment(Qt.AlignTop)
 		self.lstLeds = []
 		self.lstLabels = []
@@ -304,7 +306,7 @@ Ix00 is 0 and motor calculations are deactivated. """)
 
 			self.lstLeds[bit].setPixmap( self.greenLedOff )
 			self.lstLabels[bit].setText( self.lstLabelTexts[bit] )
-			QToolTip.add(self.lstLabels[bit], self.lstTooltips[bit])
+			self.lstLabels[bit].setToolTip(self.lstTooltips[bit])
 			
 	def changeAxis(self, axis):
 		self.currentAxis = axis

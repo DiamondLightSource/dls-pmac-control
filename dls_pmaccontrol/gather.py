@@ -1,16 +1,16 @@
 import sys, time, os
-from qt import *
-from formGather import *
-from pmactelnet import *
-from pmaceth import *
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+from formGather import Ui_formGather
 from optparse import OptionParser
 from gatherchannel import *
 
 # [TODO] Find out why the gathering fails with an response "ERR003" from the PMAC for PMAC2-VME (does work for Geo Brick)!
-class gatherform(formGather):
+class gatherform(QDialog, Ui_formGather):
 
-	def __init__(self,parent,currentMotor = 1, name = None,modal = 0,fl = 0):
-		formGather.__init__(self,parent,name,modal,fl)
+	def __init__(self,parent,currentMotor = 1):
+		QDialog.__init__(self,parent)
+		self.setupUi(self)
 
 		self.parent = parent
 		if self.parent == None:
@@ -61,7 +61,7 @@ class gatherform(formGather):
 			cmBox.clear()
 		for dataPoint in dataSources:
 			for cmBox in self.lstComboboxes:
-				cmBox.insertItem( dataPoint['desc'])
+				cmBox.addItem( dataPoint['desc'])
 
 	def gatherConfig(self):
 		# Create i5050 variable value to mask out what values to sample

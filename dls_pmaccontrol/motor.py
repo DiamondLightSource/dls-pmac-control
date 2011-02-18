@@ -1,28 +1,31 @@
-#!/bin/env dls-python2.4
+#!/bin/env dls-python2.6
 #
 import sys, os, signal
+sys.path.append("/dls_sw/work/common/python/dls_pmaclib")
+
 import types
-from qt import *
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 from Queue import Queue, Empty
 from optparse import OptionParser
 
-from formControl import ControlForm
-from pmactelnet import *
-from pmaceth import *
+from formControl import Ui_ControlForm
+from dls_pmaclib.dls_pmacremote import *
+from dls_pmaclib.dls_pmcpreprocessor import clsPmacParser
 from energise import *
 from status import *
 from axissettings import *
 from gather import *
 from CSstatus import *
 from GlobalStatus import *
-from pmcpreprocessor import clsPmacParser
 
 # [TODO] Check why there is a segfault when one closes the main window without being disconnected. The fault happens after
 #		controlform.remoteDisconnect() has finished. It did happen in previous releases of motorcontrol, too.
-class controlform(ControlForm):
 
-	def __init__(self, options, parent = None,name = None,fl = 0):
-		ControlForm.__init__(self,parent,name,fl)
+class controlform(QMainWindow, Ui_ControlForm):
+	def __init__(self, options, parent = None):
+		QMainWindow.__init__(self,parent)
+		self.setupUi(self)
 		
 		signal.signal(2, self.signalHandler)
 
@@ -78,7 +81,7 @@ class controlform(ControlForm):
 		self.commands = []
 		self.commandsi= 0
 		self.lneSend.keyPressEvent = types.MethodType(self.checkHistory,self.lneSend,self.lneSend.__class__)
-		self.dirname = "/"
+		self.dirname = "."
 
                 self.lblIdentity.setText('')
 
@@ -132,13 +135,13 @@ class controlform(ControlForm):
 		# Find out the type of the PMAC
 		pmacModelStr = self.pmac.getPmacModel()
 		if pmacModelStr:
-			self.setCaption('Delta Tau motor controller - %s' % pmacModelStr)
+			self.setWindowTitle('Delta Tau motor controller - %s' % pmacModelStr)
 		else:
 			QMessageBox.information(self, "Error", "Could not determine PMAC model")
 			return
 
-		self.table.setNumRows(self.pmac.getNumberOfAxes())
-		self.spnJogMotor.setMaxValue(self.pmac.getNumberOfAxes())
+		self.table.setRowCount(self.pmac.getNumberOfAxes())
+		self.spnJogMotor.setMaximum(self.pmac.getNumberOfAxes())
 
 		self.btnConnect.setEnabled(False)
 		self.lneServer.setEnabled(False)
@@ -175,7 +178,7 @@ class controlform(ControlForm):
 		if self.pmac:
 			self.pmac.disconnect()
 
-		self.setCaption("Delta Tau motor controller")
+		self.setWindowTitle("Delta Tau motor controller")
 		self.btnConnect.setEnabled(True)
 		self.btnDisconnect.setEnabled(False)
 		self.lneServer.setEnabled(True)
@@ -339,8 +342,7 @@ class controlform(ControlForm):
 	def pmacLoadConfig(self):
 		# First get the file from a file dialog
 		myDialog = QFileDialog(self)
-		myDialog.setShowHiddenFiles(False)
-		fileName = myDialog.getOpenFileName(self.dirname, "PMAC configuration (*.pmc *.PMC)")
+		fileName = myDialog.getOpenFileName(self, "Load PMC file", self.dirname, "PMAC configuration (*.pmc *.PMC)")
 		fileName = str(fileName)
 		if (not fileName): return
 		self.dirname = os.path.dirname(fileName)		
@@ -610,9 +612,8 @@ def main():
 	QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
 	w = controlform(options)
 	QObject.connect(a, SIGNAL("aboutToQuit()"), w.remoteDisconnect)
-	a.setMainWidget(w)
 	w.show()
-	a.exec_loop()
+	a.exec_()
 
 if __name__ == "__main__":    
 	main()

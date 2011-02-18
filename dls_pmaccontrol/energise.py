@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
 import sys, re
-from qt import *
-from formEnergise import formEnergise
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+from formEnergise import Ui_formEnergise
 
-class energiseform(formEnergise):
+class energiseform(QDialog, Ui_formEnergise):
 
-	def __init__(self, pmac, parent = None,name = None,modal = 0,fl = 0):
-		formEnergise.__init__(self,parent,name,modal,fl)
+	def __init__(self, pmac, parent = None):
+		QDialog.__init__(self,parent)
+		self.setupUi(self)
 		
 		self.pmac = pmac
 		self.parent = parent

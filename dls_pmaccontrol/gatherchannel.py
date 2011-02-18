@@ -1,4 +1,4 @@
-#!/bin/env/python2.4
+#!/bin/env/python2.6
 import sys
 WORD 		= 24
 LONGWORD 	= 48

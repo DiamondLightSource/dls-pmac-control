@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import sys, traceback
-from qt import *
+from PyQt4.QtCore import *
+from PyQt4.QtGui import *
 from qttable import *
 from formWatches import formWatches
 import re
