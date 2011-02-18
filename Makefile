@@ -1,6 +1,6 @@
 # Specify defaults for testing
-PREFIX = /scratch/tools
-#PREFIX = /dls_sw/prod/tools/RHEL5
+#PREFIX = /scratch/tools
+PREFIX = /dls_sw/prod/tools/RHEL5
 PYTHON = $(PREFIX)/bin/python2.6
 INSTALL_DIR = /dls_sw/work/common/python/test/packages
 SCRIPT_DIR = /dls_sw/work/common/python/test/scripts
@@ -11,10 +11,10 @@ MODULEVER = 0.0
 
 # uic files
 PYUIC=$(PREFIX)/bin/pyuic4
-UICS=$(patsubst %.ui, %_ui.py, $(wildcard dls_pmaccontrol/*.ui))
+UICS=$(patsubst %.ui, %.py, $(wildcard dls_pmaccontrol/*.ui))
 
 # build the screens from .ui source
-%_ui.py: %.ui
+%.py: %.ui
 	$(PYUIC) -o $@ $<
 
 # This is run when we type make

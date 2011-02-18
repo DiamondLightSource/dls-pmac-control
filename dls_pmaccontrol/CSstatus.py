@@ -357,7 +357,7 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
 				self.lstLabels[i].setToolTip(self.lstTooltips[i])
 			
 	def changeCS(self, CS):
-		self.parent().pmac.CSNum = CS
+		self.parent().commsThread.CSNum = CS
 		self.ledGroup.setTitle("CS "+str(CS))
 
 	def updateFeed(self, feed):
@@ -367,7 +367,7 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
 
 	def setFeed(self, feed):
 		if feed != self._feed:
-			self.parent().pmac.sendCommand("&%d%%%d" % (self.parent().pmac.CSNum, feed))
+			self.parent().pmac.sendCommand("&%d%%%d" % (self.parent().commsThread.CSNum, feed))
 
 	def updateStatus(self, CSStatusHexWord):
 		#print "update CSStatus: dec = " + str(CSStatusHexWord)

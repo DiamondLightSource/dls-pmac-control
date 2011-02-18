@@ -669,6 +669,12 @@
        <property name="readOnly" stdset="0">
         <bool>true</bool>
        </property>
+       <attribute name="verticalHeaderDefaultSectionSize">
+        <number>20</number>
+       </attribute>
+       <attribute name="verticalHeaderDefaultSectionSize">
+        <number>20</number>
+       </attribute>
        <column>
         <property name="text">
          <string>position</string>
