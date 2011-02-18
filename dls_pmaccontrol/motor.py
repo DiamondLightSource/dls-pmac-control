@@ -79,13 +79,14 @@ class controlform(QMainWindow, Ui_ControlForm):
         
         self.table.setColumnWidth(3, 40)
         self.table.setColumnWidth(4, 40)
+        self.table.cellDoubleClicked.connect(self.chooseMotorFromTable)
         
         self.commands = []
         self.commandsi= 0
         self.lneSend.keyPressEvent = types.MethodType(self.checkHistory,self.lneSend,self.lneSend.__class__)
         self.dirname = "."
 
-        self.lblIdentity.setText('')
+        self.lblIdentity.setText('')     
 
     def useTerminalServerConnection(self):
         if self.isUsingTerminalServerConnection == False:
@@ -172,7 +173,8 @@ class controlform(QMainWindow, Ui_ControlForm):
         self.btnPollingStatus.setEnabled(True)
         self.btnGather.setEnabled(True)
         self.table.setEnabled(True)
-        self.pixPolling.setPixmap(self.greenLedOn)
+        self.pixPolling.setPixmap(self.greenLedOn)     
+        
 
     def remoteDisconnect(self):
 
@@ -597,6 +599,10 @@ class controlform(QMainWindow, Ui_ControlForm):
             print "Closing application."
             QApplication.exit(0)    
 
+    def die(self):
+        self.remoteDisconnect()
+        self.commsThread.inputQueue.put(("die",""))
+
 def main():
     usage = """usage: %prog [options]
 %prog is a graphical frontend to the Deltatau motorcontroller known as PMAC."""
@@ -622,10 +628,13 @@ def main():
     (options, args) = parser.parse_args()
     
     a = QApplication(sys.argv)
-    QObject.connect(a,SIGNAL("lastWindowClosed()"),a,SLOT("quit()"))
+    a.lastWindowClosed.connect(a.quit)
     w = controlform(options)
-    QObject.connect(a, SIGNAL("aboutToQuit()"), w.remoteDisconnect)
+    a.aboutToQuit.connect(w.die)
     w.show()
+    w.splitter.moveSplitter(220, 1)       
+    # catch CTRL-C
+    signal.signal(signal.SIGINT, signal.SIG_DFL)    
     a.exec_()
 
 if __name__ == "__main__":    
