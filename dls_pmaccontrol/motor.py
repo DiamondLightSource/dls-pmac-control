@@ -87,6 +87,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         self.dirname = "."
 
         self.lblIdentity.setText('')     
+        self.txtShell.clear()
 
     def useTerminalServerConnection(self):
         if self.isUsingTerminalServerConnection == False:
@@ -127,6 +128,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         serverName = self.lneServer.text()
         serverPort = self.lnePort.text()
         self.pmac.setConnectionParams( serverName, serverPort )
+        self.txtShell.append("Connecting to %s %s" % (serverName, serverPort))
         
         # Connect to the interface/PMAC
         connectionStatus = self.pmac.connect()
@@ -180,6 +182,7 @@ class controlform(QMainWindow, Ui_ControlForm):
 
         # If the PMAC interface has been already defined, make it disconnect (this will do nothing if the interface is not connected)
         if self.pmac:
+            self.txtShell.append("Disconnected")
             self.pmac.disconnect()
 
         self.setWindowTitle("Delta Tau motor controller")
@@ -224,26 +227,20 @@ class controlform(QMainWindow, Ui_ControlForm):
     def jogNeg(self):
         #print "controlform.jogNeg(): Not implemented yet"
         (command, retStr, retStatus) = self.pmac.jogInc(self.currentMotor, "neg", str(self.lneJogDist.text()))
-        if self.chkShowAll.isChecked():
-            self.txtShell.append(command)
-            self.txtShell.append(retStr) # This may need reconsidering... Will not always print the return string.
+        self.addToTxtShell(command, retStr) # This may need reconsidering... Will not always print the return string.
 
     # public slot
     def jogPos(self):
         #print "controlform.jogPos(): Not implemented yet"
         (command, retStr, retStatus) = self.pmac.jogInc(self.currentMotor, "pos", str(self.lneJogDist.text()))
-        if self.chkShowAll.isChecked():
-            self.txtShell.append(command)
-            self.txtShell.append(retStr) # This may need reconsidering... Will not always print the return string.
+        self.addToTxtShell(command, retStr) # This may need reconsidering... Will not always print the return string.
 
     # public slot
 
     def jogStop(self):
         #print "controlform.jogStop(): Not implemented yet"
         (command, retStr, retStatus) = self.pmac.jogStop( self.currentMotor )
-        if self.chkShowAll.isChecked():
-            self.txtShell.append(command)
-            self.txtShell.append(retStr) # This may need reconsidering... Will not always print the return string.
+        self.addToTxtShell(command, retStr) # This may need reconsidering... Will not always print the return string.
         
 
     # public slot
@@ -251,18 +248,14 @@ class controlform(QMainWindow, Ui_ControlForm):
     def jogHome(self):
         #print "controlform.jogHome(): Not implemented yet"
         (command, retStr, retStatus) = self.pmac.homeCommand( self.currentMotor )
-        if self.chkShowAll.isChecked():
-            self.txtShell.append(command)
-            self.txtShell.append(retStr) # This may need reconsidering... Will not always print the return string.
+        self.addToTxtShell(command, retStr) # This may need reconsidering... Will not always print the return string.
 
     # public slot
 
     def jogGoToPosition(self):
         #print "controlform.jogGoToPosition(): Not implemented yet"
         (command, retStr, retStatus) = self.pmac.jogTo( self.currentMotor, self.lneJogTo.text() )
-        if self.chkShowAll.isChecked():
-            self.txtShell.append(command)
-            self.txtShell.append(retStr) # This may need reconsidering... Will not always print the return string.
+        self.addToTxtShell(command, retStr) # This may need reconsidering... Will not always print the return string.
 
     # public slot
     def jogChangeMotor(self,newMotor):
@@ -275,8 +268,7 @@ class controlform(QMainWindow, Ui_ControlForm):
     def killMotor(self):
         command = "#%dk"%self.currentMotor
         (returnString, status) = self.pmac.sendCommand( command )
-        if self.chkShowAll.isChecked():
-            self.txtShell.append(command)
+        self.addToTxtShell(command)
         
 
     # Send a <CTRL-K> (ASCII 0x0B) command to the PMAC to kill all motion
@@ -286,16 +278,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         #print "killing all motors!"
         command = '\x0B'
         (returnString, status) = self.pmac.sendCommand( command )
-        if self.chkShowAll.isChecked():
-            self.txtShell.append("CTRL-K")
-
-    def writeShell(self, command, retStr):
-        if self.chkShowAll.isChecked():
-            if command:
-                self.txtShell.append(command)
-            appendStr = retStr.strip()
-            appendStr = appendStr.replace('\r', ' ')
-            self.txtShell.append(appendStr) 
+        self.addToTxtShell("CTRL-K")
 
     def dataGather(self):
         self.gatherScreen.show()
@@ -318,8 +301,7 @@ class controlform(QMainWindow, Ui_ControlForm):
             f = open(filename,"w")
             ivars = enumerate(returnString.split("\r")[:-1])
             f.writelines(["i%s = %s\n"%(i,x) for (i,x) in ivars])
-            if self.chkShowAll.isChecked():
-                self.txtShell.append("i0..8191")
+            self.addToTxtShell("i0..8191")
             QMessageBox.information(self,"Backup I Variables",
                         "I variables saved to file: '%s'"%filename)                
 
@@ -368,13 +350,12 @@ class controlform(QMainWindow, Ui_ControlForm):
         # Open up progress dialog and start sending the commands.
         self.canceledDownload = False        
         self.progressDialog = QProgressDialog("Downloading PMAC configuration",
-                            "cancel",
-                            len(commands)+1,
-                            self, "download_progress", True)        
-        self.progressDialog.cancel.connect(self.cancel)
+                            "cancel", 0,
+                            len(pmcLines),
+                            self)        
+        self.progressDialog.canceled.connect(self.cancel)
         self.txtShell.append("Beginning download of pmc file: "+fileName)
-        self.commsThread.inputQueue.put(("sendSeries",commands))
-    #    print pmcLines        
+        self.commsThread.inputQueue.put(("sendSeries",commands))       
 
     def cancel(self):
         self.canceledDownload = True
@@ -384,7 +365,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         # If we are already polling, disable it
         if self.pollingStatus:
             self.pollingStatus = False
-            self.commsThread.inputQueue.put(("startPollingStatus", False))
+            self.commsThread.inputQueue.put(("disablePollingStatus", True))
             
             self.btnPollingStatus.setText("enable polling")
             
@@ -399,7 +380,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         # else, if we are not polling: start polling!
         else:
             self.pollingStatus = True
-            self.commsThread.inputQueue.put(("startPollingStatus", True))
+            self.commsThread.inputQueue.put(("disablePollingStatus", False))
             self.btnPollingStatus.setText("disable polling")
 
             # Re-enable all the disabled labels and controls
@@ -413,34 +394,29 @@ class controlform(QMainWindow, Ui_ControlForm):
     def jogNegContinousStart(self):
         #print "controlform.jogNegContinousStart(): Not implemented yet"
         (command, retStr, retStatus) = self.pmac.jogContinous(self.currentMotor, "neg")
-        if self.chkShowAll.isChecked():
-            self.txtShell.append(command)
-            self.txtShell.append(retStr) # This may need reconsidering... Will not always print the return string.
+        self.addToTxtShell(command, retStr) # This may need reconsidering... Will not always print the return string.
         
     # public slot
     def jogPosContinousStart(self):
         #print "controlform.jogPosContinousStart(): Not implemented yet"
         (command, retStr, retStatus) = self.pmac.jogContinous(self.currentMotor, "pos")
-        if self.chkShowAll.isChecked():
-            self.txtShell.append(command)
-            self.txtShell.append(retStr) # This may need reconsidering... Will not always print the return string.
+        self.addToTxtShell(command, retStr) # This may need reconsidering... Will not always print the return string.
 
     # public slot
     def sendSingleCommand(self):
         #print "controlform.sendSingleCommand(): Not implemented yet"
         command = self.lneSend.text()
-        self.commands.append( command )
-        self.txtShell.append( command )
-        (returnString, status) = self.pmac.sendCommand( command )
-        self.txtShell.append( returnString )
+        if len(self.commands) == 0 or self.commands[-1] != command:
+            self.commands.append( command )
+        (retStr, status) = self.pmac.sendCommand( command )
+        self.addToTxtShell(command, retStr, False)
         self.commandsi = 0
         self.lneSend.setText("")
 
     # public slot
     def chooseMotorFromTable(self,a0,a1):
         #print "controlform.chooseMotorFromTable(int row, int col): Not implemented yet" + str(a0)
-        self.spnJogMotor.setValue( a0 + 1 )
-        
+        self.spnJogMotor.setValue( a0 + 1 )        
 
     # public slot
     def jogIncrementally(self,a0):
@@ -469,6 +445,12 @@ class controlform(QMainWindow, Ui_ControlForm):
             item.setFlags(Qt.ItemIsEnabled)
         return item
                         
+
+    def addToTxtShell(self, command, retStr=None, chkShowAll=True):
+        if chkShowAll == False or self.chkShowAll.isChecked():
+            self.txtShell.append(command)
+            if retStr is not None:
+                self.txtShell.append(retStr.rstrip("\x06").lstrip("\x07").replace('\r', ' '))
         
     # Called when an event comes out of the polling thread
     # and the jog ribbon.
@@ -578,16 +560,15 @@ class controlform(QMainWindow, Ui_ControlForm):
     def customEvent( self, E ):
         #print "custom event!"
         if E.type() == self.progressEventType:
-            #print "Data = " + str(E.data())
+            (lines, err) = E.data()
+            self.progressDialog.setValue(lines)
+            if err:
+                self.txtShell.append(err)                
+        elif E.type() == self.downloadDoneEventType:
             if self.canceledDownload:
                 self.txtShell.append("Download of configuration canceled by user.")
-            else:
-                (lines, err) = E.data()
-                self.progressDialog.setProgress(lines)
-                if err:
-                    self.txtShell.append(err)                
-        elif E.type() == self.downloadDoneEventType:
-            self.txtShell.append("Downloaded "+str(E.data())+" lines from pmc file.")            
+            else:    
+                self.txtShell.append("Downloaded "+str(E.data())+" lines from pmc file.")            
         elif E.type() == self.updatesReadyEventType:
             #print "updating motors"
             self.updateMotors()

@@ -11,6 +11,8 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
 	def __init__(self, parent):
 		QDialog.__init__(self,parent)
 		self.setupUi(self)
+		self.csSpin.valueChanged.connect(self.changeCS)
+		self.feedSpin.valueChanged.connect(self.setFeed)		
 		
 		self.greenLedOn = parent.greenLedOn
 		self.greenLedOff = parent.greenLedOff
