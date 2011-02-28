@@ -5,14 +5,14 @@ import os
 version = os.environ.get("MODULEVER", "0.0")
         
 setup(
-#    install_requires = ['cothread'], # require statements go here
+    install_requires = ['dls_pmaclib==1.3'], # require statements go here
     name = 'dls_pmaccontrol',
     version = version,
     description = 'Module',
-    author = 'fgz73762',
-    author_email = 'fgz73762@rl.ac.uk',    
+    author = 'Ulrik Pedersen',
+    author_email = 'Ulrik.Pedersen@diamond.ac.uk',    
     packages = ['dls_pmaccontrol'],
     entry_points = {'console_scripts': [
-        'dls-motor-control.py = dls_motorcontrol.motor:main']},
+        'dls-pmac-control.py = dls_pmaccontrol.motor:main']},
     zip_safe = False
     )        
