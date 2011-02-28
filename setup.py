@@ -14,5 +14,7 @@ setup(
     packages = ['dls_pmaccontrol'],
     entry_points = {'console_scripts': [
         'dls-pmac-control.py = dls_pmaccontrol.motor:main']},
+    include_package_data = True,
+    package_data = {'': ['*.png']},        
     zip_safe = False
     )        
