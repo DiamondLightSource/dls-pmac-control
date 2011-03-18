@@ -353,6 +353,7 @@ class controlform(QMainWindow, Ui_ControlForm):
                             "cancel", 0,
                             len(pmcLines),
                             self)        
+        self.progressDialog.setWindowModality(Qt.ApplicationModal)
         self.progressDialog.canceled.connect(self.cancel)
         self.txtShell.append("Beginning download of pmc file: "+fileName)
         self.commsThread.inputQueue.put(("sendSeries",commands))       
@@ -565,6 +566,7 @@ class controlform(QMainWindow, Ui_ControlForm):
             if err:
                 self.txtShell.append(err)                
         elif E.type() == self.downloadDoneEventType:
+            self.progressDialog.setValue(self.progressDialog.maximum())
             if self.canceledDownload:
                 self.txtShell.append("Download of configuration canceled by user.")
             else:    

@@ -71,11 +71,6 @@ class CommsThread(object):
                     QCoreApplication.postEvent( self.parent, ev )  
                     time.sleep(0.1)          
                 continue
-            
-        # Post a Qt event with the last progress data (to make the dialog close down)
-#        ev = CustomEvent( self.parent.progressEventType, (len(cmdLst)+1,""))
-#        QCoreEvent.postEvent( eventReceiver, ev )
-            
                 
             cmd = "i65???&%s??%%"
             for motorNo in range(1, self.parent.pmac.getNumberOfAxes() + 1):
