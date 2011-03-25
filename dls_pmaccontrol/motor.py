@@ -167,7 +167,6 @@ class controlform(QMainWindow, Ui_ControlForm):
         self.btnStatus.setEnabled(True)
         self.btnCSStatus.setEnabled(True)
         self.btnGlobalStatus.setEnabled(True)                
-        self.btnSave.setEnabled(not self.pmac.isModelGeobrick()) # [TEMP] 
         self.btnLoadFile.setEnabled(True)
         self.btnSettings.setEnabled(True)
         self.btnKillMotor.setEnabled(True)
@@ -205,7 +204,6 @@ class controlform(QMainWindow, Ui_ControlForm):
         self.btnStatus.setEnabled(False)
         self.btnCSStatus.setEnabled(False)
         self.btnGlobalStatus.setEnabled(False)                        
-        self.btnSave.setEnabled(False)
         self.btnSettings.setEnabled(False)
         self.btnKillMotor.setEnabled(False)
         self.btnLoadFile.setEnabled(False)
@@ -282,28 +280,6 @@ class controlform(QMainWindow, Ui_ControlForm):
 
     def dataGather(self):
         self.gatherScreen.show()
-
-    def pmacSave(self):
-        answer = QMessageBox.No
-        filename = "."
-        while filename!=".pmc" and QMessageBox.No == answer:
-            filename=str(QFileDialog.getSaveFileName(filename, "*.pmc", self)).replace(".pmc","")+".pmc"
-            if os.path.isfile(filename):
-                question="%s already exists, would you like to overwrite?"
-                answer=QMessageBox.question(self,"File already exists",\
-                                            question%filename,QMessageBox.Yes,\
-                                            QMessageBox.No)
-            else:
-                answer=QMessageBox.Yes
-        if filename!=".pmc":
-            command = "i0..8191"
-            (returnString, status) = self.pmac.sendCommand( command )
-            f = open(filename,"w")
-            ivars = enumerate(returnString.split("\r")[:-1])
-            f.writelines(["i%s = %s\n"%(i,x) for (i,x) in ivars])
-            self.addToTxtShell("i0..8191")
-            QMessageBox.information(self,"Backup I Variables",
-                        "I variables saved to file: '%s'"%filename)                
 
     # public slot
     def pmacEnergiseAxis(self):

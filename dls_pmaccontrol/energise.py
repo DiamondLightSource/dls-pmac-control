@@ -20,11 +20,11 @@ class energiseform(QDialog, Ui_formEnergise):
 
 	# Create the 2 columns of check-boxes
 	def createCheckBoxes(self):
-		chkGroupLayout = QGridLayout(self.chkGroup.layout())
+		chkGroupLayout = self.chkGroup.layout()
 		chkGroupLayout.setAlignment(Qt.AlignTop)
 		self.lstCheckBoxes = []
 		for axis in range(1, 33):
-			qCheckBox = QCheckBox(self.chkGroup, "chkBox" + str(axis))
+			qCheckBox = QCheckBox("chkBox" + str(axis), self.chkGroup)
 			qCheckBox.setText(str(axis))
 			if axis <= 16:
 				row = axis - 1

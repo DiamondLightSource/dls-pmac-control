@@ -1,5 +1,5 @@
 from Queue import Queue, Empty
-import threading, time
+import threading, time, traceback
 from PyQt4.QtCore import QEvent, QCoreApplication
 
 class CustomEvent(QEvent):
@@ -24,6 +24,16 @@ class CommsThread(object):
         self.updateThreadHandle = threading.Thread(target = self.updateThread)
         self.updateThreadHandle.start()
 
+    def sendTick(self, lineNumber, err):
+        # Post a Qt event with current progress data
+        ev = CustomEvent( self.parent.progressEventType, (lineNumber, err))
+        QCoreApplication.postEvent( self.parent, ev )  
+
+    def sendComplete(self):
+        self.gen = None    
+        evDone = CustomEvent( self.parent.downloadDoneEventType, "")
+        QCoreApplication.postEvent(self.parent, evDone )          
+
     # Thread that sends the PMAC command to retrieve status, position, velocity and following error for each motor.
     # The thread then puts the retrieved data on a queue which is read by the gui.
     def updateThread(self):
@@ -39,15 +49,18 @@ class CommsThread(object):
                 if cmd == "die":
                     return                
                 elif cmd == "sendSeries":
-                    self.gen = self.parent.pmac.sendSeries(data)
+                    try:
+                        self.gen = self.parent.pmac.sendSeries(data)
+                    except:
+                        self.sendTick((0,"Couldn't start download"))                    
+                        self.sendComplete()                    
+                        traceback.print_exc()
                 elif cmd == "disablePollingStatus":
                     self.disablePollingStatus = data
                 elif cmd == "cancelSendSeries":
                     if self.gen:
                         self.gen.close()
-                        self.gen = None    
-                        evDone = CustomEvent( self.parent.downloadDoneEventType, "")
-                        QCoreApplication.postEvent(self.parent, evDone )                                        
+                        self.sendComplete()
                 else:
                     print "WARNING: don't know what to do with cmd %s" % cmd
             if self.disablePollingStatus:
@@ -59,21 +72,22 @@ class CommsThread(object):
                 try:
                     wasSuccessful, lineNumber, command, pmacResponseStr = self.gen.next()
                 except StopIteration:
-                    self.gen = None
-                    evDone = CustomEvent( self.parent.downloadDoneEventType, lineNumber)
-                    QCoreApplication.postEvent(self.parent, evDone )                        
+                    self.sendComplete()                      
                 else:
                     err = ""
                     if not wasSuccessful:
                         err = "%s: command '%s' generated '%s'" %(lineNumber, command, pmacResponseStr.replace("\r", " ").replace("\x07", ""))
-                    # Post a Qt event with current progress data
-                    ev = CustomEvent( self.parent.progressEventType, (lineNumber, err))
-                    QCoreApplication.postEvent( self.parent, ev )  
+                    self.sendTick(lineNumber, err="")
                     time.sleep(0.1)          
                 continue
                 
             cmd = "i65???&%s??%%"
-            for motorNo in range(1, self.parent.pmac.getNumberOfAxes() + 1):
+            try:
+            	axes = self.parent.pmac.getNumberOfAxes() + 1
+            except:
+            	traceback.print_exc()
+            	continue
+            for motorNo in range(1, axes):
                 cmd = cmd +  "#" + str(motorNo) + "?PVF"                
             (returnStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd%self.CSNum)
             if wasSuccessful:
