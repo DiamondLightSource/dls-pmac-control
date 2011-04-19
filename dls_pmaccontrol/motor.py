@@ -542,11 +542,8 @@ class controlform(QMainWindow, Ui_ControlForm):
             if err:
                 self.txtShell.append(err)                
         elif E.type() == self.downloadDoneEventType:
-            self.progressDialog.setValue(self.progressDialog.maximum())
-            if self.canceledDownload:
-                self.txtShell.append("Download of configuration canceled by user.")
-            else:    
-                self.txtShell.append("Downloaded "+str(E.data())+" lines from pmc file.")            
+            self.progressDialog.setValue(self.progressDialog.maximum())            
+            self.txtShell.append(str(E.data()))            
         elif E.type() == self.updatesReadyEventType:
             #print "updating motors"
             self.updateMotors()
