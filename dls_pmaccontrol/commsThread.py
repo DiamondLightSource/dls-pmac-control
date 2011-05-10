@@ -70,8 +70,6 @@ class CommsThread(object):
                     self.sendComplete("Download cancelled by the user")
             else:
                 print "WARNING: don't know what to do with cmd %s" % cmd
-        if self.disablePollingStatus:
-            return
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
             return
         if self.gen:
@@ -86,6 +84,8 @@ class CommsThread(object):
                     err = "%s: command '%s' generated '%s'" %(self.lineNumber, command, pmacResponseStr.replace("\r", " ").replace("\x07", ""))
                 self.sendTick(self.lineNumber, err)
                 time.sleep(0.1)          
+            return
+        if self.disablePollingStatus:
             return
             
         cmd = "i65???&%s??%%"
