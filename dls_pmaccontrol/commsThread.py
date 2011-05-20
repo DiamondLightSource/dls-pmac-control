@@ -71,6 +71,7 @@ class CommsThread(object):
             else:
                 print "WARNING: don't know what to do with cmd %s" % cmd
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
+            time.sleep(0.1)        
             return
         if self.gen:
             # should be downloading a text file
@@ -83,9 +84,9 @@ class CommsThread(object):
                 if not wasSuccessful:
                     err = "%s: command '%s' generated '%s'" %(self.lineNumber, command, pmacResponseStr.replace("\r", " ").replace("\x07", ""))
                 self.sendTick(self.lineNumber, err)
-                time.sleep(0.1)          
             return
         if self.disablePollingStatus:
+            time.sleep(0.1)        
             return
             
         cmd = "i65???&%s??%%"
@@ -116,7 +117,6 @@ class CommsThread(object):
                 self.resultQueue.put( returnList, False)
             evUpdatesReady = CustomEvent(self.parent.updatesReadyEventType, None )
             QCoreApplication.postEvent( self.parent, evUpdatesReady )
-            time.sleep(0.1)
         else:
             print 'WARNING: Error while sending update request ("%s")' % returnStr
-
+        time.sleep(0.1)
