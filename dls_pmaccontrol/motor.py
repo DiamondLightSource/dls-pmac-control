@@ -1,7 +1,9 @@
 #!/bin/env dls-python2.6
 #
 import sys, os, signal
-sys.path.append("/dls_sw/work/common/python/dls_pmaclib")
+
+if __name__ == "__main__":    
+    sys.path.append("/dls_sw/work/common/python/dls_pmaclib")
 
 import types
 from PyQt4.QtCore import *
