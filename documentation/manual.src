@@ -1,14 +1,16 @@
 /**
 \mainpage dls_pmaccontrol Python Module
 \section intro_sec Introduction
-I'm going to describe the module here, possibly with a <a href="http://www.google.co.uk">web link to the manufacturers webpage</a>. \n
-You can also link to \ref dls_pmaccontrol.py "internally generated documentation" with alternate text, or by just by mentioning its name, e.g. dls_pmaccontrol.py
+The dls_pmaccontrol package is a python application which provides a GUI front end to control the DeltaTau PMAC and Geobrick motor control systems.
 
 \section Installation
+dls_pmaccontrol is developed and tested on Python 2.6. Qt4 and PyQt are used to render the graphical user interface. These packages must be pre-installed (development versions) on the system before building and running dls_pmaccontrol.
 
-Type make && make install
+The dls_pmaclib package is also required for this application. This package is also available on the <a href="http://controls.diamond.ac.uk/downloads/python/index.php">Diamond Control Downloads</a> page.
+
+The module uses make and python setuptools to build and output a python egg. The Makefile INSTALL_DIR and SCRIPT_DIR can optionally be edited to provide custom output directories. Type make && make install to build and install.
 
 \section Usage
 
-I'm going to describe how to use the module here
+Run the motor.py to start the application. Connect to PMAC or Geobrick through either Ethernet or Telnet to a terminal server.
 */

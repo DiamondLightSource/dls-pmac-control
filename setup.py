@@ -5,11 +5,12 @@ import os
 version = os.environ.get("MODULEVER", "0.0")
         
 setup(
-    install_requires = ['dls_pmaclib==1.3'], # require statements go here
+    #install_requires = ['dls_pmaclib==1.3'], # require statements go here
+    install_requires = ['dls_pmaclib'],
     name = 'dls_pmaccontrol',
     version = version,
     description = 'Module',
-    author = 'Ulrik Pedersen',
+    author = 'Ulrik Kofoed Pedersen',
     author_email = 'Ulrik.Pedersen@diamond.ac.uk',    
     packages = ['dls_pmaccontrol'],
     entry_points = {'console_scripts': [

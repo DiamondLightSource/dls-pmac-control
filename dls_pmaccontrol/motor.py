@@ -1,9 +1,17 @@
 #!/bin/env dls-python2.6
+
+## \file
+# Main entry point to the pmaccontrol application.
 #
+
 import sys, os, signal
 
 if __name__ == "__main__":    
-    sys.path.append("/dls_sw/work/common/python/dls_pmaclib")
+    # When running this file directly from the source dir (not using setuptools)
+    # we need to be able to find the dls_pmaclib
+    #sys.path.append("/dls_sw/work/common/python/dls_pmaclib")
+    sys.path.append("../../dls_pmaclib")
+    pass
 
 import types
 from PyQt4.QtCore import *
@@ -561,6 +569,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         self.remoteDisconnect()
         self.commsThread.inputQueue.put(("die",""))
 
+## Main function in the pmaccontrol application.
 def main():
     usage = """usage: %prog [options]
 %prog is a graphical frontend to the Deltatau motorcontroller known as PMAC."""
@@ -597,3 +606,19 @@ def main():
 
 if __name__ == "__main__":    
     main()
+## \file
+# \section License
+# Author: Diamond Light Source, Copyright 2011
+#
+# 'dls_pmaccontrol' is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Lesser General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# 'dls_pmaccontrol' is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public License
+# along with 'dls_pmaccontrol'.  If not, see http://www.gnu.org/licenses/.
