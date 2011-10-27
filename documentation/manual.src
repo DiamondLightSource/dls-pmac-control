@@ -4,11 +4,25 @@
 The dls_pmaccontrol package is a python application which provides a GUI front end to control the DeltaTau PMAC and Geobrick motor control systems.
 
 \section Installation
-dls_pmaccontrol is developed and tested on Python 2.6. Qt4 and PyQt are used to render the graphical user interface. These packages must be pre-installed (development versions) on the system before building and running dls_pmaccontrol.
-
+dls_pmaccontrol is developed and tested on Python 2.6. Qt4, PyQt and Qwt5 are used to render the graphical user interface. These packages must be pre-installed on the system before building and running dls_pmaccontrol. The module uses make and python setuptools/distribute to build and output a python egg. 
 The dls_pmaclib package is also required for this application. This package is also available on the <a href="http://controls.diamond.ac.uk/downloads/python/index.php">Diamond Control Downloads</a> page.
 
-The module uses make and python setuptools to build and output a python egg. The Makefile INSTALL_DIR and SCRIPT_DIR can optionally be edited to provide custom output directories. Type make && make install to build and install.
+For Mac OS X the following <a href="http://www.macports.org/ports.php">MacPorts</a> provide the necessary dependencies:
+<ul>
+<li>py26-pyqt4</li>
+<li>py26-pyqwt</li>
+<li>py26-distribute</li>
+</ul>
+
+For Ubuntu (tested on 11.10) the following packages provide the necessary dependencies:
+<ul>
+<li>build-essentials</li>
+<li>pyqt4-dev-tools</li>
+<li>python-qwt5-qt5</li>
+<li>python-setuptools</li>
+</ul>
+
+Once the dependencies are installed, edit the Makefile variables for your platform as suggested in the comments. Finally type make && make install to build and install.
 
 \section Usage
 

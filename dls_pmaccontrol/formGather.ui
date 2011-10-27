@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <comment>Python:qwtInstalled = True
-Python:try:
-Python:	from qwt import *
-Python:except:
-Python:	print &quot;Did not manage to import qwt. Trying Qwt4.Qwt&quot;
-Python:	try:
-Python:		from Qwt4.Qwt import *
-Python:	except:
-Python:		print &quot;Did not find Qwt4.Qwt module installed. Giving up.&quot;
-Python:		qwtInstalled = False</comment>
  <class>formGather</class>
  <widget class="QDialog" name="formGather">
   <property name="geometry">
@@ -832,7 +822,7 @@ Python:		qwtInstalled = False</comment>
   <customwidget>
    <class>QwtPlot</class>
    <extends>QFrame</extends>
-   <header>qwt_plot.h</header>
+   <header>PyQt4.Qwt5</header>
   </customwidget>
  </customwidgets>
  <tabstops>
@@ -870,12 +860,6 @@ Python:		qwtInstalled = False</comment>
   <tabstop>cmbCol5</tabstop>
   <tabstop>cmbDataSource5</tabstop>
  </tabstops>
- <includes>
-  <include location="local">qwt_plot.h</include>
-  <include location="local">qwt_scale.h</include>
-  <include location="local">qwt_scale.h</include>
-  <include location="local">qwt_scale.h</include>
- </includes>
  <resources/>
  <connections>
   <connection>

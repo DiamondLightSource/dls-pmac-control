@@ -1,16 +1,29 @@
-# Specify defaults for testing
-#PREFIX = /scratch/tools
+# DLS environment settings
 PREFIX = /dls_sw/prod/tools/RHEL5
 PYTHON = $(PREFIX)/bin/python2.6
 INSTALL_DIR = /dls_sw/work/common/python/test/packages
 SCRIPT_DIR = /dls_sw/work/common/python/test/scripts
-MODULEVER = 0.0
+PYUIC=$(PREFIX)/bin/pyuic4
+
+## Mac OS X settings.
+#PYTHON = python2.6
+#INSTALL_DIR = /Users/ulrik/python/install/packages
+#SCRIPT_DIR = /Users/ulrik/python/install/scripts
+#PYUIC=pyuic4-2.6
+
+## Ubuntu settings
+#PYTHON = python
+#INSTALL_DIR = /home/ulrik/python/install/packages
+#SCRIPT_DIR = /home/ulrik/python/install/scripts
+#PYUIC=pyuic4
+
+
+MODULEVER = 1.6
 
 # Override with any release info
 -include Makefile.private
 
 # uic files
-PYUIC=$(PREFIX)/bin/pyuic4
 UICS=$(patsubst %.ui, %.py, $(wildcard dls_pmaccontrol/*.ui))
 
 # build the screens from .ui source
