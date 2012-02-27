@@ -333,6 +333,17 @@ class controlform(QMainWindow, Ui_ControlForm):
             if not blankLine.match( pmcLine ):
                 commands.append(( i+1, pmcLine ))
 
+        # Prepend two close commands and a delete gather to the front of any
+        # pmc file uploaded. This ensures that any open PLC buffers are closed 
+        # before an upload and that the gather buffer is erased to make memory
+        # available for the new PLC. Two close commands are sent to ensure that
+        # we leave any nested statements (first close) before then closing the 
+        # buffer (second close). Dummy line numbers of zero are paired with
+        # each command to match the formatting and to not disrupt the real line
+        # numbering
+        closeCommands = [(0, 'CLOSE'),(0, 'CLOSE'),(0, 'DELETE GATHER')]
+        commands = closeCommands + commands
+        
         # Open up progress dialog and start sending the commands.
         self.canceledDownload = False        
         self.progressDialog = QProgressDialog("Downloading PMAC configuration",
