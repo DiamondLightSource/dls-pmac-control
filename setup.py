@@ -5,7 +5,7 @@ import os
 version = os.environ.get("MODULEVER", "0.0")
         
 setup(
-    install_requires = ['dls_pmaclib==1.4'], # require statements go here
+    install_requires = ['dls_pmaclib>=1.4'], # require statements go here
     name = 'dls_pmaccontrol',
     version = version,
     description = 'Module',
