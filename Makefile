@@ -1,9 +1,7 @@
 # DLS environment settings
-PREFIX = /dls_sw/prod/tools/RHEL5
-PYTHON = $(PREFIX)/bin/python2.6
-INSTALL_DIR = /dls_sw/work/common/python/test/packages
-SCRIPT_DIR = /dls_sw/work/common/python/test/scripts
-PYUIC=$(PREFIX)/bin/pyuic4
+PREFIX = $(PWD)/prefix
+PYTHON = dls-python
+PYUIC=pyuic4
 
 ## Mac OS X settings.
 #PYTHON = python2.6
@@ -48,5 +46,4 @@ clean:
 install: dist
 	$(PYTHON) setup.py easy_install -m \
 		--record=installed.files \
-		--install-dir=$(INSTALL_DIR) \
-		--script-dir=$(SCRIPT_DIR) dist/*.egg        
+		--prefix=$(PREFIX) dist/*.egg        
