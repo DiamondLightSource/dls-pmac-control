@@ -16,7 +16,7 @@ PYUIC = pyuic4
 #PYUIC=pyuic4
 
 
-MODULEVER = 1.6
+MODULEVER = 0.1
 
 # Override with any release info
 -include Makefile.private
