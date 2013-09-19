@@ -6,7 +6,7 @@
 
 import sys, os, signal
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     # When running this file directly from the source dir (not using setuptools)
     # we need to be able to find the dls_pmaclib
     #sys.path.append("/dls_sw/work/common/python/dls_pmaclib")
@@ -37,23 +37,23 @@ class controlform(QMainWindow, Ui_ControlForm):
     def __init__(self, options, parent = None):
         QMainWindow.__init__(self,parent)
         self.setupUi(self)
-        
+
         signal.signal(2, self.signalHandler)
 
         self.greenLedOn = QPixmap( os.path.join( os.path.dirname(__file__), "greenLedOn.png"))
         self.greenLedOff = QPixmap( os.path.join( os.path.dirname(__file__), "greenLedOff.png"))
         self.redLedOn = QPixmap( os.path.join( os.path.dirname(__file__), "redLedOn.png"))
         self.redLedOff = QPixmap( os.path.join( os.path.dirname(__file__), "redLedOff.png"))
-        
+
         self.pollingStatus = True
 
         self.lneServer.setText(options.server)
         self.lnePort.setText(options.port)
         self.currentMotor = int(options.defaultAxis)
         self.nAxes = options.nAxes
-        
+
         self.verboseMode = options.verbose
-        
+
         self.connectionProtocol = options.protocol
         if self.connectionProtocol == "ts":
             # use terminal server
@@ -72,31 +72,31 @@ class controlform(QMainWindow, Ui_ControlForm):
 
         self.statusScreen = statusform(self, self.currentMotor)
         self.CSStatusScreen = CSStatusForm(self)
-        self.GlobalStatusScreen = GlobalStatusForm(self)        
+        self.GlobalStatusScreen = GlobalStatusForm(self)
         self.axisSettingsScreen = axissettingsform( self, self.currentMotor )
         self.gatherScreen = gatherform(self, self.currentMotor)
         self.energiseScreen = None
         self.commsThread = CommsThread(self)
 
         self.spnJogMotor.setValue( self.currentMotor )
-        
+
         # a few details for use when downloading pmc file
         self.progressEventType = QEvent.User + 1
         self.downloadDoneEventType = QEvent.User + 2
         self.updatesReadyEventType = QEvent.User + 3
         self.progressDialog = None
         self.canceledDownload = False
-        
+
         self.table.setColumnWidth(3, 40)
         self.table.setColumnWidth(4, 40)
         self.table.cellDoubleClicked.connect(self.chooseMotorFromTable)
-        
+
         self.commands = []
         self.commandsi= 0
         self.lneSend.keyPressEvent = types.MethodType(self.checkHistory,self.lneSend,self.lneSend.__class__)
         self.dirname = "."
 
-        self.lblIdentity.setText('')     
+        self.lblIdentity.setText('')
         self.txtShell.clear()
 
     def useTerminalServerConnection(self):
@@ -124,9 +124,9 @@ class controlform(QMainWindow, Ui_ControlForm):
                 self.lneSend.setText("")
             else:
                 self.commandsi +=1
-                self.lneSend.setText(self.commands[self.commandsi])            
-        QLineEdit.keyPressEvent(edit,event)        
-        
+                self.lneSend.setText(self.commands[self.commandsi])
+        QLineEdit.keyPressEvent(edit,event)
+
     def remoteConnect(self):
         # Create a remote PMAC interface, of the correct type, depending on radio-box selection in the "Connection to PMAC" section
         if self.isUsingTerminalServerConnection:
@@ -139,7 +139,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         serverPort = self.lnePort.text()
         self.pmac.setConnectionParams( serverName, serverPort )
         self.txtShell.append("Connecting to %s %s" % (serverName, serverPort))
-        
+
         # Connect to the interface/PMAC
         connectionStatus = self.pmac.connect()
         if (connectionStatus):
@@ -176,7 +176,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         self.btnKillAll.setEnabled(True)
         self.btnStatus.setEnabled(True)
         self.btnCSStatus.setEnabled(True)
-        self.btnGlobalStatus.setEnabled(True)                
+        self.btnGlobalStatus.setEnabled(True)
         self.btnLoadFile.setEnabled(True)
         self.btnSettings.setEnabled(True)
         self.btnKillMotor.setEnabled(True)
@@ -184,8 +184,8 @@ class controlform(QMainWindow, Ui_ControlForm):
         self.btnPollingStatus.setEnabled(True)
         self.btnGather.setEnabled(True)
         self.table.setEnabled(True)
-        self.pixPolling.setPixmap(self.greenLedOn)     
-        
+        self.pixPolling.setPixmap(self.greenLedOn)
+
 
     def remoteDisconnect(self):
 
@@ -213,7 +213,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         self.btnKillAll.setEnabled(False)
         self.btnStatus.setEnabled(False)
         self.btnCSStatus.setEnabled(False)
-        self.btnGlobalStatus.setEnabled(False)                        
+        self.btnGlobalStatus.setEnabled(False)
         self.btnSettings.setEnabled(False)
         self.btnKillMotor.setEnabled(False)
         self.btnLoadFile.setEnabled(False)
@@ -223,11 +223,11 @@ class controlform(QMainWindow, Ui_ControlForm):
         self.table.setEnabled(False)
         self.pixPolling.setPixmap(self.greenLedOff)
         self.lblIdentity.setText('')
-        
+
         self.axisSettingsScreen.close()
         self.statusScreen.close()
         self.CSStatusScreen.close()
-#        self.GlobalStatusScreen.close()        
+#        self.GlobalStatusScreen.close()
         self.gatherScreen.close()
         if self.energiseScreen:
             self.energiseScreen.close()
@@ -249,7 +249,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         #print "controlform.jogStop(): Not implemented yet"
         (command, retStr, retStatus) = self.pmac.jogStop( self.currentMotor )
         self.addToTxtShell(command, retStr) # This may need reconsidering... Will not always print the return string.
-        
+
 
     # public slot
 
@@ -277,7 +277,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         command = "#%dk"%self.currentMotor
         (returnString, status) = self.pmac.sendCommand( command )
         self.addToTxtShell(command)
-        
+
 
     # Send a <CTRL-K> (ASCII 0x0B) command to the PMAC to kill all motion
     # all servo loops will be opened and amplifier enable set false.
@@ -295,13 +295,13 @@ class controlform(QMainWindow, Ui_ControlForm):
     def pmacEnergiseAxis(self):
         self.energiseScreen = energiseform( self.pmac, self )
         self.energiseScreen.show()
-        
+
     def statusScreen(self):
-        self.statusScreen.show()        
+        self.statusScreen.show()
 
     def CSStatusScreen(self):
         self.CSStatusScreen.show()
-        
+
     def GlobalStatusScreen(self):
         self.GlobalStatusScreen.show()
 
@@ -309,7 +309,7 @@ class controlform(QMainWindow, Ui_ControlForm):
     def jogParameters(self):
         self.axisSettingsScreen.show()
         self.axisSettingsScreen.axisUpdate()
-        
+
     # Download a pmc configuration file to the PMAC
     def pmacLoadConfig(self):
         # First get the file from a file dialog
@@ -317,11 +317,11 @@ class controlform(QMainWindow, Ui_ControlForm):
         fileName = myDialog.getOpenFileName(self, "Load PMC file", self.dirname, "PMAC configuration (*.pmc *.PMC)")
         fileName = str(fileName)
         if (not fileName): return
-        self.dirname = os.path.dirname(fileName)        
-        
+        self.dirname = os.path.dirname(fileName)
+
         # A couple of regular expressions for use in parsing the pmc file
         blankLine = re.compile(r'^\s*$')            # match blank lines
-        
+
         # parsing through the file
         pmcLines = []
         pmc = clsPmacParser()
@@ -334,26 +334,26 @@ class controlform(QMainWindow, Ui_ControlForm):
                 commands.append(( i+1, pmcLine ))
 
         # Prepend two close commands and a delete gather to the front of any
-        # pmc file uploaded. This ensures that any open PLC buffers are closed 
+        # pmc file uploaded. This ensures that any open PLC buffers are closed
         # before an upload and that the gather buffer is erased to make memory
         # available for the new PLC. Two close commands are sent to ensure that
-        # we leave any nested statements (first close) before then closing the 
+        # we leave any nested statements (first close) before then closing the
         # buffer (second close). Dummy line numbers of zero are paired with
         # each command to match the formatting and to not disrupt the real line
         # numbering
         closeCommands = [(0, 'CLOSE'),(0, 'CLOSE'),(0, 'DELETE GATHER')]
         commands = closeCommands + commands
-        
+
         # Open up progress dialog and start sending the commands.
-        self.canceledDownload = False        
+        self.canceledDownload = False
         self.progressDialog = QProgressDialog("Downloading PMAC configuration",
                             "cancel", 0,
                             len(pmcLines),
-                            self)        
+                            self)
         self.progressDialog.setWindowModality(Qt.ApplicationModal)
         self.progressDialog.canceled.connect(self.cancel)
         self.txtShell.append("Beginning download of pmc file: "+fileName)
-        self.commsThread.inputQueue.put(("sendSeries",commands))       
+        self.commsThread.inputQueue.put(("sendSeries",commands))
 
     def cancel(self):
         self.canceledDownload = True
@@ -364,17 +364,17 @@ class controlform(QMainWindow, Ui_ControlForm):
         if self.pollingStatus:
             self.pollingStatus = False
             self.commsThread.inputQueue.put(("disablePollingStatus", True))
-            
+
             self.btnPollingStatus.setText("enable polling")
-            
+
             # Disable all the controls and status displays to indicate that we
             # do not have updates available
             self.table.setEnabled(False)
             self.lblPosition.setEnabled(False)
             self.lblVelo.setEnabled(False)
             self.lblFolErr.setEnabled(False)
-            self.pixPolling.setPixmap(self.greenLedOff)            
-            
+            self.pixPolling.setPixmap(self.greenLedOff)
+
         # else, if we are not polling: start polling!
         else:
             self.pollingStatus = True
@@ -388,12 +388,12 @@ class controlform(QMainWindow, Ui_ControlForm):
             self.lblFolErr.setEnabled(True)
             self.pixPolling.setPixmap(self.greenLedOn)
 
-    
+
     def jogNegContinousStart(self):
         #print "controlform.jogNegContinousStart(): Not implemented yet"
         (command, retStr, retStatus) = self.pmac.jogContinous(self.currentMotor, "neg")
         self.addToTxtShell(command, retStr) # This may need reconsidering... Will not always print the return string.
-        
+
     # public slot
     def jogPosContinousStart(self):
         #print "controlform.jogPosContinousStart(): Not implemented yet"
@@ -406,7 +406,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         command = self.lneSend.text()
         if len(self.commands) == 0 or self.commands[-1] != command:
             self.commands.append( command )
-        (retStr, status) = self.pmac.sendCommand( command )
+	(retStr, status) = self.pmac.sendCommand( command )
         self.addToTxtShell(command, retStr, False)
         self.commandsi = 0
         self.lneSend.setText("")
@@ -414,7 +414,7 @@ class controlform(QMainWindow, Ui_ControlForm):
     # public slot
     def chooseMotorFromTable(self,a0,a1):
         #print "controlform.chooseMotorFromTable(int row, int col): Not implemented yet" + str(a0)
-        self.spnJogMotor.setValue( a0 + 1 )        
+        self.spnJogMotor.setValue( a0 + 1 )
 
     # public slot
     def jogIncrementally(self,a0):
@@ -442,14 +442,14 @@ class controlform(QMainWindow, Ui_ControlForm):
             self.table.setItem(row, col, item)
             item.setFlags(Qt.ItemIsEnabled)
         return item
-                        
+
 
     def addToTxtShell(self, command, retStr=None, chkShowAll=True):
         if chkShowAll == False or self.chkShowAll.isChecked():
             self.txtShell.append(command)
             if retStr is not None:
                 self.txtShell.append(retStr.rstrip("\x06").lstrip("\x07").replace('\r', ' '))
-        
+
     # Called when an event comes out of the polling thread
     # and the jog ribbon.
     def updateMotors(self):
@@ -472,17 +472,17 @@ class controlform(QMainWindow, Ui_ControlForm):
                     continue
                 if motorRow.startswith("FEED"):
                     self.CSStatusScreen.updateFeed(int(round(float(value[0]))))
-                    continue                    
+                    continue
                 if motorRow == "IDENT":
                     self.updateIdentity(int(value[0]))
-                    continue                    
+                    continue
             #print str(motorRow)
             #print value
             position = str(round(float( value[1]), 1 ))
             velocity = str(round(float( value[2]), 1 ))
             folerr = str(round(float( value[3]), 1 ))
 
-            
+
             self.__item(motorRow, 0).setText(position )
             self.__item(motorRow, 1).setText(velocity )
             self.__item(motorRow, 2).setText(folerr )
@@ -491,7 +491,7 @@ class controlform(QMainWindow, Ui_ControlForm):
             loLim = bool(statusWord & 0x400000000000)
             hiLim = bool(statusWord & 0x200000000000)
 
-            
+
             if hiLim:
                 self.__item(motorRow, 3).setIcon(QIcon(self.redLedOn))
             else:
@@ -500,7 +500,7 @@ class controlform(QMainWindow, Ui_ControlForm):
                 self.__item(motorRow, 4).setIcon(QIcon(self.redLedOn))
             else:
                 self.__item(motorRow, 4).setIcon(QIcon(self.redLedOff))
-            
+
             # Update also the jog ribbon
             if motorRow + 1 == self.currentMotor:
                 self.lblPosition.setText( position )
@@ -554,27 +554,27 @@ class controlform(QMainWindow, Ui_ControlForm):
                     text += ' Pmac '
                 text += '%d' % pmacNum
             self.lblIdentity.setText(text)
-        
+
     def customEvent( self, E ):
         #print "custom event!"
         if E.type() == self.progressEventType:
             (lines, err) = E.data()
             self.progressDialog.setValue(lines)
             if err:
-                self.txtShell.append(err)                
+                self.txtShell.append(err)
         elif E.type() == self.downloadDoneEventType:
-            self.progressDialog.setValue(self.progressDialog.maximum())            
-            self.txtShell.append(str(E.data()))            
+            self.progressDialog.setValue(self.progressDialog.maximum())
+            self.txtShell.append(str(E.data()))
         elif E.type() == self.updatesReadyEventType:
             #print "updating motors"
             self.updateMotors()
-            
+
     def signalHandler(self, signum, frame):
-        if signum == 2:
-            print "Closing terminal session..."
-            self.pmac.tn.close()
+        if signum == 2: # SIGINT
+            print "Closing connection..."
+            self.pmac.disconnect()
             print "Closing application."
-            QApplication.exit(0)    
+            QApplication.exit(0)
 
     def die(self):
         self.remoteDisconnect()
@@ -604,18 +604,18 @@ def main():
                         action="store", dest="nAxes",
                         help="Display and poll NAXES axes. Default is 32 for a PMAC, 8 for a geoBrick")
     (options, args) = parser.parse_args()
-    
+
     a = QApplication(sys.argv)
     a.lastWindowClosed.connect(a.quit)
     w = controlform(options)
     a.aboutToQuit.connect(w.die)
     w.show()
-    w.splitter.moveSplitter(220, 1)       
+    w.splitter.moveSplitter(220, 1)
     # catch CTRL-C
-    signal.signal(signal.SIGINT, signal.SIG_DFL)    
+    signal.signal(signal.SIGINT, signal.SIG_DFL)
     a.exec_()
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
     main()
 ## \file
 # \section License
