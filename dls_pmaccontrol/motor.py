@@ -67,6 +67,8 @@ class controlform(QMainWindow, Ui_ControlForm):
             QMessageBox.information(self, "Error", "Wrong connection protocol specified on command line (use \"ts\" or \"tcpip\").")
             sys.exit(-1)
 
+        self.connectionTimeout = options.timeout
+
         # This will hold a PmacRemoteInterface once self.remoteConnect() is called
         self.pmac = None
 
@@ -130,9 +132,9 @@ class controlform(QMainWindow, Ui_ControlForm):
     def remoteConnect(self):
         # Create a remote PMAC interface, of the correct type, depending on radio-box selection in the "Connection to PMAC" section
         if self.isUsingTerminalServerConnection:
-            self.pmac = PmacTelnetInterface(self, verbose = self.verboseMode, numAxes = self.nAxes)
+            self.pmac = PmacTelnetInterface(self, verbose = self.verboseMode, numAxes = self.nAxes, timeout = self.connectionTimeout)
         elif self.useSocketConnection:
-            self.pmac = PmacEthernetInterface(self, verbose = self.verboseMode, numAxes = self.nAxes)
+            self.pmac = PmacEthernetInterface(self, verbose = self.verboseMode, numAxes = self.nAxes, timeout = self.connectionTimeout)
 
         # Set the server name and port
         serverName = self.lneServer.text()
@@ -603,6 +605,9 @@ def main():
     parser.add_option(    "-n", "--naxes",
                         action="store", dest="nAxes",
                         help="Display and poll NAXES axes. Default is 32 for a PMAC, 8 for a geoBrick")
+    parser.add_option(    "-t", "--timeout",
+                        action="store", type="float", dest="timeout", default=3.0,
+                        help="Set the communication timeout (default: 3 seconds)")
     (options, args) = parser.parse_args()
 
     a = QApplication(sys.argv)
