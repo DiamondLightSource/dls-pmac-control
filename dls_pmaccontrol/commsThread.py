@@ -102,13 +102,21 @@ class CommsThread(object):
                 print "i65 returned %s, sending CLOSE command" % valueList[0].__repr__()
                 self.parent.pmac.sendCommand("CLOSE") 
                 return
+            
+            # If we got a malformed response, abort now before writing anything
+            # to the result queue.
+            if len(valueList) < 4:
+                if self.parent.verboseMode:
+                    print "Received malformed response to poll request: ", valueList
+                return
+
             self.resultQueue.put([valueList[0], 0, 0, 0, "IDENT"])                                
             # first value is global status
             self.resultQueue.put([valueList[1], 0, 0, 0, "G"])
             # second value is the CS
             self.resultQueue.put([valueList[2], 0, 0, 0, "CS%s" % self.CSNum])
             # third is feedrate
-            self.resultQueue.put([valueList[3], 0, 0, 0, "FEED%s" % self.CSNum])                
+            self.resultQueue.put([valueList[3], 0, 0, 0, "FEED%s" % self.CSNum])
             valueList = valueList[4:]
             cols = 4
             for motorRow, i in enumerate(range(0, len(valueList), cols)):
