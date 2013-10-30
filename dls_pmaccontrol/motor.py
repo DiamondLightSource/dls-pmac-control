@@ -463,57 +463,65 @@ class controlform(QMainWindow, Ui_ControlForm):
                 value = self.commsThread.resultQueue.get(False)
             except Empty:
                 return
-            motorRow = value[4]
-            # check for special cases
-            if type(motorRow) == str:
-                if motorRow == "G":
-                    self.GlobalStatusScreen.updateStatus(int(value[0], 16))
-                    continue
-                if motorRow.startswith("CS"):
-                    self.CSStatusScreen.updateStatus(int(value[0], 16))
-                    continue
-                if motorRow.startswith("FEED"):
-                    self.CSStatusScreen.updateFeed(int(round(float(value[0]))))
-                    continue
-                if motorRow == "IDENT":
-                    self.updateIdentity(int(value[0]))
-                    continue
-            #print str(motorRow)
-            #print value
-            position = str(round(float( value[1]), 1 ))
-            velocity = str(round(float( value[2]), 1 ))
-            folerr = str(round(float( value[3]), 1 ))
+ 
+            try:
+                motorRow = value[4]
+                # check for special cases
+                if type(motorRow) == str:
+                    if motorRow == "G":
+                        self.GlobalStatusScreen.updateStatus(int(value[0], 16))
+                        continue
+                    if motorRow.startswith("CS"):
+                        self.CSStatusScreen.updateStatus(int(value[0], 16))
+                        continue
+                    if motorRow.startswith("FEED"):
+                        self.CSStatusScreen.updateFeed(int(round(float(value[0]))))
+                        continue
+                    if motorRow == "IDENT":
+                        self.updateIdentity(int(value[0]))
+                        continue
 
 
-            self.__item(motorRow, 0).setText(position )
-            self.__item(motorRow, 1).setText(velocity )
-            self.__item(motorRow, 2).setText(folerr )
-            #print value[0]
-            statusWord = int(value[0], 16)
-            loLim = bool(statusWord & 0x400000000000)
-            hiLim = bool(statusWord & 0x200000000000)
+                position = str(round(float( value[1]), 1 ))
+                velocity = str(round(float( value[2]), 1 ))
+                folerr = str(round(float( value[3]), 1 ))
 
 
-            if hiLim:
-                self.__item(motorRow, 3).setIcon(QIcon(self.redLedOn))
-            else:
-                self.__item(motorRow, 3).setIcon(QIcon(self.redLedOff))
-            if loLim:
-                self.__item(motorRow, 4).setIcon(QIcon(self.redLedOn))
-            else:
-                self.__item(motorRow, 4).setIcon(QIcon(self.redLedOff))
+                self.__item(motorRow, 0).setText(position )
+                self.__item(motorRow, 1).setText(velocity )
+                self.__item(motorRow, 2).setText(folerr )
+                #print value[0]
+                statusWord = int(value[0], 16)
+                loLim = bool(statusWord & 0x400000000000)
+                hiLim = bool(statusWord & 0x200000000000)
 
-            # Update also the jog ribbon
-            if motorRow + 1 == self.currentMotor:
-                self.lblPosition.setText( position )
-                self.lblVelo.setText( velocity )
-                self.lblFolErr.setText( folerr )
-                if hiLim: self.pixHiLim.setPixmap(self.redLedOn)
-                else: self.pixHiLim.setPixmap(self.redLedOff)
-                if loLim: self.pixLoLim.setPixmap(self.redLedOn)
-                else: self.pixLoLim.setPixmap(self.redLedOff)
-                self.statusScreen.updateStatus( statusWord )
 
+                if hiLim:
+                    self.__item(motorRow, 3).setIcon(QIcon(self.redLedOn))
+                else:
+                    self.__item(motorRow, 3).setIcon(QIcon(self.redLedOff))
+                if loLim:
+                    self.__item(motorRow, 4).setIcon(QIcon(self.redLedOn))
+                else:
+                    self.__item(motorRow, 4).setIcon(QIcon(self.redLedOff))
+
+                # Update also the jog ribbon
+                if motorRow + 1 == self.currentMotor:
+                    self.lblPosition.setText( position )
+                    self.lblVelo.setText( velocity )
+                    self.lblFolErr.setText( folerr )
+                    if hiLim: self.pixHiLim.setPixmap(self.redLedOn)
+                    else: self.pixHiLim.setPixmap(self.redLedOff)
+                    if loLim: self.pixLoLim.setPixmap(self.redLedOn)
+                    else: self.pixLoLim.setPixmap(self.redLedOff)
+                    self.statusScreen.updateStatus( statusWord )
+
+            except (ValueError, IndexError):
+                # Catch the exception and continue, since there may be other
+                # updates waiting in the queue. 
+                if self.verboseMode:
+                    print "Update request received invalid response: ", value
+        
         #print "."
 
     domainNames = ['BL', 'BR', 'BS', 'FE', 'LB', 'LI', 'ME', 'SR',
