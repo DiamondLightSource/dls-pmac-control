@@ -126,7 +126,7 @@ class CommsThread(object):
             evUpdatesReady = CustomEvent(self.parent.updatesReadyEventType, None )
             QCoreApplication.postEvent( self.parent, evUpdatesReady )
         else:
-            print 'WARNING: Error while sending update request ("%s")' % returnStr
+            print 'WARNING: Could not poll PMAC for motor status ("%s")' % returnStr
         time.sleep(0.1)
 ## \file
 # \section License
