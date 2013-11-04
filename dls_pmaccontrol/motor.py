@@ -1,4 +1,4 @@
-#!/bin/env dls-python2.6
+#!/bin/env dls-python2.7
 
 ## \file
 # Main entry point to the pmaccontrol application.
@@ -67,7 +67,7 @@ class controlform(QMainWindow, Ui_ControlForm):
             QMessageBox.information(self, "Error", "Wrong connection protocol specified on command line (use \"ts\" or \"tcpip\").")
             sys.exit(-1)
 
-        self.connectionTimeout = options.timeout
+        self.connectionTimeout = max(options.timeout, 1.0)
 
         # This will hold a PmacRemoteInterface once self.remoteConnect() is called
         self.pmac = None
@@ -615,7 +615,7 @@ def main():
                         help="Display and poll NAXES axes. Default is 32 for a PMAC, 8 for a geoBrick")
     parser.add_option(    "-t", "--timeout",
                         action="store", type="float", dest="timeout", default=3.0,
-                        help="Set the communication timeout (default: 3 seconds)")
+                        help="Set the communication timeout (default: 3 seconds, minimum: 1 second)")
     (options, args) = parser.parse_args()
 
     a = QApplication(sys.argv)
