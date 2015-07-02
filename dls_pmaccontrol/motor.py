@@ -525,7 +525,7 @@ class controlform(QMainWindow, Ui_ControlForm):
         #print "."
 
     domainNames = ['BL', 'BR', 'BS', 'FE', 'LB', 'LI', 'ME', 'SR',
-                    'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'RSV']
+                    'LA', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'RSV']
     subdomainLetters = [
         ['I', 'B', 'J', 'C', 'K', 'D', 'L', 'E'],
         ['C', 'S', '', '', '', '', '', ''],
@@ -533,9 +533,9 @@ class controlform(QMainWindow, Ui_ControlForm):
         ['I', 'B', 'J', 'C', 'K', 'D', 'L', 'E'],
         ['', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
+        ['D', 'P', 'C', 'T', 'M', 'G', '', ''],
         ['I', 'A', 'J', 'C', 'K', 'R', 'L', 'S'],
-        ['', '', '', '', '', '', '', ''],
+        ['R', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
         ['', '', '', '', '', '', '', ''],
