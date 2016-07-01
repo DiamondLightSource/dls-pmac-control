@@ -558,10 +558,7 @@ class controlform(QMainWindow, Ui_ControlForm):
                 if subdomainNum != 0:
                     text += '%02d' % subdomainNum
                     text += self.subdomainLetters[domain][subdomainLetter]
-                if self.pmac.isModelGeobrick():
-                    text += ' Geobrick '
-                else:
-                    text += ' Pmac '
+                text += ' %s ' % self.pmac.getShortModelName()
                 text += '%d' % pmacNum
             self.lblIdentity.setText(text)
 
