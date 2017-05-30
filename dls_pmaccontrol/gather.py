@@ -1,9 +1,12 @@
 import sys, time, os
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+from PyQt4 import Qwt5
 from formGather import Ui_formGather
 from optparse import OptionParser
 from gatherchannel import *
+#from dls_plotting import SimpleLine
+from numpy import *
 
 # [TODO] Find out why the gathering fails with an response "ERR003" from the PMAC for PMAC2-VME (does work for Geo Brick)!
 class gatherform(QDialog, Ui_formGather):
@@ -82,9 +85,9 @@ class gatherform(QDialog, Ui_formGather):
 		for index, axisSpinBox in enumerate( self.lstSpinboxes ):
 			cmbBox = self.lstComboboxes[index]
 			chkBox = self.lstCheckboxes[index]
-			dataOffset = dataSources[cmbBox.currentItem()]['reg']
+			dataOffset = dataSources[cmbBox.currentIndex()]['reg']
 			baseAddress = motorBaseAddrs[axisSpinBox.value() - 1]
-			dataWidth = dataSources[cmbBox.currentItem()]['size']
+			dataWidth = dataSources[cmbBox.currentIndex()]['size']
 			ivar = "i50%02d"%(index + 1)
 			addr = "$%X%05X"%(dataWidth, baseAddress + dataOffset)
 			cmd = "%s=%s"%(ivar, addr)
@@ -93,18 +96,21 @@ class gatherform(QDialog, Ui_formGather):
 				
 				# create a new curve for the qwt plot and instanciate a GatherChannel.
 				#print "Set data: %s"%cmd
-				curve = self.qwtPlot.insertCurve("Ch%d"%index)
+				curve = Qwt5.QwtPlotCurve("Ch%d"%index)
+				curve.attach(self.qwtPlot)
+				#curve = self.qwtPlot.insertCurve("Ch%d"%index)
 				channel = GatherChannel(self.parent.pmac, curve)
 				self.lstChannels.append( channel )
 				# Set the colour of the graph
-				colour = self.lstColours[ self.lstColourBoxes[index].currentItem() ]
-				self.qwtPlot.setCurvePen(channel.qwtCurve, QPen(colour))
-				
+				colour = self.lstColours[ self.lstColourBoxes[index].currentIndex() ]
+				channel.qwtCurve.setPen(QPen(colour))
 				# set the left or right Y axis
-				if self.lstCmbYaxis[index].currentItem() == 0:
-					self.qwtPlot.setCurveYAxis(channel.qwtCurve, self.qwtPlot.yLeft)
-				elif self.lstCmbYaxis[index].currentItem() == 1:
-					self.qwtPlot.setCurveYAxis(channel.qwtCurve, self.qwtPlot.yRight)
+				if self.lstCmbYaxis[index].currentIndex() == 0:
+					channel.qwtCurve.setYAxis(self.qwtPlot.yLeft)
+					#self.qwtPlot.setCurveYAxis(channel.qwtCurve, self.qwtPlot.yLeft)
+				elif self.lstCmbYaxis[index].currentIndex() == 1:
+					channel.qwtCurve.setYAxis(self.qwtPlot.yRight)
+					#self.qwtPlot.setCurveYAxis(channel.qwtCurve, self.qwtPlot.yRight)
 					
 		# set the sampling time (in servo cycles)
 		(retStr, status) = self.parent.pmac.sendCommand( "i5049=%d"%int( str( self.lneSampleTime.text() )) )
@@ -178,6 +184,7 @@ class gatherform(QDialog, Ui_formGather):
 				lstDataStrings.append(longval.strip()[6:])
 				lstDataStrings.append(longval.strip()[:6])
 		else:
+			print "Problem retrieving gather buffer, status: ", status, " returned data: ", retStr
 			return False
 
 		#print retStr[:-1].split()
@@ -227,28 +234,20 @@ class gatherform(QDialog, Ui_formGather):
 			#print "datatype: %s"%str(ch.dataType)
 			#print "length: %d"%len(data)
 			#print "data: %s"%str(data)
-			self.qwtPlot.setCurveData(ch.qwtCurve, range(len(data)), data)
+			
+			ch.qwtCurve.setData(arange(len(data)), data)
+
 		self.qwtPlot.replot()
 		#print "********** Done plotting **************"
 		
 		
 	def calcSampleTime(self):
-		# read the I52 to calculate the PMACs delta time
-		cmd = "I52"
+		cmd = "I10"
 		(retStr, status) = self.parent.pmac.sendCommand( cmd )
-		ivarI52 = int( retStr.strip('$')[:-1] )
-		# clock tick length (in ms)
-		lenClkTick = 203.4/((ivarI52 + 1))
+		ivarI10 = int( retStr.strip('$')[:-1] )
 
-		# setup M72 to read out the servo interrupt cycle time
-		cmd = "M72->Y:$000037,0,24"
-		(retStr, status) = self.parent.pmac.sendCommand( cmd )
-		cmd = "M72"
-		(retStr, status) = self.parent.pmac.sendCommand( cmd )
-		# the number of PMAC clock ticks per servo cycle
-		nClkTickServoCycle = int( retStr.strip('$')[:-1] )
-		
-		self.servoCycleTime = lenClkTick * nClkTickServoCycle/1000000.0
+		self.servoCycleTime = ivarI10/8388608.0 # in ms
+
 		#print "Lenght clock ticks: %.2fns #clock ticks per cycle: %d servocycle time: %.3fms"%(lenClkTick, nClkTickServoCycle, self.servoCycleTime)
 		
 		# calculate the actual sample time and frequency of the data gathering function		
@@ -330,8 +329,8 @@ class gatherform(QDialog, Ui_formGather):
 			QMessageBox.information(self, "Error", "No data has been collected yet.")
 			return
 		myDialog = QFileDialog(self)
-		myDialog.setShowHiddenFiles(False)
-		fileName = myDialog.getSaveFileName(os.path.expanduser("~"), "Comma seperated data file (*.csv *.CSV)")
+		#myDialog.setShowHiddenFiles(False)
+		fileName = myDialog.getSaveFileName(caption="Comma seperated data file (*.csv *.CSV)", directory=os.path.expanduser("~"))
 		if not fileName:
 			return
 		try:
