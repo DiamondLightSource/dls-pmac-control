@@ -1,6 +1,8 @@
 from Queue import Queue, Empty
 import threading, time, traceback
 from PyQt4.QtCore import QEvent, QCoreApplication
+from math import floor
+from dls_pmaclib.dls_pmacremote import *
 
 class CustomEvent(QEvent):
     _data = None
@@ -23,6 +25,7 @@ class CommsThread(object):
         self.disablePollingStatus = False
         self.updateThreadHandle = threading.Thread(target = self.updateThread)
         self.updateThreadHandle.start()
+	self.max_pollrate = None
 
     def sendTick(self, lineNumber, err):
         # Post a Qt event with current progress data
@@ -89,6 +92,10 @@ class CommsThread(object):
             time.sleep(0.1)        
             return
             
+	#Reduce poll rate for serial interface (ignores if poll rate set to zero)    
+	if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
+		if time.time()-self.parent.pmac.last_comm_time < 1.0/self.max_pollrate:
+			return        
         cmd = "i65???&%s??%%"
         axes = self.parent.pmac.getNumberOfAxes() + 1
         for motorNo in range(1, axes):

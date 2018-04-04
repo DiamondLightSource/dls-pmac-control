@@ -58,11 +58,15 @@ class controlform(QMainWindow, Ui_ControlForm):
         if self.connectionProtocol == "ts":
             # use terminal server
             self.rbUseTerminalServer.setChecked(True)
-            self.isUsingTerminalServerConnection = True
+	    self.ConnectionType = 0
         elif self.connectionProtocol == "tcpip":
             # use TCP/IP socket connection
             self.rbUseSocket.setChecked(True)
-            self.isUsingTerminalServerConnection = False
+	    self.ConnectionType = 1
+	elif self.connectionProtocol == "rs232":
+			# use serial connection
+	    self.rbUseSerial.setChecked(True)
+	    self.ConnectionType = 2
         else:
             QMessageBox.information(self, "Error", "Wrong connection protocol specified on command line (use \"ts\" or \"tcpip\").")
             sys.exit(-1)
@@ -102,18 +106,42 @@ class controlform(QMainWindow, Ui_ControlForm):
         self.txtShell.clear()
 
     def useTerminalServerConnection(self):
-        if self.isUsingTerminalServerConnection == False:
-            self.isUsingTerminalServerConnection = True
+	if self.ConnectionType != 0:
+	    self.ConnectionType = 0
             # set the server and port fields to defaults for this connection type
             self.lneServer.setText("blxxi-nt-tserv-01")
             self.lnePort.setText("7017")
+	    self.textLabel1.setText(QApplication.translate("ControlForm", "Server:", None, QApplication.UnicodeUTF8))
+            self.textLabel2.setText(QApplication.translate("ControlForm", "Port:", None, QApplication.UnicodeUTF8))
+	    self.lblPolling.setText(QApplication.translate("ControlForm", "Polling", None, QApplication.UnicodeUTF8))
+	    self.lnePollRate.setEnabled(False)
+	    self.lblPollRate.setEnabled(False)
 
     def useSocketConnection(self):
-        if self.isUsingTerminalServerConnection == True:
-            self.isUsingTerminalServerConnection = False
+	if self.ConnectionType != 1:
+	    self.ConnectionType = 1
             # set the server and port fields to defaults for this connection type
             self.lneServer.setText("172.23.243.156")
             self.lnePort.setText("1025")
+	    self.textLabel1.setText(QApplication.translate("ControlForm", "IP address:", None, QApplication.UnicodeUTF8))
+            self.textLabel2.setText(QApplication.translate("ControlForm", "Port:", None, QApplication.UnicodeUTF8))
+	    self.lblPolling.setText(QApplication.translate("ControlForm", "Polling", None, QApplication.UnicodeUTF8))
+	    self.lnePollRate.setEnabled(False)
+	    self.lblPollRate.setEnabled(False)
+
+    def useSerial(self):
+	if self.ConnectionType != 2:
+	    self.ConnectionType = 2
+	    self.isUsingSerial = False
+	    # set the server and port fields to defaults for this connection type
+	    self.lneServer.setText("/dev/ttyUSB0")
+	    self.lnePort.setText("38400")
+	    self.textLabel1.setText(QApplication.translate("ControlForm", "COM port:", None, QApplication.UnicodeUTF8))
+            self.textLabel2.setText(QApplication.translate("ControlForm", "Baudrate:", None, QApplication.UnicodeUTF8))
+	    self.lblPolling.setText(QApplication.translate("ControlForm", "Polling @", None, QApplication.UnicodeUTF8))
+	    self.lnePollRate.setEnabled(True)
+	    self.lnePollRate.setText("0")
+	    self.lblPollRate.setEnabled(True)
 
     def checkHistory(self,edit,event):
         if event.key() == Qt.Key_Up:
@@ -131,10 +159,17 @@ class controlform(QMainWindow, Ui_ControlForm):
 
     def remoteConnect(self):
         # Create a remote PMAC interface, of the correct type, depending on radio-box selection in the "Connection to PMAC" section
-        if self.isUsingTerminalServerConnection:
+	if self.ConnectionType == 0:
             self.pmac = PmacTelnetInterface(self, verbose = self.verboseMode, numAxes = self.nAxes, timeout = self.connectionTimeout)
-        elif self.useSocketConnection:
+	elif self.ConnectionType == 1:
             self.pmac = PmacEthernetInterface(self, verbose = self.verboseMode, numAxes = self.nAxes, timeout = self.connectionTimeout)
+	elif self.ConnectionType == 2:
+	    try:
+	    	pollrate = float(self.lnePollRate.text())
+	    except ValueError:
+		pollrate = False
+	    self.commsThread.max_pollrate = pollrate
+	    self.pmac = PmacSerialInterface(self, verbose = self.verboseMode, numAxes = self.nAxes, timeout = self.connectionTimeout)
 
         # Set the server name and port
         serverName = self.lneServer.text()
@@ -186,6 +221,8 @@ class controlform(QMainWindow, Ui_ControlForm):
         self.btnPollingStatus.setEnabled(True)
         self.btnGather.setEnabled(True)
         self.table.setEnabled(True)
+        self.lnePollRate.setEnabled(False)
+	self.lblPollRate.setEnabled(False)
         self.pixPolling.setPixmap(self.greenLedOn)
 
 
