@@ -5,7 +5,7 @@ import os
 version = os.environ.get("MODULEVER", "0.0")
 
 setup(
-    install_requires = ['dls_pmaclib==1.9.5beta','numpy==1.6.2'],
+    install_requires = ['dls_pmaclib==1.9.5','numpy==1.13.1'],
     name = 'dls_pmaccontrol',
     version = version,
     description = 'Module',
