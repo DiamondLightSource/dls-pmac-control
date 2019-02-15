@@ -157,6 +157,7 @@ assigned to in an axis definition statement. The following values are currently 
 2: Assigned to B-axis
 3: Assigned to C-axis
 4: Assigned to UVW axes
+5: Assigned to I (inverse kinematic)
 7: Assigned to XYZ axes """)
 		self.lstTooltips.append("""Coordinate Definition: These four bits tell what axis or axes this motor has been
 assigned to in an axis definition statement. The following values are currently used:
@@ -165,6 +166,7 @@ assigned to in an axis definition statement. The following values are currently 
 2: Assigned to B-axis
 3: Assigned to C-axis
 4: Assigned to UVW axes
+5: Assigned to I (inverse kinematic)
 7: Assigned to XYZ axes """)
 		self.lstTooltips.append("""Coordinate Definition: These four bits tell what axis or axes this motor has been
 assigned to in an axis definition statement. The following values are currently used:
@@ -173,6 +175,7 @@ assigned to in an axis definition statement. The following values are currently 
 2: Assigned to B-axis
 3: Assigned to C-axis
 4: Assigned to UVW axes
+5: Assigned to I (inverse kinematic)
 7: Assigned to XYZ axes""")
 		self.lstTooltips.append("""Coordinate Definition: These four bits tell what axis or axes this motor has been
 assigned to in an axis definition statement. The following values are currently used:
@@ -181,6 +184,7 @@ assigned to in an axis definition statement. The following values are currently 
 2: Assigned to B-axis
 3: Assigned to C-axis
 4: Assigned to UVW axes
+5: Assigned to I (inverse kinematic)
 7: Assigned to XYZ axes """)
 		
 		self.lstTooltips.append("""(C.S. - 1) Number: These three bits together hold a value equal to the (Coordinate System
