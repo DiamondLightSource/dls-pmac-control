@@ -1,0 +1,31 @@
+{
+    "_meta": {
+        "hash": {
+            "sha256": "60ab8c029a16b1f87f93b0ff4bcea9248e4fd0be5b63204a529eb6c434bc639b"
+        },
+        "pipfile-spec": 6,
+        "requires": {
+            "python_version": "3.7"
+        },
+        "sources": [
+            {
+                "name": "pypi",
+                "url": "https://pypi.org/simple",
+                "verify_ssl": true
+            }
+        ]
+    },
+    "default": {
+        "dls-pmaclib": {
+            "path": "./../dls_pmaclib"
+        },
+        "numpy": {
+            "hashes": [
+                "sha256:4a22dc3f5221a644dfe4a63bf990052cc674ef12a157b1056969079985c92816"
+            ],
+            "index": "pypi",
+            "version": "==1.15.4"
+        }
+    },
+    "develop": {}
+}
