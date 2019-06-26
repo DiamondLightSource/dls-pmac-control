@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2f72daab61d5d398bfb9213ea0b342ba0d13078671ed2f4eeebc433ae4925c66"
+            "sha256": "910ab7feb8c9c483dd8af31cd22f3d8ab714499ca3185d6c670272d8d9215b78"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,11 +16,13 @@
         ]
     },
     "default": {
-        "dls-pmaccontrol": {
-            "path": "."
-        },
         "dls-pmaclib": {
-            "path": "./../dls_pmaclib"
+            "hashes": [
+                "sha256:5f235e03d83b1e6ef738fa99e0b69b6c5bc81f6fb9e36845b9eebba2797d97db",
+                "sha256:859663e370bc6b7c04c3c9a3ec94ef4dee204d23dea7567149c2db019c3d31b0"
+            ],
+            "index": "pypi",
+            "version": "==2.0.0"
         },
         "numpy": {
             "hashes": [
@@ -36,13 +38,11 @@
             "index": "pypi",
             "version": "==5.12.2+dls1"
         },
-        "pythonqwt": {
+        "pyserial": {
             "hashes": [
-                "sha256:1f13cc8b555a57f8fe0f806d6c2f6d847050e4d837649503932b81316d12788a",
-                "sha256:806d109a0f163ee37259516b498f9b2a711682efbb0dd60dff3c31f25007cbef"
+                "sha256:e0770fadba80c31013896c7e6ef703f72e7834965954a78e71a3049488d4d7d8"
             ],
-            "index": "pypi",
-            "version": "==0.5.5"
+            "version": "==3.4"
         }
     },
     "develop": {}

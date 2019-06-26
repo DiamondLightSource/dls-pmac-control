@@ -8,9 +8,7 @@ verify_ssl = true
 [packages]
 numpy = "*"
 pyqt5 = "*"
-dls-pmaccontrol = {path = "."}
-dls-pmaclib = {path = "./../dls_pmaclib"}
-pythonqwt = "*"
+dls-pmaclib = "*"
 
 [requires]
 python_version = "3.7"

@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QMainWindow, QLineEdit, \
     QProgressDialog, QTableWidgetItem
 from dls_pmaclib.dls_pmacremote import PmacEthernetInterface, \
     PmacSerialInterface, PmacTelnetInterface
-from dls_pmaclib.dls_pmcpreprocessor import clsPmacParser
+from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
 
 from dls_pmaccontrol.CSstatus import *
 from dls_pmaccontrol.GlobalStatus import *
@@ -127,7 +127,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.ConnectionType = 1
             # set the server and port fields to defaults for this connection
             # type
-            self.lneServer.setText("172.23.243.156")
+            self.lneServer.setText("172.23.240.97")
             self.lnePort.setText("1025")
             self.textLabel1.setText("IP address:")
             self.textLabel2.setText("Port:")
@@ -377,7 +377,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         blankLine = re.compile(r'^\s*$')  # match blank lines
 
         # parsing through the file
-        pmc = clsPmacParser()
+        pmc = ClsPmacParser()
         pmcLines = pmc.parse(fileName)
 
         if pmcLines:
@@ -689,7 +689,7 @@ def main():
     win = Controlform(options)
     app.aboutToQuit.connect(win.die)
     win.show()
-    win.splitter.moveSplitter(220, 1)
+    win.splitter.moveSplitter(180, 1)
     # catch CTRL-C
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     app.exec_()
