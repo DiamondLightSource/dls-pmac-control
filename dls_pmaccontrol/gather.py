@@ -4,7 +4,6 @@ from PyQt5.Qt import QPen
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QMessageBox, QFileDialog
 from numpy import *
-from qwt import QwtPlotCurve
 
 from .gatherchannel import *
 from .ui_formGather import Ui_formGather
@@ -15,7 +14,7 @@ from .ui_formGather import Ui_formGather
 class Gatherform(QDialog, Ui_formGather):
 
     def __init__(self, parent, currentMotor=1):
-        QDialog.__init__(self, parent, flags=None)
+        QDialog.__init__(self, parent)
         self.setupUi(self)
 
         self.parent = parent

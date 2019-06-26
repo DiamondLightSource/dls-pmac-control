@@ -12,7 +12,7 @@ from .ui_formStatus import Ui_formStatus
 class Statusform(QDialog, Ui_formStatus):
 
     def __init__(self, parent, axis):
-        QDialog.__init__(self, parent, flags=None)
+        QDialog.__init__(self, parent)
         self.setupUi(self)
 
         self.currentAxis = axis

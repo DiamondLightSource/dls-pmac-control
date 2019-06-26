@@ -1323,7 +1323,7 @@ Write demand values in the text fields and hit enter to send.</string>
   </connection>
   <connection>
    <sender>tabAxisSetup</sender>
-   <signal>currentChanged(QWidget*)</signal>
+   <signal>currentChanged(int)</signal>
    <receiver>formAxisSettings</receiver>
    <slot>tabChange()</slot>
    <hints>

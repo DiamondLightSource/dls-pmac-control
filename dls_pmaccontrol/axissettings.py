@@ -8,7 +8,7 @@ from .ui_formAxisSettings import Ui_formAxisSettings
 class Axissettingsform(QDialog, Ui_formAxisSettings):
 
     def __init__(self, parent=None, currentMotor=1):
-        QDialog.__init__(self, parent, flags=None)
+        QDialog.__init__(self, parent)
         self.setupUi(self)
 
         self.currentMotor = currentMotor

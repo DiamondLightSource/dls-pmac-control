@@ -1,22 +1,25 @@
 import signal
 import types
-from queue import Empty
 from optparse import OptionParser
+from os import path
+from queue import Empty
 
-from PyQt5.QtCore import QEvent, Qt
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMainWindow, QApplication, QMessageBox, QLineEdit, \
-    QProgressDialog, QFileDialog
+from PyQt5.QtCore import QEvent, pyqtSlot
+from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtWidgets import QMainWindow, QLineEdit, \
+    QProgressDialog, QTableWidgetItem
+from dls_pmaclib.dls_pmacremote import PmacEthernetInterface, \
+    PmacSerialInterface, PmacTelnetInterface
 from dls_pmaclib.dls_pmcpreprocessor import clsPmacParser
 
 from dls_pmaccontrol.CSstatus import *
 from dls_pmaccontrol.GlobalStatus import *
 from dls_pmaccontrol.axissettings import *
+from dls_pmaccontrol.commsThread import CommsThread
 from dls_pmaccontrol.energise import *
 from dls_pmaccontrol.gather import *
 from dls_pmaccontrol.status import *
 from dls_pmaccontrol.ui_formControl import Ui_ControlForm
-
 
 # from optparse import OptionParser
 
@@ -26,22 +29,23 @@ if __name__ == "__main__":
 
 class Controlform(QMainWindow, Ui_ControlForm):
     def __init__(self, options, parent=None):
+        signal.signal(2, self.signalHandler)
+        # setup signals
 
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
 
-        signal.signal(2, self.signalHandler)
-
         self.greenLedOn = QPixmap(
-            os.path.join(os.path.dirname(__file__), "greenLedOn.png"))
+            path.join(path.dirname(__file__), "greenLedOn.png"))
         self.greenLedOff = QPixmap(
-            os.path.join(os.path.dirname(__file__), "greenLedOff.png"))
+            path.join(path.dirname(__file__), "greenLedOff.png"))
         self.redLedOn = QPixmap(
-            os.path.join(os.path.dirname(__file__), "redLedOn.png"))
+            path.join(path.dirname(__file__), "redLedOn.png"))
         self.redLedOff = QPixmap(
-            os.path.join(os.path.dirname(__file__), "redLedOff.png"))
+            path.join(path.dirname(__file__), "redLedOff.png"))
 
         self.pollingStatus = True
+        self.isUsingSerial = False
 
         self.lneServer.setText(options.server)
         self.lnePort.setText(options.port)
@@ -81,7 +85,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.axisSettingsScreen = Axissettingsform(self, self.currentMotor)
         self.gatherScreen = Gatherform(self, self.currentMotor)
         self.energiseScreen = None
-        # self.commsThread = UiCommsThread(self)
+        self.commsThread = CommsThread(self)
 
         self.spnJogMotor.setValue(self.currentMotor)
 
@@ -99,51 +103,39 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.commands = []
         self.commands_i = 0
         self.lneSend.keyPressEvent = types.MethodType \
-            (self.checkHistory, self.lneSend, self.lneSend.__class__)
+            (self.checkHistory, self.lneSend)
         self.dirname = "."
 
         self.lblIdentity.setText('')
         self.txtShell.clear()
 
-    def use_terminal_server_connection(self):
+    def useTerminalServerConnection(self):
         if self.ConnectionType != 0:
             self.ConnectionType = 0
             # set the server and port fields to defaults for this connection
             # type
             self.lneServer.setText("blxxi-nt-tserv-01")
             self.lnePort.setText("7017")
-            self.textLabel1.setText(
-                QApplication.translate("ControlForm", "Server:", None,
-                                       QApplication.UnicodeUTF8))
-            self.textLabel2.setText(
-                QApplication.translate("ControlForm", "Port:", None,
-                                       QApplication.UnicodeUTF8))
-            self.lblPolling.setText(
-                QApplication.translate("ControlForm", "Polling", None,
-                                       QApplication.UnicodeUTF8))
+            self.textLabel1.setText("Server:")
+            self.textLabel2.setText("Port:")
+            self.lblPolling.setText("Polling")
             self.lnePollRate.setEnabled(False)
             self.lblPollRate.setEnabled(False)
 
-    def use_socket_connection(self):
+    def useSocketConnection(self):
         if self.ConnectionType != 1:
             self.ConnectionType = 1
             # set the server and port fields to defaults for this connection
             # type
             self.lneServer.setText("172.23.243.156")
             self.lnePort.setText("1025")
-            self.textLabel1.setText(
-                QApplication.translate("ControlForm", "IP address:", None,
-                                       QApplication.UnicodeUTF8))
-            self.textLabel2.setText(
-                QApplication.translate("ControlForm", "Port:", None,
-                                       QApplication.UnicodeUTF8))
-            self.lblPolling.setText(
-                QApplication.translate("ControlForm", "Polling", None,
-                                       QApplication.UnicodeUTF8))
+            self.textLabel1.setText("IP address:")
+            self.textLabel2.setText("Port:")
+            self.lblPolling.setText("Polling")
             self.lnePollRate.setEnabled(False)
             self.lblPollRate.setEnabled(False)
 
-    def use_serial(self):
+    def useSerial(self):
         if self.ConnectionType != 2:
             self.ConnectionType = 2
             self.isUsingSerial = False
@@ -151,15 +143,9 @@ class Controlform(QMainWindow, Ui_ControlForm):
             # type
             self.lneServer.setText("/dev/ttyUSB0")
             self.lnePort.setText("38400")
-            self.textLabel1.setText(
-                QApplication.translate("ControlForm", "COM port:", None,
-                                       QApplication.UnicodeUTF8))
-            self.textLabel2.setText(
-                QApplication.translate("ControlForm", "Baudrate:", None,
-                                       QApplication.UnicodeUTF8))
-            self.lblPolling.setText(
-                QApplication.translate("ControlForm", "Polling @", None,
-                                       QApplication.UnicodeUTF8))
+            self.textLabel1.setText("COM port:")
+            self.textLabel2.setText("Baudrate:")
+            self.lblPolling.setText("Polling @")
             self.lnePollRate.setEnabled(True)
             self.lnePollRate.setText("0")
             self.lblPollRate.setEnabled(True)
@@ -199,62 +185,62 @@ class Controlform(QMainWindow, Ui_ControlForm):
                                             numAxes=self.nAxes,
                                             timeout=self.connectionTimeout)
 
-            # Set the server name and port
-            server_name = self.lneServer.text()
-            server_port = self.lnePort.text()
-            self.pmac.setConnectionParams(server_name, server_port)
-            self.txtShell.append(
-                "Connecting to %s %s" % (server_name, server_port))
+        # Set the server name and port
+        server_name = self.lneServer.text()
+        server_port = self.lnePort.text()
+        self.pmac.setConnectionParams(server_name, server_port)
+        self.txtShell.append(
+            "Connecting to %s %s" % (server_name, server_port))
 
-            # Connect to the interface/PMAC
-            connection_status = self.pmac.connect()
-            if connection_status:
-                # did not connect succesfully...
-                QMessageBox.information(self, "Error", connection_status)
-                return
+        # Connect to the interface/PMAC
+        connection_status = self.pmac.connect()
+        if connection_status:
+            # did not connect successfully...
+            QMessageBox.information(self, "Error", connection_status)
+            return
 
-            # Find out the type of the PMAC
-            pmac_model_str = self.pmac.getPmacModel()
-            if pmac_model_str:
-                self.setWindowTitle(
-                    'Delta Tau motor controller - %s' % pmac_model_str)
-            else:
-                QMessageBox.information(self, "Error",
-                                        "Could not determine PMAC model")
-                return
+        # Find out the type of the PMAC
+        pmac_model_str = self.pmac.getPmacModel()
+        if pmac_model_str:
+            self.setWindowTitle(
+                'Delta Tau motor controller - %s' % pmac_model_str)
+        else:
+            QMessageBox.information(self, "Error",
+                                    "Could not determine PMAC model")
+            return
 
-            self.table.setRowCount(self.pmac.getNumberOfAxes())
-            self.spnJogMotor.setMaximum(self.pmac.getNumberOfAxes())
+        self.table.setRowCount(self.pmac.getNumberOfAxes())
+        self.spnJogMotor.setMaximum(self.pmac.getNumberOfAxes())
 
-            self.btnConnect.setEnabled(False)
-            self.lneServer.setEnabled(False)
-            self.lnePort.setEnabled(False)
-            self.btnGroupProtocol.setEnabled(False)
-            self.btnDisconnect.setEnabled(True)
-            self.btnJogNeg.setEnabled(True)
-            self.btnJogPos.setEnabled(True)
-            self.btnJogStop.setEnabled(True)
-            self.btnHome.setEnabled(True)
-            self.lneSend.setEnabled(True)
-            self.btnSend.setEnabled(True)
-            self.lneJogTo.setEnabled(True)
-            self.lneJogDist.setEnabled(True)
-            self.btnJogTo.setEnabled(True)
-            self.btnEnergise.setEnabled(not self.pmac.isModelGeobrick())
-            self.btnKillAll.setEnabled(True)
-            self.btnStatus.setEnabled(True)
-            self.btnCSStatus.setEnabled(True)
-            self.btnGlobalStatus.setEnabled(True)
-            self.btnLoadFile.setEnabled(True)
-            self.btnSettings.setEnabled(True)
-            self.btnKillMotor.setEnabled(True)
-            self.chkJogInc.setEnabled(True)
-            self.btnPollingStatus.setEnabled(True)
-            self.btnGather.setEnabled(True)
-            self.table.setEnabled(True)
-            self.lnePollRate.setEnabled(False)
-            self.lblPollRate.setEnabled(False)
-            self.pixPolling.setPixmap(self.greenLedOn)
+        self.btnConnect.setEnabled(False)
+        self.lneServer.setEnabled(False)
+        self.lnePort.setEnabled(False)
+        self.btnGroupProtocol.setEnabled(False)
+        self.btnDisconnect.setEnabled(True)
+        self.btnJogNeg.setEnabled(True)
+        self.btnJogPos.setEnabled(True)
+        self.btnJogStop.setEnabled(True)
+        self.btnHome.setEnabled(True)
+        self.lneSend.setEnabled(True)
+        self.btnSend.setEnabled(True)
+        self.lneJogTo.setEnabled(True)
+        self.lneJogDist.setEnabled(True)
+        self.btnJogTo.setEnabled(True)
+        self.btnEnergise.setEnabled(not self.pmac.isModelGeobrick())
+        self.btnKillAll.setEnabled(True)
+        self.btnStatus.setEnabled(True)
+        self.btnCSStatus.setEnabled(True)
+        self.btnGlobalStatus.setEnabled(True)
+        self.btnLoadFile.setEnabled(True)
+        self.btnSettings.setEnabled(True)
+        self.btnKillMotor.setEnabled(True)
+        self.chkJogInc.setEnabled(True)
+        self.btnPollingStatus.setEnabled(True)
+        self.btnGather.setEnabled(True)
+        self.table.setEnabled(True)
+        self.lnePollRate.setEnabled(False)
+        self.lblPollRate.setEnabled(False)
+        self.pixPolling.setPixmap(self.greenLedOn)
 
     def remoteDisconnect(self):
         # If the PMAC interface has been already defined, make it disconnect
@@ -301,7 +287,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         if self.energiseScreen:
             self.energiseScreen.close()
 
-    def jog_neg(self):
+    def jogNeg(self):
         (command, retStr, retStatus) = self.pmac.jogInc(self.currentMotor,
                                                         "neg", str(
                 self.lneJogDist.text()))
@@ -380,47 +366,49 @@ class Controlform(QMainWindow, Ui_ControlForm):
     def pmacLoadConfig(self):
         # First get the file from a file dialog
         myDialog = QFileDialog(self)
-        fileName = myDialog.getOpenFileName(self, "Load PMC file", self.dirname,
-                                            "PMAC configuration (*.pmc *.PMC)")
-        fileName = str(fileName)
-        if (not fileName): return
-        self.dirname = os.path.dirname(fileName)
+        q_file = myDialog.getOpenFileName(self, "Load PMC file", self.dirname,
+                                          "PMAC configuration (*.pmc *.PMC)")
+        fileName, _ = q_file
+        if not fileName:
+            return
+        self.dirname = path.dirname(str(fileName))
 
         # A couple of regular expressions for use in parsing the pmc file
         blankLine = re.compile(r'^\s*$')  # match blank lines
 
         # parsing through the file
-        pmcLines = []
         pmc = clsPmacParser()
         pmcLines = pmc.parse(fileName)
 
-        # Get rid of all the empty lines, but keep line numbers
-        commands = []
-        for i, pmcLine in enumerate(pmcLines):
-            if not blankLine.match(pmcLine):
-                commands.append((i + 1, pmcLine))
+        if pmcLines:
+            # Get rid of all the empty lines, but keep line numbers
+            commands = []
+            for i, pmcLine in enumerate(pmcLines):
+                if not blankLine.match(pmcLine):
+                    commands.append((i + 1, pmcLine))
 
-        # Prepend two close commands and a delete gather to the front of any
-        # pmc file uploaded. This ensures that any open PLC buffers are closed
-        # before an upload and that the gather buffer is erased to make memory
-        # available for the new PLC. Two close commands are sent to ensure that
-        # we leave any nested statements (first close) before then closing the
-        # buffer (second close). Dummy line numbers of zero are paired with
-        # each command to match the formatting and to not disrupt the real line
-        # numbering
-        closeCommands = [(0, 'CLOSE'), (0, 'CLOSE'), (0, 'DELETE GATHER')]
-        commands = closeCommands + commands
+            # Prepend two close commands and a delete gather to the front of
+            # any pmc file uploaded. This ensures that any open PLC buffers
+            # are closed before an upload and that the gather buffer is
+            # erased to make memory available for the new PLC. Two close
+            # commands are sent to ensure that we leave any nested statements
+            # (first close) before then closing the buffer (second close).
+            # Dummy line numbers of zero are paired with each command to
+            # match the formatting and to not disrupt the real line numbering
+            closeCommands = [(0, 'CLOSE'), (0, 'CLOSE'), (0, 'DELETE GATHER')]
+            commands = closeCommands + commands
 
-        # Open up progress dialog and start sending the commands.
-        self.canceledDownload = False
-        self.progressDialog = QProgressDialog("Downloading PMAC configuration",
-                                              "cancel", 0,
-                                              len(pmcLines),
-                                              self)
-        self.progressDialog.setWindowModality(Qt.ApplicationModal)
-        self.progressDialog.canceled.connect(self.cancel)
-        self.txtShell.append("Beginning download of pmc file: " + fileName)
-        self.commsThread.inputQueue.put(("sendSeries", commands))
+            # Open up progress dialog and start sending the commands.
+            self.canceledDownload = False
+            self.progressDialog = QProgressDialog(
+                "Downloading PMAC configuration",
+                "cancel", 0,
+                len(pmcLines),
+                self)
+            self.progressDialog.setWindowModality(Qt.ApplicationModal)
+            self.progressDialog.canceled.connect(self.cancel)
+            self.txtShell.append("Beginning download of pmc file: " + fileName)
+            self.commsThread.inputQueue.put(("sendSeries", commands))
 
     def cancel(self):
         self.canceledDownload = True
@@ -479,34 +467,33 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.commands_i = 0
         self.lneSend.setText("")
 
-    # public slot
-    def chooseMotorFromTable(self, a0, a1):
-        # print "controlform.chooseMotorFromTable(int row, int col): Not
-        # implemented yet" + str(a0)
+    @pyqtSlot(int, int, name='chooseMotorFromTable')
+    def chooseMotorFromTable(self, a0):
         self.spnJogMotor.setValue(a0 + 1)
 
     # public slot
     def jogIncrementally(self, a0):
-        # print "controlform.jogIncrementally(bool): Not implemented yet"
         self.lneJogDist.setEnabled(a0)
-        if a0:
-            self.disconnect(self.btnJogPos, SIGNAL("pressed()"),
-                            self.jogPosContinousStart)
-            self.disconnect(self.btnJogPos, SIGNAL("released()"), self.jogStop)
-            self.disconnect(self.btnJogNeg, SIGNAL("pressed()"),
-                            self.jogNegContinousStart)
-            self.disconnect(self.btnJogNeg, SIGNAL("released()"), self.jogStop)
-            self.connect(self.btnJogNeg, SIGNAL("clicked()"), self.jog_neg)
-            self.connect(self.btnJogPos, SIGNAL("clicked()"), self.jogPos)
-        else:
-            self.connect(self.btnJogPos, SIGNAL("pressed()"),
-                         self.jogPosContinousStart)
-            self.connect(self.btnJogPos, SIGNAL("released()"), self.jogStop)
-            self.connect(self.btnJogNeg, SIGNAL("pressed()"),
-                         self.jogNegContinousStart)
-            self.connect(self.btnJogNeg, SIGNAL("released()"), self.jogStop)
-            self.disconnect(self.btnJogNeg, SIGNAL("clicked()"), self.jog_neg)
-            self.disconnect(self.btnJogPos, SIGNAL("clicked()"), self.jogPos)
+        # if a0:
+        #     self.disconnect(self.btnJogPos, SIGNAL("pressed()"),
+        #                     self.jogPosContinousStart)
+        #     self.disconnect(self.btnJogPos, SIGNAL("released()"),
+        #     self.jogStop)
+        #     self.disconnect(self.btnJogNeg, SIGNAL("pressed()"),
+        #                     self.jogNegContinousStart)
+        #     self.disconnect(self.btnJogNeg, SIGNAL("released()"),
+        #     self.jogStop)
+        #     self.connect(self.btnJogNeg, SIGNAL("clicked()"), self.jog_neg)
+        #     self.connect(self.btnJogPos, SIGNAL("clicked()"), self.jogPos)
+        # else:
+        #     self.connect(self.btnJogPos, SIGNAL("pressed()"),
+        #                  self.jogPosContinousStart)
+        #     self.connect(self.btnJogPos, SIGNAL("released()"), self.jogStop)
+        #     self.connect(self.btnJogNeg, SIGNAL("pressed()"),
+        #                  self.jogNegContinousStart)
+        #     self.connect(self.btnJogNeg, SIGNAL("released()"), self.jogStop)
+        #     self.disconnect(self.btnJogNeg, SIGNAL("clicked()"), self.jog_neg)
+        #     self.disconnect(self.btnJogPos, SIGNAL("clicked()"), self.jogPos)
 
     def __item(self, row, col):
         item = self.table.item(row, col)
@@ -627,7 +614,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 subdomainNum = (id >> 7) & 0x1f
                 pmacNum = id & 0x1f
                 subdomainLetter = ((id >> 6) & 0x01) | ((id >> 4) & 0x02) | (
-                            (id >> 10) & 0x04)
+                        (id >> 10) & 0x04)
                 text = self.domainNames[domain]
                 if subdomainNum != 0:
                     text += '%02d' % subdomainNum

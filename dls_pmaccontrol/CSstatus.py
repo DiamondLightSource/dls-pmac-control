@@ -4,14 +4,14 @@
 import sys
 
 from PyQt5.QtWidgets import QApplication, QDialog, QLabel
-from PyQt5.QtCore import QObject
+from PyQt5.QtCore import QObject, Qt
 from .ui_formCSStatus import Ui_formCSStatus
 
 
 class CSStatusForm(QDialog, Ui_formCSStatus):
 
     def __init__(self, parent):
-        QDialog.__init__(self, parent, flags=None)
+        QDialog.__init__(self, parent)
         self.setupUi(self)
         self.csSpin.valueChanged.connect(self.changeCS)
         self.feedSpin.valueChanged.connect(self.setFeed)
