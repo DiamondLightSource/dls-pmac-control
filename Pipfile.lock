@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0710a6d639249dfabf62c340c5fc797f771631dea8eb653e2665da9ad1da3e05"
+            "sha256": "0ccdf1718822ff41a1be0a19ba0fa12a6a34703197874a7c2df5803469399ead"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -17,8 +17,12 @@
     },
     "default": {
         "dls-pmaclib": {
-            "editable": true,
-            "path": "./../dls_pmaclib"
+            "hashes": [
+                "sha256:7b6e19529ffb295b87ae51c2ce5ec04302c6911d17aa27b8fdc2204238e4e9b2",
+                "sha256:d6a78eb49ca578d4a060274e5a52fc82c8a2cda45ce041660143b7e2ff4ed965"
+            ],
+            "index": "pypi",
+            "version": "==2.0.0"
         },
         "numpy": {
             "hashes": [
