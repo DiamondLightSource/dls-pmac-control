@@ -9,6 +9,9 @@ from .gatherchannel import *
 from .ui_formGather import Ui_formGather
 
 
+# TODO - this needs the logic decoupled from the GUI and moved into pmaclib
+#  work has started in pmaclib but currently duplicates code in this module
+
 # TODO Find out why the gathering fails with an response "ERR003" from the
 #   PMAC for PMAC2-VME (does work for Geo Brick)!
 class Gatherform(QDialog, Ui_formGather):
