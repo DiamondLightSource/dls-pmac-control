@@ -8,3 +8,16 @@ Gather screen (needs a replacement for Qwt plot widget)
 Not yet tried releasing under DLS pipenv scheme
 Complete PEP8 and pycharm warnings cleanup
 
+$$$ crashes:-
+Warning: request: $$$
+response b'\x00' did not Ack
+Traceback (most recent call last):
+  File "/dls_sw/prod/python3/RHEL7-x86_64/dls_pmaccontrol/2.0.0a1/prefix/lib/python3.7/site-packages/dls_pmaccontrol/motor.py", line 465, in sendSingleCommand
+    (retStr, status) = self.pmac.sendCommand(command)
+  File "/dls_sw/prod/python3/RHEL7-x86_64/dls_pmaclib/2.0.0/prefix/lib/python3.7/site-packages/dls_pmaclib/dls_pmacremote.py", line 159, in sendCommand
+    doubleTimeout=doubleTimeout)
+  File "/dls_sw/prod/python3/RHEL7-x86_64/dls_pmaclib/2.0.0/prefix/lib/python3.7/site-packages/dls_pmaclib/dls_pmacremote.py", line 720, in _sendCommand
+    returnStr[len(returnStr) - 1]
+TypeError: can't concat int to bytes
+
+
