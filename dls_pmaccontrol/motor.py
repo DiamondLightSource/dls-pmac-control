@@ -671,7 +671,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.commsThread.inputQueue.put(("die", ""))
 
 
-## Main function in the pmaccontrol application.
+# Main function in the pmaccontrol application.
 def main():
     usage = """usage: %prog [options]
 %prog is a graphical frontend to the Deltatau motorcontroller known as PMAC."""

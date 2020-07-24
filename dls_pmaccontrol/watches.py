@@ -6,9 +6,7 @@ import traceback
 
 from formWatches import formWatches
 from pmactelnet import PmacTelnetInterface
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
-from qttable import *
+from PyQt4.QtGui import QApplication, QMessageBox, QObject
 
 # [STATE] This should only support displaying integer decimal i-variables at the
 # moment, nothing more.
@@ -32,14 +30,14 @@ from qttable import *
 
 
 def intToHexPmacFormatted(i):
-    assert type(i) in [int, long]
+    assert type(i) in [int]
     str = hex(i)  # e.g. str becomes "0xfa3"
     return "$" + str[2:].upper()  # make that into "$FA3"
 
 
 def hexPmacFormattedToInt(s):
     assert type(s) is str
-    isValid = re.match("^\$[0-9a-fA-F]+$", s) is not None
+    isValid = re.match(r"^\$[0-9a-fA-F]+$", s) is not None
     if not isValid:
         raise ValueError(
             'String "%s" is not in PMAC hex format (use formatting as in "$4FA")'
@@ -52,10 +50,9 @@ def int2bin(i):
     """Oddly enough, I havent found a simple Python function or formatter to convert
     from integers to binary numbers. So this does the job. can handle signed integers
     as many as 128 bits long."""
-    print(
-        "int2bin: Would be nice if there were optional spacers between groups of 4 contiguous bits"
-    )
-    if i is 0:
+    print("int2bin: Would be nice if there were optional spacers between groups of 4 \
+        contiguous bits")
+    if i == 0:
         return "0"
     if i < 0:
         sign = "-"
@@ -76,9 +73,9 @@ def int2bin(i):
 # converts a string like '-0.234' into a float
 def parsePMACFormatValue(s):
     assert type(s) is str
-    if s[0:1] is "$":
+    if s[0:1] == "$":
         return int(s[1:], 16)
-    elif s[0:1] is "-$":
+    elif s[0:1] == "-$":
         return -int(s[2:], 16)
     elif s.find(".") is -1:
         return int(s)
@@ -119,7 +116,7 @@ class WatchesForm(formWatches):
             if isinstance(watch, IVariableWatch):
                 self.table.setText(row, 1, "N/A")
                 self.table.setText(row, 2, watch.getVariableValueStr())
-        except ValueError as e:
+        except ValueError:
             self.table.setText(row, 1, "N/A")
             self.table.setText(row, 2, "Error")
 
@@ -195,13 +192,13 @@ class WatchesModel:
 
         varName = varName.lower()
 
-        isValidPMACVariableName = re.match("^i(\d)+$", varName) is not None
+        isValidPMACVariableName = re.match(r"^i(\d)+$", varName) is not None
         if not isValidPMACVariableName:
             raise ValueError('"%s" is not an accepted PMAC variable name' % varName)
         if varName in self._watches:
             raise ValueError("There is already a watch for this variable")
 
-        isIVariable = re.match("^i(\d)+$", varName) is not None
+        isIVariable = re.match(r"^i(\d)+$", varName) is not None
         if isIVariable:
             watch = IVariableWatch(self.pmac, varName)
             self._watches[varName] = watch
@@ -250,7 +247,7 @@ class Watch:
             raise IOError("Connection to PMAC timed out")
 
         # Check whether PMAC doesn't reply with an ERRxx type response
-        matchObject = re.match("^\x07(ERR\d+)\r$", s)
+        matchObject = re.match(r"^\x07(ERR\d+)\r$", s)
         if matchObject:
             raise ValueError(
                 'PMAC error code "%s" while retrieving "%s"'
@@ -258,18 +255,19 @@ class Watch:
             )
 
         # Check whether PMAC replies with a simple '\x06' (basically an "Okay")
-        if s is "\x06":
+        if s == "\x06":
             return ""
 
         # Remove trailing terminator from PMAC response
-        matchObject = re.match("^(.*)\r\x06$", s)
+        matchObject = re.match(r"^(.*)\r\x06$", s)
         if matchObject:
             return matchObject.group(1)
         else:
             raise ValueError("String returned from PMAC is not correctly terminated")
 
     def getVariableValueStr(self):
-        """Returns a str, containing PMAC formatted value (e.g. "12" or "12.3" or "$AF04")."""
+        """Returns a str, containing PMAC formatted value (e.g. "12" or "12.3" or
+        "$AF04")."""
         print("Watch.getVariableValueStr()")
         return self._sendPMACCommand(self.varName)
 
@@ -302,7 +300,7 @@ class IVariableWatch(Watch):
 
     def setVariableValue(self, newValue):
         print("IVariableWatch.setVariableValue()")
-        assert type(newValue) in (str, int, long, float)
+        assert type(newValue) in (str, int, float)
         self._sendPMACCommand("%s=%s" % (self.varName, str(newValue)))
 
 
@@ -337,14 +335,14 @@ class MVariableWatch(Watch):
         # This is a special case of the next regex (read its comment first)
         # but with an offset of 24, which means "use all 24 bits and the offset is 0".
         matchObject = re.match(
-            "^([XY])\:?(\$?[0-9a-fA-F]+)\,24(\,([US]))?$", definitionStr
-        )
+            r"^([XY])\:?(\$?[0-9a-fA-F]+)\,24(\,([US]))?$", definitionStr
+                    )
         if matchObject:
             self.width = 24
             # the variable is signed when "S" is present, otherwise
             # (either no letter, or a "U") the variable is unsigned
             self.signed = (
-                matchObject.group(4) is not None and matchObject.group(4) is "S"
+                matchObject.group(4) is not None and matchObject.group(4) == "S"
             )
             return matchObject
 
@@ -356,7 +354,7 @@ class MVariableWatch(Watch):
         # The offset here can be 0..23, or a special value of 24 -- see next regex
         # The width can be from the set {1, 4, 8, 12, 16, 20, 24}
         matchObject = re.match(
-            "([XY])\:?(\$?[0-9a-fA-F]+)(\,(\d+)(\,(\d+)(\,([SU]))?)?)?", definitionStr
+            r"([XY])\:?(\$?[0-9a-fA-F]+)(\,(\d+)(\,(\d+)(\,([SU]))?)?)?", definitionStr
         )
         if matchObject:
             if matchObject.group(6):
@@ -364,14 +362,14 @@ class MVariableWatch(Watch):
             # the variable is signed when "S" is present, otherwise
             # (either no letter, or a "U") the variable is unsigned
             self.signed = (
-                matchObject.group(8) is not None and matchObject.group(4) is "S"
+                matchObject.group(8) is not None and matchObject.group(4) == "S"
             )
             return matchObject
 
         # Select a 48-bit floating-point variable (uses 32 of memory X and 16 bits of
         # memory Y at that address)
         #    Mxxx->L(:)addr
-        matchObject = re.match("(L)\:?(\$?[0-9a-fA-F]+)", definitionStr)
+        matchObject = re.match(r"(L)\:?(\$?[0-9a-fA-F]+)", definitionStr)
         if matchObject:
             self.width = 48
             self.signed = True
@@ -381,7 +379,7 @@ class MVariableWatch(Watch):
         # Select a 48-bit fixed-point signed (2's complement) variable (uses 32 of
         # memory X and 16 bits of memory Y at that address)
         #    Mxxx->D(:)addr
-        matchObject = re.match("(D)\:?(\$?[0-9a-fA-F]+)", definitionStr)
+        matchObject = re.match(r"(D)\:?(\$?[0-9a-fA-F]+)", definitionStr)
         if matchObject:
             self.width = 48
             self.signed = True
@@ -410,7 +408,7 @@ class MVariableWatch(Watch):
         pass
 
 
-if __name__ is "__main__":
+if __name__ == "__main__":
 
     # Define unit tests (at least a few -- better than nothing).
     # Call this function, on an open PMAC connection.
@@ -419,46 +417,46 @@ if __name__ is "__main__":
         def doesIVariableWatchReadValue():
             w = IVariableWatch(pmac, "i1000")
             val = w.getVariableValue()
-            assert type(val) in (int, long, float)
+            assert type(val) in (int, float)
 
         def doesParseMVarAddressDefXY24BitWide():
             w = MVariableWatch(None, None)  # construct a dummy watch
             matchObject = w._parseAddressDefinition("X:$71D,24,S")
             assert matchObject is not None
             print(w.signed, w.width, w.floatingPoint)
-            assert w.signed is True and w.width is 24 and w.floatingPoint is False
+            assert w.signed is True and w.width == 24 and w.floatingPoint is False
 
             matchObject = w._parseAddressDefinition("X:$71D,24")
             assert matchObject is not None
-            assert w.signed is False and w.width is 24 and w.floatingPoint is False
+            assert w.signed is False and w.width == 24 and w.floatingPoint is False
 
         def doesParseMVarAddressDefXYVariousWidth():
             w = MVariableWatch(None, None)  # construct a dummy watch
             matchObject = w._parseAddressDefinition("Y:$078400,10")
             assert matchObject is not None
-            assert w.signed is False and w.width is 1 and w.floatingPoint is False
+            assert w.signed is False and w.width == 1 and w.floatingPoint is False
             matchObject = w._parseAddressDefinition("Y:$078402,8,16,U")
             assert matchObject is not None
-            assert w.signed is False and w.width is 16 and w.floatingPoint is False
+            assert w.signed is False and w.width == 16 and w.floatingPoint is False
             matchObject = w._parseAddressDefinition("Y:$078404,8,4")
             assert matchObject is not None
-            assert w.signed is False and w.width is 4 and w.floatingPoint is False
+            assert w.signed is False and w.width == 4 and w.floatingPoint is False
 
         def doesParseMVarAddressDef48BitWideSignedInt():
             w = MVariableWatch(None, None)  # construct a dummy watch
             matchObject = w._parseAddressDefinition("D:$000388")
             assert matchObject is not None
-            assert w.signed is True and w.width is 48 and w.floatingPoint is False
+            assert w.signed is True and w.width == 48 and w.floatingPoint is False
 
         def doesParseMVarAddressDef48BitWideFloat():
             w = MVariableWatch(None, None)  # construct a dummy watch
             matchObject = w._parseAddressDefinition("L:$00044F")
             assert matchObject is not None
-            assert w.signed is True and w.width is 48 and w.floatingPoint is True
+            assert w.signed is True and w.width == 48 and w.floatingPoint is True
 
         def doesMVariableWatchInitialise():
             w = MVariableWatch(pmac, "m1")
-            assert w.signed is False and w.width is 1 and w.floatingPoint is False
+            assert w.signed is False and w.width == 1 and w.floatingPoint is False
 
         tests = [
             doesIVariableWatchReadValue,
@@ -473,7 +471,7 @@ if __name__ is "__main__":
         for test in tests:
             try:
                 test()
-            except AssertionError as e:
+            except AssertionError:
                 print('!!! Test "%s" is failing!' % test.__name__)
         print("--------- End of unit tests ---------")
 
@@ -486,7 +484,7 @@ if __name__ is "__main__":
 
     connectionErrorMsg = pmac_ts5.connect()
     if connectionErrorMsg:
-        print connectionErrorMsg
+        print(connectionErrorMsg)
     else:
         runTests(pmac_ts5)
         # run some unit tests (not exhaustive at all) using the
