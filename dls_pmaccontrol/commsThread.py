@@ -1,7 +1,8 @@
 import traceback
+from queue import Empty, Queue
 
-from PyQt5.QtCore import QEvent, QCoreApplication
-from queue import Queue, Empty
+from PyQt5.QtCore import QCoreApplication, QEvent
+
 from dls_pmaclib.dls_pmacremote import *
 
 
@@ -17,7 +18,6 @@ class CustomEvent(QEvent):
 
 
 class CommsThread(object):
-
     def __init__(self, parent):
         self.parent = parent
         self.CSNum = 1
@@ -53,7 +53,7 @@ class CommsThread(object):
         while die is not True:
             try:
                 die = self.updateFunc()
-            except:
+            except Exception:
                 traceback.print_exc()
                 continue
 
@@ -73,7 +73,7 @@ class CommsThread(object):
                     print("trying send series")
                     self.gen = self.parent.pmac.sendSeries(data)
                     print("done send series")
-                except:
+                except Exception:
                     self.sendComplete("Couldn't start download")
                     traceback.print_exc()
             elif cmd == "disablePollingStatus":
@@ -90,17 +90,24 @@ class CommsThread(object):
         if self.gen:
             # should be downloading a text file
             try:
-                wasSuccessful, self.lineNumber, command, pmacResponseStr = \
-                    self.gen.__next__()
+                (
+                    wasSuccessful,
+                    self.lineNumber,
+                    command,
+                    pmacResponseStr,
+                ) = self.gen.__next__()
             except StopIteration:
-                self.sendComplete("Downloaded " + str(
-                    self.lineNumber) + " lines from pmc file.")
+                self.sendComplete(
+                    "Downloaded " + str(self.lineNumber) + " lines from pmc file."
+                )
             else:
                 err = ""
                 if not wasSuccessful:
                     err = "%s: command '%s' generated '%s'" % (
-                        self.lineNumber, command,
-                        pmacResponseStr.replace("\r", " ").replace("\x07", ""))
+                        self.lineNumber,
+                        command,
+                        pmacResponseStr.replace("\r", " ").replace("\x07", ""),
+                    )
                 self.sendTick(self.lineNumber, err)
             return
         if self.disablePollingStatus:
@@ -109,24 +116,22 @@ class CommsThread(object):
 
         # Reduce poll rate for serial interface (ignores if poll rate set to
         # zero)
-        if isinstance(self.parent.pmac,
-                      PmacSerialInterface) and self.max_pollrate:
-            if time.time() - self.parent.pmac.last_comm_time < 1.0 / \
-                    self.max_pollrate:
+        if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
+            if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
                 return
         cmd = "i65???&%s??%%"
         axes = self.parent.pmac.getNumberOfAxes() + 1
         for motorNo in range(1, axes):
             cmd = cmd + "#" + str(motorNo) + "?PVF"
-        (returnStr, wasSuccessful) = self.parent.pmac.sendCommand(
-            cmd % self.CSNum)
+        (returnStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd % self.CSNum)
         if wasSuccessful:
-            valueList = returnStr.rstrip("\x06\r").split('\r')
+            valueList = returnStr.rstrip("\x06\r").split("\r")
             # fourth is the PMAC identity
             if valueList[0].startswith("\x07"):
                 # error, probably in buffer
-                print("i65 returned %s, sending CLOSE command" % valueList[
-                    0].__repr__())
+                print(
+                    "i65 returned %s, sending CLOSE command" % valueList[0].__repr__()
+                )
                 self.parent.pmac.sendCommand("CLOSE")
                 return
 
@@ -134,8 +139,7 @@ class CommsThread(object):
             # to the result queue.
             if len(valueList) < 4:
                 if self.parent.verboseMode:
-                    print("Received malformed response to poll request: ",
-                          valueList)
+                    print("Received malformed response to poll request: ", valueList)
                 return
 
             self.resultQueue.put([valueList[0], 0, 0, 0, "IDENT"])
@@ -148,31 +152,11 @@ class CommsThread(object):
             valueList = valueList[4:]
             cols = 4
             for motorRow, i in enumerate(range(0, len(valueList), cols)):
-                returnList = valueList[i:i + cols]
+                returnList = valueList[i : i + cols]
                 returnList.append(motorRow)
                 self.resultQueue.put(returnList, False)
-            evUpdatesReady = CustomEvent(self.parent.updatesReadyEventType,
-                                         None)
+            evUpdatesReady = CustomEvent(self.parent.updatesReadyEventType, None)
             QCoreApplication.postEvent(self.parent, evUpdatesReady)
         else:
-            print(
-                'WARNING: Could not poll PMAC for motor status ("%s")' %
-                returnStr)
+            print('WARNING: Could not poll PMAC for motor status ("%s")' % returnStr)
         time.sleep(0.1)
-
-# \file
-# \section License
-# Author: Diamond Light Source, Copyright 2011
-#
-# 'dls_pmaccontrol' is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# 'dls_pmaccontrol' is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with 'dls_pmaccontrol'.  If not, see http://www.gnu.org/licenses/.

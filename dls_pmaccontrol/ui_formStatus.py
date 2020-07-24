@@ -32,5 +32,3 @@ class Ui_formStatus(object):
         _translate = QtCore.QCoreApplication.translate
         formStatus.setWindowTitle(_translate("formStatus", "Status bits"))
         self.ledGroup.setTitle(_translate("formStatus", "Axis"))
-
-

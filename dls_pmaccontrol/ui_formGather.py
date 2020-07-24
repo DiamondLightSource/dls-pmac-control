@@ -26,7 +26,9 @@ class Ui_formGather(object):
         self.gridlayout1.setContentsMargins(11, 11, 11, 11)
         self.gridlayout1.setSpacing(6)
         self.gridlayout1.setObjectName("gridlayout1")
-        spacerItem = QtWidgets.QSpacerItem(200, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            200, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridlayout1.addItem(spacerItem, 1, 3, 1, 1)
         self.btnSetup = QtWidgets.QPushButton(self.tab)
         self.btnSetup.setEnabled(False)
@@ -63,7 +65,9 @@ class Ui_formGather(object):
         self.lneNumberSamples.setMaximumSize(QtCore.QSize(100, 32767))
         self.lneNumberSamples.setObjectName("lneNumberSamples")
         self.gridlayout2.addWidget(self.lneNumberSamples, 0, 1, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(60, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem1 = QtWidgets.QSpacerItem(
+            60, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridlayout2.addItem(spacerItem1, 0, 5, 1, 1)
         self.lneSampleTime = QtWidgets.QLineEdit(self.tab1)
         self.lneSampleTime.setMinimumSize(QtCore.QSize(60, 0))
@@ -74,11 +78,17 @@ class Ui_formGather(object):
         self.textLabel2_2.setWordWrap(False)
         self.textLabel2_2.setObjectName("textLabel2_2")
         self.gridlayout2.addWidget(self.textLabel2_2, 0, 3, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem2 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridlayout2.addItem(spacerItem2, 0, 2, 1, 1)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 50, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem3 = QtWidgets.QSpacerItem(
+            20, 50, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.gridlayout2.addItem(spacerItem3, 4, 2, 1, 1)
-        spacerItem4 = QtWidgets.QSpacerItem(460, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem4 = QtWidgets.QSpacerItem(
+            460, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridlayout2.addItem(spacerItem4, 3, 1, 1, 5)
         self.btnApplyConf = QtWidgets.QPushButton(self.tab1)
         self.btnApplyConf.setObjectName("btnApplyConf")
@@ -144,15 +154,25 @@ class Ui_formGather(object):
         self.chkPlot5.setText("")
         self.chkPlot5.setObjectName("chkPlot5")
         self.gridlayout3.addWidget(self.chkPlot5, 4, 0, 1, 1)
-        spacerItem5 = QtWidgets.QSpacerItem(170, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem5 = QtWidgets.QSpacerItem(
+            170, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridlayout3.addItem(spacerItem5, 0, 5, 1, 1)
-        spacerItem6 = QtWidgets.QSpacerItem(170, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem6 = QtWidgets.QSpacerItem(
+            170, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridlayout3.addItem(spacerItem6, 1, 5, 1, 1)
-        spacerItem7 = QtWidgets.QSpacerItem(170, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem7 = QtWidgets.QSpacerItem(
+            170, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridlayout3.addItem(spacerItem7, 2, 5, 1, 1)
-        spacerItem8 = QtWidgets.QSpacerItem(170, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem8 = QtWidgets.QSpacerItem(
+            170, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridlayout3.addItem(spacerItem8, 3, 5, 1, 1)
-        spacerItem9 = QtWidgets.QSpacerItem(170, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem9 = QtWidgets.QSpacerItem(
+            170, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridlayout3.addItem(spacerItem9, 4, 5, 1, 1)
         self.cmbDataSource1 = QtWidgets.QComboBox(self.groupBox3)
         self.cmbDataSource1.setFocusPolicy(QtCore.Qt.NoFocus)
@@ -250,9 +270,13 @@ class Ui_formGather(object):
         self.cmbXaxis5.addItem("")
         self.gridlayout3.addWidget(self.cmbXaxis5, 4, 2, 1, 1)
         self.gridlayout2.addWidget(self.groupBox3, 2, 0, 1, 6)
-        spacerItem10 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem10 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridlayout2.addItem(spacerItem10, 1, 5, 1, 1)
-        spacerItem11 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem11 = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridlayout2.addItem(spacerItem11, 1, 2, 1, 1)
         self.textLabel1 = QtWidgets.QLabel(self.tab1)
         self.textLabel1.setWordWrap(False)
@@ -284,7 +308,7 @@ class Ui_formGather(object):
         self.btnTrigger.clicked.connect(formGather.triggerClicked)
         self.btnApplyConf.clicked.connect(formGather.applyConfigClicked)
         self.btnSetup.clicked.connect(formGather.setupClicked)
-        self.tabWidget2.currentChanged['int'].connect(formGather.changedTab)
+        self.tabWidget2.currentChanged["int"].connect(formGather.changedTab)
         self.lneSampleTime.returnPressed.connect(formGather.servoCyclesChanged)
         self.lneNumberSamples.returnPressed.connect(formGather.changedNoSamples)
         QtCore.QMetaObject.connectSlotsByName(formGather)
@@ -328,11 +352,15 @@ class Ui_formGather(object):
         self.btnSave.setText(_translate("formGather", "save data..."))
         self.btnTrigger.setText(_translate("formGather", "trigger"))
         self.btnCollect.setText(_translate("formGather", "collect"))
-        self.tabWidget2.setTabText(self.tabWidget2.indexOf(self.tab), _translate("formGather", "gather"))
+        self.tabWidget2.setTabText(
+            self.tabWidget2.indexOf(self.tab), _translate("formGather", "gather")
+        )
         self.textLabel2.setText(_translate("formGather", "# of samples:"))
         self.lneNumberSamples.setText(_translate("formGather", "10"))
         self.lneSampleTime.setText(_translate("formGather", "10"))
-        self.textLabel2_2.setText(_translate("formGather", "sample time [servo cycles]"))
+        self.textLabel2_2.setText(
+            _translate("formGather", "sample time [servo cycles]")
+        )
         self.btnApplyConf.setText(_translate("formGather", "Apply"))
         self.groupBox3.setTitle(_translate("formGather", "configure data gathering "))
         self.cmbCol1.setItemText(0, _translate("formGather", "red"))
@@ -374,6 +402,6 @@ class Ui_formGather(object):
         self.txtLblFreq.setText(_translate("formGather", "kHz"))
         self.txtLblSignalLen.setText(_translate("formGather", "ms"))
         self.textLabel1_2.setText(_translate("formGather", "signal length:"))
-        self.tabWidget2.setTabText(self.tabWidget2.indexOf(self.tab1), _translate("formGather", "configure"))
-
-
+        self.tabWidget2.setTabText(
+            self.tabWidget2.indexOf(self.tab1), _translate("formGather", "configure")
+        )

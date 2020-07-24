@@ -5,21 +5,23 @@ from os import path
 from queue import Empty
 
 from PyQt5.QtCore import QEvent, pyqtSlot
-from PyQt5.QtGui import QPixmap, QIcon
-from PyQt5.QtWidgets import QMainWindow, QLineEdit, \
-    QProgressDialog, QTableWidgetItem
-from dls_pmaclib.dls_pmacremote import PmacEthernetInterface, \
-    PmacSerialInterface, PmacTelnetInterface
-from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import QLineEdit, QMainWindow, QProgressDialog, QTableWidgetItem
 
-from dls_pmaccontrol.CSstatus import *
-from dls_pmaccontrol.GlobalStatus import *
 from dls_pmaccontrol.axissettings import *
 from dls_pmaccontrol.commsThread import CommsThread
+from dls_pmaccontrol.CSstatus import *
 from dls_pmaccontrol.energise import *
 from dls_pmaccontrol.gather import *
+from dls_pmaccontrol.GlobalStatus import *
 from dls_pmaccontrol.status import *
 from dls_pmaccontrol.ui_formControl import Ui_ControlForm
+from dls_pmaclib.dls_pmacremote import (
+    PmacEthernetInterface,
+    PmacSerialInterface,
+    PmacTelnetInterface,
+)
+from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
 
 # from optparse import OptionParser
 
@@ -35,14 +37,10 @@ class Controlform(QMainWindow, Ui_ControlForm):
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
 
-        self.greenLedOn = QPixmap(
-            path.join(path.dirname(__file__), "greenLedOn.png"))
-        self.greenLedOff = QPixmap(
-            path.join(path.dirname(__file__), "greenLedOff.png"))
-        self.redLedOn = QPixmap(
-            path.join(path.dirname(__file__), "redLedOn.png"))
-        self.redLedOff = QPixmap(
-            path.join(path.dirname(__file__), "redLedOff.png"))
+        self.greenLedOn = QPixmap(path.join(path.dirname(__file__), "greenLedOn.png"))
+        self.greenLedOff = QPixmap(path.join(path.dirname(__file__), "greenLedOff.png"))
+        self.redLedOn = QPixmap(path.join(path.dirname(__file__), "redLedOn.png"))
+        self.redLedOff = QPixmap(path.join(path.dirname(__file__), "redLedOff.png"))
 
         self.pollingStatus = True
         self.isUsingSerial = False
@@ -68,9 +66,12 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.rbUseSerial.setChecked(True)
             self.ConnectionType = 2
         else:
-            QMessageBox.information(self, "Error",
-                                    "Wrong connection protocol specified on "
-                                    "command line (use \"ts\" or \"tcpip\").")
+            QMessageBox.information(
+                self,
+                "Error",
+                "Wrong connection protocol specified on "
+                'command line (use "ts" or "tcpip").',
+            )
             sys.exit(-1)
 
         self.connectionTimeout = max(options.timeout, 1)
@@ -102,11 +103,10 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
         self.commands = []
         self.commands_i = 0
-        self.lneSend.keyPressEvent = types.MethodType \
-            (self.checkHistory, self.lneSend)
+        self.lneSend.keyPressEvent = types.MethodType(self.checkHistory, self.lneSend)
         self.dirname = "."
 
-        self.lblIdentity.setText('')
+        self.lblIdentity.setText("")
         self.txtShell.clear()
 
     def useTerminalServerConnection(self):
@@ -152,7 +152,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
     def checkHistory(self, edit, event):
         if event.key() == Qt.Key_Up:
-            if self.commands_i > - len(self.commands):
+            if self.commands_i > -len(self.commands):
                 self.commands_i -= 1
             self.lneSend.setText(self.commands[self.commands_i])
         elif event.key() == Qt.Key_Down:
@@ -168,29 +168,37 @@ class Controlform(QMainWindow, Ui_ControlForm):
         # Create a remote PMAC interface, of the correct type, depending on
         # radio-box selection in the "Connection to PMAC" section
         if self.ConnectionType == 0:
-            self.pmac = PmacTelnetInterface(self, verbose=self.verboseMode,
-                                            numAxes=self.nAxes,
-                                            timeout=self.connectionTimeout)
+            self.pmac = PmacTelnetInterface(
+                self,
+                verbose=self.verboseMode,
+                numAxes=self.nAxes,
+                timeout=self.connectionTimeout,
+            )
         elif self.ConnectionType == 1:
-            self.pmac = PmacEthernetInterface(self, verbose=self.verboseMode,
-                                              numAxes=self.nAxes,
-                                              timeout=self.connectionTimeout)
+            self.pmac = PmacEthernetInterface(
+                self,
+                verbose=self.verboseMode,
+                numAxes=self.nAxes,
+                timeout=self.connectionTimeout,
+            )
         elif self.ConnectionType == 2:
             try:
                 pollrate = float(self.lnePollRate.text())
             except ValueError:
                 pollrate = False
             self.commsThread.max_pollrate = pollrate
-            self.pmac = PmacSerialInterface(self, verbose=self.verboseMode,
-                                            numAxes=self.nAxes,
-                                            timeout=self.connectionTimeout)
+            self.pmac = PmacSerialInterface(
+                self,
+                verbose=self.verboseMode,
+                numAxes=self.nAxes,
+                timeout=self.connectionTimeout,
+            )
 
         # Set the server name and port
         server_name = self.lneServer.text()
         server_port = self.lnePort.text()
         self.pmac.setConnectionParams(server_name, server_port)
-        self.txtShell.append(
-            "Connecting to %s %s" % (server_name, server_port))
+        self.txtShell.append("Connecting to %s %s" % (server_name, server_port))
 
         # Connect to the interface/PMAC
         connection_status = self.pmac.connect()
@@ -202,11 +210,9 @@ class Controlform(QMainWindow, Ui_ControlForm):
         # Find out the type of the PMAC
         pmac_model_str = self.pmac.getPmacModel()
         if pmac_model_str:
-            self.setWindowTitle(
-                'Delta Tau motor controller - %s' % pmac_model_str)
+            self.setWindowTitle("Delta Tau motor controller - %s" % pmac_model_str)
         else:
-            QMessageBox.information(self, "Error",
-                                    "Could not determine PMAC model")
+            QMessageBox.information(self, "Error", "Could not determine PMAC model")
             return
 
         self.table.setRowCount(self.pmac.getNumberOfAxes())
@@ -277,7 +283,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.btnGather.setEnabled(False)
         self.table.setEnabled(False)
         self.pixPolling.setPixmap(self.greenLedOff)
-        self.lblIdentity.setText('')
+        self.lblIdentity.setText("")
 
         self.axisSettingsScreen.close()
         self.statusScreen.close()
@@ -288,16 +294,16 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.energiseScreen.close()
 
     def jogNeg(self):
-        (command, retStr, retStatus) = self.pmac.jogInc(self.currentMotor,
-                                                        "neg", str(
-                self.lneJogDist.text()))
+        (command, retStr, retStatus) = self.pmac.jogInc(
+            self.currentMotor, "neg", str(self.lneJogDist.text())
+        )
         self.addToTxtShell(command, retStr)
 
     # public slot
     def jogPos(self):
-        (command, retStr, retStatus) = self.pmac.jogInc(self.currentMotor,
-                                                        "pos", str(
-                self.lneJogDist.text()))
+        (command, retStr, retStatus) = self.pmac.jogInc(
+            self.currentMotor, "pos", str(self.lneJogDist.text())
+        )
         self.addToTxtShell(command, retStr)
 
     # public slot
@@ -315,8 +321,9 @@ class Controlform(QMainWindow, Ui_ControlForm):
     # public slot
 
     def jogGoToPosition(self):
-        (command, retStr, retStatus) = self.pmac.jogTo(self.currentMotor,
-                                                       self.lneJogTo.text())
+        (command, retStr, retStatus) = self.pmac.jogTo(
+            self.currentMotor, self.lneJogTo.text()
+        )
         self.addToTxtShell(command, retStr)
 
     # public slot
@@ -336,7 +343,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
     # see TURBO SRM page 289
     def killAllMotors(self):
         # print "killing all motors!"
-        command = '\x0B'
+        command = "\x0B"
         (returnString, status) = self.pmac.sendCommand(command)
         self.addToTxtShell("CTRL-K")
 
@@ -366,15 +373,16 @@ class Controlform(QMainWindow, Ui_ControlForm):
     def pmacLoadConfig(self):
         # First get the file from a file dialog
         myDialog = QFileDialog(self)
-        q_file = myDialog.getOpenFileName(self, "Load PMC file", self.dirname,
-                                          "PMAC configuration (*.pmc *.PMC)")
+        q_file = myDialog.getOpenFileName(
+            self, "Load PMC file", self.dirname, "PMAC configuration (*.pmc *.PMC)"
+        )
         fileName, _ = q_file
         if not fileName:
             return
         self.dirname = path.dirname(str(fileName))
 
         # A couple of regular expressions for use in parsing the pmc file
-        blankLine = re.compile(r'^\s*$')  # match blank lines
+        blankLine = re.compile(r"^\s*$")  # match blank lines
 
         # parsing through the file
         pmc = ClsPmacParser()
@@ -395,16 +403,14 @@ class Controlform(QMainWindow, Ui_ControlForm):
             # (first close) before then closing the buffer (second close).
             # Dummy line numbers of zero are paired with each command to
             # match the formatting and to not disrupt the real line numbering
-            closeCommands = [(0, 'CLOSE'), (0, 'CLOSE'), (0, 'DELETE GATHER')]
+            closeCommands = [(0, "CLOSE"), (0, "CLOSE"), (0, "DELETE GATHER")]
             commands = closeCommands + commands
 
             # Open up progress dialog and start sending the commands.
             self.canceledDownload = False
             self.progressDialog = QProgressDialog(
-                "Downloading PMAC configuration",
-                "cancel", 0,
-                len(pmcLines),
-                self)
+                "Downloading PMAC configuration", "cancel", 0, len(pmcLines), self
+            )
             self.progressDialog.setWindowModality(Qt.ApplicationModal)
             self.progressDialog.canceled.connect(self.cancel)
             self.txtShell.append("Beginning download of pmc file: " + fileName)
@@ -445,15 +451,13 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
     def jogNegContinousStart(self):
         # print "controlform.jogNegContinousStart(): Not implemented yet"
-        (command, retStr, retStatus) = self.pmac.jogContinous(self.currentMotor,
-                                                              "neg")
+        (command, retStr, retStatus) = self.pmac.jogContinous(self.currentMotor, "neg")
         self.addToTxtShell(command, retStr)
 
     # public slot
     def jogPosContinousStart(self):
         # print "controlform.jogPosContinousStart(): Not implemented yet"
-        (command, retStr, retStatus) = self.pmac.jogContinous(self.currentMotor,
-                                                              "pos")
+        (command, retStr, retStatus) = self.pmac.jogContinous(self.currentMotor, "pos")
         self.addToTxtShell(command, retStr)
 
     # public slot
@@ -467,7 +471,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.commands_i = 0
         self.lneSend.setText("")
 
-    @pyqtSlot(int, int, name='chooseMotorFromTable')
+    @pyqtSlot(int, int, name="chooseMotorFromTable")
     def chooseMotorFromTable(self, a0):
         self.spnJogMotor.setValue(a0 + 1)
 
@@ -508,7 +512,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.txtShell.append(command)
             if retStr is not None:
                 self.txtShell.append(
-                    retStr.rstrip("\x06").lstrip("\x07").replace('\r', ' '))
+                    retStr.rstrip("\x06").lstrip("\x07").replace("\r", " ")
+                )
 
     # Called when an event comes out of the polling thread
     # and the jog ribbon.
@@ -533,8 +538,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                         self.CSStatusScreen.updateStatus(int(value[0], 16))
                         continue
                     if motorRow.startswith("FEED"):
-                        self.CSStatusScreen.updateFeed(
-                            int(round(float(value[0]))))
+                        self.CSStatusScreen.updateFeed(int(round(float(value[0]))))
                         continue
                     if motorRow == "IDENT":
                         self.updateIdentity(int(value[0]))
@@ -578,49 +582,67 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
             except (ValueError, IndexError):
                 # Catch the exception and continue, since there may be other
-                # updates waiting in the queue. 
+                # updates waiting in the queue.
                 if self.verboseMode:
                     print("Update request received invalid response: ", value)
 
         # print "."
 
-    domainNames = ['BL', 'BR', 'BS', 'FE', 'LB', 'LI', 'ME', 'SR',
-                   'LA', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'TBD', 'RSV']
+    domainNames = [
+        "BL",
+        "BR",
+        "BS",
+        "FE",
+        "LB",
+        "LI",
+        "ME",
+        "SR",
+        "LA",
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD",
+        "TBD",
+        "RSV",
+    ]
     subdomainLetters = [
-        ['I', 'B', 'J', 'C', 'K', 'D', 'L', 'E'],
-        ['C', 'S', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
-        ['I', 'B', 'J', 'C', 'K', 'D', 'L', 'E'],
-        ['', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
-        ['D', 'P', 'C', 'T', 'M', 'G', '', ''],
-        ['I', 'A', 'J', 'C', 'K', 'R', 'L', 'S'],
-        ['R', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', ''],
-        ['', '', '', '', '', '', '', '']]
+        ["I", "B", "J", "C", "K", "D", "L", "E"],
+        ["C", "S", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", ""],
+        ["I", "B", "J", "C", "K", "D", "L", "E"],
+        ["", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", ""],
+        ["D", "P", "C", "T", "M", "G", "", ""],
+        ["I", "A", "J", "C", "K", "R", "L", "S"],
+        ["R", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", ""],
+        ["", "", "", "", "", "", "", ""],
+    ]
 
     def updateIdentity(self, id):
         if not self.btnConnect.isEnabled():
             if id == 0:
-                text = 'Identity not set'
+                text = "Identity not set"
             else:
-                domain = (id >> 20) & 0x0f
-                swVersion = (id >> 13) & 0x7f
-                subdomainNum = (id >> 7) & 0x1f
-                pmacNum = id & 0x1f
-                subdomainLetter = ((id >> 6) & 0x01) | ((id >> 4) & 0x02) | (
-                        (id >> 10) & 0x04)
+                domain = (id >> 20) & 0x0F
+                swVersion = (id >> 13) & 0x7F
+                subdomainNum = (id >> 7) & 0x1F
+                pmacNum = id & 0x1F
+                subdomainLetter = (
+                    ((id >> 6) & 0x01) | ((id >> 4) & 0x02) | ((id >> 10) & 0x04)
+                )
                 text = self.domainNames[domain]
                 if subdomainNum != 0:
-                    text += '%02d' % subdomainNum
+                    text += "%02d" % subdomainNum
                     text += self.subdomainLetters[domain][subdomainLetter]
-                text += ' %s ' % self.pmac.getShortModelName()
-                text += '%d' % pmacNum
+                text += " %s " % self.pmac.getShortModelName()
+                text += "%d" % pmacNum
             self.lblIdentity.setText(text)
 
     def customEvent(self, E):
@@ -654,34 +676,66 @@ def main():
     usage = """usage: %prog [options]
 %prog is a graphical frontend to the Deltatau motorcontroller known as PMAC."""
     parser = OptionParser(usage)
-    parser.add_option("-v", "--verbose",
-                      action="store_true", dest="verbose", default=False,
-                      help="Print more details (than necessary in most "
-                           "cases...)")
-    parser.add_option("-o", "--protocol",
-                      action="store", dest="protocol", default="ts",
-                      help="Set the connection protocol; use \"ts\" for "
-                           "serial via terminal server (the default), "
-                           "or \"tcpip\" for network TCP/IP connection.")
-    parser.add_option("-s", "--server",
-                      action="store", dest="server",
-                      default="blxxi-nt-tserv-01",
-                      help="Set server name (default: blxxi-nt-tserv-01)")
-    parser.add_option("-p", "--port",
-                      action="store", dest="port", default="7017",
-                      help="Set IP port number to connect to (default: 7017)")
-    parser.add_option("-a", "--axis",
-                      action="store", dest="defaultAxis", default=1,
-                      help="Set an axis as a default selected axis when "
-                           "starting up the application (default: 1)")
-    parser.add_option("-n", "--naxes",
-                      action="store", dest="nAxes",
-                      help="Display and poll NAXES axes. Default is 32 for a "
-                           "PMAC, 8 for a geoBrick")
-    parser.add_option("-t", "--timeout",
-                      action="store", type="float", dest="timeout", default=3.0,
-                      help="Set the communication timeout (default: 3 seconds, "
-                           "minimum: 1 second)")
+    parser.add_option(
+        "-v",
+        "--verbose",
+        action="store_true",
+        dest="verbose",
+        default=False,
+        help="Print more details (than necessary in most " "cases...)",
+    )
+    parser.add_option(
+        "-o",
+        "--protocol",
+        action="store",
+        dest="protocol",
+        default="ts",
+        help='Set the connection protocol; use "ts" for '
+        "serial via terminal server (the default), "
+        'or "tcpip" for network TCP/IP connection.',
+    )
+    parser.add_option(
+        "-s",
+        "--server",
+        action="store",
+        dest="server",
+        default="blxxi-nt-tserv-01",
+        help="Set server name (default: blxxi-nt-tserv-01)",
+    )
+    parser.add_option(
+        "-p",
+        "--port",
+        action="store",
+        dest="port",
+        default="7017",
+        help="Set IP port number to connect to (default: 7017)",
+    )
+    parser.add_option(
+        "-a",
+        "--axis",
+        action="store",
+        dest="defaultAxis",
+        default=1,
+        help="Set an axis as a default selected axis when "
+        "starting up the application (default: 1)",
+    )
+    parser.add_option(
+        "-n",
+        "--naxes",
+        action="store",
+        dest="nAxes",
+        help="Display and poll NAXES axes. Default is 32 for a "
+        "PMAC, 8 for a geoBrick",
+    )
+    parser.add_option(
+        "-t",
+        "--timeout",
+        action="store",
+        type="float",
+        dest="timeout",
+        default=3.0,
+        help="Set the communication timeout (default: 3 seconds, " "minimum: 1 second)",
+    )
     (options, args) = parser.parse_args()
 
     app = QApplication(sys.argv)
@@ -697,20 +751,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-## \file
-# \section License
-# Author: Diamond Light Source, Copyright 2011
-#
-# 'dls_pmaccontrol' is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# 'dls_pmaccontrol' is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with 'dls_pmaccontrol'.  If not, see http://www.gnu.org/licenses/.

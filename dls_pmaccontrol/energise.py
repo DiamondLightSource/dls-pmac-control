@@ -4,7 +4,7 @@ import re
 import sys
 
 from PyQt5.QtCore import QObject, Qt
-from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QMessageBox
+from PyQt5.QtWidgets import QApplication, QCheckBox, QDialog, QMessageBox
 
 from .ui_formEnergise import Ui_formEnergise
 
@@ -12,8 +12,8 @@ from .ui_formEnergise import Ui_formEnergise
 class PmacIOError(IOError):
     pass
 
-class Energiseform(QDialog, Ui_formEnergise):
 
+class Energiseform(QDialog, Ui_formEnergise):
     def __init__(self, pmac, parent=None):
         QDialog.__init__(self, parent, flags=None)
         self.setupUi(self)
@@ -47,8 +47,8 @@ class Energiseform(QDialog, Ui_formEnergise):
     def readM750x(self):
         (retStr, retStatus) = self.pmac.sendCommand("m7501 m7503")
         if not retStatus:
-            raise PmacIOError('Cannot read m7501, m7503')
-        lstRetStr = re.split(r'\r', retStr)
+            raise PmacIOError("Cannot read m7501, m7503")
+        lstRetStr = re.split(r"\r", retStr)
         val7501 = int(lstRetStr[0])  # just a local variable, not self.var7501
         val7503 = int(lstRetStr[1])  # just a local variable, not self.var7503
         return val7501, val7503
@@ -71,7 +71,8 @@ class Energiseform(QDialog, Ui_formEnergise):
     def isScreenUpToDate(self):
         (val7501, val7503) = self.readM750x()
         return (self.val7501 & 0x00FFFF == val7501 & 0x00FFFF) and (
-                    self.val7503 & 0x00FFFF == val7503 & 0x00FFFF)
+            self.val7503 & 0x00FFFF == val7503 & 0x00FFFF
+        )
 
     # public slot
     # Send energise axis command to the pmac.
@@ -85,17 +86,17 @@ class Energiseform(QDialog, Ui_formEnergise):
         # Make sure that self.val7501 and self.val7503 truly reflect the
         # current values of M7501 and M7503 (on the PMAC)
         if not self.isScreenUpToDate():
-            QMessageBox.information(self,
-                                    "Error",
-                                    "The screen is out of date, even if "
-                                    "ignoring your changes!\n" +
-                                    "This may be e.g. due to PLCs running in "
-                                    "the background which de/energised some "
-                                    "motors.\n"
-                                    "To avoid inconsistency, the screen will "
-                                    "reload now. Re-do your changes and submit "
-                                    "again."
-                                    )
+            QMessageBox.information(
+                self,
+                "Error",
+                "The screen is out of date, even if "
+                "ignoring your changes!\n" + "This may be e.g. due to PLCs running in "
+                "the background which de/energised some "
+                "motors.\n"
+                "To avoid inconsistency, the screen will "
+                "reload now. Re-do your changes and submit "
+                "again.",
+            )
             (self.val7501, self.val7503) = self.readM750x()
             self.updateScreen()
             return
@@ -116,8 +117,7 @@ class Energiseform(QDialog, Ui_formEnergise):
         cmd = "m7501=$%x m7503=$%x" % (self.val7501, self.val7503)
         (retStr, retStatus) = self.pmac.sendCommand(cmd)
         if not retStatus:
-            QMessageBox.information(self, "Error",
-                                    "Send command error:\n" + retStr)
+            QMessageBox.information(self, "Error", "Send command error:\n" + retStr)
             return
 
         # Update the shell
@@ -133,20 +133,3 @@ if __name__ == "__main__":
     a.setMainWidget(w)
     w.show()
     a.exec_loop()
-
-## \file
-# \section License
-# Author: Diamond Light Source, Copyright 2011
-#
-# 'dls_pmaccontrol' is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# 'dls_pmaccontrol' is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with 'dls_pmaccontrol'.  If not, see http://www.gnu.org/licenses/.

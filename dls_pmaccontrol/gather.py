@@ -1,13 +1,12 @@
 import time
 
+from numpy import *
 from PyQt5.Qt import QPen
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QMessageBox, QFileDialog
-from numpy import *
+from PyQt5.QtWidgets import QDialog, QFileDialog, QMessageBox
 
 from .gatherchannel import *
 from .ui_formGather import Ui_formGather
-
 
 # TODO - this needs the logic decoupled from the GUI and moved into pmaclib
 #  work has started in pmaclib but currently duplicates code in this module
@@ -15,7 +14,6 @@ from .ui_formGather import Ui_formGather
 # TODO Find out why the gathering fails with an response "ERR003" from the
 #   PMAC for PMAC2-VME (does work for Geo Brick)!
 class Gatherform(QDialog, Ui_formGather):
-
     def __init__(self, parent, currentMotor=1):
         QDialog.__init__(self, parent)
         self.setupUi(self)
@@ -23,7 +21,8 @@ class Gatherform(QDialog, Ui_formGather):
         self.parent = parent
         if not self.parent:
             raise ValueError(
-                'It is now required to provide a parent form for this form')
+                "It is now required to provide a parent form for this form"
+            )
 
         self.currentMotor = currentMotor
 
@@ -36,35 +35,51 @@ class Gatherform(QDialog, Ui_formGather):
         self.numberOfWords = 0
 
         # Initialize the timing variables for gathering
-        self.sampleTime = 0.  # the sample time per gather sampling (ms)
+        self.sampleTime = 0.0  # the sample time per gather sampling (ms)
         self.nServoCyclesGather = 0  # of servo cycles per gather sampling
-        self.servoCycleTime = 0.  # the time of one servo cycle (ms)
+        self.servoCycleTime = 0.0  # the time of one servo cycle (ms)
         self.nGatherPoints = 0  # the # of data points to sample
 
         self.lstColours = [Qt.red, Qt.blue, Qt.magenta, Qt.green, Qt.cyan]
 
-        self.lstCheckboxes = [self.chkPlot1, self.chkPlot2, self.chkPlot3,
-                              self.chkPlot4, self.chkPlot5]
-        self.lstSpinboxes = [self.spbAxis1, self.spbAxis2, self.spbAxis3,
-                             self.spbAxis4, self.spbAxis5]
+        self.lstCheckboxes = [
+            self.chkPlot1,
+            self.chkPlot2,
+            self.chkPlot3,
+            self.chkPlot4,
+            self.chkPlot5,
+        ]
+        self.lstSpinboxes = [
+            self.spbAxis1,
+            self.spbAxis2,
+            self.spbAxis3,
+            self.spbAxis4,
+            self.spbAxis5,
+        ]
 
-        self.lstComboboxes = [self.cmbDataSource1,
-                              self.cmbDataSource2,
-                              self.cmbDataSource3,
-                              self.cmbDataSource4,
-                              self.cmbDataSource5]
+        self.lstComboboxes = [
+            self.cmbDataSource1,
+            self.cmbDataSource2,
+            self.cmbDataSource3,
+            self.cmbDataSource4,
+            self.cmbDataSource5,
+        ]
 
-        self.lstColourBoxes = [self.cmbCol1,
-                               self.cmbCol2,
-                               self.cmbCol3,
-                               self.cmbCol4,
-                               self.cmbCol5]
+        self.lstColourBoxes = [
+            self.cmbCol1,
+            self.cmbCol2,
+            self.cmbCol3,
+            self.cmbCol4,
+            self.cmbCol5,
+        ]
 
-        self.lstCmbYaxis = [self.cmbXaxis1,
-                            self.cmbXaxis2,
-                            self.cmbXaxis3,
-                            self.cmbXaxis4,
-                            self.cmbXaxis5]
+        self.lstCmbYaxis = [
+            self.cmbXaxis1,
+            self.cmbXaxis2,
+            self.cmbXaxis3,
+            self.cmbXaxis4,
+            self.cmbXaxis5,
+        ]
 
         # initialise the combo-boxes with all the possible data points
         # that can be gathered.
@@ -72,14 +87,14 @@ class Gatherform(QDialog, Ui_formGather):
             cmBox.clear()
         for dataPoint in dataSources:
             for cmBox in self.lstComboboxes:
-                cmBox.addItem(dataPoint['desc'])
+                cmBox.addItem(dataPoint["desc"])
 
     def gatherConfig(self):
         # Create i5050 variable value to mask out what values to sample
         tmpIvar = 0
         for bit, checkbox in enumerate(self.lstCheckboxes):
             if checkbox.isChecked():
-                tmpIvar |= (0x01 << bit)
+                tmpIvar |= 0x01 << bit
         if tmpIvar == 0:
             return False
         cmd = "i5051=0 i5050=$%x" % tmpIvar
@@ -93,9 +108,9 @@ class Gatherform(QDialog, Ui_formGather):
         for index, axisSpinBox in enumerate(self.lstSpinboxes):
             cmbBox = self.lstComboboxes[index]
             chkBox = self.lstCheckboxes[index]
-            dataOffset = dataSources[cmbBox.currentIndex()]['reg']
+            dataOffset = dataSources[cmbBox.currentIndex()]["reg"]
             baseAddress = motorBaseAddrs[axisSpinBox.value() - 1]
-            dataWidth = dataSources[cmbBox.currentIndex()]['size']
+            dataWidth = dataSources[cmbBox.currentIndex()]["size"]
             ivar = "i50%02d" % (index + 1)
             addr = "$%X%05X" % (dataWidth, baseAddress + dataOffset)
             cmd = "%s=%s" % (ivar, addr)
@@ -112,8 +127,7 @@ class Gatherform(QDialog, Ui_formGather):
                 channel = GatherChannel(self.parent.pmac, curve)
                 self.lstChannels.append(channel)
                 # Set the colour of the graph
-                colour = self.lstColours[
-                    self.lstColourBoxes[index].currentIndex()]
+                colour = self.lstColours[self.lstColourBoxes[index].currentIndex()]
                 channel.qwtCurve.setPen(QPen(colour))
                 # set the left or right Y axis
                 if self.lstCmbYaxis[index].currentIndex() == 0:
@@ -126,8 +140,7 @@ class Gatherform(QDialog, Ui_formGather):
                     # self.qwtPlot.yRight)
 
         # set the sampling time (in servo cycles)
-        self.parent.pmac.sendCommand(
-            "i5049=%d" % int(str(self.lneSampleTime.text())))
+        self.parent.pmac.sendCommand("i5049=%d" % int(str(self.lneSampleTime.text())))
         return True
 
     def gatherSetup(self, numberOfSamples=1):
@@ -145,14 +158,15 @@ class Gatherform(QDialog, Ui_formGather):
             # PMAC data settings and the data set in this application.
             chCount = 0
             for bit in range(WORD):
-                if (int(retStr.strip('$')[:-1], 16) >> bit & 0x01) > 0:
+                if (int(retStr.strip("$")[:-1], 16) >> bit & 0x01) > 0:
                     chIndex = bit + bitOffset
                     ivar = "i50%02d" % chIndex
                     chCount += 1
                     if chCount > len(self.lstChannels):
                         print(
                             "gatherSetup: Error: not enough GatherChannels "
-                            "instantiated.")
+                            "instantiated."
+                        )
                         break
                     self.lstChannels[chCount - 1].setDataGatherPointer(ivar)
 
@@ -184,8 +198,7 @@ class Gatherform(QDialog, Ui_formGather):
         gatherBufSize = 47 + ((readWords / 2) * numberOfSamples)
         # print "number of words: %d - number of samples: %d"%(
         # self.numberOfWords, numberOfSamples)
-        self.parent.pmac.sendCommand(
-            "define gather %d" % gatherBufSize)
+        self.parent.pmac.sendCommand("define gather %d" % gatherBufSize)
         return
 
     def gatherTrigger(self):
@@ -203,8 +216,12 @@ class Gatherform(QDialog, Ui_formGather):
                 lstDataStrings.append(long_val.strip()[6:])
                 lstDataStrings.append(long_val.strip()[:6])
         else:
-            print("Problem retrieving gather buffer, status: ",
-                  status, " returned data: ", retStr)
+            print(
+                "Problem retrieving gather buffer, status: ",
+                status,
+                " returned data: ",
+                retStr,
+            )
             return False
 
         # print retStr[:-1].split()
@@ -263,7 +280,7 @@ class Gatherform(QDialog, Ui_formGather):
     def calcSampleTime(self):
         cmd = "I10"
         (retStr, status) = self.parent.pmac.sendCommand(cmd)
-        ivarI10 = int(retStr.strip('$')[:-1])
+        ivarI10 = int(retStr.strip("$")[:-1])
 
         self.servoCycleTime = ivarI10 / 8388608.0  # in ms
 
@@ -276,8 +293,7 @@ class Gatherform(QDialog, Ui_formGather):
         self.sampleTime = self.nServoCyclesGather * self.servoCycleTime
         realSampleFreq = 1.0 / self.sampleTime
         self.txtLblFreq.setText("%.3f kHz" % realSampleFreq)
-        self.txtLblSignalLen.setText(
-            "%.2f ms" % (self.sampleTime * self.nGatherPoints))
+        self.txtLblSignalLen.setText("%.2f ms" % (self.sampleTime * self.nGatherPoints))
 
     # ############## button clicked slots from here
     # #######################################
@@ -287,7 +303,7 @@ class Gatherform(QDialog, Ui_formGather):
         # Get the sample time (in servo cycles unit)
         cmd = "i5049"
         (retStr, status) = self.parent.pmac.sendCommand(cmd)
-        newNGatherPoints = int(retStr.strip('$')[:-1])
+        newNGatherPoints = int(retStr.strip("$")[:-1])
         if not (newNGatherPoints == self.nServoCyclesGather):
             self.nServoCyclesGather = newNGatherPoints
             self.calcSampleTime()
@@ -347,29 +363,37 @@ class Gatherform(QDialog, Ui_formGather):
 
     def saveClicked(self):
         if len(self.lstChannels) < 1:
-            QMessageBox.information(self, "Error",
-                                    "No data has been collected yet.")
+            QMessageBox.information(self, "Error", "No data has been collected yet.")
             return
         myDialog = QFileDialog(self)
         # myDialog.setShowHiddenFiles(False)
         fileName = myDialog.getSaveFileName(
             caption="Comma seperated data file (*.csv *.CSV)",
-            directory=os.path.expanduser("~"), options=None)
+            directory=os.path.expanduser("~"),
+            options=None,
+        )
         if not fileName:
             return
         try:
-            fptr = open(str(fileName), 'w')
-        except:
-            QMessageBox.information(self, "Error",
-                                    "Could not open file %s for writing." %
-                                    fileName, buttons=1, p_str_1='OK')
+            fptr = open(str(fileName), "w")
+        except Exception:
+            QMessageBox.information(
+                self,
+                "Error",
+                "Could not open file %s for writing." % fileName,
+                buttons=1,
+                p_str_1="OK",
+            )
             return
 
         dataLists = []
         line = "point,"
         for i, channel in enumerate(self.lstChannels):
             line += "CH%d Axis%d %s," % (
-                i, channel.axisNo, channel.dataSourceInfo['desc'])
+                i,
+                channel.axisNo,
+                channel.dataSourceInfo["desc"],
+            )
             dataLists.append(channel.scaledData)
         fptr.write(line + "\n")
 
@@ -379,20 +403,3 @@ class Gatherform(QDialog, Ui_formGather):
                 line += "%f," % data_point
             fptr.write(line + "\n")
         fptr.close()
-
-# \file
-# \section License
-# Author: Diamond Light Source, Copyright 2011
-#
-# 'dls_pmaccontrol' is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# 'dls_pmaccontrol' is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with 'dls_pmaccontrol'.  If not, see http://www.gnu.org/licenses/.

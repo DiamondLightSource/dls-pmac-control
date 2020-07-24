@@ -42,5 +42,3 @@ class Ui_formEnergise(object):
         self.btnSend.setText(_translate("formEnergise", "send"))
         self.btnClose.setText(_translate("formEnergise", "close"))
         self.chkGroup.setTitle(_translate("formEnergise", "Axis"))
-
-

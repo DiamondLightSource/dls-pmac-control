@@ -43,7 +43,9 @@ class Ui_formCSStatus(object):
         self.gridLayout.addWidget(self.feedSpin, 0, 3, 1, 1)
         self.gridLayout_2.addWidget(self.ctrlGroup, 0, 0, 1, 1)
         self.ledGroup = QtWidgets.QGroupBox(formCSStatus)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ledGroup.sizePolicy().hasHeightForWidth())
@@ -65,5 +67,3 @@ class Ui_formCSStatus(object):
         self.textLabel1.setText(_translate("formCSStatus", "CS Number:"))
         self.textLabel1_2.setText(_translate("formCSStatus", "Feed Rate:"))
         self.ledGroup.setTitle(_translate("formCSStatus", "CS Status"))
-
-
