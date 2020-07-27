@@ -1,20 +1,22 @@
+import re
 import signal
+import sys
 import types
 from optparse import OptionParser
 from os import path
 from queue import Empty
 
-from PyQt5.QtCore import QEvent, pyqtSlot
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtCore import QEvent, Qt, pyqtSlot
+from PyQt5.QtGui import QApplication, QFileDialog, QIcon, QMessageBox, QPixmap
 from PyQt5.QtWidgets import QLineEdit, QMainWindow, QProgressDialog, QTableWidgetItem
 
-from dls_pmaccontrol.axissettings import *
+from dls_pmaccontrol.axissettings import Axissettingsform
 from dls_pmaccontrol.commsThread import CommsThread
-from dls_pmaccontrol.CSstatus import *
-from dls_pmaccontrol.energise import *
-from dls_pmaccontrol.gather import *
-from dls_pmaccontrol.GlobalStatus import *
-from dls_pmaccontrol.status import *
+from dls_pmaccontrol.CSstatus import CSStatusForm
+from dls_pmaccontrol.energise import Energiseform
+from dls_pmaccontrol.gather import Gatherform
+from dls_pmaccontrol.GlobalStatus import GlobalStatusForm
+from dls_pmaccontrol.status import Statusform
 from dls_pmaccontrol.ui_formControl import Ui_ControlForm
 from dls_pmaclib.dls_pmacremote import (
     PmacEthernetInterface,
@@ -508,7 +510,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         return item
 
     def addToTxtShell(self, command, retStr=None, chkShowAll=True):
-        if chkShowAll == False or self.chkShowAll.isChecked():
+        if chkShowAll is False or self.chkShowAll.isChecked():
             self.txtShell.append(command)
             if retStr is not None:
                 self.txtShell.append(

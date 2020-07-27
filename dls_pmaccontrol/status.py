@@ -3,7 +3,7 @@
 import sys
 
 from PyQt5.Qt import QApplication
-from PyQt5.QtCore import QObject, Qt
+from PyQt5.QtCore import SIGNAL, SLOT, QObject, Qt
 from PyQt5.QtWidgets import QDialog, QLabel
 
 from .ui_formStatus import Ui_formStatus

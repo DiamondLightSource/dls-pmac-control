@@ -6,6 +6,7 @@ import traceback
 
 from formWatches import formWatches
 from pmactelnet import PmacTelnetInterface
+from PyQt4.QtCore import SIGNAL, SLOT
 from PyQt4.QtGui import QApplication, QMessageBox, QObject
 
 # [STATE] This should only support displaying integer decimal i-variables at the
@@ -393,7 +394,7 @@ class MVariableWatch(Watch):
         self.floatingPoint = None
         raise ValueError(
             'Address definition "%s" for M-variable "%s" is not supported'
-            % (definition, self.varName)
+            % (definitionStr, self.varName)
         )
 
     def setVariableValue(self, newValue):

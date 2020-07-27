@@ -135,7 +135,7 @@ class GatherChannel:
         mBaseAddr = dataAddr & 0xFFF80
         try:
             self.axisNo = motorBaseAddrs.index(mBaseAddr) + 1
-        except:
+        except Exception:
             print(
                 "#### Error: could not recognise motor base address: %X" % (mBaseAddr)
             )
@@ -216,7 +216,7 @@ class GatherChannel:
         # print "Evaluating algorithm: %s"%( algorithm )
         try:
             self.scalingFactor = eval(algorithm)
-        except:
+        except Exception:
             print(
                 "### Error: did not evaluate expression correctly. Expr: %s"
                 % (algorithm)
@@ -239,21 +239,3 @@ class GatherChannel:
         for rawVal in self.rawData:
             self.scaledData.append(rawVal * self.scalingFactor)
         return
-
-
-# \file
-# \section License
-# Author: Diamond Light Source, Copyright 2011
-#
-# 'dls_pmaccontrol' is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Lesser General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# 'dls_pmaccontrol' is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser General Public License
-# along with 'dls_pmaccontrol'.  If not, see http://www.gnu.org/licenses/.

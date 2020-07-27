@@ -1,11 +1,12 @@
+import os
 import time
 
-from numpy import *
+from numpy import arange
 from PyQt5.Qt import QPen
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog, QMessageBox
 
-from .gatherchannel import *
+from .gatherchannel import GatherChannel
 from .ui_formGather import Ui_formGather
 
 # TODO - this needs the logic decoupled from the GUI and moved into pmaclib
@@ -13,6 +14,8 @@ from .ui_formGather import Ui_formGather
 
 # TODO Find out why the gathering fails with an response "ERR003" from the
 #   PMAC for PMAC2-VME (does work for Geo Brick)!
+
+
 class Gatherform(QDialog, Ui_formGather):
     def __init__(self, parent, currentMotor=1):
         QDialog.__init__(self, parent)
