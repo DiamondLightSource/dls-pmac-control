@@ -633,7 +633,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 text = "Identity not set"
             else:
                 domain = (id >> 20) & 0x0F
-                swVersion = (id >> 13) & 0x7F
+                # swVersion = (id >> 13) & 0x7F
                 subdomainNum = (id >> 7) & 0x1F
                 pmacNum = id & 0x1F
                 subdomainLetter = (

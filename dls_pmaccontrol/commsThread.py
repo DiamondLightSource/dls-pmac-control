@@ -1,9 +1,11 @@
+import threading
+import time
 import traceback
 from queue import Empty, Queue
 
 from PyQt5.QtCore import QCoreApplication, QEvent
 
-from dls_pmaclib.dls_pmacremote import *
+from dls_pmaclib.dls_pmacremote import PmacSerialInterface
 
 
 class CustomEvent(QEvent):

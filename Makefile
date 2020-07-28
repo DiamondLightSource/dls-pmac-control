@@ -10,7 +10,7 @@ UI_FILES = formAxisSettings.ui  formControl.ui  formCSStatus.ui  formEnergise.ui
 #Qt resource files to compile
 RESOURCES =
 
-#pyuic4 and pyrcc4 binaries
+#pyuic5 and pyrcc5 binaries
 PYUIC = pyuic5
 PYRCC = pyrcc5
 
@@ -34,3 +34,4 @@ $(COMPILED_DIR)/%_rc.py : $(RESOURCE_DIR)/%.qrc
 
 clean :
 	$(RM) $(COMPILED_UI) $(COMPILED_RESOURCES) $(COMPILED_UI:.py=.pyc) $(COMPILED_RESOURCES:.py=.pyc)
+

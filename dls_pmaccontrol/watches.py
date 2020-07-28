@@ -2,7 +2,6 @@
 
 import re
 import sys
-import traceback
 
 from formWatches import formWatches
 from pmactelnet import PmacTelnetInterface
@@ -51,8 +50,10 @@ def int2bin(i):
     """Oddly enough, I havent found a simple Python function or formatter to convert
     from integers to binary numbers. So this does the job. can handle signed integers
     as many as 128 bits long."""
-    print("int2bin: Would be nice if there were optional spacers between groups of 4 \
-        contiguous bits")
+    print(
+        "int2bin: Would be nice if there were optional spacers between groups of 4 \
+        contiguous bits"
+    )
     if i == 0:
         return "0"
     if i < 0:
@@ -337,7 +338,7 @@ class MVariableWatch(Watch):
         # but with an offset of 24, which means "use all 24 bits and the offset is 0".
         matchObject = re.match(
             r"^([XY])\:?(\$?[0-9a-fA-F]+)\,24(\,([US]))?$", definitionStr
-                    )
+        )
         if matchObject:
             self.width = 24
             # the variable is signed when "S" is present, otherwise
