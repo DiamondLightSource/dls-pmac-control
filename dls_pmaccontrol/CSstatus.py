@@ -593,7 +593,7 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
 if __name__ == "__main__":
     a = QApplication(sys.argv)
     QObject.connect(a, SIGNAL("lastWindowClosed()"), a, SLOT("quit()"))
-    w = Ui_formCSStatus()
+    w = CSStatusForm(None)
     a.setMainWidget(w)
     w.show()
     a.exec_loop()

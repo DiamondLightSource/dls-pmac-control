@@ -554,7 +554,7 @@ Ix00 is 0 and motor calculations are deactivated. """
 if __name__ == "__main__":
     a = QApplication(sys.argv)
     QObject.connect(a, SIGNAL("lastWindowClosed()"), a, SLOT("quit()"))
-    w = Statusform()
+    w = Statusform(None, None)
     a.setMainWidget(w)
     w.show()
     a.exec_loop()

@@ -354,7 +354,7 @@ class GlobalStatusForm(QDialog, Ui_formGlobalStatus):
 if __name__ == "__main__":
     a = QApplication(sys.argv)
     QObject.connect(a, SIGNAL("lastWindowClosed()"), a, SLOT("quit()"))
-    w = Ui_formGlobalStatus()
+    w = GlobalStatusForm(None)
     a.setMainWidget(w)
     w.show()
     a.exec_loop()

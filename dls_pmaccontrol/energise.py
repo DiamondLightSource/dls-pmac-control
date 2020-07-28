@@ -129,7 +129,7 @@ class Energiseform(QDialog, Ui_formEnergise):
 if __name__ == "__main__":
     a = QApplication(sys.argv)
     QObject.connect(a, SIGNAL("lastWindowClosed()"), a, SLOT("quit()"))
-    w = Energiseform()
+    w = Energiseform(None)
     a.setMainWidget(w)
     w.show()
     a.exec_loop()
