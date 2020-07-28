@@ -15,14 +15,11 @@ doc8 = "*"
 [packages]
 numpy = "*"
 pyqt5 = "*"
-dls-pmaclib = {editable = true,path = "./../dls_pmaclib"}
+dls-pmaclib = {editable = true,git= 'git@gitlab.diamond.ac.uk:controls/python3/dls_pmaclib.git'}
 
 [scripts]
 # Put coverage here so we don't interfere with debugging in the IDE
-black = "python -m pytest --black"
-flake8 = "python -m pytest --flake8"
-mypy = "python -m pytest --mypy"
-tests = "python -m pytest --cov-fail-under=90 --cov=dls_pmaccontrol --cov-report term"
+tests = "python -m pytest --cov=dls_pmaccontrol --cov-report term"
 docs = "sphinx-build -E -b html docs build/html"
 
 [pipenv]
