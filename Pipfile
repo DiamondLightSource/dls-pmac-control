@@ -15,8 +15,7 @@ doc8 = "*"
 [packages]
 numpy = "*"
 pyqt5 = "*"
-#dls-pmaclib = {editable = true,git= 'https://git@gitlab.diamond.ac.uk/controls/python3/dls_pmaclib.git'}
-dls-pmaclib = "2.1.0"
+dls-pmaclib = "==2.1.0"
 
 [scripts]
 # Put coverage here so we don't interfere with debugging in the IDE
@@ -25,4 +24,3 @@ docs = "sphinx-build -E -b html docs build/html"
 
 [pipenv]
 allow_prereleases = true
-
