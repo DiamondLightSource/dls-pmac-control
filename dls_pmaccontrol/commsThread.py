@@ -3,8 +3,9 @@ import time
 import traceback
 from queue import Empty, Queue
 
-from dls_pmaclib.dls_pmacremote import PmacSerialInterface
 from PyQt5.QtCore import QCoreApplication, QEvent
+
+from dls_pmaclib.dls_pmacremote import PmacSerialInterface
 
 
 class CustomEvent(QEvent):
