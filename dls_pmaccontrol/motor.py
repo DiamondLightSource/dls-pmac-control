@@ -6,6 +6,12 @@ from optparse import OptionParser
 from os import path
 from queue import Empty
 
+from dls_pmaclib.dls_pmacremote import (
+    PmacEthernetInterface,
+    PmacSerialInterface,
+    PmacTelnetInterface,
+)
+from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
 from PyQt5.QtCore import QEvent, Qt, pyqtSlot
 from PyQt5.QtGui import QApplication, QFileDialog, QIcon, QMessageBox, QPixmap
 from PyQt5.QtWidgets import QLineEdit, QMainWindow, QProgressDialog, QTableWidgetItem
@@ -18,12 +24,6 @@ from dls_pmaccontrol.gather import Gatherform
 from dls_pmaccontrol.GlobalStatus import GlobalStatusForm
 from dls_pmaccontrol.status import Statusform
 from dls_pmaccontrol.ui_formControl import Ui_ControlForm
-from dls_pmaclib.dls_pmacremote import (
-    PmacEthernetInterface,
-    PmacSerialInterface,
-    PmacTelnetInterface,
-)
-from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
 
 # from optparse import OptionParser
 
