@@ -15,7 +15,7 @@ doc8 = "*"
 [packages]
 numpy = "*"
 pyqt5 = "*"
-dls_pmaclib = {editable = true,git= 'git@gitlab.diamond.ac.uk:controls/python3/dls_pmaclib.git'}
+dls-pmaclib = {editable = true,git= 'ssh://git@gitlab.diamond.ac.uk/controls/python3/dls_pmaclib.git'}
 
 [scripts]
 # Put coverage here so we don't interfere with debugging in the IDE
