@@ -3,10 +3,10 @@
 
 import sys
 
-from PyQt5.QtCore import SIGNAL, SLOT, QObject, Qt
+from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QApplication, QDialog, QLabel
 
-from .ui_formCSStatus import Ui_formCSStatus
+from ui_formCSStatus import Ui_formCSStatus
 
 
 class CSStatusForm(QDialog, Ui_formCSStatus):
@@ -592,7 +592,7 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
 
 if __name__ == "__main__":
     a = QApplication(sys.argv)
-    QObject.connect(a, SIGNAL("lastWindowClosed()"), a, SLOT("quit()"))
+    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))
     w = CSStatusForm(None)
     a.setMainWidget(w)
     w.show()

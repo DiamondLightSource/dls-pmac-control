@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import sys
 
-from PyQt5.QtCore import SIGNAL, SLOT, QObject, Qt
+from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QApplication, QDialog, QLabel
 
-from .ui_formGlobalStatus import Ui_formGlobalStatus
+from ui_formGlobalStatus import Ui_formGlobalStatus
 
 
 class GlobalStatusForm(QDialog, Ui_formGlobalStatus):
@@ -353,7 +353,7 @@ class GlobalStatusForm(QDialog, Ui_formGlobalStatus):
 
 if __name__ == "__main__":
     a = QApplication(sys.argv)
-    QObject.connect(a, SIGNAL("lastWindowClosed()"), a, SLOT("quit()"))
+    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))
     w = GlobalStatusForm(None)
     a.setMainWidget(w)
     w.show()

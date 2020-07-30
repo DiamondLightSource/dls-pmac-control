@@ -2,13 +2,13 @@ import os
 import time
 
 from numpy import arange
-from PyQt5 import Qwt
 from PyQt5.Qt import QPen
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog, QMessageBox
+from qwt import QwtPlotCurve
 
-from .gatherchannel import LONGWORD, WORD, GatherChannel, dataSources, motorBaseAddrs
-from .ui_formGather import Ui_formGather
+from gatherchannel import LONGWORD, WORD, GatherChannel, dataSources, motorBaseAddrs
+from ui_formGather import Ui_formGather
 
 # TODO - this needs the logic decoupled from the GUI and moved into pmaclib
 #  work has started in pmaclib but currently duplicates code in this module
@@ -125,7 +125,7 @@ class Gatherform(QDialog, Ui_formGather):
                 # GatherChannel.
 
                 # print "Set data: %s"%cmd
-                curve = Qwt.QwtPlotCurve("Ch%d" % index)
+                curve = QwtPlotCurve("Ch%d" % index)
                 curve.attach(self.qwtPlot)
                 # curve = self.qwtPlot.insertCurve("Ch%d"%index)
                 channel = GatherChannel(self.parent.pmac, curve)

@@ -16,6 +16,7 @@ doc8 = "*"
 numpy = "*"
 pyqt5 = "*"
 dls-pmaclib = "==2.1.0"
+pythonqwt = "*"
 
 [scripts]
 # Put coverage here so we don't interfere with debugging in the IDE

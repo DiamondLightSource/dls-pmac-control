@@ -13,17 +13,25 @@ from dls_pmaclib.dls_pmacremote import (
 )
 from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
 from PyQt5.QtCore import QEvent, Qt, pyqtSlot
-from PyQt5.QtGui import QApplication, QFileDialog, QIcon, QMessageBox, QPixmap
-from PyQt5.QtWidgets import QLineEdit, QMainWindow, QProgressDialog, QTableWidgetItem
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import (
+    QApplication,
+    QFileDialog,
+    QLineEdit,
+    QMainWindow,
+    QMessageBox,
+    QProgressDialog,
+    QTableWidgetItem,
+)
 
-from dls_pmaccontrol.axissettings import Axissettingsform
-from dls_pmaccontrol.commsThread import CommsThread
-from dls_pmaccontrol.CSstatus import CSStatusForm
-from dls_pmaccontrol.energise import Energiseform
-from dls_pmaccontrol.gather import Gatherform
-from dls_pmaccontrol.GlobalStatus import GlobalStatusForm
-from dls_pmaccontrol.status import Statusform
-from dls_pmaccontrol.ui_formControl import Ui_ControlForm
+from axissettings import Axissettingsform
+from commsThread import CommsThread
+from CSstatus import CSStatusForm
+from energise import Energiseform
+from gather import Gatherform
+from GlobalStatus import GlobalStatusForm
+from status import Statusform
+from ui_formControl import Ui_ControlForm
 
 # from optparse import OptionParser
 

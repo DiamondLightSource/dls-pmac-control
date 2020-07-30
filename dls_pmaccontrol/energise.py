@@ -3,10 +3,10 @@
 import re
 import sys
 
-from PyQt5.QtCore import SIGNAL, SLOT, QObject, Qt
+from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QApplication, QCheckBox, QDialog, QMessageBox
 
-from .ui_formEnergise import Ui_formEnergise
+from ui_formEnergise import Ui_formEnergise
 
 
 class PmacIOError(IOError):
@@ -128,7 +128,7 @@ class Energiseform(QDialog, Ui_formEnergise):
 
 if __name__ == "__main__":
     a = QApplication(sys.argv)
-    QObject.connect(a, SIGNAL("lastWindowClosed()"), a, SLOT("quit()"))
+    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))
     w = Energiseform(None)
     a.setMainWidget(w)
     w.show()

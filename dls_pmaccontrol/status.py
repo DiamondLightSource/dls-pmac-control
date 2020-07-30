@@ -3,10 +3,10 @@
 import sys
 
 from PyQt5.Qt import QApplication
-from PyQt5.QtCore import SIGNAL, SLOT, QObject, Qt
+from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QLabel
 
-from .ui_formStatus import Ui_formStatus
+from ui_formStatus import Ui_formStatus
 
 
 class Statusform(QDialog, Ui_formStatus):
@@ -553,7 +553,7 @@ Ix00 is 0 and motor calculations are deactivated. """
 
 if __name__ == "__main__":
     a = QApplication(sys.argv)
-    QObject.connect(a, SIGNAL("lastWindowClosed()"), a, SLOT("quit()"))
+    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))
     w = Statusform(None, None)
     a.setMainWidget(w)
     w.show()

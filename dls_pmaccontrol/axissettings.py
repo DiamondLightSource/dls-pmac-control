@@ -2,7 +2,7 @@
 
 from PyQt5.QtWidgets import QDialog
 
-from .ui_formAxisSettings import Ui_formAxisSettings
+from ui_formAxisSettings import Ui_formAxisSettings
 
 
 class Axissettingsform(QDialog, Ui_formAxisSettings):
