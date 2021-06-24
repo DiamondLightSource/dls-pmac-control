@@ -488,26 +488,20 @@ class Controlform(QMainWindow, Ui_ControlForm):
     # public slot
     def jogIncrementally(self, a0):
         self.lneJogDist.setEnabled(a0)
-        # if a0:
-        #     self.disconnect(self.btnJogPos, SIGNAL("pressed()"),
-        #                     self.jogPosContinousStart)
-        #     self.disconnect(self.btnJogPos, SIGNAL("released()"),
-        #     self.jogStop)
-        #     self.disconnect(self.btnJogNeg, SIGNAL("pressed()"),
-        #                     self.jogNegContinousStart)
-        #     self.disconnect(self.btnJogNeg, SIGNAL("released()"),
-        #     self.jogStop)
-        #     self.connect(self.btnJogNeg, SIGNAL("clicked()"), self.jog_neg)
-        #     self.connect(self.btnJogPos, SIGNAL("clicked()"), self.jogPos)
-        # else:
-        #     self.connect(self.btnJogPos, SIGNAL("pressed()"),
-        #                  self.jogPosContinousStart)
-        #     self.connect(self.btnJogPos, SIGNAL("released()"), self.jogStop)
-        #     self.connect(self.btnJogNeg, SIGNAL("pressed()"),
-        #                  self.jogNegContinousStart)
-        #     self.connect(self.btnJogNeg, SIGNAL("released()"), self.jogStop)
-        #     self.disconnect(self.btnJogNeg, SIGNAL("clicked()"), self.jog_neg)
-        #     self.disconnect(self.btnJogPos, SIGNAL("clicked()"), self.jogPos)
+        if a0:
+            self.btnJogPos.pressed.disconnect(self.jogPosContinousStart)
+            self.btnJogPos.released.disconnect(self.jogStop)
+            self.btnJogNeg.pressed.disconnect(self.jogNegContinousStart)
+            self.btnJogNeg.released.disconnect(self.jogStop)
+            self.btnJogNeg.clicked.connect(self.jogNeg)
+            self.btnJogPos.clicked.connect(self.jogPos)
+        else:
+            self.btnJogPos.pressed.connect(self.jogPosContinousStart)
+            self.btnJogPos.released.connect(self.jogStop)
+            self.btnJogNeg.pressed.connect(self.jogNegContinousStart)
+            self.btnJogNeg.released.connect(self.jogStop)
+            self.btnJogNeg.clicked.disconnect(self.jogNeg)
+            self.btnJogPos.clicked.disconnect(self.jogPos)
 
     def __item(self, row, col):
         item = self.table.item(row, col)
