@@ -24,14 +24,14 @@ from PyQt5.QtWidgets import (
     QTableWidgetItem,
 )
 
-from axissettings import Axissettingsform
-from commsThread import CommsThread
-from CSstatus import CSStatusForm
-from energise import Energiseform
-from gather import Gatherform
-from GlobalStatus import GlobalStatusForm
-from status import Statusform
-from ui_formControl import Ui_ControlForm
+from dls_pmaccontrol.axissettings import Axissettingsform
+from dls_pmaccontrol.commsThread import CommsThread
+from dls_pmaccontrol.CSstatus import CSStatusForm
+from dls_pmaccontrol.energise import Energiseform
+from dls_pmaccontrol.gather import Gatherform
+from dls_pmaccontrol.GlobalStatus import GlobalStatusForm
+from dls_pmaccontrol.status import Statusform
+from dls_pmaccontrol.ui_formControl import Ui_ControlForm
 
 # from optparse import OptionParser
 
