@@ -30,6 +30,26 @@
        <string>gather</string>
       </attribute>
       <layout class="QGridLayout">
+	<item row="0" column="0" colspan="5">
+        <widget class="QwtPlot" name="qwtPlot">
+         <property name="autoReplot" stdset="0">
+          <bool>true</bool>
+         </property>
+         <property name="canvasBackground" stdset="0">
+          <color>
+           <red>255</red>
+           <green>255</green>
+           <blue>255</blue>
+          </color>
+         </property>
+         <property name="yRightAxis" stdset="0">
+          <bool>true</bool>
+         </property>
+         <property name="title" stdset="0">
+          <string>data gather</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="3">
         <spacer name="spacer3">
          <property name="orientation">
@@ -801,6 +821,13 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
+ <customwidgets>
+  <customwidget>
+   <class>QwtPlot</class>
+   <extends>QFrame</extends>
+   <header>qwt</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>tabWidget2</tabstop>
   <tabstop>btnSetup</tabstop>

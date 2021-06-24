@@ -1,5 +1,6 @@
 import os
 import time
+import threading
 
 from numpy import arange
 from PyQt5.Qt import QPen
@@ -7,14 +8,23 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qwt import QwtPlotCurve
 
-from gatherchannel import LONGWORD, WORD, GatherChannel, dataSources, motorBaseAddrs
-from ui_formGather import Ui_formGather
+from dls_pmaccontrol.gatherchannel import LONGWORD, WORD, GatherChannel, dataSources, motorBaseAddrs
+from dls_pmaccontrol.ui_formGather import Ui_formGather
 
 # TODO - this needs the logic decoupled from the GUI and moved into pmaclib
 #  work has started in pmaclib but currently duplicates code in this module
 
 # TODO Find out why the gathering fails with an response "ERR003" from the
 #   PMAC for PMAC2-VME (does work for Geo Brick)!
+
+class myThread(threading.Thread):
+    def __init__(self, instance, waittime):
+        threading.Thread.__init__(self)
+        self.waittime = waittime
+        self.instance = instance
+
+    def run(self):
+        Gatherform.triggerWait(self.instance,self.waittime)
 
 
 class Gatherform(QDialog, Ui_formGather):
@@ -91,7 +101,7 @@ class Gatherform(QDialog, Ui_formGather):
             cmBox.clear()
         for dataPoint in dataSources:
             for cmBox in self.lstComboboxes:
-                cmBox.addItem(dataPoint["desc"])
+                cmBox.addItem(dataPoint["desc"])           
 
     def gatherConfig(self):
         # Create i5050 variable value to mask out what values to sample
@@ -104,9 +114,16 @@ class Gatherform(QDialog, Ui_formGather):
         cmd = "i5051=0 i5050=$%x" % tmpIvar
         self.parent.pmac.sendCommand(cmd)
 
+        # Clear the plot by setting empty plotitems
+        for chIndex, ch in enumerate(self.lstChannels):
+            ch.qwtCurve.setData([],[])
+
         # reset the data channels from class GatherChannel
         self.lstChannels = []
-        self.qwtPlot.clear()
+
+        # Left or right Y axis
+        enableRight = False
+        enableLeft = False
 
         # Create the i5001 - i5005 values to specify what data to sample
         for index, axisSpinBox in enumerate(self.lstSpinboxes):
@@ -136,13 +153,27 @@ class Gatherform(QDialog, Ui_formGather):
                 # set the left or right Y axis
                 if self.lstCmbYaxis[index].currentIndex() == 0:
                     channel.qwtCurve.setYAxis(self.qwtPlot.yLeft)
+                    enableLeft = True
                     # self.qwtPlot.setCurveYAxis(channel.qwtCurve,
                     # self.qwtPlot.yLeft)
                 elif self.lstCmbYaxis[index].currentIndex() == 1:
+                    enableRight = True
                     channel.qwtCurve.setYAxis(self.qwtPlot.yRight)
                     # self.qwtPlot.setCurveYAxis(channel.qwtCurve,
                     # self.qwtPlot.yRight)
 
+        if enableLeft and enableRight:
+            self.qwtPlot.enableAxis(self.qwtPlot.yLeft, True)
+            self.qwtPlot.enableAxis(self.qwtPlot.yRight, True)
+        elif enableLeft:
+            self.qwtPlot.enableAxis(self.qwtPlot.yLeft, True)
+            self.qwtPlot.enableAxis(self.qwtPlot.yRight, False)
+        elif enableRight:
+            self.qwtPlot.enableAxis(self.qwtPlot.yLeft, False)
+            self.qwtPlot.enableAxis(self.qwtPlot.yRight, True)
+        else:
+            self.qwtPlot.enableAxis(self.qwtPlot.yLeft, False)
+            self.qwtPlot.enableAxis(self.qwtPlot.yRight, False)  
         # set the sampling time (in servo cycles)
         self.parent.pmac.sendCommand("i5049=%d" % int(str(self.lneSampleTime.text())))
         return True
@@ -205,11 +236,17 @@ class Gatherform(QDialog, Ui_formGather):
         self.parent.pmac.sendCommand("define gather %d" % gatherBufSize)
         return
 
+    def triggerWait(self,waittime):
+        time.sleep(waittime)
+        self.btnCollect.setEnabled(True)
+
     def gatherTrigger(self):
         self.parent.pmac.sendCommand("gather")
         # print "sleeping for %f s"%(self.sampleTime * self.nGatherPoints /
         # 1000.0)
-        time.sleep(self.sampleTime * self.nGatherPoints / 1000.0)
+        t = myThread(self,self.sampleTime * self.nGatherPoints / 1000.0)
+        t.start()
+        #time.sleep(self.sampleTime * self.nGatherPoints / 1000.0)
 
     def collectData(self):
         (retStr, status) = self.parent.pmac.sendCommand("list gather")
@@ -353,7 +390,7 @@ class Gatherform(QDialog, Ui_formGather):
         self.btnTrigger.setEnabled(False)
         self.gatherTrigger()
         self.btnSetup.setEnabled(True)
-        self.btnCollect.setEnabled(True)
+        #self.btnCollect.setEnabled(True)
         self.btnSave.setEnabled(False)
 
     def applyConfigClicked(self):
