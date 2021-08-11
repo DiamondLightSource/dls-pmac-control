@@ -4,6 +4,7 @@ import traceback
 from queue import Empty, Queue
 
 from dls_pmaclib.dls_pmacremote import PmacSerialInterface
+from dls_pmaclib.dls_pmacremote import PPmacSshInterface
 from PyQt5.QtCore import QCoreApplication, QEvent
 
 
@@ -121,10 +122,15 @@ class CommsThread(object):
             if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
                 return
         cmd = "i65???&%s??%%"
+
+        # Send a different command for the Power PMAC
+        if isinstance(self.parent.pmac, PPmacSshInterface):
+            cmd = "i65?&%s?%%"
         axes = self.parent.pmac.getNumberOfAxes() + 1
         for motorNo in range(1, axes):
             cmd = cmd + "#" + str(motorNo) + "?PVF"
         (returnStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd % self.CSNum)
+
         if wasSuccessful:
             valueList = returnStr.rstrip("\x06\r").split("\r")
             # fourth is the PMAC identity
@@ -156,6 +162,7 @@ class CommsThread(object):
                 returnList = valueList[i : i + cols]
                 returnList.append(motorRow)
                 self.resultQueue.put(returnList, False)
+
             evUpdatesReady = CustomEvent(self.parent.updatesReadyEventType, None)
             QCoreApplication.postEvent(self.parent, evUpdatesReady)
         else:

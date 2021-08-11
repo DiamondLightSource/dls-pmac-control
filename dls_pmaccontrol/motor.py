@@ -10,6 +10,7 @@ from dls_pmaclib.dls_pmacremote import (
     PmacEthernetInterface,
     PmacSerialInterface,
     PmacTelnetInterface,
+    PPmacSshInterface
 )
 from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
 from PyQt5.QtCore import QEvent, Qt, pyqtSlot
@@ -75,6 +76,10 @@ class Controlform(QMainWindow, Ui_ControlForm):
             # use serial connection
             self.rbUseSerial.setChecked(True)
             self.ConnectionType = 2
+        elif self.connectionProtocol == "ssh":
+            # use TCP/IP socket connection
+            self.rbUseSocket.setChecked(True)
+            self.ConnectionType = 3
         else:
             QMessageBox.information(
                 self,
@@ -89,6 +94,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         # This will hold a PmacRemoteInterface once self.remoteConnect() is
         # called
         self.pmac = None
+        self.powerpmac = None
 
         self.statusScreen = Statusform(self, self.currentMotor)
         self.CSStatusScreen = CSStatusForm(self)
@@ -137,13 +143,14 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.ConnectionType = 1
             # set the server and port fields to defaults for this connection
             # type
-            self.lneServer.setText("172.23.240.97")
+            #self.lneServer.setText("172.23.240.97")
+            self.lneServer.setText("10.2.2.28")
             self.lnePort.setText("1025")
             self.textLabel1.setText("IP address:")
             self.textLabel2.setText("Port:")
             self.lblPolling.setText("Polling")
             self.lnePollRate.setEnabled(False)
-            self.lblPollRate.setEnabled(False)
+            self.lblPollRate.setEnabled(False)    
 
     def useSerial(self):
         if self.ConnectionType != 2:
@@ -159,6 +166,21 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.lnePollRate.setEnabled(True)
             self.lnePollRate.setText("0")
             self.lblPollRate.setEnabled(True)
+
+    def useSshConnection(self):
+        if self.ConnectionType != 3:
+            self.ConnectionType = 3
+            # set the server and port fields to defaults for this connection
+            # type
+            self.lneServer.setText("192.168.56.10")
+            self.lnePort.setText("22")
+            self.textLabel1.setText("IP address:")
+            self.textLabel2.setText("Port:")
+            #self.textLabel3.setText("Username:")
+            #self.textLabel4.setText("Password:")
+            self.lblPolling.setText("Polling")
+            self.lnePollRate.setEnabled(False)
+            self.lblPollRate.setEnabled(False)    
 
     def checkHistory(self, edit, event):
         if event.key() == Qt.Key_Up:
@@ -203,6 +225,14 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 numAxes=self.nAxes,
                 timeout=self.connectionTimeout,
             )
+        elif self.ConnectionType == 3:
+            self.pmac = PPmacSshInterface(
+                self,
+                verbose=self.verboseMode,
+                numAxes=self.nAxes,
+                timeout=self.connectionTimeout,
+            )
+            #return    
 
         # Set the server name and port
         server_name = self.lneServer.text()
@@ -555,7 +585,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 self.__item(motorRow, 0).setText(position)
                 self.__item(motorRow, 1).setText(velocity)
                 self.__item(motorRow, 2).setText(folerr)
-                # print value[0]
+
                 statusWord = int(value[0], 16)
                 loLim = bool(statusWord & 0x400000000000)
                 hiLim = bool(statusWord & 0x200000000000)
