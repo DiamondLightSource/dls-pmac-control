@@ -213,7 +213,9 @@ class Ui_formWatches(object):
         self.retranslateUi(formWatches)
         self.btnRemoveWatch.clicked.connect(formWatches.removeWatch)
         self.btnClose.clicked.connect(formWatches.close)
-        self.table.currentChanged['int','int'].connect(formWatches.clickTable)
+        #self.table.currentChanged['int','int'].connect(formWatches.clickTable) 
+            #TypeError: 'builtin_function_or_method' object is not subscriptable
+
         self.btnAddWatch.clicked.connect(formWatches.addWatch)
         self.btnApplyChanges.clicked.connect(formWatches.applyEditWatch)
         QtCore.QMetaObject.connectSlotsByName(formWatches)

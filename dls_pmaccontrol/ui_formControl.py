@@ -380,7 +380,7 @@ class Ui_ControlForm(object):
         self.rbUseSsh.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(200)
+        sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.rbUseSsh.sizePolicy().hasHeightForWidth())
         self.rbUseSsh.setSizePolicy(sizePolicy)
         self.rbUseSsh.setObjectName("rbUseSsh")

@@ -29,6 +29,7 @@ from dls_pmaccontrol.axissettings import Axissettingsform
 from dls_pmaccontrol.commsThread import CommsThread
 from dls_pmaccontrol.CSstatus import CSStatusForm
 from dls_pmaccontrol.energise import Energiseform
+from dls_pmaccontrol.watches import Watchesform
 from dls_pmaccontrol.gather import Gatherform
 from dls_pmaccontrol.GlobalStatus import GlobalStatusForm
 from dls_pmaccontrol.status import Statusform
@@ -101,7 +102,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.GlobalStatusScreen = GlobalStatusForm(self)
         self.axisSettingsScreen = Axissettingsform(self, self.currentMotor)
         self.gatherScreen = Gatherform(self, self.currentMotor)
-        self.energiseScreen = None
+        self.energiseScreen = Watchesform(self)
         self.commsThread = CommsThread(self)
 
         self.spnJogMotor.setValue(self.currentMotor)
@@ -392,7 +393,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
     # public slot
     def pmacEnergiseAxis(self):
-        self.energiseScreen = Energiseform(self.pmac, self)
+        self.energiseScreen = Watchesform(self)
         self.energiseScreen.show()
 
     def statusScreen(self):

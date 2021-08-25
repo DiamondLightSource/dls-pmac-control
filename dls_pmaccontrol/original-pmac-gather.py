@@ -14,6 +14,10 @@ from dls_pmaccontrol.ui_formGather import Ui_formGather
 # TODO - this needs the logic decoupled from the GUI and moved into pmaclib
 #  work has started in pmaclib but currently duplicates code in this module
 
+# TODO Find out why the gathering fails with an response "ERR003" from the
+#   PMAC for PMAC2-VME (does work for Geo Brick)! 
+#   (ERR003 = Data error or unrecognized command - solution: correct command syntax)
+
 class myThread(threading.Thread):
     def __init__(self, instance, waittime):
         threading.Thread.__init__(self)
@@ -98,44 +102,42 @@ class Gatherform(QDialog, Ui_formGather):
             cmBox.clear()
         for dataPoint in dataSources:
             for cmBox in self.lstComboboxes:
-                cmBox.addItem(dataPoint["desc"])  
-
-        # delete following : 
-        tmp_dir = "../../var/ftp/usrflash/Temp/"
-        local_dir = "./"
-        try:
-            self.parent.pmac.getDir(tmp_dir, local_dir)
-            print("Copied directory from remote host")
-        except Exception as e:
-            print("Error: Could not copy directory from power pmac")
-            return     
+                cmBox.addItem(dataPoint["desc"])           
 
     def gatherConfig(self):
+        # Create i5050 variable value to mask out what values to sample
+        tmpIvar = 0
+        for bit, checkbox in enumerate(self.lstCheckboxes):
+            if checkbox.isChecked():
+                tmpIvar |= 0x01 << bit
+        if tmpIvar == 0:
+            return False
+        print("I AM HERE")
+        cmd = "i5051=0 i5050=$%x" % tmpIvar
+        self.parent.pmac.sendCommand(cmd)
+
         # Clear the plot by setting empty plotitems
         for chIndex, ch in enumerate(self.lstChannels):
             ch.qwtCurve.setData([],[])
 
-        # Reset the data channels from class GatherChannel
+        # reset the data channels from class GatherChannel
         self.lstChannels = []
 
         # Left or right Y axis
         enableRight = False
         enableLeft = False
- 
-        # use counter to find number of items to gather
-        items = 0
 
-        # Specify data to sample
+        # Create the i5001 - i5005 values to specify what data to sample
         for index, axisSpinBox in enumerate(self.lstSpinboxes):
-            cmBox = self.lstComboboxes[index]
+            cmbBox = self.lstComboboxes[index]
             chkBox = self.lstCheckboxes[index]
-
-            addr_str = dataSources[cmBox.currentIndex()]["addr"]
-            gather_addr = "Gather.Addr[%d]" % items
-            addr = "Motor[%d].%s" % (axisSpinBox.value(),addr_str)
-            cmd = "%s=%s" % (gather_addr, addr)
+            dataOffset = dataSources[cmbBox.currentIndex()]["reg"]
+            baseAddress = motorBaseAddrs[axisSpinBox.value() - 1]
+            dataWidth = dataSources[cmbBox.currentIndex()]["size"]
+            ivar = "i50%02d" % (index + 1)
+            addr = "$%X%05X" % (dataWidth, baseAddress + dataOffset)
+            cmd = "%s=%s" % (ivar, addr)
             if chkBox.isChecked():
-                items += 1
                 self.parent.pmac.sendCommand(cmd)
 
                 # create a new curve for the qwt plot and instanciate a
@@ -174,16 +176,66 @@ class Gatherform(QDialog, Ui_formGather):
         else:
             self.qwtPlot.enableAxis(self.qwtPlot.yLeft, False)
             self.qwtPlot.enableAxis(self.qwtPlot.yRight, False)  
-        
-        # set the number of items to gather
-        self.parent.pmac.sendCommand("Gather.items=%d" % items)
+        # set the sampling time (in servo cycles)
+        self.parent.pmac.sendCommand("i5049=%d" % int(str(self.lneSampleTime.text())))
         return True
 
     def gatherSetup(self, numberOfSamples=1):
-        # set the sampling time (in servo cycles)
-        self.parent.pmac.sendCommand("Gather.Period=%d" % int(str(self.lneSampleTime.text())))
-        # set the number of samples
-        self.parent.pmac.sendCommand("Gather.MaxSamples=%d" % int(str(self.lneNumberSamples.text())))
+
+        # Run through the bitmasks i5050 and i5051 to see which of the
+        # 48 channels should be sampled.
+        bitOffset = 1
+        for ivarMask in range(5050, 5052):
+            (retStr, status) = self.parent.pmac.sendCommand("i%d" % ivarMask)
+
+            # For each channel to sample, get the ivariable with the
+            # ivariable to sample from,
+            # This value is read from the PMAC as a double check to avoid
+            # differences between the
+            # PMAC data settings and the data set in this application.
+            chCount = 0
+            for bit in range(WORD):
+                if (int(retStr.strip("$")[:-1], 16) >> bit & 0x01) > 0:
+                    chIndex = bit + bitOffset
+                    ivar = "i50%02d" % chIndex
+                    chCount += 1
+                    if chCount > len(self.lstChannels):
+                        print(
+                            "gatherSetup: Error: not enough GatherChannels "
+                            "instantiated."
+                        )
+                        break
+                    self.lstChannels[chCount - 1].setDataGatherPointer(ivar)
+
+            bitOffset += WORD
+
+        self.numberOfChannels = len(self.lstChannels)
+        # print "number of channels = %d"%self.numberOfChannels
+
+        self.numberOfWords = 0
+        noBits = 0
+
+        # Run through all the channels to sample from
+        self.oddNumberOfWords = False
+        for chIndex, ch in enumerate(self.lstChannels):
+
+            # Get the data info
+            # print "channel: %d"%chIndex
+            ch.getDataInfo()
+
+            # Figure out the data width and odd/even number of data words
+            noBits += ch.dataWidth
+            if ch.dataWidth == WORD:
+                self.oddNumberOfWords = not self.oddNumberOfWords
+        self.numberOfWords = int(noBits / WORD)
+
+        readWords = self.numberOfWords
+        if self.oddNumberOfWords:
+            readWords += 1
+        gatherBufSize = 47 + ((readWords / 2) * numberOfSamples)
+        # print "number of words: %d - number of samples: %d"%(
+        # self.numberOfWords, numberOfSamples)
+        self.parent.pmac.sendCommand("define gather %d" % gatherBufSize)
         return
 
     def triggerWait(self,waittime):
@@ -191,46 +243,96 @@ class Gatherform(QDialog, Ui_formGather):
         self.btnCollect.setEnabled(True)
 
     def gatherTrigger(self):
-        self.parent.pmac.sendCommand("Gather.enable=2")
-        # gather time in secs
-        gather_time = self.sampleTime * self.nGatherPoints / 1000.0
-        t = myThread(self,gather_time) 
+        self.parent.pmac.sendCommand("gather")
+        # print "sleeping for %f s"%(self.sampleTime * self.nGatherPoints /
+        # 1000.0)
+        t = myThread(self,self.sampleTime * self.nGatherPoints / 1000.0)
         t.start()
+        #time.sleep(self.sampleTime * self.nGatherPoints / 1000.0)
 
     def collectData(self):
-        # send gathered data to file on ppmac
-        tmp_file = "../../var/ftp/usrflash/Temp/gather.txt"
-        self.parent.pmac.sendSshCommand("gather -u " + tmp_file)
-        time.sleep(0.1)
-        # copy file from ppmac to cwd
-        gather_file = "./gather.txt"
-        try:
-            self.parent.pmac.getFile(tmp_file, gather_file)
-        except Exception as e:
-            print("Error: Could not get gather file from power pmac")
-            return
+        (retStr, status) = self.parent.pmac.sendCommand("list gather")
+        lstDataStrings = []
+        if status:
+            # lstDataStrings = retStr[:-1].split()
+            for long_val in retStr[:-1].split():
+                lstDataStrings.append(long_val.strip()[6:])
+                lstDataStrings.append(long_val.strip()[:6])
+        else:
+            print(
+                "Problem retrieving gather buffer, status: ",
+                status,
+                " returned data: ",
+                retStr,
+            )
+            return False
+
+        # print retStr[:-1].split()
+        return lstDataStrings
 
     def parseData(self, lstDataStrings):
-        pass # need to write code here
+        lstDataArrays = []
+        for _ in self.lstChannels:
+            lstDataArrays.append([])
+
+        channel = 0
+        tmpLongVal = None
+
+        for strVal in lstDataStrings:
+            if channel >= self.numberOfChannels:
+                channel = 0
+                if self.oddNumberOfWords:
+                    # Read a dummy word since an uneven number of words
+                    # causes the pmac to send a random word at the end of a
+                    # line...
+                    continue
+
+            if self.lstChannels[channel].dataWidth == WORD:
+                lstDataArrays[channel].append(strVal)
+                channel += 1
+                continue
+            if self.lstChannels[channel].dataWidth == LONGWORD:
+                if not tmpLongVal:
+                    tmpLongVal = strVal
+                else:
+                    lstDataArrays[channel].append(strVal + tmpLongVal)
+                    tmpLongVal = None
+                    channel += 1
+                continue
+
+        for chIndex, ch in enumerate(self.lstChannels):
+            ch.setStrData(lstDataArrays[chIndex])
+            ch.strToRaw()
+            ch.rawToScaled()
 
     def plotData(self):
-        gather_file = "./gather.txt"
+
+        # xAxisData = range(self.numberOfSamples)
         for chIndex, ch in enumerate(self.lstChannels):
-            data = [line.split(' ')[chIndex] for line in open(gather_file).readlines()]
-            data = [float(s.strip('/n')) for s in data]
+            data = ch.scaledData
+            # print "*** plotting data channel %d **************"%chIndex
+            # print "datatype: %s"%str(ch.dataType)
+            # print "length: %d"%len(data)
+            # print "data: %s"%str(data)
+
             ch.qwtCurve.setData(arange(len(data)), data)
+
         self.qwtPlot.replot()
+        # print "********** Done plotting **************"
 
     def calcSampleTime(self):
-        cmd = "Sys.ServoPeriod"
+        cmd = "I10"
         (retStr, status) = self.parent.pmac.sendCommand(cmd)
-        self.servoCycleTime = float(retStr)
-        print("self.servoCycleTime is: ",self.servoCycleTime)
+        ivarI10 = int(retStr.strip("$")[:-1])
+        self.servoCycleTime = ivarI10 / 8388608.0  # in ms
+        
+	# print "Length clock ticks: %.2fns #clock ticks per cycle: %d
+        # servocycle time: %.3fms"%(lenClkTick, nClkTickServoCycle,
+        # self.servoCycleTime)
+
         # calculate the actual sample time and frequency of the data
         # gathering function
-        print("self.nServoCyclesGather is: ",self.nServoCyclesGather)
         self.sampleTime = self.nServoCyclesGather * self.servoCycleTime
-        print("self.sampleTime is: ",self.sampleTime)
         realSampleFreq = 1.0 / self.sampleTime
         self.txtLblFreq.setText("%.3f kHz" % realSampleFreq)
         self.txtLblSignalLen.setText("%.2f ms" % (self.sampleTime * self.nGatherPoints))
@@ -239,10 +341,11 @@ class Gatherform(QDialog, Ui_formGather):
     # #######################################
 
     def changedTab(self):
+        # print "Changed tab"
         # Get the sample time (in servo cycles unit)
-        cmd = "Gather.Period"
+        cmd = "i5049"
         (retStr, status) = self.parent.pmac.sendCommand(cmd)
-        newNGatherPoints = int(retStr)
+        newNGatherPoints = int(retStr.strip("$")[:-1])
         if not (newNGatherPoints == self.nServoCyclesGather):
             self.nServoCyclesGather = newNGatherPoints
             self.calcSampleTime()
@@ -253,16 +356,12 @@ class Gatherform(QDialog, Ui_formGather):
         # Get the # of servo cycles per gather sampling
         self.nServoCyclesGather = int(str(self.lneSampleTime.text()))
         self.nGatherPoints = int(str(self.lneNumberSamples.text()))
-        cmd = "Gather.Period=" +  str(self.lneSampleTime.text()) #bem
-        self.parent.pmac.sendCommand(cmd) #bem
         self.calcSampleTime()
 
     def changedNoSamples(self):
         # Get the # of data points to gather
         self.nGatherPoints = int(str(self.lneNumberSamples.text()))
         self.nServoCyclesGather = int(str(self.lneSampleTime.text()))
-        cmd = "Gather.MaxSamples=" +  str(self.lneNumberSamples.text()) #bem
-        self.parent.pmac.sendCommand(cmd) #bem
         self.calcSampleTime()
 
     def collectClicked(self):
@@ -305,16 +404,9 @@ class Gatherform(QDialog, Ui_formGather):
         self.btnSave.setEnabled(False)
 
     def saveClicked(self):
-        gather_file = "./gather.txt"
-        # if gather file does not exist
-        if not os.path.isfile(gather_file):
+        if len(self.lstChannels) < 1:
             QMessageBox.information(self, "Error", "No data has been collected yet.")
             return
-        #if gather file is empty
-        if os.path.getsize(gather_file) == 0:
-            QMessageBox.information(self, "Error", "No data has been collected yet.")
-            return
-
         myDialog = QFileDialog(self)
         # myDialog.setShowHiddenFiles(False)
         fileName = myDialog.getSaveFileName(
@@ -336,7 +428,7 @@ class Gatherform(QDialog, Ui_formGather):
             )
             return
 
-        #dataLists = []
+        dataLists = []
         line = "point,"
         for i, channel in enumerate(self.lstChannels):
             line += "CH%d Axis%d %s," % (
@@ -344,12 +436,12 @@ class Gatherform(QDialog, Ui_formGather):
                 channel.axisNo,
                 channel.dataSourceInfo["desc"],
             )
-            #dataLists.append(channel.scaledData)
+            dataLists.append(channel.scaledData)
         fptr.write(line + "\n")
 
-        '''for lineNo, lineData in enumerate(zip(*dataLists)):
+        for lineNo, lineData in enumerate(zip(*dataLists)):
             line = "%d," % lineNo
             for data_point in lineData:
                 line += "%f," % data_point
-            fptr.write(line + "\n")'''
+            fptr.write(line + "\n")
         fptr.close()
