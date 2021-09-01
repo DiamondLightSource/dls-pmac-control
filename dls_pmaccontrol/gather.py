@@ -98,17 +98,7 @@ class Gatherform(QDialog, Ui_formGather):
             cmBox.clear()
         for dataPoint in dataSources:
             for cmBox in self.lstComboboxes:
-                cmBox.addItem(dataPoint["desc"])  
-
-        # delete following : 
-        tmp_dir = "../../var/ftp/usrflash/Temp/"
-        local_dir = "./"
-        try:
-            self.parent.pmac.getDir(tmp_dir, local_dir)
-            print("Copied directory from remote host")
-        except Exception as e:
-            print("Error: Could not copy directory from power pmac")
-            return     
+                cmBox.addItem(dataPoint["desc"])      
 
     def gatherConfig(self):
         # Clear the plot by setting empty plotitems
@@ -225,12 +215,12 @@ class Gatherform(QDialog, Ui_formGather):
         cmd = "Sys.ServoPeriod"
         (retStr, status) = self.parent.pmac.sendCommand(cmd)
         self.servoCycleTime = float(retStr)
-        print("self.servoCycleTime is: ",self.servoCycleTime)
+        #print("self.servoCycleTime is: ",self.servoCycleTime)
         # calculate the actual sample time and frequency of the data
         # gathering function
-        print("self.nServoCyclesGather is: ",self.nServoCyclesGather)
+        #print("self.nServoCyclesGather is: ",self.nServoCyclesGather)
         self.sampleTime = self.nServoCyclesGather * self.servoCycleTime
-        print("self.sampleTime is: ",self.sampleTime)
+        #print("self.sampleTime is: ",self.sampleTime)
         realSampleFreq = 1.0 / self.sampleTime
         self.txtLblFreq.setText("%.3f kHz" % realSampleFreq)
         self.txtLblSignalLen.setText("%.2f ms" % (self.sampleTime * self.nGatherPoints))
