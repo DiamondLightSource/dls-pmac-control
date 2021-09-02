@@ -55,14 +55,13 @@ class Watchesform(QDialog, Ui_formWatches):
         self.table.setItem(noRows, 0, QTableWidgetItem(varName))  # set variable name column of the new row
         self.updateWatch(noRows)  # update the watch at the new row
         self._watches[varName] = retStr #float(retStr) # add to dict
-        print(self._watches)
         self.lneVariableName.setText("")
 
     def updateWatch(self, row):
         print("---------- UPDATE WATCH ----------")
         varName = self.table.item(row, 0).text()
-        print("variable name: ",varName)
-        print("type: ",type(varName))
+        #print("variable name: ",varName)
+        #print("type: ",type(varName))
         try:
             #watch = self.getWatch(varName)
             self.table.setItem(row, 1, QTableWidgetItem("N/A"))
@@ -114,7 +113,7 @@ class Watchesform(QDialog, Ui_formWatches):
 
         try:
             self.table.removeRow(row)
-            self.updateEditWatchPanel()
+            #self.updateEditWatchPanel()
         except ValueError as e:
             QMessageBox.information(self, "Cannot remove watch", str(e))
 
@@ -151,7 +150,8 @@ class Watchesform(QDialog, Ui_formWatches):
             self.lneEditValue.setEnabled(True)
             self.setBitBoxesEnabled(False)
             # set the edit line edit's text
-            #self.lneEditValue.setText(self.getVariableValueStr(watch))
+            varName = self.table.item(self.table.currentRow(), 0).text()
+            self.lneEditValue.setText(self.getVariableValueStr(varName))
 
     def applyEditWatch(self):
         print("---------- APPLY EDIT WATCH ----------")
@@ -168,7 +168,3 @@ class Watchesform(QDialog, Ui_formWatches):
             self.updateCurrentWatch()
         except (ValueError, IOError) as e:
             QMessageBox.information(self, "Cannot change value", str(e))
-
-class Watch():
-    def __init__(self, varName):
-        self.varName = varName

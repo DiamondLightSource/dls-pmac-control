@@ -31,6 +31,7 @@ from dls_pmaccontrol.CSstatus import CSStatusForm
 from dls_pmaccontrol.energise import Energiseform
 from dls_pmaccontrol.watches import Watchesform
 from dls_pmaccontrol.gather import Gatherform
+from dls_pmaccontrol.ppmacgather import PpmacGatherform
 from dls_pmaccontrol.GlobalStatus import GlobalStatusForm
 from dls_pmaccontrol.status import Statusform
 from dls_pmaccontrol.ui_formControl import Ui_ControlForm
@@ -101,7 +102,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.CSStatusScreen = CSStatusForm(self)
         self.GlobalStatusScreen = GlobalStatusForm(self)
         self.axisSettingsScreen = Axissettingsform(self, self.currentMotor)
-        self.gatherScreen = Gatherform(self, self.currentMotor)
+        self.pmacgatherScreen = Gatherform(self, self.currentMotor)
+        self.ppmacgatherScreen = PpmacGatherform(self, self.currentMotor)
         self.energiseScreen = Watchesform(self)
         self.commsThread = CommsThread(self)
 
@@ -138,7 +140,6 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.lblPolling.setText("Polling")
             self.lnePollRate.setEnabled(False)
             self.lblPollRate.setEnabled(False)
-
     def useSocketConnection(self):
         if self.ConnectionType != 1:
             self.ConnectionType = 1
@@ -181,7 +182,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             #self.textLabel4.setText("Password:")
             self.lblPolling.setText("Polling")
             self.lnePollRate.setEnabled(False)
-            self.lblPollRate.setEnabled(False)    
+            self.lblPollRate.setEnabled(False) 
 
     def checkHistory(self, edit, event):
         if event.key() == Qt.Key_Up:
@@ -240,6 +241,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
         server_port = self.lnePort.text()
         self.pmac.setConnectionParams(server_name, server_port)
         self.txtShell.append("Connecting to %s %s" % (server_name, server_port))
+
+        # Insert dialog box here to prompt user for username and password
 
         # Connect to the interface/PMAC
         connection_status = self.pmac.connect()
@@ -330,7 +333,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.statusScreen.close()
         self.CSStatusScreen.close()
         #        self.GlobalStatusScreen.close()
-        self.gatherScreen.close()
+        self.pmacgatherScreen.close()
+        self.ppmacgatherScreen.close()
         if self.energiseScreen:
             self.energiseScreen.close()
 
@@ -389,7 +393,11 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.addToTxtShell("CTRL-K")
 
     def dataGather(self):
-        self.gatherScreen.show()
+        # if power pmac
+        if self.ConnectionType == 3:
+            self.ppmacgatherScreen.show()
+        else:
+            self.pmacgatherScreen.show()
 
     # public slot
     def pmacEnergiseAxis(self):
