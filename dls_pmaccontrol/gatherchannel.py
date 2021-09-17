@@ -37,7 +37,7 @@ motorBaseAddrs = [
     0x1000,
 ]
 
-dataSources = [
+pmacDataSources = [
     {
         "reg": 0x08,
         "desc": "Motor present desired position",
@@ -72,9 +72,30 @@ dataSources = [
     },
 ]
 
+ppmacDataSources = [
+    {
+        "desc": "Motor present desired position",
+        "unit": "[cts]",
+        "addr": "DesPos.a",
+    },
+    {
+        "desc": "Motor present actual position",
+        "unit": "[cts]",
+        "addr": "ActPos.a",
+    },
+    {
+        "desc": "Motor following error",
+        "unit": "[cts]",
+        "addr": "PosError.a",
+    },
+    {
+        "desc": "Motor present actual velocity (unfiltered)",
+        "unit": "[cts/servo cycle]",
+        "addr": "ActVel.a",
+    },
+]
 
-
-class GatherChannel:
+class PmacGatherChannel:
     def __init__(self, pmac, qwtCurve):
         self.axisNo = None
         self.pmac = pmac
@@ -142,7 +163,7 @@ class GatherChannel:
             )
 
         # Get the data source info (unit, scaling algorithm and so on)
-        for dataSrc in dataSources:
+        for dataSrc in pmacDataSources:
             if dataSrc["reg"] == self.regOffset:
                 self.dataSourceInfo = dataSrc
                 break
@@ -240,3 +261,10 @@ class GatherChannel:
         for rawVal in self.rawData:
             self.scaledData.append(rawVal * self.scalingFactor)
         return
+
+class PpmacGatherChannel:
+    def __init__(self, pmac, qwtCurve):
+        self.pmac = pmac
+        self.qwtCurve = qwtCurve
+        self.axisNo = None
+        self.descNo = None

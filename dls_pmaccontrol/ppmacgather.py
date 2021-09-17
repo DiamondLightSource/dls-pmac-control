@@ -8,41 +8,11 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qwt import QwtPlotCurve
 
-#from dls_pmaccontrol.ppmacgatherchannel import GatherChannel, dataSources
+from dls_pmaccontrol.gatherchannel import PpmacGatherChannel, ppmacDataSources
 from dls_pmaccontrol.ui_formGather import Ui_formGather
 
 # TODO - this needs the logic decoupled from the GUI and moved into pmaclib
 #  work has started in pmaclib but currently duplicates code in this module
-
-dataSources = [
-    {
-        "desc": "Motor present desired position",
-        "unit": "[cts]",
-        "addr": "DesPos.a",
-    },
-    {
-        "desc": "Motor present actual position",
-        "unit": "[cts]",
-        "addr": "ActPos.a",
-    },
-    {
-        "desc": "Motor following error",
-        "unit": "[cts]",
-        "addr": "PosError.a",
-    },
-    {
-        "desc": "Motor present actual velocity (unfiltered)",
-        "unit": "[cts/servo cycle]",
-        "addr": "ActVel.a",
-    },
-]
-
-class PpmacGatherChannel:
-    def __init__(self, pmac, qwtCurve):
-        self.pmac = pmac
-        self.qwtCurve = qwtCurve
-        self.axisNo = None
-        self.descNo = None
 
 class myThread(threading.Thread):
     def __init__(self, instance, waittime):
@@ -65,15 +35,11 @@ class PpmacGatherform(QDialog, Ui_formGather):
                 "It is now required to provide a parent form for this form"
             )
 
-        #self.currentMotor = currentMotor
-
         # initialize the data lists that will contain
         # the gathered data
         self.numberOfSamples = 0
         #self.numberOfChannels = 0
         self.lstChannels = []
-        #self.oddNumberOfWords = False
-        #self.numberOfWords = 0
 
         # Initialize the timing variables for gathering
         self.sampleTime = 0.0  # the sample time per gather sampling (ms)
@@ -126,7 +92,7 @@ class PpmacGatherform(QDialog, Ui_formGather):
         # that can be gathered.
         for cmBox in self.lstComboboxes:
             cmBox.clear()
-        for dataPoint in dataSources:
+        for dataPoint in ppmacDataSources:
             for cmBox in self.lstComboboxes:
                 cmBox.addItem(dataPoint["desc"])      
 
@@ -150,7 +116,7 @@ class PpmacGatherform(QDialog, Ui_formGather):
             cmBox = self.lstComboboxes[index]
             chkBox = self.lstCheckboxes[index]
 
-            addr_str = dataSources[cmBox.currentIndex()]["addr"]
+            addr_str = ppmacDataSources[cmBox.currentIndex()]["addr"]
             gather_addr = "Gather.Addr[%d]" % items
             addr = "Motor[%d].%s" % (axisSpinBox.value(),addr_str)
             cmd = "%s=%s" % (gather_addr, addr)
@@ -367,7 +333,7 @@ class PpmacGatherform(QDialog, Ui_formGather):
             line += "CH%d, Axis %d, %s, " % (
                 i,
                 channel.axisNo,
-                dataSources[channel.descNo]["desc"],
+                ppmacDataSources[channel.descNo]["desc"],
             )
             dataLists.append(channel.Data)
         fptr.write(line + "\n")

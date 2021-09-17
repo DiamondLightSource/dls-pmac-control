@@ -15,7 +15,7 @@ class PmacIOError(IOError):
 
 class Energiseform(QDialog, Ui_formEnergise):
     def __init__(self, pmac, parent=None):
-        QDialog.__init__(self, parent, flags=None)
+        QDialog.__init__(self, parent)#, flags=None)
         self.setupUi(self)
 
         self.pmac = pmac

@@ -26,6 +26,8 @@ class CommsThread(object):
         self.gen = None
         self.resultQueue = Queue()  # a queue object that stores the results
         # of each polling update
+        self.watchesQueue = Queue() # a queue object that stores the results
+        # of each watches update
         self.inputQueue = Queue()  # a queue object that stores things to do
         self.updateReadyEvent = None
         # Flags controlling polling of axis position/velocity/following error
@@ -34,6 +36,25 @@ class CommsThread(object):
         self.updateThreadHandle.start()
         self.max_pollrate = None
         self.lineNumber = 0
+        # Dict containing names and values of watch window variables
+        self._watch_window = {}
+        # Use lock to prevent race condition for watch window
+        self.lock = threading.Lock()
+
+    def add_watch(self, name):
+        with self.lock:
+            self._watch_window[name] = None
+
+    def remove_watch(self, name):
+        with self.lock:
+            del self._watch_window[name]
+
+    def clear_watch(self):
+        with self.lock:
+            self._watch_window.clear()
+
+    def read_watch(self,name):
+        return self._watch_window[name]
 
     def sendTick(self, lineNumber, err):
         # Post a Qt event with current progress data
@@ -122,28 +143,47 @@ class CommsThread(object):
             if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
                 return
         cmd = "i65???&%s??%%"
-
         # Send a different command for the Power PMAC
         if isinstance(self.parent.pmac, PPmacSshInterface):
             cmd = "i65?&%s?%%"
         axes = self.parent.pmac.getNumberOfAxes() + 1
         for motorNo in range(1, axes):
             cmd = cmd + "#" + str(motorNo) + "?PVF"
-        (returnStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd % self.CSNum)
+        # send polling command
+        #start = time.time()
+        (retStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd % self.CSNum)
+        #end = time.time()
+        #print("time = ", end-start)
+        with self.lock:
+            # send watch window commands
+            valueListWatch = []
+            for key in self._watch_window:
+                (ret,success) = self.parent.pmac.sendCommand(key)
+                ret = ret.rstrip("\x06\r")
+                if "error" in ret or "ERR" in ret:
+                    ret = "Error"
+                # update dict 
+                self._watch_window[key] = ret
+                valueListWatch.append(ret)
+            self.watchesQueue.put(valueListWatch)
 
         if wasSuccessful:
-            valueList = returnStr.rstrip("\x06\r").split("\r")
-            # fourth is the PMAC identity
+        #returnStr = returnStr.replace("\r\r\r","\r")
+        #returnStr = returnStr.replace("\x06","")
+        #print("return string is: ", returnStr)
+            valueList = retStr.rstrip("\x06\r").split("\r")
+        #print("valueList : ", valueList)
+        # fourth is the PMAC identity
             if valueList[0].startswith("\x07"):
-                # error, probably in buffer
+            # error, probably in buffer
                 print(
                     "i65 returned %s, sending CLOSE command" % valueList[0].__repr__()
                 )
                 self.parent.pmac.sendCommand("CLOSE")
                 return
 
-            # If we got a malformed response, abort now before writing anything
-            # to the result queue.
+        # If we got a malformed response, abort now before writing anything
+        # to the result queue.
             if len(valueList) < 4:
                 if self.parent.verboseMode:
                     print("Received malformed response to poll request: ", valueList)
@@ -156,10 +196,10 @@ class CommsThread(object):
             self.resultQueue.put([valueList[2], 0, 0, 0, "CS%s" % self.CSNum])
             # third is feedrate
             self.resultQueue.put([valueList[3], 0, 0, 0, "FEED%s" % self.CSNum])
-            valueList = valueList[4:]
+            valueListPoll = valueList[4:(4*axes)+3]
             cols = 4
-            for motorRow, i in enumerate(range(0, len(valueList), cols)):
-                returnList = valueList[i : i + cols]
+            for motorRow, i in enumerate(range(0, len(valueListPoll), cols)):
+                returnList = valueListPoll[i : i + cols]
                 returnList.append(motorRow)
                 self.resultQueue.put(returnList, False)
 

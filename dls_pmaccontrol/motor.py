@@ -16,6 +16,7 @@ from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
 from PyQt5.QtCore import QEvent, Qt, pyqtSlot
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (
+    QDialog,
     QApplication,
     QFileDialog,
     QLineEdit,
@@ -30,10 +31,11 @@ from dls_pmaccontrol.commsThread import CommsThread
 from dls_pmaccontrol.CSstatus import CSStatusForm
 from dls_pmaccontrol.energise import Energiseform
 from dls_pmaccontrol.watches import Watchesform
-from dls_pmaccontrol.gather import Gatherform
+from dls_pmaccontrol.gather import PmacGatherform
 from dls_pmaccontrol.ppmacgather import PpmacGatherform
 from dls_pmaccontrol.GlobalStatus import GlobalStatusForm
 from dls_pmaccontrol.status import Statusform
+from dls_pmaccontrol.ppmacstatus import PpmacStatusform
 from dls_pmaccontrol.ui_formControl import Ui_ControlForm
 
 # from optparse import OptionParser
@@ -49,6 +51,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
+        #self.parent = parent
 
         self.greenLedOn = QPixmap(path.join(path.dirname(__file__), "greenLedOn.png"))
         self.greenLedOff = QPixmap(path.join(path.dirname(__file__), "greenLedOff.png"))
@@ -99,12 +102,14 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.powerpmac = None
 
         self.statusScreen = Statusform(self, self.currentMotor)
+        self.ppmacstatusScreen = PpmacStatusform(self, self.currentMotor)
         self.CSStatusScreen = CSStatusForm(self)
         self.GlobalStatusScreen = GlobalStatusForm(self)
         self.axisSettingsScreen = Axissettingsform(self, self.currentMotor)
-        self.pmacgatherScreen = Gatherform(self, self.currentMotor)
+        self.pmacgatherScreen = PmacGatherform(self, self.currentMotor)
         self.ppmacgatherScreen = PpmacGatherform(self, self.currentMotor)
-        self.energiseScreen = Watchesform(self)
+        self.watchesScreen = Watchesform(self)
+        #self.energiseScreen = Energiseform(self)
         self.commsThread = CommsThread(self)
 
         self.spnJogMotor.setValue(self.currentMotor)
@@ -243,6 +248,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.txtShell.append("Connecting to %s %s" % (server_name, server_port))
 
         # Insert dialog box here to prompt user for username and password
+        # see: https://stackoverflow.com/questions/11812000/login-dialog-pyqt
+        # myDialog = QDialog(self)
 
         # Connect to the interface/PMAC
         connection_status = self.pmac.connect()
@@ -276,17 +283,19 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.lneJogTo.setEnabled(True)
         self.lneJogDist.setEnabled(True)
         self.btnJogTo.setEnabled(True)
-        self.btnEnergise.setEnabled(not self.pmac.isModelGeobrick())
+        self.btnEnergise.setEnabled(False)
+        #self.btnEnergise.setEnabled(not self.pmac.isModelGeobrick())
         self.btnKillAll.setEnabled(True)
         self.btnStatus.setEnabled(True)
         self.btnCSStatus.setEnabled(True)
         self.btnGlobalStatus.setEnabled(True)
         self.btnLoadFile.setEnabled(True)
-        self.btnSettings.setEnabled(True)
+        self.btnSettings.setEnabled(not self.ConnectionType ==3)
         self.btnKillMotor.setEnabled(True)
         self.chkJogInc.setEnabled(True)
         self.btnPollingStatus.setEnabled(True)
         self.btnGather.setEnabled(True)
+        self.btnWatches.setEnabled(True)
         self.table.setEnabled(True)
         self.lnePollRate.setEnabled(False)
         self.lblPollRate.setEnabled(False)
@@ -325,18 +334,22 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.chkJogInc.setEnabled(False)
         self.btnPollingStatus.setEnabled(False)
         self.btnGather.setEnabled(False)
+        self.btnWatches.setEnabled(False)
         self.table.setEnabled(False)
         self.pixPolling.setPixmap(self.greenLedOff)
         self.lblIdentity.setText("")
 
         self.axisSettingsScreen.close()
         self.statusScreen.close()
+        self.ppmacstatusScreen.close()
         self.CSStatusScreen.close()
         #        self.GlobalStatusScreen.close()
         self.pmacgatherScreen.close()
         self.ppmacgatherScreen.close()
-        if self.energiseScreen:
-            self.energiseScreen.close()
+        self.watchesScreen.clearWatches()
+        self.watchesScreen.close()
+        #if self.energiseScreen:
+         #   self.energiseScreen.close()
 
     def jogNeg(self):
         (command, retStr, retStatus) = self.pmac.jogInc(
@@ -375,6 +388,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
     def jogChangeMotor(self, newMotor):
         self.currentMotor = newMotor
         self.statusScreen.changeAxis(self.currentMotor)
+        self.ppmacstatusScreen.changeAxis(self.currentMotor)
         self.axisSettingsScreen.changeAxis(self.currentMotor)
 
     # Send a #Xk command to kill the current motor.
@@ -394,18 +408,27 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
     def dataGather(self):
         # if power pmac
-        if self.ConnectionType == 3:
+        #if self.ConnectionType == 3:
+        if isinstance(self.pmac, PPmacSshInterface):
             self.ppmacgatherScreen.show()
         else:
             self.pmacgatherScreen.show()
 
     # public slot
+    def watches(self):
+        self.watchesScreen.show()
+
     def pmacEnergiseAxis(self):
-        self.energiseScreen = Watchesform(self)
-        self.energiseScreen.show()
+        pass
+    #   self.energiseScreen.show()
 
     def statusScreen(self):
-        self.statusScreen.show()
+        # if power pmac
+        #if self.ConnectionType == 3:
+        if isinstance(self.pmac, PPmacSshInterface):
+            self.ppmacstatusScreen.show()
+        else:
+            self.statusScreen.show()
 
     def CSStatusScreen(self):
         self.CSStatusScreen.show()
@@ -525,7 +548,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.spnJogMotor.setValue(a0 + 1)
 
     # public slot
-    def jogIncrementally(self, a0):
+    def jogIncrementally(self, a0): # a0 is True if 'jog inc' box checked
         self.lneJogDist.setEnabled(a0)
         if a0:
             self.btnJogPos.pressed.disconnect(self.jogPosContinousStart)
@@ -561,9 +584,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
     # Called when an event comes out of the polling thread
     # and the jog ribbon.
     def updateMotors(self):
-        # print "updating motors..."
+
         self.commsThread.resultQueue.qsize()
-        # print "-"
         for queItem in range(0, self.commsThread.resultQueue.qsize()):
             try:
                 value = self.commsThread.resultQueue.get(False)
@@ -595,9 +617,31 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 self.__item(motorRow, 1).setText(velocity)
                 self.__item(motorRow, 2).setText(folerr)
 
-                statusWord = int(value[0], 16)
-                loLim = bool(statusWord & 0x400000000000)
-                hiLim = bool(statusWord & 0x200000000000)
+                statusWord = int(value[0].strip("$"), 16)
+                # define high and low limits for power pmac 
+                ''' Soft limit is 1 when you try to execute a move which will exceed software limit
+                    - it is 0 if you are on the limit and the move has been stopped
+                    - it is 1 if you are nowhere near the limit but a #nj=x command is executed where x is beyond limit
+                    SoftPlusLimit/ SoftMinusLimit are only 1 when you move beyond the limit
+                '''
+                if isinstance(self.pmac,PPmacSshInterface):
+                    '''limits = [-1096453.4,10867787]
+                    if float(position) <= limits[0]:
+                        loLim, hiLim = True, False
+                    elif float(position) >= limits[1]:
+                        loLim, hiLim = False, True
+                    else:
+                        loLim, hiLim = False, False'''
+                    #loLim = bool(statusWord & 0x0000000040000000) # if SoftLimit
+                    #hiLim = bool(statusWord & 0x0000000040000000)
+                    loLim = bool(statusWord & 0x0080000000000000) # if SoftMinusLimit
+                    hiLim = bool(statusWord & 0x0040000000000000) # if SoftPlusLimit
+                    #loLim = bool(statusWord & 0x2000000000000000) # if MinusLimit
+                    #hiLim = bool(statusWord & 0x1000000000000000) # if PlusLimit
+                # define high and low limits for pmac
+                else:
+                    loLim = bool(statusWord & 0x400000000000) # negative end limit set
+                    hiLim = bool(statusWord & 0x200000000000) # positive end limit set
 
                 if hiLim:
                     self.__item(motorRow, 3).setIcon(QIcon(self.redLedOn))
@@ -622,14 +666,13 @@ class Controlform(QMainWindow, Ui_ControlForm):
                     else:
                         self.pixLoLim.setPixmap(self.redLedOff)
                     self.statusScreen.updateStatus(statusWord)
+                    self.ppmacstatusScreen.updateStatus(statusWord)
 
             except (ValueError, IndexError):
                 # Catch the exception and continue, since there may be other
                 # updates waiting in the queue.
                 if self.verboseMode:
                     print("Update request received invalid response: ", value)
-
-        # print "."
 
     domainNames = [
         "BL",
@@ -688,8 +731,21 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 text += "%d" % pmacNum
             self.lblIdentity.setText(text)
 
+    def updateWatches(self):
+        #print("updateWatches()")
+        #print(self.commsThread._watch_window)
+        self.commsThread.watchesQueue.qsize()
+        for queItem in range(0, self.commsThread.watchesQueue.qsize()):
+            try:
+                value = self.commsThread.watchesQueue.get(False)
+            except Empty:
+                return
+            for n in range(len(value)):
+                if "." in value[n]:
+                    value[n] = round(float(value[n]),1)
+                self.watchesScreen.table.setItem(n, 1, QTableWidgetItem(str(value[n])))
+
     def customEvent(self, E):
-        # print "custom event!"
         if E.type() == self.progressEventType:
             (lines, err) = E.data()
             self.progressDialog.setValue(lines)
@@ -699,8 +755,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.progressDialog.setValue(self.progressDialog.maximum())
             self.txtShell.append(str(E.data()))
         elif E.type() == self.updatesReadyEventType:
-            # print "updating motors"
             self.updateMotors()
+            self.updateWatches()
 
     def signalHandler(self, signum, frame):
         if signum == 2:  # SIGINT

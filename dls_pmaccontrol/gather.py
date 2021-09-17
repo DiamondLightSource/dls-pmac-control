@@ -8,7 +8,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qwt import QwtPlotCurve
 
-from dls_pmaccontrol.gatherchannel import LONGWORD, WORD, GatherChannel, dataSources, motorBaseAddrs
+from dls_pmaccontrol.gatherchannel import LONGWORD, WORD, PmacGatherChannel, pmacDataSources, motorBaseAddrs
 from dls_pmaccontrol.ui_formGather import Ui_formGather
 
 # TODO - this needs the logic decoupled from the GUI and moved into pmaclib
@@ -25,10 +25,10 @@ class myThread(threading.Thread):
         self.instance = instance
 
     def run(self):
-        Gatherform.triggerWait(self.instance,self.waittime)
+        PmacGatherform.triggerWait(self.instance,self.waittime)
 
 
-class Gatherform(QDialog, Ui_formGather):
+class PmacGatherform(QDialog, Ui_formGather):
     def __init__(self, parent, currentMotor=1):
         QDialog.__init__(self, parent)
         self.setupUi(self)
@@ -100,7 +100,7 @@ class Gatherform(QDialog, Ui_formGather):
         # that can be gathered.
         for cmBox in self.lstComboboxes:
             cmBox.clear()
-        for dataPoint in dataSources:
+        for dataPoint in pmacDataSources:
             for cmBox in self.lstComboboxes:
                 cmBox.addItem(dataPoint["desc"])           
 
@@ -130,9 +130,9 @@ class Gatherform(QDialog, Ui_formGather):
         for index, axisSpinBox in enumerate(self.lstSpinboxes):
             cmbBox = self.lstComboboxes[index]
             chkBox = self.lstCheckboxes[index]
-            dataOffset = dataSources[cmbBox.currentIndex()]["reg"]
+            dataOffset = pmacDataSources[cmbBox.currentIndex()]["reg"]
             baseAddress = motorBaseAddrs[axisSpinBox.value() - 1]
-            dataWidth = dataSources[cmbBox.currentIndex()]["size"]
+            dataWidth = pmacDataSources[cmbBox.currentIndex()]["size"]
             ivar = "i50%02d" % (index + 1)
             addr = "$%X%05X" % (dataWidth, baseAddress + dataOffset)
             cmd = "%s=%s" % (ivar, addr)
@@ -146,7 +146,7 @@ class Gatherform(QDialog, Ui_formGather):
                 curve = QwtPlotCurve("Ch%d" % index)
                 curve.attach(self.qwtPlot)
                 # curve = self.qwtPlot.insertCurve("Ch%d"%index)
-                channel = GatherChannel(self.parent.pmac, curve)
+                channel = PmacGatherChannel(self.parent.pmac, curve)
                 self.lstChannels.append(channel)
                 # Set the colour of the graph
                 colour = self.lstColours[self.lstColourBoxes[index].currentIndex()]
