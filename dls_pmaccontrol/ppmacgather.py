@@ -127,11 +127,8 @@ class PpmacGatherform(QDialog, Ui_formGather):
 
                 # create a new curve for the qwt plot and instanciate a
                 # PpmacGatherChannel.
-
-                # print "Set data: %s"%cmd
                 curve = QwtPlotCurve("Ch%d" % index)
                 curve.attach(self.qwtPlot)
-                # curve = self.qwtPlot.insertCurve("Ch%d"%index)
                 channel = PpmacGatherChannel(self.parent.pmac, curve)
                 self.lstChannels.append(channel)
 
@@ -145,13 +142,9 @@ class PpmacGatherform(QDialog, Ui_formGather):
                 if self.lstCmbYaxis[index].currentIndex() == 0:
                     channel.qwtCurve.setYAxis(self.qwtPlot.yLeft)
                     enableLeft = True
-                    # self.qwtPlot.setCurveYAxis(channel.qwtCurve,
-                    # self.qwtPlot.yLeft)
                 elif self.lstCmbYaxis[index].currentIndex() == 1:
                     enableRight = True
                     channel.qwtCurve.setYAxis(self.qwtPlot.yRight)
-                    # self.qwtPlot.setCurveYAxis(channel.qwtCurve,
-                    # self.qwtPlot.yRight)
 
         if enableLeft and enableRight:
             self.qwtPlot.enableAxis(self.qwtPlot.yLeft, True)
@@ -198,7 +191,7 @@ class PpmacGatherform(QDialog, Ui_formGather):
         try:
             self.parent.pmac.getFile(tmp_file, gather_file)
         except Exception as e:
-            print("Error: Could not get gather file from power pmac")
+            QMessageBox.information(self, "Error", "Could not get gather file from power pmac.")
             return
 
     def parseData(self, lstDataStrings):
@@ -209,12 +202,10 @@ class PpmacGatherform(QDialog, Ui_formGather):
         # if gather file does not exist
         if not os.path.isfile(gather_file):
             QMessageBox.information(self, "Error", "No data has been collected yet.")
-            print("gather file does not exist")
             return
         #if gather file is empty
         if os.path.getsize(gather_file) == 0:
             QMessageBox.information(self, "Error", "No data has been collected yet.")
-            print("gather file is empty")
             return
         for chIndex, ch in enumerate(self.lstChannels):
             data = [line.split(' ')[chIndex] for line in open(gather_file).readlines()]
@@ -227,12 +218,9 @@ class PpmacGatherform(QDialog, Ui_formGather):
         cmd = "Sys.ServoPeriod"
         (retStr, status) = self.parent.pmac.sendCommand(cmd)
         self.servoCycleTime = float(retStr)
-        #print("self.servoCycleTime is: ",self.servoCycleTime)
         # calculate the actual sample time and frequency of the data
         # gathering function
-        #print("self.nServoCyclesGather is: ",self.nServoCyclesGather)
         self.sampleTime = self.nServoCyclesGather * self.servoCycleTime
-        #print("self.sampleTime is: ",self.sampleTime)
         realSampleFreq = 1.0 / self.sampleTime
         self.txtLblFreq.setText("%.3f kHz" % realSampleFreq)
         self.txtLblSignalLen.setText("%.2f ms" % (self.sampleTime * self.nGatherPoints))
@@ -254,25 +242,44 @@ class PpmacGatherform(QDialog, Ui_formGather):
     def servoCyclesChanged(self):
         # Get the # of servo cycles per gather sampling
         self.nServoCyclesGather = int(str(self.lneSampleTime.text()))
-        self.nGatherPoints = int(str(self.lneNumberSamples.text()))
-        cmd = "Gather.Period=" +  str(self.lneSampleTime.text()) #bem
-        self.parent.pmac.sendCommand(cmd) #bem
-        self.calcSampleTime()
+        #self.nGatherPoints = int(str(self.lneNumberSamples.text()))
+        if self.nServoCyclesGather == 0:
+            QMessageBox.information(self, "Error", "Sample time cannot be zero.")
+            return
+        if self.nGatherPoints == 0:
+            QMessageBox.information(self, "Error", "# of samples cannot be zero.")
+            return
+        cmd = "Gather.Period=" +  str(self.lneSampleTime.text()) 
+        (retStr,success) = self.parent.pmac.sendCommand(cmd)
+        if success:
+            self.calcSampleTime()
+        else:
+            QMessageBox.information(self, "Error", "Could not set sample time.")
 
     def changedNoSamples(self):
         # Get the # of data points to gather
         self.nGatherPoints = int(str(self.lneNumberSamples.text()))
-        self.nServoCyclesGather = int(str(self.lneSampleTime.text()))
-        cmd = "Gather.MaxSamples=" +  str(self.lneNumberSamples.text()) #bem
-        self.parent.pmac.sendCommand(cmd) #bem
-        self.calcSampleTime()
+        #self.nServoCyclesGather = int(str(self.lneSampleTime.text()))
+        if self.nGatherPoints == 0:
+            QMessageBox.information(self, "Error", "# of samples cannot be zero.")
+            return
+        if self.nServoCyclesGather == 0:
+            QMessageBox.information(self, "Error", "Sample time cannot be zero.")
+            return
+        cmd = "Gather.MaxSamples=" +  str(self.lneNumberSamples.text()) 
+        (retStr,success) = self.parent.pmac.sendCommand(cmd) 
+        if success:
+            self.calcSampleTime()
+        else:
+            QMessageBox.information(self, "Error", "Could not # of samples.")
 
     def collectClicked(self):
         self.btnSetup.setEnabled(False)
         self.btnTrigger.setEnabled(False)
         self.btnCollect.setEnabled(False)
         self.btnSave.setEnabled(False)
-        self.parseData(self.collectData())
+        self.collectData()
+        #self.parseData(self.collectData())
         self.plotData()
 
         self.btnSetup.setEnabled(True)
@@ -281,7 +288,6 @@ class PpmacGatherform(QDialog, Ui_formGather):
         self.btnSave.setEnabled(True)
 
     def setupClicked(self):
-        # print "formGather.setupClicked(): Not implemented yet"
         self.numberOfSamples = int(str(self.lneNumberSamples.text()))
         self.gatherSetup(self.numberOfSamples)
         self.btnSetup.setEnabled(True)
@@ -290,7 +296,6 @@ class PpmacGatherform(QDialog, Ui_formGather):
         self.btnSave.setEnabled(False)
 
     def triggerClicked(self):
-        # print "formGather.triggerClicked(): Not implemented yet"
         self.btnTrigger.setEnabled(False)
         self.gatherTrigger()
         self.btnSetup.setEnabled(True)
@@ -298,7 +303,12 @@ class PpmacGatherform(QDialog, Ui_formGather):
         self.btnSave.setEnabled(False)
 
     def applyConfigClicked(self):
-        #print("formGather.applyConfigClicked()")
+        if self.nServoCyclesGather == 0:
+            QMessageBox.information(self, "Error", "Sample time cannot be zero.")
+            return
+        if self.nGatherPoints == 0:
+            QMessageBox.information(self, "Error", "# of samples cannot be zero.")
+            return
         if not self.gatherConfig():
             return
         self.btnSetup.setEnabled(True)
@@ -314,7 +324,11 @@ class PpmacGatherform(QDialog, Ui_formGather):
             #options=None,
         )
         if not fileName:
-            print(fileName[0] + " does not exist")
+            QMessageBox.information(
+                self,
+                "Error.", 
+                fileName[0] + " does not exist"
+                )
             return
         try:
             fptr = open(str(fileName[0]), "w")
@@ -324,7 +338,6 @@ class PpmacGatherform(QDialog, Ui_formGather):
                 "Error.", 
                 "Could not open file for writing."
                 )
-            print("could not open file '" + fileName[0] + "' for writing")
             return
 
         dataLists = []

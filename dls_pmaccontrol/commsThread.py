@@ -93,9 +93,7 @@ class CommsThread(object):
                 return True
             elif cmd == "sendSeries":
                 try:
-                    print("trying send series")
                     self.gen = self.parent.pmac.sendSeries(data)
-                    print("done send series")
                 except Exception:
                     self.sendComplete("Couldn't start download")
                     traceback.print_exc()
@@ -150,10 +148,7 @@ class CommsThread(object):
         for motorNo in range(1, axes):
             cmd = cmd + "#" + str(motorNo) + "?PVF"
         # send polling command
-        #start = time.time()
         (retStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd % self.CSNum)
-        #end = time.time()
-        #print("time = ", end-start)
         with self.lock:
             # send watch window commands
             valueListWatch = []
@@ -162,17 +157,13 @@ class CommsThread(object):
                 ret = ret.rstrip("\x06\r")
                 if "error" in ret or "ERR" in ret:
                     ret = "Error"
-                # update dict 
+                # update watches dict 
                 self._watch_window[key] = ret
                 valueListWatch.append(ret)
             self.watchesQueue.put(valueListWatch)
 
         if wasSuccessful:
-        #returnStr = returnStr.replace("\r\r\r","\r")
-        #returnStr = returnStr.replace("\x06","")
-        #print("return string is: ", returnStr)
             valueList = retStr.rstrip("\x06\r").split("\r")
-        #print("valueList : ", valueList)
         # fourth is the PMAC identity
             if valueList[0].startswith("\x07"):
             # error, probably in buffer
@@ -196,10 +187,10 @@ class CommsThread(object):
             self.resultQueue.put([valueList[2], 0, 0, 0, "CS%s" % self.CSNum])
             # third is feedrate
             self.resultQueue.put([valueList[3], 0, 0, 0, "FEED%s" % self.CSNum])
-            valueListPoll = valueList[4:(4*axes)+3]
+            valueList = valueList[4:]
             cols = 4
-            for motorRow, i in enumerate(range(0, len(valueListPoll), cols)):
-                returnList = valueListPoll[i : i + cols]
+            for motorRow, i in enumerate(range(0, len(valueList), cols)):
+                returnList = valueList[i : i + cols]
                 returnList.append(motorRow)
                 self.resultQueue.put(returnList, False)
 

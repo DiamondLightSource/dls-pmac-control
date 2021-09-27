@@ -48,8 +48,8 @@ class Watchesform(QDialog, Ui_formWatches):
             return
         noRows = self.table.rowCount()
         self.table.insertRow(noRows) # add a new row
-        self.table.setItem(noRows, 0, QTableWidgetItem(varName)) # set variable name column of the new row
-        self._watches[varName] = watch # add to dict
+        self.table.setItem(noRows, 0, QTableWidgetItem(varName)) # set variable name
+        self._watches[varName] = watch # add watch object to dict
         self.parent.commsThread.add_watch(varName) # add to polling thread
         self.updateWatch(noRows) # update the watch at the new row
         self.lneVariableName.setText("")

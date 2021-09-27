@@ -342,8 +342,118 @@ class GlobalStatusForm(QDialog, Ui_formGlobalStatus):
             self.lstLabels[bit].setToolTip(self.lstTooltips[bit])
 
     def updateStatus(self, statusHexWord):
-        # print "update status: dec = " + str(statusHexWord)
         for bit in range(0, 48):
+            bitMask = 1 << bit
+            if bool(statusHexWord & bitMask):
+                self.lstLeds[bit].setPixmap(self.greenLedOn)
+            else:
+                self.lstLeds[bit].setPixmap(self.greenLedOff)
+
+class PpmacGlobalStatusForm(QDialog, Ui_formGlobalStatus):
+    def __init__(self, parent):
+        QDialog.__init__(self, parent)
+        self.setupUi(self)
+
+        self.greenLedOn = parent.greenLedOn
+        self.greenLedOff = parent.greenLedOff
+        self.redLedOn = parent.redLedOn
+        self.redLedOff = parent.redLedOff
+
+        ledGroupLayout = self.ledGroup.layout()
+        ledGroupLayout.setAlignment(Qt.AlignTop)
+        self.lstLeds = []
+        self.lstLabels = []
+        self.lstLabelTexts = []
+        self.lstTooltips = []
+        # First Word Returned: Bit 31 - Bit 16
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("(Reserved for future use)")
+        self.lstTooltips.append("""(Reserved for future use)""")
+        # First Word Returned: Bit 15 - Bit 0
+        self.lstLabelTexts.append("CK3WHWChange")
+        self.lstTooltips.append("""CK3W module change detected """)
+        self.lstLabelTexts.append("CK3WConfigErr (bit 2)")
+        self.lstTooltips.append("""CK3W module config error bit 2 """)
+        self.lstLabelTexts.append("CK3WConfigErr (bit 1)")
+        self.lstTooltips.append("""CK3W module config error bit 1 """)
+        self.lstLabelTexts.append("CK3WConfigErr (bit 0)")
+        self.lstTooltips.append("""CK3W module config error bit 0 """)
+        self.lstLabelTexts.append("FlashSizeErr")
+        self.lstTooltips.append("""Insufficient flash memory size error """)
+        self.lstLabelTexts.append("BufSizeErr")
+        self.lstTooltips.append("""Insufficient user buffer size error """)
+        self.lstLabelTexts.append("AbortAll")
+        self.lstTooltips.append(""""Abort all" condition  """)
+        self.lstLabelTexts.append("NoClocks")
+        self.lstTooltips.append("""No system clocks found """)
+        self.lstLabelTexts.append("Default")
+        self.lstTooltips.append("""Factory default configuration (by cmd or error)  """)
+        self.lstLabelTexts.append("FileConfigErr")
+        self.lstTooltips.append("""System file configuration error """)
+        self.lstLabelTexts.append("HWChangeErr")
+        self.lstTooltips.append("""Hardware change detected since save """)
+        self.lstLabelTexts.append("ConfigLoadErr")
+        self.lstTooltips.append("""Saved configuration load error """)
+        self.lstLabelTexts.append("ProjectLoadErr")
+        self.lstTooltips.append("""Project load error """)
+        self.lstLabelTexts.append("PwrOnFault")
+        self.lstTooltips.append("""Power-on/reset load fault (OR of bits 3–6)  """)
+        self.lstLabelTexts.append("WDTFault (bit 1)")
+        self.lstTooltips.append("""Software watchdog fault bit 1 """)
+        self.lstLabelTexts.append("WDTFault (bit 0)")
+        self.lstTooltips.append("""Software watchdog fault bit 0 """)
+
+        self.lstLabelTexts.reverse()
+        self.lstTooltips.reverse()
+
+        for bit in range(0, 32):
+            self.lstLeds.append(QLabel(self.ledGroup))
+            self.lstLabels.append(QLabel("bit: " + str(bit), self.ledGroup))
+
+        for bit in range(0, 32):
+            if bit < 16:
+                row = bit
+                ledGroupLayout.addWidget(self.lstLeds[bit], row, 0)
+                ledGroupLayout.addWidget(self.lstLabels[bit], row, 1)
+            else:
+                row = bit - 16
+                ledGroupLayout.addWidget(self.lstLeds[bit], row, 2)
+                ledGroupLayout.addWidget(self.lstLabels[bit], row, 4)
+            self.lstLeds[bit].setPixmap(self.greenLedOff)
+            self.lstLabels[bit].setText(self.lstLabelTexts[bit])
+            self.lstLabels[bit].setToolTip(self.lstTooltips[bit])
+
+    def updateStatus(self, statusHexWord):
+        for bit in range(0, 32):
             bitMask = 1 << bit
             if bool(statusHexWord & bitMask):
                 self.lstLeds[bit].setPixmap(self.greenLedOn)
