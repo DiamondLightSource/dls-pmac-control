@@ -1,0 +1,19 @@
+Control Application Alpha Release
+27th September 2021
+Bonnie McCallion
+
+Currently data gather is fully functional for the Power PMAC and there is a simple watch window for both PMAC and Power PMAC. Limiting amount of testing done. Further testing to be done by DLS.
+
+To Do:
+ - Show both software and hardware limits in polling window for Power PMAC (currently only hardware limits)
+ - Pop-up window to request username and password if the default fails for the SSH connection
+ - May need to add more Power PMAC variables to the axis settings screen
+ - May need to add functionality to watch window
+
+Notes:
+ - Loading a pmc file works for the Power PMAC provided it can be compiled. Files which can be used for the PMAC may require editing for the Power PMAC (e.g. clear command does not work) and might cause the application to crash/ get stuck while downloading.
+ - There is no Ix24 equivalent for the Power PMAC so this has not been included in the axis settings screen.
+ - No scaling has been included for the Power PMAC data gather. Might need to include some checks for this.
+ - When changing # of samples/ sample time in the config tab you must press enter to change the values. 
+ - Watch window variables are not reformatted before being shown and when writing new values to variables the value may be changed (e.g. rounded or converted to a different format).
+
