@@ -88,6 +88,7 @@ class Watchesform(QDialog, Ui_formWatches):
             self.table.removeRow(row)
             #self.updateEditWatchPanel()
             self.lneEditValue.setText("")
+            self.panelEditWatch.setEnabled(False)
         except ValueError as e:
             QMessageBox.information(self, "Cannot remove watch", str(e))
 
