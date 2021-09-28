@@ -238,6 +238,15 @@ class PpmacGatherform(QDialog, Ui_formGather):
             self.calcSampleTime()
         self.nServoCyclesGather = newNGatherPoints
         self.lneSampleTime.setText(str(self.nServoCyclesGather))
+        # Get the number of samples
+        cmd = "Gather.MaxSamples"
+        (retStr, status) = self.parent.pmac.sendCommand(cmd)
+        newNSamples = int(retStr)
+        if not (newNSamples == self.nGatherPoints):
+            self.nGatherPoints = newNSamples
+            self.calcSampleTime()
+        self.nGatherPoints = newNSamples
+        self.lneNumberSamples.setText(str(self.nGatherPoints))
 
     def servoCyclesChanged(self):
         # Get the # of servo cycles per gather sampling

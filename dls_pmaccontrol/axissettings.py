@@ -339,9 +339,8 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
     def axisUpdate(self):
         self._updateAxisSetupIVars(self.definitionIvars + self.safetyIvars)
 
-    def setAxisSetupIVar(self, iVarNo):
+    def setAxisSetupIVar(self, iVarNo, newValue):
         varStr = PpmacVars["Ix" + str(iVarNo)]
-        newValue = ("self.lneIx%d.text()" % iVarNo)
         cmd = ("Motor[%d]." % self.currentMotor) + varStr + ("=%s" % newValue)
         (retStr,success) = self.parent.pmac.sendCommand(cmd)
         if success:
@@ -355,57 +354,57 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
         print("axissettingsform.axisClose(): Not implemented yet")
 
     def sendIx11(self):
-        self.setAxisSetupIVar(11)
+        self.setAxisSetupIVar(11, self.lneIx11.text())
         self.axisUpdate()
 
     def sendIx12(self):
-        self.setAxisSetupIVar(12)
+        self.setAxisSetupIVar(12, self.lneIx12.text())
         self.axisUpdate()
 
     def sendIx13(self):
-        self.setAxisSetupIVar(13)
+        self.setAxisSetupIVar(13, self.lneIx13.text())
         self.axisUpdate()
 
     def sendIx14(self):
-        self.setAxisSetupIVar(14)
+        self.setAxisSetupIVar(14, self.lneIx14.text())
         self.axisUpdate()
 
     def sendIx15(self):
-        self.setAxisSetupIVar(15)
+        self.setAxisSetupIVar(15, self.lneIx15.text())
         self.axisUpdate()
 
     def sendIx16(self):
-        self.setAxisSetupIVar(16)
+        self.setAxisSetupIVar(16, self.lneIx16.text())
         self.axisUpdate()
 
     def sendIx17(self):
-        self.setAxisSetupIVar(17)
+        self.setAxisSetupIVar(17, self.lneIx17.text())
         self.axisUpdate()
 
     def sendIx19(self):
-        self.setAxisSetupIVar(19)
+        self.setAxisSetupIVar(19, self.lneIx19.text())
         self.axisUpdate()
 
     def sendIx20(self):
-        self.setAxisSetupIVar(20)
+        self.setAxisSetupIVar(20, self.lneIx20.text())
         self.axisUpdate()
 
     def sendIx21(self):
-        self.setAxisSetupIVar(21)
+        self.setAxisSetupIVar(21, self.lneIx21.text())
         self.axisUpdate()
 
     def sendIx22(self):
-        self.setAxisSetupIVar(22)
+        self.setAxisSetupIVar(22, self.lneIx22.text())
         self.axisUpdate()
 
     def sendIx23(self):
-        self.setAxisSetupIVar(23)
+        self.setAxisSetupIVar(23, self.lneIx23.text())
         self.axisUpdate()
 
     def sendIx25(self):
-        self.setAxisSetupIVar(25)
+        self.setAxisSetupIVar(25, self.lneIx25.text())
         self.axisUpdate()
 
     def sendIx26(self):
-        self.setAxisSetupIVar(26)
+        self.setAxisSetupIVar(26, self.lneIx26.text())
         self.axisUpdate()
