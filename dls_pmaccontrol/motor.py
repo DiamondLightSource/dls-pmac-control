@@ -36,6 +36,7 @@ from dls_pmaccontrol.ppmacgather import PpmacGatherform
 from dls_pmaccontrol.GlobalStatus import GlobalStatusForm, PpmacGlobalStatusForm
 from dls_pmaccontrol.status import Statusform, PpmacStatusform
 from dls_pmaccontrol.ui_formControl import Ui_ControlForm
+from dls_pmaccontrol.login import Loginform
 
 # from optparse import OptionParser
 
@@ -111,6 +112,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.pmacgatherScreen = PmacGatherform(self, self.currentMotor)
         self.ppmacgatherScreen = PpmacGatherform(self, self.currentMotor)
         self.watchesScreen = Watchesform(self)
+        self.login = Loginform(self)
         #self.energiseScreen = Energiseform(self.pmac,self)
         self.commsThread = CommsThread(self)
 
@@ -147,6 +149,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.lblPolling.setText("Polling")
             self.lnePollRate.setEnabled(False)
             self.lblPollRate.setEnabled(False)
+
     def useSocketConnection(self):
         if self.ConnectionType != 1:
             self.ConnectionType = 1
@@ -250,9 +253,25 @@ class Controlform(QMainWindow, Ui_ControlForm):
         # Connect to the interface/PMAC
         connection_status = self.pmac.connect()
         if connection_status:
-            # did not connect successfully...
-            QMessageBox.information(self, "Error", connection_status)
-            return
+            is_auth_error = bool(connection_status == "Invalid username or password")
+            # if power pmac and wrong username/ password
+            if self.ConnectionType == 3 and is_auth_error:
+                # use exec instead of show to wait until login is done
+                is_clickedOK = self.login.exec()
+                if not is_clickedOK:
+                    return
+                else:
+                    # try to connect again
+                    connection_status = self.pmac.connect(
+                        username=self.login.username, password=self.login.password)
+                    if connection_status:
+                        QMessageBox.information(self, "Error", connection_status)
+                        return
+            # otherwise show error message
+            else:
+                QMessageBox.information(self, "Error", connection_status)
+                return
+            
 
         # Find out the type of the PMAC
         pmac_model_str = self.pmac.getPmacModel()
@@ -650,8 +669,12 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
                 # define high and low limits for power pmac (hard limits)
                 if isinstance(self.pmac,PPmacSshInterface):
-                    loLim = bool(statusWord & 0x2000000000000000) # MinusLimit
-                    hiLim = bool(statusWord & 0x1000000000000000) # PlusLimit
+                    loLimHard = bool(statusWord & 0x2000000000000000) # MinusLimit
+                    hiLimHard = bool(statusWord & 0x1000000000000000) # PlusLimit
+                    loLimSoft = bool(statusWord & 0x0080000000000000) # SoftMinusLimit
+                    hiLimSoft = bool(statusWord & 0x0040000000000000) # SoftPlusLimit
+                    hiLim = hiLimHard or hiLimSoft
+                    loLim = loLimHard or loLimSoft
 
                 # define high and low limits for pmac
                 else:
@@ -662,10 +685,20 @@ class Controlform(QMainWindow, Ui_ControlForm):
                     self.__item(motorRow, 3).setIcon(QIcon(self.redLedOn))
                 else:
                     self.__item(motorRow, 3).setIcon(QIcon(self.redLedOff))
+                    self.__item(motorRow, 5).setText("")
                 if loLim:
                     self.__item(motorRow, 4).setIcon(QIcon(self.redLedOn))
+                    '''if loLimHard == None or loLimSoft == None:
+                        self.__item(motorRow, 5).setText("")
+                    elif loLimHard:
+                        self.__item(motorRow, 5).setText("(hardware)")
+                    elif loLimSoft:
+                        self.__item(motorRow, 5).setText("(software)")
+                    else:
+                        self.__item(motorRow, 5).setText("")'''
                 else:
                     self.__item(motorRow, 4).setIcon(QIcon(self.redLedOff))
+                    self.__item(motorRow, 5).setText("")
 
                 # Update also the jog ribbon
                 if motorRow + 1 == self.currentMotor:
