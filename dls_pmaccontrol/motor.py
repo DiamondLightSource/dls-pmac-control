@@ -57,6 +57,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.greenLedOff = QPixmap(path.join(path.dirname(__file__), "greenLedOff.png"))
         self.redLedOn = QPixmap(path.join(path.dirname(__file__), "redLedOn.png"))
         self.redLedOff = QPixmap(path.join(path.dirname(__file__), "redLedOff.png"))
+        self.amberLedOn = QPixmap(path.join(path.dirname(__file__), "led-amber.png"))
 
         self.pollingStatus = True
         self.isUsingSerial = False
@@ -183,7 +184,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.ConnectionType = 3
             # set the server and port fields to defaults for this connection
             # type
-            self.lneServer.setText("172.23.240.97")
+            self.lneServer.setText("192.168.56.10")
             self.lnePort.setText("22")
             self.textLabel1.setText("IP address:")
             self.textLabel2.setText("Port:")
@@ -667,38 +668,33 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
                 statusWord = int(value[0].strip("$"), 16)
 
-                # define high and low limits for power pmac (hard limits)
+                # define high and low limits for power pmac
                 if isinstance(self.pmac,PPmacSshInterface):
-                    loLimHard = bool(statusWord & 0x2000000000000000) # MinusLimit
-                    hiLimHard = bool(statusWord & 0x1000000000000000) # PlusLimit
+                    loLim = bool(statusWord & 0x2000000000000000) # MinusLimit
+                    hiLim = bool(statusWord & 0x1000000000000000) # PlusLimit
                     loLimSoft = bool(statusWord & 0x0080000000000000) # SoftMinusLimit
                     hiLimSoft = bool(statusWord & 0x0040000000000000) # SoftPlusLimit
-                    hiLim = hiLimHard or hiLimSoft
-                    loLim = loLimHard or loLimSoft
 
                 # define high and low limits for pmac
                 else:
                     loLim = bool(statusWord & 0x400000000000) # negative end limit set
                     hiLim = bool(statusWord & 0x200000000000) # positive end limit set
+                    loLimSoft = False
+                    hiLimSoft = False
 
+                # set limit indicators in polling table
                 if hiLim:
                     self.__item(motorRow, 3).setIcon(QIcon(self.redLedOn))
+                elif hiLimSoft:
+                    self.__item(motorRow, 3).setIcon(QIcon(self.amberLedOn))
                 else:
                     self.__item(motorRow, 3).setIcon(QIcon(self.redLedOff))
-                    self.__item(motorRow, 5).setText("")
                 if loLim:
                     self.__item(motorRow, 4).setIcon(QIcon(self.redLedOn))
-                    '''if loLimHard == None or loLimSoft == None:
-                        self.__item(motorRow, 5).setText("")
-                    elif loLimHard:
-                        self.__item(motorRow, 5).setText("(hardware)")
-                    elif loLimSoft:
-                        self.__item(motorRow, 5).setText("(software)")
-                    else:
-                        self.__item(motorRow, 5).setText("")'''
+                elif loLimSoft:
+                    self.__item(motorRow, 4).setIcon(QIcon(self.amberLedOn))
                 else:
                     self.__item(motorRow, 4).setIcon(QIcon(self.redLedOff))
-                    self.__item(motorRow, 5).setText("")
 
                 # Update also the jog ribbon
                 if motorRow + 1 == self.currentMotor:
@@ -707,10 +703,14 @@ class Controlform(QMainWindow, Ui_ControlForm):
                     self.lblFolErr.setText(folerr)
                     if hiLim:
                         self.pixHiLim.setPixmap(self.redLedOn)
+                    elif hiLimSoft:
+                        self.pixHiLim.setPixmap(self.amberLedOn)
                     else:
                         self.pixHiLim.setPixmap(self.redLedOff)
                     if loLim:
                         self.pixLoLim.setPixmap(self.redLedOn)
+                    elif loLimSoft:
+                        self.pixLoLim.setPixmap(self.amberLedOn)
                     else:
                         self.pixLoLim.setPixmap(self.redLedOff)
                     self.statusScreen.updateStatus(statusWord)
