@@ -348,6 +348,9 @@ class Ui_ControlForm(object):
         self.btnSend.setEnabled(False)
         self.btnSend.setObjectName("btnSend")
         self.hboxlayout1.addWidget(self.btnSend)
+        self.chkShowAll = QtWidgets.QCheckBox(self.widget)
+        self.chkShowAll.setObjectName("chkShowAll")
+        self.hboxlayout1.addWidget(self.chkShowAll)
         self.gridLayout_2.addLayout(self.hboxlayout1, 4, 0, 1, 2)
         self.frame3 = QtWidgets.QFrame(self.widget)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
@@ -549,6 +552,7 @@ class Ui_ControlForm(object):
         ControlForm.setTabOrder(self.spnJogMotor, self.btnKillMotor)
         ControlForm.setTabOrder(self.btnKillMotor, self.btnJogStop)
         ControlForm.setTabOrder(self.btnJogStop, self.table)
+        ControlForm.setTabOrder(self.table, self.chkShowAll)
 
     def retranslateUi(self, ControlForm):
         _translate = QtCore.QCoreApplication.translate
@@ -594,6 +598,7 @@ class Ui_ControlForm(object):
         self.btnDisconnect.setText(_translate("ControlForm", "disconnect"))
         self.lblIdentity.setText(_translate("ControlForm", "Test"))
         self.btnSend.setText(_translate("ControlForm", "send"))
+        self.chkShowAll.setText(_translate("ControlForm", "show all commands sent"))
         self.btnEnergise.setText(_translate("ControlForm", "energise..."))
         self.btnCSStatus.setText(_translate("ControlForm", "CS Status..."))
         self.lblPolling.setText(_translate("ControlForm", "Polling"))
@@ -622,7 +627,6 @@ class Ui_ControlForm(object):
 "<table border=\"0\" style=\"-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;\">\n"
 "<tr>\n"
 "<td style=\"border: none;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"

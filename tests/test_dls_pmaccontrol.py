@@ -1,20 +1,26 @@
-from dls_pmaccontrol import HelloClass, cli, say_hello_lots
+import unittest
+import io
+import sys
+sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
+from dls_pmaccontrol import HelloClass, say_hello_lots
+from cli import main
 
+class DlsControlTest(unittest.TestCase):
 
-def test_hello_class_formats_greeting() -> None:
-    inst = HelloClass("person")
-    assert inst.format_greeting() == "Hello person"
+    def test_hello_class_formats_greeting(self):
+        obj = HelloClass("test")
+        assert obj.format_greeting() == "Hello test"
 
+    def test_hello_lots_defaults(self):
+        capOutput = io.StringIO()
+        sys.stdout = capOutput
+        say_hello_lots()
+        sys.stdout = sys.__stdout__
+        assert capOutput.getvalue() == "Hello me\n" * 5
 
-def test_hello_lots_defaults(capsys) -> None:
-    say_hello_lots()
-    captured = capsys.readouterr()
-    assert captured.out == "Hello me\n" * 5
-    assert captured.err == ""
-
-
-def test_cli(capsys) -> None:
-    cli.main(["person", "--times=2"])
-    captured = capsys.readouterr()
-    assert captured.out == "Hello person\n" * 2
-    assert captured.err == ""
+    def test_cli(self):
+        capOutput = io.StringIO()
+        sys.stdout = capOutput
+        main(["person", "--times=2"])        
+        sys.stdout = sys.__stdout__
+        assert capOutput.getvalue() == "Hello person\n" * 2

@@ -6,3 +6,4 @@ omit =
 	*/ui_form*
 	*__init__.py
 	*__main__.py
+        /setup.py
