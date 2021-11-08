@@ -196,9 +196,14 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
     def checkHistory(self, edit, event):
         if event.key() == Qt.Key_Up:
-            if self.commands_i > -len(self.commands):
+            if len(self.commands) == 0:
+                self.commands_i = 0
+                self.lneSend.setText("")
+            elif self.commands_i > -len(self.commands):
                 self.commands_i -= 1
-            self.lneSend.setText(self.commands[self.commands_i])
+                self.lneSend.setText(self.commands[self.commands_i])
+            else:
+                self.lneSend.setText(self.commands[self.commands_i])
         elif event.key() == Qt.Key_Down:
             if self.commands_i >= -1:
                 self.commands_i = 0
