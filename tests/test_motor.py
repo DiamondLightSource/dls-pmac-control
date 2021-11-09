@@ -90,10 +90,21 @@ class MotorTest(unittest.TestCase):
         self.assertFalse(obj.lnePollRate.isEnabled())
         self.assertFalse(obj.lblPollRate.isEnabled())
 
-    def test_checkHistory(self):
+    def test_checkHistory_empty(self):
+        obj = Controlform(options)
+        obj.commands = []
+        print(obj.lneSend)
+        QTest.keyClick(obj.lneSend, Qt.Key_Up)
+        #self.assertTrue("motor.Controlform.checkHistory")
+        assert obj.commands_i == 0
+        assert obj.lneSend.text() == ""
+
+    @patch("motor.Controlform.checkHistory")
+    def test_checkHistory(self, mock):
         obj = Controlform(options)
         obj.commands = ["cmd1","cmd2","cmd3"]
-
+        QTest.keyClick(obj.lneSend, Qt.Key_Up)
+        self.assertTrue(mock.called)
     '''def checkHistory(self, edit, event):
         if event.key() == Qt.Key_Up:
             if len(self.commands) == 0:

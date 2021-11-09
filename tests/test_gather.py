@@ -7,19 +7,22 @@ sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtTest import QTest, QSignalSpy
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem
-#from motor import Controlform
-#from commsThread import CommsThread
 from gather import PmacGatherform
 from ppmacgather import PpmacGatherform
-#from optparse import OptionParser
 
 app = QApplication(sys.argv)
 
+class TestWidget(QMainWindow):
+    def __init__(self, parent=None):
+        QMainWindow.__init__(self, parent)
+        self.pmac = Mock()
+        self.commsThread = Mock()
+
 class PmacGatherTest(unittest.TestCase):
 
-    @patch("motor.Controlform")
-    def test_initial_state(self, mock_control_form):
-        obj = PmacGatherform(mock_control_form)
+    def test_initial_state(self):
+        test_widget = TestWidget()
+        obj = PmacGatherform(test_widget)
         self.assertFalse(obj.btnSetup.isEnabled())
         self.assertFalse(obj.btnTrigger.isEnabled())
         self.assertFalse(obj.btnCollect.isEnabled())
@@ -27,19 +30,19 @@ class PmacGatherTest(unittest.TestCase):
         self.assertTrue(obj.btnApplyConf.isEnabled())
         obj.close()
 
-    '''#need to mock sendCommand
-    @patch("motor.Controlform")
-    def test_gather_config(self, mock_control_form):
-        obj = PmacGatherform(Controlform(options))
+    def test_gather_config(self):
+        test_widget = TestWidget()
+        obj = PmacGatherform(test_widget)
         chkboxcentre = QPoint(2,obj.chkPlot1.height()/2)
         QTest.mouseClick(obj.chkPlot1, Qt.LeftButton, pos=chkboxcentre)
         ret = obj.gatherConfig()
-        assert ret == True'''
+        assert ret == True
+        obj.close()
 
     @patch("gather.PmacGatherform.calcSampleTime")
-    @patch("motor.Controlform")
-    def test_change_no_samples(self, mock_control_form, mock_calc):
-        obj = PmacGatherform(mock_control_form)
+    def test_change_no_samples(self, mock_calc):
+        test_widget = TestWidget()
+        obj = PmacGatherform(test_widget)
         obj.lneNumberSamples.setText("1000")
         QTest.keyClick(obj.lneNumberSamples, Qt.Key_Enter)
         assert obj.nGatherPoints == 1000
@@ -47,18 +50,18 @@ class PmacGatherTest(unittest.TestCase):
         obj.close()
 
     @patch("gather.PmacGatherform.calcSampleTime")
-    @patch("motor.Controlform")
-    def test_change_sample_time(self, mock_control_form, mock_calc):
-        obj = PmacGatherform(mock_control_form)
+    def test_change_sample_time(self, mock_calc):
+        test_widget = TestWidget()
+        obj = PmacGatherform(test_widget)
         obj.lneSampleTime.setText("5")
         QTest.keyClick(obj.lneSampleTime, Qt.Key_Enter)
         assert obj.nServoCyclesGather == 5
         assert obj.nGatherPoints == 10
         obj.close()
 
-    @patch("motor.Controlform")
-    def test_click_apply(self, mock_control_form):
-        obj = PmacGatherform(mock_control_form)
+    def test_click_apply(self):
+        test_widget = TestWidget()
+        obj = PmacGatherform(test_widget)
         obj.nServoCyclesGather = 10
         obj.nGatherPoints = 100
         obj.gatherConfig = Mock()
@@ -69,18 +72,16 @@ class PmacGatherTest(unittest.TestCase):
         self.assertFalse(obj.btnSave.isEnabled())
         obj.close()
 
-    '''# need to mock sendCommand
-    @patch("motor.Controlform")
-    def test_gather_setup(self, mock_control_form):
-        obj = PmacGatherform(Controlform(options))
-        ret = obj.gatherSetup()
-        assert ret == None        
-        obj.close()
+    #def test_gather_setup(self):
+     #   test_widget = TestWidget()
+      #  obj = PmacGatherform(test_widget)
+       # ret = obj.gatherSetup()
+        #assert ret == None        
+        #obj.close()
 
-    # need to mock sendCommand
-    @patch("motor.Controlform")
-    def test_collect_data(self, mock_control_form):
-        obj = PmacGatherform(Controlform(options))
+    '''def test_collect_data(self):
+        test_widget = TestWidget()
+        obj = PmacGatherform(test_widget)
         #set up gather
         chkboxcentre = QPoint(2,obj.chkPlot1.height()/2)
         QTest.mouseClick(obj.chkPlot1, Qt.LeftButton, pos=chkboxcentre)
@@ -93,35 +94,38 @@ class PmacGatherTest(unittest.TestCase):
         self.assertFalse(obj.btnTrigger.isEnabled())
         self.assertFalse(obj.btnCollect.isEnabled())
         self.assertTrue(obj.btnSave.isEnabled())
-        obj.close()
-
-    @patch("motor.Controlform")
-    def test_parse_data(self, mock_control_form):
-        obj = PmacGatherform(Controlform(options))
-        datastrings = ["test"]
-        obj.parseData(datastrings)
-        obj.close()
-
-    #@patch("motor.Controlform.pmac.sendCommand", return_value=("8388608",None))
-    @patch("motor.Controlform")
-    def test_calc_sample_time(self, mock_control_form, mock_sendcmd):
-        obj = PmacGatherform(Controlform(options))
-        obj.calcSampleTime()
-        assert obj.servoCycleTime == 1
-        self.assertEqual(obj.sampleTime, obj.nServoCyclesGather)
-        obj.close()
-
-    @patch("motor.Controlform")
-    def test_save_clicked(self, mock_control_form):
-        obj = PmacGatherform(Controlform(options))
-        obj.saveClicked()
         obj.close()'''
+
+    #def test_parse_data(self):
+     #   test_widget = TestWidget()
+      #  obj = PmacGatherform(test_widget)
+       # datastrings = ["test"]
+        #obj.parseData(datastrings)
+        #obj.close()
+
+    # need to mock self.parent.pmac.sendCommand
+    #def test_calc_sample_time(self):
+     #   test_widget = TestWidget()
+      #  obj = PmacGatherform(test_widget)
+       # obj.calcSampleTime()
+        #assert obj.servoCycleTime == 1
+        #self.assertEqual(obj.sampleTime, obj.nServoCyclesGather)
+        #obj.close()
+
+    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    def test_save_clicked_no_data(self, mock_box):
+        test_widget = TestWidget()
+        obj = PmacGatherform(test_widget)
+        obj.lstChannels = []
+        ret = obj.saveClicked()
+        assert ret == None
+        obj.close()
 
 class PpmacGatherTest(unittest.TestCase):
 
-    @patch("motor.Controlform")
-    def test_initial_state(self, mock_control_form):
-        obj = PpmacGatherform(mock_control_form)
+    def test_initial_state(self):
+        test_widget = TestWidget()
+        obj = PpmacGatherform(test_widget)
         self.assertFalse(obj.btnSetup.isEnabled())
         self.assertFalse(obj.btnTrigger.isEnabled())
         self.assertFalse(obj.btnCollect.isEnabled())
@@ -130,9 +134,9 @@ class PpmacGatherTest(unittest.TestCase):
         obj.close()
 
     @patch("PyQt5.QtWidgets.QMessageBox.information")
-    @patch("motor.Controlform")
-    def test_change_no_samples(self, mock_control_form, mock_box):
-        obj = PpmacGatherform(mock_control_form)
+    def test_change_no_samples(self, mock_box):
+        test_widget = TestWidget()
+        obj = PpmacGatherform(test_widget)
         obj.lneNumberSamples.setText("1000")
         QTest.keyClick(obj.lneNumberSamples, Qt.Key_Enter)
         assert obj.nGatherPoints == 1000
@@ -140,22 +144,22 @@ class PpmacGatherTest(unittest.TestCase):
         obj.close()
 
     @patch("PyQt5.QtWidgets.QMessageBox.information")
-    @patch("motor.Controlform")
-    def test_change_sample_time(self, mock_control_form, mock_box):
-        obj = PpmacGatherform(mock_control_form)
+    def test_change_sample_time(self, mock_box):
+        test_widget = TestWidget()
+        obj = PpmacGatherform(test_widget)
         obj.lneSampleTime.setText("5")
         QTest.keyClick(obj.lneSampleTime, Qt.Key_Enter)
         assert obj.nGatherPoints == 0
         assert obj.nServoCyclesGather == 5 
         obj.close()
 
-    @patch("motor.Controlform")
-    def test_gather_config(self, mock_control_form):
-        obj = PpmacGatherform(mock_control_form)
+    def test_gather_config(self):
+        test_widget = TestWidget()
+        obj = PpmacGatherform(test_widget)
 
-    @patch("motor.Controlform")
-    def test_click_apply(self, mock_control_form):
-        obj = PpmacGatherform(mock_control_form)
+    def test_click_apply(self):
+        test_widget = TestWidget()
+        obj = PpmacGatherform(test_widget)
         obj.nServoCyclesGather = 10
         obj.nGatherPoints = 100
         obj.gatherConfig = Mock()
@@ -166,32 +170,26 @@ class PpmacGatherTest(unittest.TestCase):
         self.assertFalse(obj.btnSave.isEnabled())
         obj.close()
 
-    @patch("motor.Controlform")
-    def test_plot_data(self, mock_control_form):
-        obj = PpmacGatherform(mock_control_form)
+    def test_plot_data(self):
+        test_widget = TestWidget()
+        obj = PpmacGatherform(test_widget)
 
-    @patch("motor.Controlform")
-    def test_changed_tab(self, mock_control_form):
-        obj = PpmacGatherform(mock_control_form)
+    def test_changed_tab(self):
+        test_widget = TestWidget()
+        obj = PpmacGatherform(test_widget)
 
-    #@patch("ppmacgather.PpmacGatherform.plotData")
-    #@patch("ppmacgather.PpmacGatherform.collectData")
-    @patch("motor.Controlform")
-    def test_collect_clicked(self, mock_control_form):#, mock_collect, mock_plot):
-        obj = PpmacGatherform(mock_control_form)
+    @patch("ppmacgather.PpmacGatherform.plotData")
+    @patch("ppmacgather.PpmacGatherform.collectData")
+    def test_collect_clicked(self, mock_collect, mock_plot):
+        test_widget = TestWidget()
+        obj = PpmacGatherform(test_widget)
         QTest.mouseClick(obj.btnCollect, Qt.LeftButton)
-        #self.assertTrue(obj.btnSetup.isEnabled())
-        #self.assertFalse(obj.btnTrigger.isEnabled())
-        #self.assertFalse(obj.btnCollect.isEnabled())
-        #self.assertTrue(obj.btnSave.isEnabled())
+        self.assertTrue(obj.btnSetup.isEnabled())
+        self.assertFalse(obj.btnTrigger.isEnabled())
+        self.assertFalse(obj.btnCollect.isEnabled())
+        self.assertTrue(obj.btnSave.isEnabled())
         obj.close()
 
-    @patch("motor.Controlform")
-    def test_save_clicked(self, mock_control_form):
-        obj = PpmacGatherform(mock_control_form)
-
-
-
-
-
-
+    def test_save_clicked(self):
+        test_widget = TestWidget()
+        obj = PpmacGatherform(test_widget)
