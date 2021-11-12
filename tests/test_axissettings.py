@@ -30,145 +30,118 @@ class TestWidget(QMainWindow):
 
 class AxissettingsTest(unittest.TestCase):
 
+    def setUp(self):
+        self.test_widget = TestWidget()
+        self.obj = Axissettingsform(self.test_widget)
+
     def test_change_axis_not_visible(self):
-        test_widget = TestWidget()
-        obj = Axissettingsform(test_widget)
-        obj.changeAxis(2)
-        assert obj.currentMotor == 2
-        obj.close()
+        self.obj.changeAxis(2)
+        assert self.obj.currentMotor == 2
 
     @patch("axissettings.Axissettingsform._updateAxisSignalControlsVars")
     @patch("axissettings.Axissettingsform._updateAxisSetupIVars")
     def test_change_axis_visible(self, mock_setup, mock_signal):
-        test_widget = TestWidget()
-        obj = Axissettingsform(test_widget)
-        obj.show()
-        obj.changeAxis(2)
-        assert obj.currentMotor == 2
+        self.obj.show()
+        self.obj.changeAxis(2)
+        assert self.obj.currentMotor == 2
         self.assertTrue(mock_setup.called)
-        if obj.tabAxisSetup.currentIndex() !=0:
+        if self.obj.tabAxisSetup.currentIndex() !=0:
             self.assertTrue(mock_signal.called)
-        obj.close()
 
     @patch("axissettings.Axissettingsform._updateAxisSignalControlsVars")
     @patch("axissettings.Axissettingsform._updateAxisSetupIVars")
     def test_change_tab(self, mock_setup, mock_signal):
-        test_widget = TestWidget()
-        obj = Axissettingsform(test_widget)
-        QTest.mouseClick(obj.tabAxisSetup, Qt.LeftButton)
-        assert obj.tabAxisSetup.currentIndex() == 1
-        obj.close()
+        QTest.mouseClick(self.obj.tabAxisSetup, Qt.LeftButton)
+        assert self.obj.tabAxisSetup.currentIndex() == 1
 
     def test_updateAxisSetupIVars(self):
-        test_widget = TestWidget()
-        obj = Axissettingsform(test_widget)
-        obj._updateAxisSetupIVars([11,16,23])
-        assert obj.lneIx11.text() == "value"
-        assert obj.lneIx16.text() == "value"
-        assert obj.lneIx23.text() == "value"
+        self.obj._updateAxisSetupIVars([11,16,23])
+        assert self.obj.lneIx11.text() == "value"
+        assert self.obj.lneIx16.text() == "value"
+        assert self.obj.lneIx23.text() == "value"
 
     def test_updateAxisSignalControlsVars(self):
-        test_widget = TestWidget()
-        obj = Axissettingsform(test_widget)
-        obj._updateAxisSignalControlsVars()
-        assert obj.lneLoopSelect.text() == "loopSelect"
-        assert obj.lneCaptureOn.text() == "captureOn"
-        assert obj.lneCaptureFlag.text() == "captureFlag"
-        assert obj.lneOutputMode.text() == "outputMode"
+        self.obj._updateAxisSignalControlsVars()
+        assert self.obj.lneLoopSelect.text() == "loopSelect"
+        assert self.obj.lneCaptureOn.text() == "captureOn"
+        assert self.obj.lneCaptureFlag.text() == "captureFlag"
+        assert self.obj.lneOutputMode.text() == "outputMode"
 
     def test_getAxisSignalControlsVars(self):
-        test_widget = TestWidget()
-        obj = Axissettingsform(test_widget)
-        (ret1,ret2,ret3,ret4) = obj._getAxisSignalControlsVars()
+        (ret1,ret2,ret3,ret4) = self.obj._getAxisSignalControlsVars()
         assert ret1 == "loopSelect" 
         assert ret2 == "captureOn"
         assert ret3 == "captureFlag"
         assert ret4 == "outputMode"
 
     def test_sendLoopSelect(self):
-        test_widget = TestWidget()
-        obj = Axissettingsform(test_widget)
-        obj.sendLoopSelect()
-        self.assertTrue(test_widget.pmac.setOnboardAxisI7000PlusIVar.called)
+        self.obj.sendLoopSelect()
+        self.assertTrue(self.test_widget.pmac.setOnboardAxisI7000PlusIVar.called)
 
     def test_sendCaptureOn(self):
-        test_widget = TestWidget()
-        obj = Axissettingsform(test_widget)
-        obj.sendLoopSelect()
-        self.assertTrue(test_widget.pmac.setOnboardAxisI7000PlusIVar.called)
+        self.obj.sendLoopSelect()
+        self.assertTrue(self.test_widget.pmac.setOnboardAxisI7000PlusIVar.called)
 
     def test_sendCaptureFlag(self):
-        test_widget = TestWidget()
-        obj = Axissettingsform(test_widget)
-        obj.sendLoopSelect()
-        self.assertTrue(test_widget.pmac.setOnboardAxisI7000PlusIVar.called)
+        self.obj.sendLoopSelect()
+        self.assertTrue(self.test_widget.pmac.setOnboardAxisI7000PlusIVar.called)
 
     def test_sendOutputMode(self):
-        test_widget = TestWidget()
-        obj = Axissettingsform(test_widget)
-        obj.sendLoopSelect()
-        self.assertTrue(test_widget.pmac.setOnboardAxisI7000PlusIVar.called)
+        self.obj.sendLoopSelect()
+        self.assertTrue(self.test_widget.pmac.setOnboardAxisI7000PlusIVar.called)
 
     @patch("axissettings.Axissettingsform.axisUpdate")
     def test_sendIx(self, mock_update):
-        test_widget = TestWidget()
-        obj = Axissettingsform(test_widget)
         ivars = [11,12,13,14,15,16,17,19,20,21,22,23,25,26]
         for i in range(len(ivars)):
-            exec("obj.sendIx%d()" % ivars[i])
-            self.assertTrue(test_widget.pmac.setAxisSetupIVar.called)
+            exec("self.obj.sendIx%d()" % ivars[i])
+            self.assertTrue(self.test_widget.pmac.setAxisSetupIVar.called)
             self.assertTrue(mock_update.called)
+
+    def tearDown(self):
+        self.obj.close()
 
 class PpmacAxissettingsTest(unittest.TestCase):
 
+    def setUp(self):
+        self.test_widget = TestWidget()
+        self.obj = PpmacAxissettingsform(self.test_widget)
+
     def test_change_axis_not_visible(self):
-        test_widget = TestWidget()
-        obj = PpmacAxissettingsform(test_widget)
-        obj.changeAxis(2)
-        assert obj.currentMotor == 2
-        obj.close()
+        self.obj.changeAxis(2)
+        assert self.obj.currentMotor == 2
 
     @patch("axissettings.PpmacAxissettingsform._updateAxisSetupIVars")
     def test_change_axis_visible(self, mock_setup):
-        test_widget = TestWidget()
-        obj = PpmacAxissettingsform(test_widget)
-        obj.show()
-        obj.changeAxis(2)
-        assert obj.currentMotor == 2
+        self.obj.show()
+        self.obj.changeAxis(2)
+        assert self.obj.currentMotor == 2
         self.assertTrue(mock_setup.called)
-        obj.close()
 
     @patch("axissettings.PpmacAxissettingsform._updateAxisSetupIVars")
     def test_change_tab(self, mock_setup):
-        test_widget = TestWidget()
-        obj = PpmacAxissettingsform(test_widget)
-        QTest.mouseClick(obj.tabAxisSetup, Qt.LeftButton)
-        assert obj.tabAxisSetup.currentIndex() == 0
-        obj.close()
+        QTest.mouseClick(self.obj.tabAxisSetup, Qt.LeftButton)
+        assert self.obj.tabAxisSetup.currentIndex() == 0
 
     def test_updateAxisSetupIVars(self):
-        test_widget = TestWidget()
-        obj = PpmacAxissettingsform(test_widget)
-        obj._updateAxisSetupIVars([11,16,23])
-        assert obj.lneIx11.text() == "return"
-        assert obj.lneIx16.text() == "return"
-        assert obj.lneIx23.text() == "return"
+        self.obj._updateAxisSetupIVars([11,16,23])
+        assert self.obj.lneIx11.text() == "return"
+        assert self.obj.lneIx16.text() == "return"
+        assert self.obj.lneIx23.text() == "return"
 
     @patch("axissettings.PpmacAxissettingsform.axisUpdate")
     def test_setAxisSetupIVar(self, mock_update):
-        test_widget = TestWidget()
-        obj = PpmacAxissettingsform(test_widget)
-        obj.setAxisSetupIVar(12, 1234)
+        self.obj.setAxisSetupIVar(12, 1234)
         self.assertTrue(mock_update.called)
 
     @patch("axissettings.PpmacAxissettingsform.setAxisSetupIVar")
     @patch("axissettings.PpmacAxissettingsform.axisUpdate")
     def test_sendIx(self, mock_update, mock_setup):
-        test_widget = TestWidget()
-        obj = PpmacAxissettingsform(test_widget)
         ivars = [11,12,13,14,15,16,17,19,20,21,22,23,25,26]
         for i in range(len(ivars)):
-            exec("obj.sendIx%d()" % ivars[i])
+            exec("self.obj.sendIx%d()" % ivars[i])
             self.assertTrue(mock_setup.called)
             self.assertTrue(mock_update.called)
 
+    def tearDown(self):
+        self.obj.close()

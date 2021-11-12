@@ -24,56 +24,52 @@ class TestWidget(QMainWindow):
 
 class StatusTest(unittest.TestCase):
 
+    @patch("PyQt5.QtWidgets.QLabel.setToolTip")
+    @patch("PyQt5.QtWidgets.QLabel.setText")
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    def setUp(self, mock_pixmap, mock_text, mock_tooltip):
+        self.test_widget = TestWidget()
+        self.obj = Statusform(self.test_widget,1)
+
     def test_inital_form(self):
-        test_widget = TestWidget()
-        obj = Statusform(test_widget,1)
-        assert obj.ledGroup.title() == "Axis 1"
-        obj.close()
+        assert self.obj.ledGroup.title() == "Axis 1"
 
     def test_change_axis(self):
-        test_widget = TestWidget()
-        obj = Statusform(test_widget,1)
-        obj.changeAxis(5)
-        assert obj.currentAxis == 5
-        assert obj.ledGroup.title() == "Axis 5"
-        obj.close()
+        self.obj.changeAxis(5)
+        assert self.obj.currentAxis == 5
+        assert self.obj.ledGroup.title() == "Axis 5"
 
-    def test_update_status_all_off(self):
-        test_widget = TestWidget()
-        obj = Statusform(test_widget,1)
-        obj.updateStatus(000000000000)
-        obj.close()
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    def test_update_status_all_off(self, mock_pixmap):
+        self.obj.updateStatus(0)
+        mock_pixmap.assert_called_with(self.test_widget.greenLedOff)
+        assert mock_pixmap.call_count == len(self.obj.lstLeds)
 
-    def test_update_status_all_on(self):
-        test_widget = TestWidget()
-        obj = Statusform(test_widget,1)
-        obj.updateStatus(111111111111)
-        obj.close()
+    def tearDown(self):
+        self.obj.close()
 
 class PpmacStatusTest(unittest.TestCase):
 
+    @patch("PyQt5.QtWidgets.QLabel.setToolTip")
+    @patch("PyQt5.QtWidgets.QLabel.setText")
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    def setUp(self, mock_pixmap, mock_text, mock_tooltip):
+        self.test_widget = TestWidget()
+        self.obj = PpmacStatusform(self.test_widget,1)
+
     def test_inital_form(self):
-        test_widget = TestWidget()
-        obj = PpmacStatusform(test_widget,1)
-        assert obj.ledGroup.title() == "Axis 1"
-        obj.close()
+        assert self.obj.ledGroup.title() == "Axis 1"
 
     def test_change_axis(self):
-        test_widget = TestWidget()
-        obj = PpmacStatusform(test_widget,1)
-        obj.changeAxis(3)
-        assert obj.currentAxis == 3
-        assert obj.ledGroup.title() == "Axis 3"
-        obj.close()
+        self.obj.changeAxis(3)
+        assert self.obj.currentAxis == 3
+        assert self.obj.ledGroup.title() == "Axis 3"
 
-    def test_update_status_all_off(self):
-        test_widget = TestWidget()
-        obj = PpmacStatusform(test_widget,1)
-        obj.updateStatus(0000000000000000)
-        obj.close()
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    def test_update_status_all_off(self, mock_pixmap):
+        self.obj.updateStatus(0)
+        mock_pixmap.assert_called_with(self.test_widget.greenLedOff)
+        assert mock_pixmap.call_count == len(self.obj.lstLeds)
 
-    def test_update_status_all_on(self):
-        test_widget = TestWidget()
-        obj = PpmacStatusform(test_widget,1)
-        obj.updateStatus(1111111111111111)
-        obj.close()
+    def tearDown(self):
+        self.obj.close()

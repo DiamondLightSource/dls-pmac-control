@@ -26,74 +26,70 @@ class TestWidget(QMainWindow):
 
 class CSStatusTest(unittest.TestCase):
 
+    @patch("PyQt5.QtWidgets.QLabel.setToolTip")
+    @patch("PyQt5.QtWidgets.QLabel.setText")
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    def setUp(self, mock_pixmap, mock_text, mock_tooltip):
+        self.test_widget = TestWidget()
+        self.obj = CSStatusForm(self.test_widget)
+
     def test_inital_form(self):
-        test_widget = TestWidget()
-        obj = CSStatusForm(test_widget)
-        assert obj.ledGroup.title() == "CS Status"
-        assert obj._feed == 100
-        obj.close()
+        assert self.obj.ledGroup.title() == "CS Status"
+        assert self.obj._feed == 100
 
     def test_change_cs(self):
-        test_widget = TestWidget()
-        obj = CSStatusForm(test_widget)
-        QTest.keyClick(obj.csSpin, Qt.Key_Up)
-        assert obj.ledGroup.title() == ("CS %d" % obj.csSpin.value())
-        obj.close()
+        QTest.keyClick(self.obj.csSpin, Qt.Key_Up)
+        assert self.obj.ledGroup.title() == ("CS %d" % self.obj.csSpin.value())
 
     def test_update_feed(self):
-        test_widget = TestWidget()
-        obj = CSStatusForm(test_widget)
-        obj.updateFeed(50)
-        assert obj._feed == 50
-        obj.close()
+        self.obj.updateFeed(50)
+        assert self.obj._feed == 50
+        assert self.obj.feedSpin.value() == 50
 
     def test_set_feed(self):
-        test_widget = TestWidget()
-        obj = CSStatusForm(test_widget)
-        QTest.keyClick(obj.feedSpin, Qt.Key_Down)
-        assert obj.feedSpin.value() == 99
-        obj.close()
+        QTest.keyClick(self.obj.feedSpin, Qt.Key_Down)
+        assert self.obj.feedSpin.value() == 99
 
-    def test_update_status(self):
-        test_widget = TestWidget()
-        obj = CSStatusForm(test_widget)
-        #obj.updateStatus()
-        #assert
-        obj.close()
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    def test_update_status_all_off(self, mock_pixmap):
+        self.obj.updateStatus(0)
+        mock_pixmap.assert_called_with(self.test_widget.greenLedOff)
+        assert mock_pixmap.call_count == len(self.obj.lstLeds)
+
+    def tearDown(self):
+        self.obj.close()
 
 class PpmacCSStatusTest(unittest.TestCase):
 
+    @patch("PyQt5.QtWidgets.QLabel.setToolTip")
+    @patch("PyQt5.QtWidgets.QLabel.setText")
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    def setUp(self, mock_pixmap, mock_text, mock_tooltip):
+        self.test_widget = TestWidget()
+        self.obj = PpmacCSStatusForm(self.test_widget)
+
     def test_inital_form(self):
-        test_widget = TestWidget()
-        obj = PpmacCSStatusForm(test_widget)
-        assert obj.ledGroup.title() == "CS Status"
-        assert obj._feed == 100
-        obj.close()
+        assert self.obj.ledGroup.title() == "CS Status"
+        assert self.obj._feed == 100
 
     def test_change_cs(self):
-        test_widget = TestWidget()
-        obj = PpmacCSStatusForm(test_widget)
-        QTest.keyClick(obj.csSpin, Qt.Key_Up)
-        assert obj.ledGroup.title() == ("CS %d" % obj.csSpin.value())
-        obj.close()
+        QTest.keyClick(self.obj.csSpin, Qt.Key_Up)
+        assert self.obj.ledGroup.title() == ("CS %d" % self.obj.csSpin.value())
 
     def test_update_feed(self):
-        test_widget = TestWidget()
-        obj = PpmacCSStatusForm(test_widget)
-        obj.updateFeed(50)
-        assert obj._feed == 50
-        obj.close()
+        self.obj.updateFeed(50)
+        assert self.obj._feed == 50
+        assert self.obj.feedSpin.value() == 50
 
     def test_set_feed(self):
-        test_widget = TestWidget()
-        obj = PpmacCSStatusForm(test_widget)
-        QTest.keyClick(obj.feedSpin, Qt.Key_Down)
-        assert obj.feedSpin.value() == 99
-        obj.close()
+        QTest.keyClick(self.obj.feedSpin, Qt.Key_Down)
+        assert self.obj.feedSpin.value() == 99
 
-    def test_update_status(self):
-        test_widget = TestWidget()
-        obj = PpmacCSStatusForm(test_widget)
-        #obj.updateStatus()
-        #assert
-        obj.close()
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    def test_update_status_all_off(self, mock_pixmap):
+        self.obj.updateStatus(0)
+        mock_pixmap.assert_called_with(self.test_widget.greenLedOff)
+        assert mock_pixmap.call_count == len(self.obj.lstLeds)
+
+    def tearDown(self):
+        self.obj.close()
