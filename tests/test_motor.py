@@ -2,6 +2,7 @@ import PyQt5
 import unittest
 from mock import patch, Mock
 import time
+import os
 import sys
 sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
 from PyQt5.QtCore import Qt, QPoint, QEvent
@@ -100,43 +101,35 @@ class MotorTestTelnet(unittest.TestCase):
         self.assertFalse(self.obj.lnePollRate.isEnabled())
         self.assertFalse(self.obj.lblPollRate.isEnabled())
 
-    @unittest.skip("checkHistory not being called")
     @patch("PyQt5.QtWidgets.QLineEdit.keyPressEvent")
     def test_checkHistory_empty(self, mock_event):
-        obj.commands = []
-        obj.commands_i = 0
-        QTest.keyClick(obj.lneSend, Qt.Key_Up)
-        assert obj.commands_i == 0
-        assert obj.lneSend.text() == ""
-        #assert mock_event.called
+        self.obj.commands = []
+        self.obj.commands_i = 0
+        self.obj.lneSend.setEnabled(True)
+        QTest.keyClick(self.obj.lneSend, Qt.Key_Up)
+        assert self.obj.commands_i == 0
+        assert self.obj.lneSend.text() == ""
+        assert mock_event.called
 
-    @unittest.skip("checkHistory not being called")
     @patch("PyQt5.QtWidgets.QLineEdit.keyPressEvent")
     def test_checkHistory_keyup(self, mock_event):
-        obj.commands = ["cmd1","cmd2","cmd3"]
-        obj.commands_i = 0
-        QTest.keyClick(obj.lneSend, Qt.Key_Up)
-        assert obj.commands_i == -1
-        assert obj.lneSend.text() == "cmd3"
-        #assert mock_event.called
+        self.obj.commands = ["cmd1","cmd2","cmd3"]
+        self.obj.commands_i = 0
+        self.obj.lneSend.setEnabled(True)
+        QTest.keyClick(self.obj.lneSend, Qt.Key_Up)
+        assert self.obj.commands_i == -1
+        assert self.obj.lneSend.text() == "cmd3"
+        assert mock_event.called
 
-    @unittest.skip("checkHistory not being called")
     @patch("PyQt5.QtWidgets.QLineEdit.keyPressEvent")
     def test_checkHistory_keydown(self, mock_event):
         self.obj.commands = ["cmd1","cmd2","cmd3"]
         self.obj.commands_i = -1
-        #self.obj.show()
-        #self.obj.lneSend.setFocus()
-        #QTest.mouseClick(self.obj.lneSend, Qt.LeftButton)
-        QTest.keyClick(self.obj.lneSend, Qt.Key_Up)
-        #self.event = self.obj.lneSend.keyPressEvent
-        #self.event.key = Qt.Key_Up
-        #event = QKeyEvent(self.obj.lneSend.keyPressEvent, 16777235)
-        #self.obj.checkHistory(self.obj.lneSend, event)
-        #self.obj.checkHistory(self.obj.lneSend, self.obj.lneSend.keyPressEvent)
-        #self.obj.lneSend.keyPressEvent(Qt.Key_Up)
+        self.obj.lneSend.setEnabled(True)
+        QTest.keyClick(self.obj.lneSend, Qt.Key_Down)
         assert self.obj.commands_i == 0
-        assert self.obj.lneSend.text() == "cmd1"
+        print(self.obj.lneSend.text())
+        assert self.obj.lneSend.text() == ""
         assert mock_event.called
 
     @patch("PyQt5.QtWidgets.QMessageBox.information")
@@ -286,6 +279,87 @@ class MotorTestTelnet(unittest.TestCase):
         mock_pixmap.assert_called_with(self.obj.greenLedOff)
         assert self.obj.lblIdentity.text() == ""
 
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
+    @patch("motor.Controlform.addToTxtShell")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
+    def test_jog_neg(self, mock_joginc, mock_addtxt, mock_params, mock_connect,
+                      mock_model, mock_axes, mock_geo, mock_pixmap):
+        # create connection
+        mock_model.return_value = "test"
+        mock_axes.return_value = 8
+        mock_geo.return_value = True
+        mock_connect.return_value = None
+        self.obj.remoteConnect()
+        mock_joginc.return_value = ("cmd", "response", True)
+        self.obj.jogNeg()
+        mock_joginc.assert_called_with(self.obj.currentMotor, "neg", str(self.obj.lneJogDist.text()))
+
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
+    @patch("motor.Controlform.addToTxtShell")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
+    def test_jog_pos(self, mock_joginc, mock_addtxt, mock_params, mock_connect,
+                      mock_model, mock_axes, mock_geo, mock_pixmap):
+        # create connection
+        mock_model.return_value = "test"
+        mock_axes.return_value = 8
+        mock_geo.return_value = True
+        mock_connect.return_value = None
+        self.obj.remoteConnect()
+        mock_joginc.return_value = ("cmd", "response", True)
+        self.obj.jogPos()
+        mock_joginc.assert_called_with(self.obj.currentMotor, "pos", str(self.obj.lneJogDist.text()))
+
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
+    @patch("motor.Controlform.addToTxtShell")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogStop")
+    def test_jog_stop(self, mock_jogstop, mock_addtxt, mock_params, mock_connect,
+                      mock_model, mock_axes, mock_geo, mock_pixmap):
+        # create connection
+        mock_model.return_value = "test"
+        mock_axes.return_value = 8
+        mock_geo.return_value = True
+        mock_connect.return_value = None
+        self.obj.remoteConnect()
+        mock_jogstop.return_value = ("cmd", "response", True)
+        self.obj.jogStop()
+        mock_jogstop.assert_called_with(self.obj.currentMotor)
+
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
+    @patch("motor.Controlform.addToTxtShell")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.homeCommand")
+    def test_jog_home(self, mock_home, mock_addtxt, mock_params, mock_connect,
+                      mock_model, mock_axes, mock_geo, mock_pixmap):
+        # create connection
+        mock_model.return_value = "test"
+        mock_axes.return_value = 8
+        mock_geo.return_value = True
+        mock_connect.return_value = None
+        self.obj.remoteConnect()
+        mock_home.return_value = ("cmd", "response", True)
+        self.obj.jogHome()
+        mock_home.assert_called_with(self.obj.currentMotor)
+        mock_addtxt.assert_called_with("cmd","response")
+
     def tearDown(self):
         self.obj.close()
 
@@ -401,21 +475,34 @@ class MotorTestEthernet(unittest.TestCase):
         mock_pixmap.assert_called_with(self.obj.greenLedOn)
 
     @unittest.skip("not working")
-    @patch("motor.Controlform.jogNeg")
-    @patch("motor.Controlform.jogPos")
-    def test_jog_incrementally_true(self, jog_neg, jog_pos):
+    #@patch("motor.Controlform.jogNeg")
+    #@patch("motor.Controlform.jogPos")
+    #@patch("motor.Controlform.btnJogNeg.clicked.connect")
+    #@patch("motor.Controlform.btnJogPos.clicked.connect")
+    def test_jog_incrementally_true(self):#, jog_pos, jog_neg):
+        self.obj.btnJogPos.pressed.connect(self.obj.jogPosContinousStart)
+        self.obj.btnJogPos.released.connect(self.obj.jogStop)
+        self.obj.btnJogNeg.pressed.connect(self.obj.jogNegContinousStart)
+        self.obj.btnJogNeg.released.connect(self.obj.jogStop)
         self.obj.jogIncrementally(True)
         self.assertTrue(self.obj.lneJogDist.isEnabled())
-        QTest.mouseClick(self.obj.btnJogNeg, Qt.LeftButton)
-        assert jog_neg.called
-        QTest.mouseClick(self.obj.btnJogPos, Qt.LeftButton)
-        assert jog_pos.called
+        #QTest.mouseClick(self.obj.btnJogNeg, Qt.LeftButton)
+        #assert jog_neg.called
+        #QTest.mouseClick(self.obj.btnJogPos, Qt.LeftButton)
+        #assert jog_pos.called
+        #jog_pos.assert_called_with(self.obj.jogPos)
+        self.obj.btnJogNeg.clicked.connect.assert_called_with(self.obj.jogNeg)
+
+    @patch("motor.Controlform.jogNeg")
+    @patch("motor.Controlform.jogPos")
     @unittest.skip("not finished")
     def test_jog_incrementally_false(self):
+        self.obj.btnJogNeg.clicked.connect(self.obj.jogNeg)
+        self.obj.btnJogPos.clicked.connect(self.obj.jogPos)
         self.obj.jogIncrementally(False)
         self.assertFalse(self.obj.lneJogDist.isEnabled())
-        QTest.mouseClick(obj.btnJogNeg, Qt.LeftButton)
-        QTest.mouseClick(obj.btnJogPos, Qt.LeftButton)
+        QTest.mousePress(self.obj.btnJogNeg, Qt.LeftButton)
+        QTest.mousePress(self.obj.btnJogPos, Qt.LeftButton)
 
     def tearDown(self):
         self.obj.close()
@@ -532,6 +619,51 @@ class MotorTestSerial(unittest.TestCase):
         self.assertFalse(self.obj.lblPollRate.isEnabled())
         mock_pixmap.assert_called_with(self.obj.greenLedOn)
 
+    @patch("PyQt5.QtWidgets.QFileDialog.getOpenFileName")
+    def test_load_config_no_filename(self, mock_dialog):
+        test_filename = False, None
+        mock_dialog.return_value = test_filename
+        assert self.obj.pmacLoadConfig() == None
+        assert mock_dialog.called
+
+    @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
+    @patch("PyQt5.QtWidgets.QFileDialog.getOpenFileName")
+    def test_load_config_no_pmc_lines(self, mock_dialog, mock_parse):
+        #create temp file
+        test_file = "/tmp/test.txt"
+        fh = open(test_file,'w')
+        fh.write("#define test P10\ntest = 1")
+        fh.close()
+        #mock returns filename of temp file
+        test_filename = "/tmp/test.txt", None
+        mock_dialog.return_value = test_filename
+        mock_parse.return_value = False
+        assert self.obj.pmacLoadConfig() == None
+        assert mock_dialog.called
+        assert mock_parse.called
+        os.remove(test_file)
+
+    @patch("queue.Queue.put")
+    @patch("PyQt5.QtWidgets.QProgressDialog")
+    @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
+    @patch("PyQt5.QtWidgets.QFileDialog.getOpenFileName")
+    def test_load_config(self, mock_dialog, mock_parse, 
+                          mock_progress, mock_queue):
+        #create temp file
+        test_file = "/tmp/test.txt"
+        fh = open(test_file,'w')
+        fh.write("#define test P10\ntest = 1")
+        fh.close()
+        #mock returns filename of temp file
+        test_filename = "/tmp/test.txt", None
+        mock_dialog.return_value = test_filename
+        mock_parse.return_value = ["#define test P10", "test = 1"]
+        assert self.obj.pmacLoadConfig() == None
+        assert mock_dialog.called
+        assert mock_parse.called
+        assert mock_queue.called
+        os.remove(test_file)
+
     def tearDown(self):
         self.obj.close()
 
@@ -559,6 +691,7 @@ class MotorTestSsh(unittest.TestCase):
             mock_ppmaccs, mock_cs, mock_ppmacstatus, mock_status):
         self.options = TestOptionsSsh()
         self.obj = Controlform(self.options)
+        self.obj.commsThread = mock_comms.return_value
 
     def test_initial_state(self):
         assert self.obj.ConnectionType == 3
@@ -648,25 +781,24 @@ class MotorTestSsh(unittest.TestCase):
         self.assertFalse(self.obj.lblPollRate.isEnabled())
         mock_pixmap.assert_called_with(self.obj.greenLedOn)
 
-    @unittest.skip("not working")
-    @patch("queue.Queue")
-    def test_update_motors(self, mock_queue):
+    def test_update_motors(self):
+        attrs = {"resultQueue.return_value" : Mock()}
+        self.obj.commsThread.configure_mock(**attrs)
         attrs = {"qsize.return_value" : 5,
-                 "get.return_value" : 0}
-        mock_queue.configure_mock(**attrs)
+                 "get.return_value" : ["0","0","0","0", 0]}
+        self.obj.commsThread.resultQueue.configure_mock(**attrs)
         ret = self.obj.updateMotors()
         assert ret == None
-        assert self.obj.lblPosition.text() == "0"
-        assert self.obj.lblVelo.text() == "0"
-        assert self.obj.lblFolErr.text() == "0"
+        assert self.obj.lblPosition.text() == "0.0"
+        assert self.obj.lblVelo.text() == "0.0"
+        assert self.obj.lblFolErr.text() == "0.0"
 
-    @unittest.skip("not working")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getShortModelName")
-    @patch("dls_pmaclib.dls_pmacremote.PmacSshInterface.isModelGeobrick")
-    @patch("dls_pmaclib.dls_pmacremote.PmacSshInterface.getNumberOfAxes")
-    @patch("dls_pmaclib.dls_pmacremote.PmacSshInterface.getPmacModel")
-    @patch("dls_pmaclib.dls_pmacremote.PmacSshInterface.connect")
-    @patch("dls_pmaclib.dls_pmacremote.PmacSshInterface.setConnectionParams")
+    @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.isModelGeobrick")
+    @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getNumberOfAxes")
+    @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getPmacModel")
+    @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.connect")
+    @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.setConnectionParams")
     def test_update_identity(self, mock_params, mock_connect, mock_model, 
                               mock_axes, mock_geo, mock_short):
         mock_short.return_value = "name"
@@ -677,6 +809,7 @@ class MotorTestSsh(unittest.TestCase):
         mock_connect.return_value = None
         self.obj.remoteConnect()
         self.obj.updateIdentity(1)
+        assert self.obj.lblIdentity.text() == "BL name 1"
 
     def tearDown(self):
         self.obj.close()

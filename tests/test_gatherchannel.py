@@ -16,9 +16,14 @@ class TestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
-        #self.commsThread = Mock()
         attrs = {"sendCommand.return_value" : ("100\r", True)}
-        #attrs = {"sendCommand" : None}
+        self.pmac.configure_mock(**attrs)
+
+class TestWidget2(QMainWindow):
+    def __init__(self, parent=None):
+        QMainWindow.__init__(self, parent)
+        self.pmac = Mock()
+        attrs = {"sendCommand.return_value" : ("$088\r", True)}
         self.pmac.configure_mock(**attrs)
 
 class PpmacGatherChannel:
@@ -65,14 +70,6 @@ class GatherChannelTest(unittest.TestCase):
         self.obj.setDataGatherPointer("test_ivar")
         assert self.obj.pSrcIvar == "test_ivar"
 
-    @unittest.skip("need to mock sendCommand with different return_value")
-    def test_getDataInfo(self, mock_sendcmd):
-        mock_sendcmd.return_value = "0x000000\r"
-        ret = self.obj.getDataInfo()
-        assert self.obj.dataWidth == 24
-        assert self.obj.dataType == int
-        print(ret)
-
     def test_setStrData(self):
         self.obj.setStrData("test_strData")
         assert self.obj.strData == "test_strData"
@@ -110,3 +107,18 @@ class GatherChannelTest(unittest.TestCase):
         self.obj.rawData = [10]
         assert self.obj.rawToScaled() == None
         assert self.obj.scaledData == [50]
+
+class GatherChannelTestDataInfo(unittest.TestCase):
+
+    def setUp(self):
+        self.curve = QwtPlotCurve("test")
+        self.test_widget = TestWidget2()
+        self.obj = PmacGatherChannel(self.test_widget.pmac, self.curve)
+
+    def test_getDataInfo(self):
+        ret = self.obj.getDataInfo()
+        assert ret == None
+        assert self.obj.dataWidth == 24
+        assert self.obj.dataType == int
+        assert self.obj.regOffset == 8
+        assert self.obj.axisNo == 1
