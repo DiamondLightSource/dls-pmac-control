@@ -588,6 +588,7 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
             else:
                 self.lstLeds[bit].setPixmap(self.greenLedOff)
 
+
 class PpmacCSStatusForm(QDialog, Ui_formCSStatus):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
@@ -609,169 +610,101 @@ class PpmacCSStatusForm(QDialog, Ui_formCSStatus):
         self.lstTooltips = []
 
         # Extracted from manual
-        # Word 0: Bit 31 - Bit 0 
+        # Word 0: Bit 31 - Bit 0
         self.lstLabelTexts.append("TriggerMove")
         self.lstTooltips.append(
             """Trigger search move in progress (any motor in C.S.)"""
         )
         self.lstLabelTexts.append("HomeInprogress")
-        self.lstTooltips.append(
-            """Home search move in progress (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Home search move in progress (any motor in C.S.)""")
         self.lstLabelTexts.append("MinusLimit")
-        self.lstTooltips.append(
-            """Hardware negative limit set (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Hardware negative limit set (any motor in C.S.)""")
         self.lstLabelTexts.append("PlusLimit")
-        self.lstTooltips.append(
-            """Hardware positive limit set (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Hardware positive limit set (any motor in C.S.)""")
         self.lstLabelTexts.append("FeWarn")
-        self.lstTooltips.append(
-            """Warning following error (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Warning following error (any motor in C.S.)""")
         self.lstLabelTexts.append("FeFatal")
-        self.lstTooltips.append(
-            """Fatal following error (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Fatal following error (any motor in C.S.)""")
         self.lstLabelTexts.append("LimitStop")
-        self.lstTooltips.append(
-            """Stopped on hardware limit (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Stopped on hardware limit (any motor in C.S.)""")
         self.lstLabelTexts.append("AmpFault")
-        self.lstTooltips.append(
-            """Amplifier fault (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Amplifier fault (any motor in C.S.)""")
         self.lstLabelTexts.append("SoftMinusLimit")
-        self.lstTooltips.append(
-            """Software negative limit set (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Software negative limit set (any motor in C.S.)""")
         self.lstLabelTexts.append("SoftPlusLimit")
-        self.lstTooltips.append(
-            """Software positive limit set (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Software positive limit set (any motor in C.S.)""")
         self.lstLabelTexts.append("I2tFault")
         self.lstTooltips.append(
             """Integrated current (I2T) fault (any motor in C.S.)"""
         )
         self.lstLabelTexts.append("TriggerNotFound")
-        self.lstTooltips.append(
-            """Trigger not found (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Trigger not found (any motor in C.S.)""")
         self.lstLabelTexts.append("AmpWarn")
-        self.lstTooltips.append(
-            """Amp warning (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Amp warning (any motor in C.S.)""")
         self.lstLabelTexts.append("EncLoss")
-        self.lstTooltips.append(
-            """Encoder loss error (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Encoder loss error (any motor in C.S.)""")
         self.lstLabelTexts.append("AuxFault")
-        self.lstTooltips.append(
-            """Auxiliary fault error (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Auxiliary fault error (any motor in C.S.)""")
         self.lstLabelTexts.append("TimerEnabled")
-        self.lstTooltips.append(
-            """Move timer enabled"""
-        )
+        self.lstTooltips.append("""Move timer enabled""")
         self.lstLabelTexts.append("HomeComplete")
-        self.lstTooltips.append(
-            """Home complete (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Home complete (any motor in C.S.)""")
         self.lstLabelTexts.append("DesVelZero")
-        self.lstTooltips.append(
-            """Desired velocity zero (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Desired velocity zero (any motor in C.S.)""")
         self.lstLabelTexts.append("ClosedLoop")
-        self.lstTooltips.append(
-            """Closed-loop mode (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Closed-loop mode (any motor in C.S.)""")
         self.lstLabelTexts.append("AmpEna")
-        self.lstTooltips.append(
-            """Amplifier enabled (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Amplifier enabled (any motor in C.S.)""")
         self.lstLabelTexts.append("InPos")
-        self.lstTooltips.append(
-            """In position (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""In position (any motor in C.S.)""")
         self.lstLabelTexts.append("InterlockStop")
-        self.lstTooltips.append(
-            """Stopped on interlock (any motor in C.S.)"""
-        )
+        self.lstTooltips.append("""Stopped on interlock (any motor in C.S.)""")
         self.lstLabelTexts.append("BlockRequest")
-        self.lstTooltips.append(
-            """Block request flag set"""
-        )
+        self.lstTooltips.append("""Block request flag set""")
         self.lstLabelTexts.append("TimersEnabled")
-        self.lstTooltips.append(
-            """Timers enabled"""
-        )
+        self.lstTooltips.append("""Timers enabled""")
         self.lstLabelTexts.append("RadiusError (bit 1) / ErrorStatus (bit 7)")
         self.lstTooltips.append(
             """XX/YY/ZZ-axis circle radius error / Error word bit 7 """
         )
         self.lstLabelTexts.append("RadiusError (bit 0) / ErrorStatus (bit 6)")
-        self.lstTooltips.append(
-            """X/Y/Z-axis circle radius error / Error word bit 6"""
-        )
+        self.lstTooltips.append("""X/Y/Z-axis circle radius error / Error word bit 6""")
         self.lstLabelTexts.append("SoftLimit / ErrorStatus (bit 5)")
         self.lstTooltips.append(
             """Stopped on software position limit (any motor in C.S.) / Error word bit 5"""
         )
         self.lstLabelTexts.append("RunTimeError / ErrorStatus (bit 4)")
-        self.lstTooltips.append(
-            """Run time error / Error word bit 4"""
-        )
+        self.lstTooltips.append("""Run time error / Error word bit 4""")
         self.lstLabelTexts.append("PvtError / ErrorStatus (bit 3)")
-        self.lstTooltips.append(
-            """PVT mode error / Error word bit 3"""
-        )
+        self.lstTooltips.append("""PVT mode error / Error word bit 3""")
         self.lstLabelTexts.append("LinToPvtError / ErrorStatus (bit 2)")
-        self.lstTooltips.append(
-            """Linear-to-PVT mode error / Error word bit 2 """
-        )
+        self.lstTooltips.append("""Linear-to-PVT mode error / Error word bit 2 """)
         self.lstLabelTexts.append("ErrorStatus (bit 1)")
-        self.lstTooltips.append(
-            """Buffer error / Error word bit 1 """
-        )
+        self.lstTooltips.append("""Buffer error / Error word bit 1 """)
         self.lstLabelTexts.append("ErrorStatus (bit 0)")
         self.lstTooltips.append(
             """Synchronous assignment buffer error / Error word bit 0"""
         )
 
-        # Word 1: Bit 31 - Bit 0 
+        # Word 1: Bit 31 - Bit 0
         self.lstLabelTexts.append("Csolve")
         self.lstTooltips.append(
             """Valid coordinate system axis definition for PMATCH """
         )
         self.lstLabelTexts.append("LinToPvtBuf")
-        self.lstTooltips.append(
-            """Linear-to-PVT move buffered"""
-        )
+        self.lstTooltips.append("""Linear-to-PVT move buffered""")
         self.lstLabelTexts.append("FeedHold (bit 1)")
-        self.lstTooltips.append(
-            """Feed hold accel/decel """
-        )
+        self.lstTooltips.append("""Feed hold accel/decel """)
         self.lstLabelTexts.append("FeedHold (bit 0)")
-        self.lstTooltips.append(
-            """Feed hold time base source"""
-        )
+        self.lstTooltips.append("""Feed hold time base source""")
         self.lstLabelTexts.append("BlockActive")
-        self.lstTooltips.append(
-            """Block active"""
-        )
+        self.lstTooltips.append("""Block active""")
         self.lstLabelTexts.append("ContMotion")
-        self.lstTooltips.append(
-            """Continuous motion request"""
-        )
+        self.lstTooltips.append("""Continuous motion request""")
         self.lstLabelTexts.append("CCMode (bit 1)")
-        self.lstTooltips.append(
-            """Cutter comp mode bit 1"""
-        )
+        self.lstTooltips.append("""Cutter comp mode bit 1""")
         self.lstLabelTexts.append("CCMode (bit 0)")
-        self.lstTooltips.append(
-            """Cutter comp mode bit 0"""
-        )
+        self.lstTooltips.append("""Cutter comp mode bit 0""")
         self.lstLabelTexts.append("MoveMode (bit 1)")
         self.lstTooltips.append(
             """Move mode bit 1 (=0 for blended and spline, 1 for rapid and pvt modes) """
@@ -781,93 +714,49 @@ class PpmacCSStatusForm(QDialog, Ui_formCSStatus):
             """Move mode bit 0 (=0 for blended and pvt, 1 for rapid and spline modes) """
         )
         self.lstLabelTexts.append("SegMove (bit 1)")
-        self.lstTooltips.append(
-            """Segmented PVT-mode move in progress"""
-        )
+        self.lstTooltips.append("""Segmented PVT-mode move in progress""")
         self.lstLabelTexts.append("SegMove (bit 0)")
-        self.lstTooltips.append(
-            """Segmented linear-mode move in progress"""
-        )
+        self.lstTooltips.append("""Segmented linear-mode move in progress""")
         self.lstLabelTexts.append("SegMoveAccel")
-        self.lstTooltips.append(
-            """First segment move"""
-        )
+        self.lstTooltips.append("""First segment move""")
         self.lstLabelTexts.append("SegMoveDecel")
-        self.lstTooltips.append(
-            """Last segment move"""
-        )
+        self.lstTooltips.append("""Last segment move""")
         self.lstLabelTexts.append("SegEnabled")
-        self.lstTooltips.append(
-            """Segmentation enabled"""
-        )
+        self.lstTooltips.append("""Segmentation enabled""")
         self.lstLabelTexts.append("SegStopReq")
-        self.lstTooltips.append(
-            """Segment stop request"""
-        )
+        self.lstTooltips.append("""Segment stop request""")
         self.lstLabelTexts.append("LookAheadWrap / LHStatus (bit 7) ")
-        self.lstTooltips.append(
-            """Lookahead wrap"""
-        )
+        self.lstTooltips.append("""Lookahead wrap""")
         self.lstLabelTexts.append("LookAheadLookBack / LHStatus (bit 6) ")
-        self.lstTooltips.append(
-            """Lookahead lookback"""
-        )
+        self.lstTooltips.append("""Lookahead lookback""")
         self.lstLabelTexts.append("LookAheadDir / LHStatus (bit 5) ")
-        self.lstTooltips.append(
-            """Lookahead direction"""
-        )
+        self.lstTooltips.append("""Lookahead direction""")
         self.lstLabelTexts.append("LookAheadStop / LHStatus (bit 4)")
-        self.lstTooltips.append(
-            """Lookahead stop"""
-        )
+        self.lstTooltips.append("""Lookahead stop""")
         self.lstLabelTexts.append("LookAheadChange / LHStatus (bit 3)")
-        self.lstTooltips.append(
-            """Lookahead change"""
-        )
+        self.lstTooltips.append("""Lookahead change""")
         self.lstLabelTexts.append("LookAheadReCalc / LHStatus (bit 2) ")
-        self.lstTooltips.append(
-            """Lookahead recalculation"""
-        )
+        self.lstTooltips.append("""Lookahead recalculation""")
         self.lstLabelTexts.append("LookAheadFlush / LHStatus (bit 1) ")
-        self.lstTooltips.append(
-            """Lookahead flush"""
-        )
+        self.lstTooltips.append("""Lookahead flush""")
         self.lstLabelTexts.append("LookAheadActive / LHStatus (bit 0) ")
-        self.lstTooltips.append(
-            """Lookahead active"""
-        )
+        self.lstTooltips.append("""Lookahead active""")
         self.lstLabelTexts.append("CCAddedArc")
-        self.lstTooltips.append(
-            """Cutter comp added arc"""
-        )
+        self.lstTooltips.append("""Cutter comp added arc""")
         self.lstLabelTexts.append("CCOffReq")
-        self.lstTooltips.append(
-            """Cutter comp turn-off request"""
-        )
+        self.lstTooltips.append("""Cutter comp turn-off request""")
         self.lstLabelTexts.append("reserved")
-        self.lstTooltips.append(
-            """(Reserved)"""
-        )
+        self.lstTooltips.append("""(Reserved)""")
         self.lstLabelTexts.append("CCMoveType (bit 1)")
-        self.lstTooltips.append(
-            """Cutter comp move type bit 1"""
-        )
+        self.lstTooltips.append("""Cutter comp move type bit 1""")
         self.lstLabelTexts.append("CCMoveType (bit 0)")
-        self.lstTooltips.append(
-            """Cutter comp move type bit 0"""
-        )
+        self.lstTooltips.append("""Cutter comp move type bit 0""")
         self.lstLabelTexts.append("CC3Active")
-        self.lstTooltips.append(
-            """3D cutter comp active"""
-        )
+        self.lstTooltips.append("""3D cutter comp active""")
         self.lstLabelTexts.append("SharpCornerStop")
-        self.lstTooltips.append(
-            """Blending disabled for sharp corner"""
-        )
+        self.lstTooltips.append("""Blending disabled for sharp corner""")
         self.lstLabelTexts.append("AddedDwellDis")
-        self.lstTooltips.append(
-            """Added dwell disable """
-        )
+        self.lstTooltips.append("""Added dwell disable """)
         # Here are all the labels for the CSStatus bits defined.
         self.lstLabelTexts.reverse()
         self.lstTooltips.reverse()

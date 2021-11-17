@@ -349,6 +349,7 @@ class GlobalStatusForm(QDialog, Ui_formGlobalStatus):
             else:
                 self.lstLeds[bit].setPixmap(self.greenLedOff)
 
+
 class PpmacGlobalStatusForm(QDialog, Ui_formGlobalStatus):
     def __init__(self, parent):
         QDialog.__init__(self, parent)

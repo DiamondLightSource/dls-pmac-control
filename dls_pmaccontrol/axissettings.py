@@ -7,21 +7,22 @@ from dls_pmaccontrol.ui_formPpmacAxisSettings import Ui_formPpmacAxisSettings
 
 # Power PMAC I-Variable Equivalents
 PpmacVars = {
-    "Ix11" : "FatalFeLimit",
-    "Ix12" : "WarnFeLimit",
-    "Ix13" : "MaxPos",
-    "Ix14" : "MinPos",
-    "Ix15" : "AbortTa",
-    "Ix16" : "MaxSpeed",
-    "Ix17" : "InvAmax",
-    "Ix19" : "AbortTs",
-    "Ix20" : "JogTa",
-    "Ix21" : "JogTs",
-    "Ix22" : "JogSpeed",
-    "Ix23" : "HomeVel",
-    "Ix25" : "pEncStatus",
-    "Ix26" : "HomeOffset"
+    "Ix11": "FatalFeLimit",
+    "Ix12": "WarnFeLimit",
+    "Ix13": "MaxPos",
+    "Ix14": "MinPos",
+    "Ix15": "AbortTa",
+    "Ix16": "MaxSpeed",
+    "Ix17": "InvAmax",
+    "Ix19": "AbortTs",
+    "Ix20": "JogTa",
+    "Ix21": "JogTs",
+    "Ix22": "JogSpeed",
+    "Ix23": "HomeVel",
+    "Ix25": "pEncStatus",
+    "Ix26": "HomeOffset",
 }
+
 
 class Axissettingsform(QDialog, Ui_formAxisSettings):
     def __init__(self, parent=None, currentMotor=1):
@@ -36,15 +37,15 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
         self.lneIx13.setToolTip("""Positive soft limit position [cts]""")
         self.lneIx14.setToolTip("""Negative soft limit position [cts]""")
         self.lneIx15.setToolTip(
-            "Decceleration rate on position\nlimit or abort [cts/msec2]")
-        self.lneIx16.setToolTip(
-            "Maximum velocity in LINEAR motion programs [cts/msec]")
-        self.lneIx17.setToolTip(
-            "Maximum acceleration in motion programs [cts/msec2]")
+            "Decceleration rate on position\nlimit or abort [cts/msec2]"
+        )
+        self.lneIx16.setToolTip("Maximum velocity in LINEAR motion programs [cts/msec]")
+        self.lneIx17.setToolTip("Maximum acceleration in motion programs [cts/msec2]")
         self.lneIx19.setToolTip("Maximum jog/home acceleration [cts/msec2]")
         self.lneIx20.setToolTip("Jog/Home Acceleration Time [msec]")
         self.lneIx21.setToolTip(
-            "Jog/Home S-Curve Time [msec]\n(DLS: Try to avoid using this one!)")
+            "Jog/Home S-Curve Time [msec]\n(DLS: Try to avoid using this one!)"
+        )
         self.lneIx22.setToolTip("Jog velocity [cts/msec]")
         self.lneIx23.setToolTip("Home velocity and direction [cts/msec]")
         self.lneIx24.setToolTip("Flag Mode Control (limits)")
@@ -60,7 +61,8 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
         self.lneIx65.setToolTip("Deadband Size [1/16 cts]")
         self.lneLoopSelect.setToolTip(
             "Encoder/Timer n Decode Control\n7: Closed loop stepper\n8: Open "
-            "loop stepper")
+            "loop stepper"
+        )
         self.lneCaptureOn.setToolTip(
             """Encoder n Capture Control
             0: Immediate capture
@@ -77,13 +79,15 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
             11: Capture on (Index high AND Flag low)
             12: Immediate capture
             13: Capture on Index (CHCn) low
-            14: Capture on Flag low""")
+            14: Capture on Flag low"""
+        )
         self.lneCaptureFlag.setToolTip(
             """Capture n Flag Select Control
             0: Home Flag
             1: positive limit flag
             2: Negative limit flag
-            3: User flag""")
+            3: User flag"""
+        )
         self.lneOutputMode.setToolTip(
             """Output n Mode Select (DLS: use 2 for
             steppers)
@@ -91,7 +95,8 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
             1 = Outputs A & B are DAC; Output C is PWM
             2 = Outputs A & B are PWM; Output C is PFM
             3 = Outputs A & B are DAC; Output C is PFM
-            """)
+            """
+        )
         self.definitionIvars = [11, 12, 13, 14, 15, 16, 17, 19]
         self.safetyIvars = [20, 21, 22, 23, 24, 25, 26]
         self.pidIvars = [30, 31, 32, 33, 34, 35, 65]
@@ -278,6 +283,7 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
                 self.currentMotor, 6, self.lneOutputMode.text()
             )
 
+
 class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
     def __init__(self, parent=None, currentMotor=1):
         QDialog.__init__(self, parent)
@@ -286,24 +292,26 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
         self.currentMotor = currentMotor
         self.parent = parent
 
-        self.lneIx11.setToolTip(
-            "Fatal (shutdown) following error limit [cts]")
-        self.lneIx12.setToolTip(
-            "Warning (trigger) following error limit [cts]")
+        self.lneIx11.setToolTip("Fatal (shutdown) following error limit [cts]")
+        self.lneIx12.setToolTip("Warning (trigger) following error limit [cts]")
         self.lneIx13.setToolTip("Positive position overtravel limit [cts]")
         self.lneIx14.setToolTip("Negative position overtravel limit [cts]")
         self.lneIx15.setToolTip(
-            "Abort deceleration time or inverse rate [msec or msec2/cts]")
-        self.lneIx16.setToolTip(
-            "Maximum programmed velocity magnitude [cts/msec]")
+            "Abort deceleration time or inverse rate [msec or msec2/cts]"
+        )
+        self.lneIx16.setToolTip("Maximum programmed velocity magnitude [cts/msec]")
         self.lneIx17.setToolTip(
-            "Inverse of maximum programmed acceleration [msec2/cts]")
+            "Inverse of maximum programmed acceleration [msec2/cts]"
+        )
         self.lneIx19.setToolTip(
-            "Abort S-curve deceleration time or inverse jerk rate  [msec or msec3/cts]")
+            "Abort S-curve deceleration time or inverse jerk rate  [msec or msec3/cts]"
+        )
         self.lneIx20.setToolTip(
-            "Jog accel/decel time or inverse rate [msec or msec2/cts]")
+            "Jog accel/decel time or inverse rate [msec or msec2/cts]"
+        )
         self.lneIx21.setToolTip(
-            "Jog accel/decel S-curve time or inverse jerk rate [msec or msec3/cts]")
+            "Jog accel/decel S-curve time or inverse jerk rate [msec or msec3/cts]"
+        )
         self.lneIx22.setToolTip("Jog command velocity magnitude [cts/msec]")
         self.lneIx23.setToolTip("Home-search command signed velocity [cts/msec]")
         self.lneIx25.setToolTip("Motor “parent” input flag pointer")
@@ -327,7 +335,7 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
         for i in range(len(ivars)):
             varStr = PpmacVars["Ix" + str(ivars[i])]
             cmd = ("Motor[%d]." % self.currentMotor) + varStr
-            (retStr,success) = self.parent.pmac.sendCommand(cmd)
+            (retStr, success) = self.parent.pmac.sendCommand(cmd)
             if success:
                 retLst.append(retStr.strip("\r"))
             else:
@@ -342,11 +350,11 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
     def setAxisSetupIVar(self, iVarNo, newValue):
         varStr = PpmacVars["Ix" + str(iVarNo)]
         cmd = ("Motor[%d]." % self.currentMotor) + varStr + ("=%s" % newValue)
-        (retStr,success) = self.parent.pmac.sendCommand(cmd)
+        (retStr, success) = self.parent.pmac.sendCommand(cmd)
         if success:
             self.axisUpdate()
         else:
-            print("cannot set value for Motor[%d].%s" % (self.currentMotor,varStr))
+            print("cannot set value for Motor[%d].%s" % (self.currentMotor, varStr))
 
     # public slot
     @staticmethod

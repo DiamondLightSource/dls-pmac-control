@@ -8,15 +8,22 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qwt import QwtPlotCurve
 
-from dls_pmaccontrol.gatherchannel import LONGWORD, WORD, PmacGatherChannel, pmacDataSources, motorBaseAddrs
+from dls_pmaccontrol.gatherchannel import (
+    LONGWORD,
+    WORD,
+    PmacGatherChannel,
+    pmacDataSources,
+    motorBaseAddrs,
+)
 from dls_pmaccontrol.ui_formGather import Ui_formGather
 
 # TODO - this needs the logic decoupled from the GUI and moved into pmaclib
 #  work has started in pmaclib but currently duplicates code in this module
 
 # TODO Find out why the gathering fails with an response "ERR003" from the
-#   PMAC for PMAC2-VME (does work for Geo Brick)! 
+#   PMAC for PMAC2-VME (does work for Geo Brick)!
 #   (ERR003 = Data error or unrecognized command - solution: correct command syntax)
+
 
 class myThread(threading.Thread):
     def __init__(self, instance, waittime):
@@ -25,7 +32,7 @@ class myThread(threading.Thread):
         self.instance = instance
 
     def run(self):
-        PmacGatherform.triggerWait(self.instance,self.waittime)
+        PmacGatherform.triggerWait(self.instance, self.waittime)
 
 
 class PmacGatherform(QDialog, Ui_formGather):
@@ -102,7 +109,7 @@ class PmacGatherform(QDialog, Ui_formGather):
             cmBox.clear()
         for dataPoint in pmacDataSources:
             for cmBox in self.lstComboboxes:
-                cmBox.addItem(dataPoint["desc"])           
+                cmBox.addItem(dataPoint["desc"])
 
     def gatherConfig(self):
         # Create i5050 variable value to mask out what values to sample
@@ -117,7 +124,7 @@ class PmacGatherform(QDialog, Ui_formGather):
 
         # Clear the plot by setting empty plotitems
         for chIndex, ch in enumerate(self.lstChannels):
-            ch.qwtCurve.setData([],[])
+            ch.qwtCurve.setData([], [])
 
         # reset the data channels from class GatherChannel
         self.lstChannels = []
@@ -174,7 +181,7 @@ class PmacGatherform(QDialog, Ui_formGather):
             self.qwtPlot.enableAxis(self.qwtPlot.yRight, True)
         else:
             self.qwtPlot.enableAxis(self.qwtPlot.yLeft, False)
-            self.qwtPlot.enableAxis(self.qwtPlot.yRight, False)  
+            self.qwtPlot.enableAxis(self.qwtPlot.yRight, False)
         # set the sampling time (in servo cycles)
         self.parent.pmac.sendCommand("i5049=%d" % int(str(self.lneSampleTime.text())))
         return True
@@ -237,7 +244,7 @@ class PmacGatherform(QDialog, Ui_formGather):
         self.parent.pmac.sendCommand("define gather %d" % gatherBufSize)
         return
 
-    def triggerWait(self,waittime):
+    def triggerWait(self, waittime):
         time.sleep(waittime)
         self.btnCollect.setEnabled(True)
 
@@ -245,9 +252,9 @@ class PmacGatherform(QDialog, Ui_formGather):
         self.parent.pmac.sendCommand("gather")
         # print "sleeping for %f s"%(self.sampleTime * self.nGatherPoints /
         # 1000.0)
-        t = myThread(self,self.sampleTime * self.nGatherPoints / 1000.0)
+        t = myThread(self, self.sampleTime * self.nGatherPoints / 1000.0)
         t.start()
-        #time.sleep(self.sampleTime * self.nGatherPoints / 1000.0)
+        # time.sleep(self.sampleTime * self.nGatherPoints / 1000.0)
 
     def collectData(self):
         (retStr, status) = self.parent.pmac.sendCommand("list gather")
@@ -324,8 +331,8 @@ class PmacGatherform(QDialog, Ui_formGather):
         (retStr, status) = self.parent.pmac.sendCommand(cmd)
         ivarI10 = int(retStr.strip("$")[:-1])
         self.servoCycleTime = ivarI10 / 8388608.0  # in ms
-        
-	# print "Length clock ticks: %.2fns #clock ticks per cycle: %d
+
+        # print "Length clock ticks: %.2fns #clock ticks per cycle: %d
         # servocycle time: %.3fms"%(lenClkTick, nClkTickServoCycle,
         # self.servoCycleTime)
 
@@ -390,7 +397,7 @@ class PmacGatherform(QDialog, Ui_formGather):
         self.btnTrigger.setEnabled(False)
         self.gatherTrigger()
         self.btnSetup.setEnabled(True)
-        #self.btnCollect.setEnabled(True)
+        # self.btnCollect.setEnabled(True)
         self.btnSave.setEnabled(False)
 
     def applyConfigClicked(self):
@@ -409,10 +416,10 @@ class PmacGatherform(QDialog, Ui_formGather):
         myDialog = QFileDialog(self)
         # myDialog.setShowHiddenFiles(False)
         fileName = myDialog.getSaveFileName(
-            parent = self.parent,
+            parent=self.parent,
             caption="Comma seperated data file (*.csv *.CSV)",
             directory=os.path.expanduser("~"),
-            #options=None,
+            # options=None,
         )
 
         if not fileName:
@@ -424,8 +431,8 @@ class PmacGatherform(QDialog, Ui_formGather):
                 self,
                 "Error",
                 "Could not open file for writing."
-                #buttons=1,
-                #p_str_1="OK",
+                # buttons=1,
+                # p_str_1="OK",
             )
             print("could not open file '" + fileName[0] + "' for writing")
             return

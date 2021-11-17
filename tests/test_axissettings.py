@@ -3,7 +3,8 @@ import unittest
 from mock import patch, Mock, call
 import time
 import sys
-sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
+
+sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
 from PyQt5.QtCore import Qt
 from PyQt5.QtTest import QTest, QSignalSpy
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem
@@ -11,25 +12,35 @@ from axissettings import Axissettingsform, PpmacAxissettingsform
 
 app = QApplication(sys.argv)
 
+
 class TestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
         attrs = {
-        "sendCommand.return_value" : ("return",True),
-        "getAxisSetupIVars.return_value" : ["value","value","value"],
-        "isMacroStationAxis.return_value" : False,
-        "getOnboardAxisI7000PlusVars.return_value" : 
-                     ["loopSelect","captureOn","captureFlag","outputMode"],
-        "getAxisMsIVars.return_value" : 
-                     ["loopSelect","captureOn","captureFlag","outputMode"],
-        "setAxisMsIVar.return_value" : None,
-        "setOnboardAxisI7000PlusIVar.return_value" : None,
-        "setAxisSetupIVar.return_value" : None}
+            "sendCommand.return_value": ("return", True),
+            "getAxisSetupIVars.return_value": ["value", "value", "value"],
+            "isMacroStationAxis.return_value": False,
+            "getOnboardAxisI7000PlusVars.return_value": [
+                "loopSelect",
+                "captureOn",
+                "captureFlag",
+                "outputMode",
+            ],
+            "getAxisMsIVars.return_value": [
+                "loopSelect",
+                "captureOn",
+                "captureFlag",
+                "outputMode",
+            ],
+            "setAxisMsIVar.return_value": None,
+            "setOnboardAxisI7000PlusIVar.return_value": None,
+            "setAxisSetupIVar.return_value": None,
+        }
         self.pmac.configure_mock(**attrs)
 
-class AxissettingsTest(unittest.TestCase):
 
+class AxissettingsTest(unittest.TestCase):
     def setUp(self):
         self.test_widget = TestWidget()
         self.obj = Axissettingsform(self.test_widget)
@@ -45,7 +56,7 @@ class AxissettingsTest(unittest.TestCase):
         self.obj.changeAxis(2)
         assert self.obj.currentMotor == 2
         self.assertTrue(mock_setup.called)
-        if self.obj.tabAxisSetup.currentIndex() !=0:
+        if self.obj.tabAxisSetup.currentIndex() != 0:
             self.assertTrue(mock_signal.called)
 
     @patch("axissettings.Axissettingsform._updateAxisSignalControlsVars")
@@ -55,7 +66,7 @@ class AxissettingsTest(unittest.TestCase):
         assert self.obj.tabAxisSetup.currentIndex() == 1
 
     def test_updateAxisSetupIVars(self):
-        self.obj._updateAxisSetupIVars([11,16,23])
+        self.obj._updateAxisSetupIVars([11, 16, 23])
         assert self.obj.lneIx11.text() == "value"
         assert self.obj.lneIx16.text() == "value"
         assert self.obj.lneIx23.text() == "value"
@@ -68,8 +79,8 @@ class AxissettingsTest(unittest.TestCase):
         assert self.obj.lneOutputMode.text() == "outputMode"
 
     def test_getAxisSignalControlsVars(self):
-        (ret1,ret2,ret3,ret4) = self.obj._getAxisSignalControlsVars()
-        assert ret1 == "loopSelect" 
+        (ret1, ret2, ret3, ret4) = self.obj._getAxisSignalControlsVars()
+        assert ret1 == "loopSelect"
         assert ret2 == "captureOn"
         assert ret3 == "captureFlag"
         assert ret4 == "outputMode"
@@ -92,7 +103,7 @@ class AxissettingsTest(unittest.TestCase):
 
     @patch("axissettings.Axissettingsform.axisUpdate")
     def test_sendIx(self, mock_update):
-        ivars = [11,12,13,14,15,16,17,19,20,21,22,23,25,26]
+        ivars = [11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26]
         for i in range(len(ivars)):
             exec("self.obj.sendIx%d()" % ivars[i])
             self.assertTrue(self.test_widget.pmac.setAxisSetupIVar.called)
@@ -101,8 +112,8 @@ class AxissettingsTest(unittest.TestCase):
     def tearDown(self):
         self.obj.close()
 
-class PpmacAxissettingsTest(unittest.TestCase):
 
+class PpmacAxissettingsTest(unittest.TestCase):
     def setUp(self):
         self.test_widget = TestWidget()
         self.obj = PpmacAxissettingsform(self.test_widget)
@@ -124,7 +135,7 @@ class PpmacAxissettingsTest(unittest.TestCase):
         assert self.obj.tabAxisSetup.currentIndex() == 0
 
     def test_updateAxisSetupIVars(self):
-        self.obj._updateAxisSetupIVars([11,16,23])
+        self.obj._updateAxisSetupIVars([11, 16, 23])
         assert self.obj.lneIx11.text() == "return"
         assert self.obj.lneIx16.text() == "return"
         assert self.obj.lneIx23.text() == "return"
@@ -137,7 +148,7 @@ class PpmacAxissettingsTest(unittest.TestCase):
     @patch("axissettings.PpmacAxissettingsform.setAxisSetupIVar")
     @patch("axissettings.PpmacAxissettingsform.axisUpdate")
     def test_sendIx(self, mock_update, mock_setup):
-        ivars = [11,12,13,14,15,16,17,19,20,21,22,23,25,26]
+        ivars = [11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26]
         for i in range(len(ivars)):
             exec("self.obj.sendIx%d()" % ivars[i])
             self.assertTrue(mock_setup.called)

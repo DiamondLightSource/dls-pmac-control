@@ -3,7 +3,8 @@ import unittest
 from mock import patch
 import signal
 import sys
-sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
+
+sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
 import motor
 from motor import Controlform
 from ui_formControl import Ui_ControlForm
@@ -87,7 +88,7 @@ class TestRemoteConnect(unittest.TestCase):
 
     @patch("signal.signal")
     def test_terminal_connect(self, mock_signal):
-        obj = Controlform(self.options) # signal handler
+        obj = Controlform(self.options)  # signal handler
         obj.ConnectionType = 0
         print(obj.pmac)
 

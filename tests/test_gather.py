@@ -4,7 +4,8 @@ from mock import patch, Mock
 import time
 import os
 import sys
-sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
+
+sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtTest import QTest, QSignalSpy
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem
@@ -14,11 +15,13 @@ from ppmacgather import PpmacGatherform
 
 app = QApplication(sys.argv)
 
+
 class TestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
-        #self.commsThread = Mock()
+        # self.commsThread = Mock()
+
 
 class TestGatherChannel:
     def __init__(self, pmac, qwtCurve):
@@ -57,8 +60,8 @@ class TestGatherChannel:
         self.rawToScaled_called = True
         return
 
-class PmacGatherTest(unittest.TestCase):
 
+class PmacGatherTest(unittest.TestCase):
     def setUp(self):
         self.test_widget = TestWidget()
         self.obj = PmacGatherform(self.test_widget)
@@ -71,12 +74,12 @@ class PmacGatherTest(unittest.TestCase):
         self.assertTrue(self.obj.btnApplyConf.isEnabled())
 
     def test_gather_config(self):
-        mid = QPoint(2, self.obj.chkPlot1.height()/2)
+        mid = QPoint(2, self.obj.chkPlot1.height() / 2)
         QTest.mouseClick(self.obj.chkPlot1, Qt.LeftButton, pos=mid)
         assert self.obj.gatherConfig() == True
 
     def test_gather_setup(self):
-        attrs = {"sendCommand.return_value" : ("$010101", True)}
+        attrs = {"sendCommand.return_value": ("$010101", True)}
         self.obj.parent.pmac.configure_mock(**attrs)
         for i in range(3):
             curve = QwtPlotCurve("TestCh%d" % i)
@@ -127,10 +130,10 @@ class PmacGatherTest(unittest.TestCase):
 
     def test_collect_data(self):
         response = "ret1\rret2\rret3\r"
-        attrs = {"sendCommand.return_value" : (response, True)}
+        attrs = {"sendCommand.return_value": (response, True)}
         self.obj.parent.pmac.configure_mock(**attrs)
         ret = self.obj.collectData()
-        assert ret == ['', 'ret1', '', 'ret2', '', 'ret3']
+        assert ret == ["", "ret1", "", "ret2", "", "ret3"]
 
     @patch("gather.Gatherform.plotData")
     @patch("gather.Gatherform.collectData")
@@ -147,7 +150,7 @@ class PmacGatherTest(unittest.TestCase):
         assert mock_plot.called
 
     def test_parse_data(self):
-        #set up test channel
+        # set up test channel
         curve = QwtPlotCurve("TestCh")
         test_channel = TestGatherChannel(self.obj.parent.pmac, curve)
         self.obj.lstChannels.append(test_channel)
@@ -160,7 +163,7 @@ class PmacGatherTest(unittest.TestCase):
     def test_calc_sample_time(self):
         self.obj.nServoCyclesGather = 1
         self.obj.nGatherPoints = 1
-        attrs = {"sendCommand.return_value" : ("$8388608\x0D", True)}
+        attrs = {"sendCommand.return_value": ("$8388608\x0D", True)}
         self.obj.parent.pmac.configure_mock(**attrs)
         self.obj.calcSampleTime()
         assert self.obj.servoCycleTime == 1.0
@@ -186,25 +189,25 @@ class PmacGatherTest(unittest.TestCase):
 
     @patch("PyQt5.QtWidgets.QFileDialog.getSaveFileName")
     def test_save_clicked(self, mock_dialog):
-        #create temp file
+        # create temp file
         test_file = "/tmp/test.txt"
-        fh = open(test_file,'w')
+        fh = open(test_file, "w")
         fh.write("")
         fh.close()
-        #mock returns filename of temp file
+        # mock returns filename of temp file
         test_filename = "/tmp/test.txt", None
         mock_dialog.return_value = test_filename
-        #set up test channel
+        # set up test channel
         curve = QwtPlotCurve("TestCh")
         test_channel = TestGatherChannel(self.obj.parent.pmac, curve)
         self.obj.lstChannels.append(test_channel)
         self.obj.lstChannels[0].axisNo = 1
         self.obj.lstChannels[0].dataSourceInfo = {"desc": "Test desc"}
-        #click save
+        # click save
         self.obj.btnSave.setEnabled(True)
         QTest.mouseClick(self.obj.btnSave, Qt.LeftButton)
         assert mock_dialog.called
-        #assert file contents are as expected
+        # assert file contents are as expected
         with open(test_file) as f:
             lines = f.readlines()
         assert lines == ["point,CH0 Axis1 Test desc,\n"]
@@ -213,8 +216,8 @@ class PmacGatherTest(unittest.TestCase):
     def tearDown(self):
         self.obj.close()
 
-class PpmacGatherTest(unittest.TestCase):
 
+class PpmacGatherTest(unittest.TestCase):
     def setUp(self):
         self.test_widget = TestWidget()
         self.obj = PpmacGatherform(self.test_widget)
@@ -231,14 +234,14 @@ class PpmacGatherTest(unittest.TestCase):
         self.obj.lneNumberSamples.setText("1000")
         QTest.keyClick(self.obj.lneNumberSamples, Qt.Key_Enter)
         assert self.obj.nGatherPoints == 1000
-        assert self.obj.nServoCyclesGather == 0 
+        assert self.obj.nServoCyclesGather == 0
 
     @patch("PyQt5.QtWidgets.QMessageBox.information")
     def test_change_sample_time(self, mock_box):
         self.obj.lneSampleTime.setText("5")
         QTest.keyClick(self.obj.lneSampleTime, Qt.Key_Enter)
         assert self.obj.nGatherPoints == 0
-        assert self.obj.nServoCyclesGather == 5 
+        assert self.obj.nServoCyclesGather == 5
 
     def test_gather_config(self):
         assert self.obj.gatherConfig() == True
@@ -262,7 +265,7 @@ class PpmacGatherTest(unittest.TestCase):
         self.assertFalse(self.obj.btnSave.isEnabled())
 
     def test_collect_data(self):
-        assert self.obj.collectData() == None 
+        assert self.obj.collectData() == None
         tmp_file = "../../var/ftp/usrflash/Temp/gather.txt"
         gather_file = "./gather.txt"
         cmd = "gather -u " + tmp_file
@@ -271,19 +274,19 @@ class PpmacGatherTest(unittest.TestCase):
 
     @patch("qwt.QwtPlot.replot")
     def test_plot_data(self, mock_replot):
-        #create temp file
+        # create temp file
         test_file = "./gather.txt"
-        fh = open(test_file,'w')
+        fh = open(test_file, "w")
         fh.write("test")
         fh.close()
         assert self.obj.plotData() == None
-        assert mock_replot.called 
+        assert mock_replot.called
         os.remove(test_file)
 
     def test_calc_sample_time(self):
         self.obj.nServoCyclesGather = 1
         self.obj.nGatherPoints = 1
-        attrs = {"sendCommand.return_value" : ("1", True)}
+        attrs = {"sendCommand.return_value": ("1", True)}
         self.obj.parent.pmac.configure_mock(**attrs)
         self.obj.calcSampleTime()
         assert self.obj.servoCycleTime == 1.0
@@ -291,7 +294,7 @@ class PpmacGatherTest(unittest.TestCase):
 
     @patch("ppmacgather.PpmacGatherform.calcSampleTime")
     def test_changed_tab(self, mock_calc):
-        attrs = {"sendCommand.return_value" : ("10", True)}
+        attrs = {"sendCommand.return_value": ("10", True)}
         self.obj.parent.pmac.configure_mock(**attrs)
         self.obj.nServoCyclesGather = 1
         self.obj.nGatherPoints = 1
@@ -316,15 +319,15 @@ class PpmacGatherTest(unittest.TestCase):
 
     @patch("PyQt5.QtWidgets.QFileDialog.getSaveFileName")
     def test_save_clicked(self, mock_dialog):
-        #create temp file
+        # create temp file
         test_file = "/tmp/test.txt"
-        fh = open(test_file,'w')
+        fh = open(test_file, "w")
         fh.write("")
         fh.close()
-        #mock returns filename of temp file
+        # mock returns filename of temp file
         test_filename = "/tmp/test.txt", None
         mock_dialog.return_value = test_filename
-        #set up test channel
+        # set up test channel
         curve = QwtPlotCurve("TestCh")
         test_channel = TestGatherChannel(self.obj.parent.pmac, curve)
         test_channel.descNo = 0
@@ -332,14 +335,17 @@ class PpmacGatherTest(unittest.TestCase):
         self.obj.lstChannels.append(test_channel)
         self.obj.lstChannels[0].axisNo = 1
         self.obj.lstChannels[0].dataSourceInfo = {"desc": "Test desc"}
-        #click save
+        # click save
         self.obj.btnSave.setEnabled(True)
         QTest.mouseClick(self.obj.btnSave, Qt.LeftButton)
         assert mock_dialog.called
-        #assert file contents are as expected
+        # assert file contents are as expected
         with open(test_file) as f:
             lines = f.readlines()
-        expected = ['point,CH0, Axis 1, Motor present desired position, \n', '0,0.000000,\n']
+        expected = [
+            "point,CH0, Axis 1, Motor present desired position, \n",
+            "0,0.000000,\n",
+        ]
         assert lines == expected
         os.remove(test_file)
 

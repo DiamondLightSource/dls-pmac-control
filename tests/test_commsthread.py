@@ -3,13 +3,15 @@ import unittest
 from mock import patch, Mock, call
 import time
 import sys
-sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
+
+sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
 from PyQt5.QtCore import Qt
 from PyQt5.QtTest import QTest, QSignalSpy
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem
 from commsThread import CommsThread
 
 app = QApplication(sys.argv)
+
 
 class TestWidget(QMainWindow):
     def __init__(self, parent=None):
@@ -19,15 +21,16 @@ class TestWidget(QMainWindow):
         self.downloadDoneEventType = Mock()
         self.updatesReadyEventType = Mock()
         self.verboseMode = False
-        iter_ret = [(True,0,"command","response"),(True,0,"command","response")]
+        iter_ret = [(True, 0, "command", "response"), (True, 0, "command", "response")]
         attrs = {
-        "sendCommand.return_value" : ("0\r1\r2\r3",True),
-        "getNumberOfAxes.return_value" : 8,
-        "sendSeries.return_value" : iter(iter_ret)}
+            "sendCommand.return_value": ("0\r1\r2\r3", True),
+            "getNumberOfAxes.return_value": 8,
+            "sendSeries.return_value": iter(iter_ret),
+        }
         self.pmac.configure_mock(**attrs)
 
-class CommsthreadTest(unittest.TestCase):
 
+class CommsthreadTest(unittest.TestCase):
     @patch("threading.Lock")
     @patch("threading.Thread")
     @patch("queue.Queue")
@@ -45,34 +48,34 @@ class CommsthreadTest(unittest.TestCase):
         assert self.obj.lineNumber == 0
         assert self.obj._watch_window == {}
 
-    def test_add_watch(self):        
+    def test_add_watch(self):
         self.obj.add_watch("test")
         assert self.obj._watch_window["test"] == None
 
-    def test_remove_watch(self):        
+    def test_remove_watch(self):
         self.obj.add_watch("test")
         self.obj.remove_watch("test")
         assert self.obj._watch_window == {}
 
-    def test_clear_watch(self):        
+    def test_clear_watch(self):
         self.obj.add_watch("test")
         self.obj.clear_watch()
         assert self.obj._watch_window == {}
 
-    def test_read_watch(self):        
+    def test_read_watch(self):
         self.obj.add_watch("test")
         assert self.obj.read_watch("test") == None
 
     @patch("PyQt5.QtCore.QCoreApplication.postEvent")
     @patch("commsThread.CustomEvent")
-    def test_send_tick(self, mock_custom, mock_event):        
-        self.obj.sendTick(0,"err")
+    def test_send_tick(self, mock_custom, mock_event):
+        self.obj.sendTick(0, "err")
         assert mock_custom.called
         assert mock_event.called
 
     @patch("PyQt5.QtCore.QCoreApplication.postEvent")
     @patch("commsThread.CustomEvent")
-    def test_send_complete(self, mock_custom, mock_event):        
+    def test_send_complete(self, mock_custom, mock_event):
         self.obj.sendComplete("msg")
         assert self.obj.gen == None
         assert mock_custom.called
@@ -84,8 +87,8 @@ class CommsthreadTest(unittest.TestCase):
         self.obj.updateThread()
         assert mock_updatefunc.called
 
-class UpdatefuncTest(unittest.TestCase):
 
+class UpdatefuncTest(unittest.TestCase):
     @patch("threading.Lock")
     @patch("threading.Thread")
     @patch("queue.Queue")

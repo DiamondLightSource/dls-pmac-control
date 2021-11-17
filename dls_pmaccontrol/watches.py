@@ -3,10 +3,10 @@
 import re
 import sys
 
-#from formWatches import formWatches
-#from pmactelnet import PmacTelnetInterface
-#from PyQt4.QtCore import SIGNAL, SLOT
-#from PyQt4.QtGui import QApplication, QMessageBox, QObject
+# from formWatches import formWatches
+# from pmactelnet import PmacTelnetInterface
+# from PyQt4.QtCore import SIGNAL, SLOT
+# from PyQt4.QtGui import QApplication, QMessageBox, QObject
 
 from PyQt5.Qt import QPen
 from PyQt5.QtCore import Qt
@@ -20,7 +20,8 @@ from dls_pmaccontrol.ui_formWatches import Ui_formWatches
 #       the meantime (could use row colouring just like in dls-dependency-checker)
 # [TODO] Remove invalid variables from watch window
 
-unsafeCommands = ["save","kill","$$$","$$$**","out","reset","reboot","jog"]
+unsafeCommands = ["save", "kill", "$$$", "$$$**", "out", "reset", "reboot", "jog"]
+
 
 class Watchesform(QDialog, Ui_formWatches):
     def __init__(self, parent):
@@ -47,11 +48,11 @@ class Watchesform(QDialog, Ui_formWatches):
             QMessageBox.information(self, "Cannot create watch", str(e))
             return
         noRows = self.table.rowCount()
-        self.table.insertRow(noRows) # add a new row
-        self.table.setItem(noRows, 0, QTableWidgetItem(varName)) # set variable name
-        self._watches[varName] = watch # add watch object to dict
-        self.parent.commsThread.add_watch(varName) # add to polling thread
-        self.updateWatch(noRows) # update the watch at the new row
+        self.table.insertRow(noRows)  # add a new row
+        self.table.setItem(noRows, 0, QTableWidgetItem(varName))  # set variable name
+        self._watches[varName] = watch  # add watch object to dict
+        self.parent.commsThread.add_watch(varName)  # add to polling thread
+        self.updateWatch(noRows)  # update the watch at the new row
         self.lneVariableName.setText("")
 
     # return watch object
@@ -64,7 +65,7 @@ class Watchesform(QDialog, Ui_formWatches):
         return watch
 
     def updateWatch(self, row):
-        varName = self.table.item(row, 0).text()     
+        varName = self.table.item(row, 0).text()
         try:
             self.table.setItem(row, 1, QTableWidgetItem(self.getPolledValue(varName)))
         except ValueError:
@@ -86,7 +87,7 @@ class Watchesform(QDialog, Ui_formWatches):
             raise ValueError('There is no watch for variable "%s"' % varName)
         try:
             self.table.removeRow(row)
-            #self.updateEditWatchPanel()
+            # self.updateEditWatchPanel()
             self.lneEditValue.setText("")
             self.panelEditWatch.setEnabled(False)
         except ValueError as e:
@@ -137,6 +138,7 @@ class Watchesform(QDialog, Ui_formWatches):
     def getPolledValue(self, varName):
         return self.parent.commsThread.read_watch(varName)
 
+
 class Watch:
     def __init__(self, pmac, varName):
         self.varName = varName
@@ -173,6 +175,4 @@ class Watch:
         # Check whether PMAC doesn't reply with an ERRxx type response
         matchObject = re.match(r"^\x07(ERR\d+)\r$", s)
         if matchObject or "error" in s:
-            raise ValueError(
-                'Error: cannot set value for "%s"'
-                % self.varName)
+            raise ValueError('Error: cannot set value for "%s"' % self.varName)

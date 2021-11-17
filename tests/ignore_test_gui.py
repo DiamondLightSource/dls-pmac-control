@@ -3,15 +3,18 @@ import unittest
 from mock import patch
 import time
 import sys
-sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
+
+sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
 from PyQt5.QtCore import Qt
 from PyQt5.QtTest import QTest, QSignalSpy
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow
 from ui_formControl import Ui_ControlForm
 from motor import Controlform
+
 # need to get slots from motor
 
 app = QApplication(sys.argv)
+
 
 class GuiWidgetTest(unittest.TestCase):
 
@@ -82,9 +85,3 @@ class GuiWidgetTest(unittest.TestCase):
     def test_connect_clicked(self):
         QTest.mouseClick(self.ui.btnConnect, Qt.LeftButton)
         # assert remoteConnect called
-
-
-
-
-
-

@@ -3,7 +3,8 @@ import unittest
 from mock import patch, Mock
 import time
 import sys
-sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
+
+sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
 from PyQt5.QtCore import Qt, QPoint
 from PyQt5.QtTest import QTest, QSignalSpy
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem
@@ -12,19 +13,22 @@ from gatherchannel import PpmacGatherChannel, PmacGatherChannel
 
 app = QApplication(sys.argv)
 
+
 class TestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
-        attrs = {"sendCommand.return_value" : ("100\r", True)}
+        attrs = {"sendCommand.return_value": ("100\r", True)}
         self.pmac.configure_mock(**attrs)
+
 
 class TestWidget2(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
-        attrs = {"sendCommand.return_value" : ("$088\r", True)}
+        attrs = {"sendCommand.return_value": ("$088\r", True)}
         self.pmac.configure_mock(**attrs)
+
 
 class PpmacGatherChannel:
     def __init__(self, pmac, qwtCurve):
@@ -33,8 +37,8 @@ class PpmacGatherChannel:
         self.axisNo = None
         self.descNo = None
 
-class PpmacGatherChannelTest(unittest.TestCase):
 
+class PpmacGatherChannelTest(unittest.TestCase):
     def test_init(self):
         curve = QwtPlotCurve("test")
         test_widget = TestWidget()
@@ -44,8 +48,8 @@ class PpmacGatherChannelTest(unittest.TestCase):
         assert obj.axisNo == None
         assert obj.descNo == None
 
-class GatherChannelTest(unittest.TestCase):
 
+class GatherChannelTest(unittest.TestCase):
     def setUp(self):
         self.curve = QwtPlotCurve("test")
         self.test_widget = TestWidget()
@@ -98,9 +102,12 @@ class GatherChannelTest(unittest.TestCase):
     def test_getScalingFactor(self):
         self.obj.pmac.return_value = "100\r"
         self.obj.axisNo = 1
-        self.obj.dataSourceInfo = {"scalingCalc" : "1.0/(%d*32.0)", "scalingIvars": ("i%d08",)}
+        self.obj.dataSourceInfo = {
+            "scalingCalc": "1.0/(%d*32.0)",
+            "scalingIvars": ("i%d08",),
+        }
         assert self.obj.getScalingFactor() == None
-        self.assertEqual(self.obj.scalingFactor, 1/3200)
+        self.assertEqual(self.obj.scalingFactor, 1 / 3200)
 
     def test_rawToScaled(self):
         self.obj.scalingFactor = 5
@@ -108,8 +115,8 @@ class GatherChannelTest(unittest.TestCase):
         assert self.obj.rawToScaled() == None
         assert self.obj.scaledData == [50]
 
-class GatherChannelTestDataInfo(unittest.TestCase):
 
+class GatherChannelTestDataInfo(unittest.TestCase):
     def setUp(self):
         self.curve = QwtPlotCurve("test")
         self.test_widget = TestWidget2()

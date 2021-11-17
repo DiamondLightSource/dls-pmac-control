@@ -4,7 +4,8 @@ from mock import patch, Mock
 import time
 from os import path
 import sys
-sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
+
+sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
 from PyQt5.QtCore import Qt
 from PyQt5.QtTest import QTest, QSignalSpy
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem
@@ -12,6 +13,7 @@ from PyQt5.QtGui import QPixmap
 from CSstatus import CSStatusForm, PpmacCSStatusForm
 
 app = QApplication(sys.argv)
+
 
 class TestWidget(QMainWindow):
     def __init__(self, parent=None):
@@ -24,8 +26,8 @@ class TestWidget(QMainWindow):
         self.commsThread = Mock()
         self.commsThread.CSNum = 1
 
-class CSStatusTest(unittest.TestCase):
 
+class CSStatusTest(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QLabel.setToolTip")
     @patch("PyQt5.QtWidgets.QLabel.setText")
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
@@ -59,8 +61,8 @@ class CSStatusTest(unittest.TestCase):
     def tearDown(self):
         self.obj.close()
 
-class PpmacCSStatusTest(unittest.TestCase):
 
+class PpmacCSStatusTest(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QLabel.setToolTip")
     @patch("PyQt5.QtWidgets.QLabel.setText")
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")

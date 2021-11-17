@@ -20,7 +20,9 @@ class Ui_formWatches(object):
         self.gridLayout_4.setSpacing(6)
         self.gridLayout_4.setObjectName("gridLayout_4")
         self.table = QtWidgets.QTableWidget(formWatches)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(2)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.table.sizePolicy().hasHeightForWidth())
@@ -74,7 +76,9 @@ class Ui_formWatches(object):
         self.btnClose.setAutoDefault(False)
         self.btnClose.setObjectName("btnClose")
         self.verticalLayout.addWidget(self.btnClose)
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        spacerItem = QtWidgets.QSpacerItem(
+            20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+        )
         self.verticalLayout.addItem(spacerItem)
         self.gridLayout_4.addLayout(self.verticalLayout, 0, 1, 1, 1)
         self.panelEditWatch = QtWidgets.QGroupBox(formWatches)
@@ -104,7 +108,7 @@ class Ui_formWatches(object):
         self.btnRemoveWatch.clicked.connect(formWatches.removeWatch)
         self.btnClose.clicked.connect(formWatches.clearWatches)
         self.btnClose.clicked.connect(formWatches.close)
-        self.table.cellClicked['int','int'].connect(formWatches.clickTable)
+        self.table.cellClicked["int", "int"].connect(formWatches.clickTable)
         self.btnAddWatch.clicked.connect(formWatches.addWatch)
         self.btnApplyChanges.clicked.connect(formWatches.applyEditWatch)
         QtCore.QMetaObject.connectSlotsByName(formWatches)

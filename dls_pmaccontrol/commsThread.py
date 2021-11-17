@@ -26,7 +26,7 @@ class CommsThread(object):
         self.gen = None
         self.resultQueue = Queue()  # a queue object that stores the results
         # of each polling update
-        self.watchesQueue = Queue() # a queue object that stores the results
+        self.watchesQueue = Queue()  # a queue object that stores the results
         # of each watches update
         self.inputQueue = Queue()  # a queue object that stores things to do
         self.updateReadyEvent = None
@@ -53,7 +53,7 @@ class CommsThread(object):
         with self.lock:
             self._watch_window.clear()
 
-    def read_watch(self,name):
+    def read_watch(self, name):
         return self._watch_window[name]
 
     def sendTick(self, lineNumber, err):
@@ -153,28 +153,28 @@ class CommsThread(object):
             # send watch window commands
             valueListWatch = []
             for key in self._watch_window:
-                (ret,success) = self.parent.pmac.sendCommand(key)
+                (ret, success) = self.parent.pmac.sendCommand(key)
                 ret = ret.rstrip("\x06\r")
                 if "error" in ret or "ERR" in ret:
                     ret = "Error"
-                # update watches dict 
+                # update watches dict
                 self._watch_window[key] = ret
                 valueListWatch.append(ret)
             self.watchesQueue.put(valueListWatch)
 
         if wasSuccessful:
             valueList = retStr.rstrip("\x06\r").split("\r")
-        # fourth is the PMAC identity
+            # fourth is the PMAC identity
             if valueList[0].startswith("\x07"):
-            # error, probably in buffer
+                # error, probably in buffer
                 print(
                     "i65 returned %s, sending CLOSE command" % valueList[0].__repr__()
                 )
                 self.parent.pmac.sendCommand("CLOSE")
                 return
 
-        # If we got a malformed response, abort now before writing anything
-        # to the result queue.
+            # If we got a malformed response, abort now before writing anything
+            # to the result queue.
             if len(valueList) < 4:
                 if self.parent.verboseMode:
                     print("Received malformed response to poll request: ", valueList)

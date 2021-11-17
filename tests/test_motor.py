@@ -4,16 +4,24 @@ from mock import patch, Mock
 import time
 import os
 import sys
-sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
+
+sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
 from PyQt5.QtCore import Qt, QPoint, QEvent
 from PyQt5.QtTest import QTest, QSignalSpy
 from PyQt5.QtGui import QKeyEvent
-from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem, QMessageBox
+from PyQt5.QtWidgets import (
+    QWidget,
+    QApplication,
+    QMainWindow,
+    QTableWidgetItem,
+    QMessageBox,
+)
 from motor import Controlform
 
 app = QApplication(sys.argv)
 
-class TestOptionsTelnet():
+
+class TestOptionsTelnet:
     def __init__(self):
         self.verbose = False
         self.protocol = "ts"
@@ -23,7 +31,8 @@ class TestOptionsTelnet():
         self.nAxes = 8
         self.timeout = 3.0
 
-class TestOptionsEthernet():
+
+class TestOptionsEthernet:
     def __init__(self):
         self.verbose = False
         self.protocol = "tcpip"
@@ -33,7 +42,8 @@ class TestOptionsEthernet():
         self.nAxes = 8
         self.timeout = 3.0
 
-class TestOptionsSerial():
+
+class TestOptionsSerial:
     def __init__(self):
         self.verbose = False
         self.protocol = "rs232"
@@ -43,7 +53,8 @@ class TestOptionsSerial():
         self.nAxes = 8
         self.timeout = 3.0
 
-class TestOptionsSsh():
+
+class TestOptionsSsh:
     def __init__(self):
         self.verbose = False
         self.protocol = "ssh"
@@ -53,8 +64,8 @@ class TestOptionsSsh():
         self.nAxes = 8
         self.timeout = 3.0
 
-class MotorTestTelnet(unittest.TestCase):
 
+class MotorTestTelnet(unittest.TestCase):
     @patch("dls_pmaccontrol.status.Statusform")
     @patch("dls_pmaccontrol.status.PpmacStatusform")
     @patch("dls_pmaccontrol.CSstatus.CSStatusForm")
@@ -71,10 +82,25 @@ class MotorTestTelnet(unittest.TestCase):
     @patch("PyQt5.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
-    def setUp(self, mock_signal, mock_thread, mock_event, mock_comms, 
-            mock_login, mock_watches, mock_ppmacgather, mock_gather, 
-            mock_ppmacaxis, mock_axis, mock_ppmacglobal, mock_global,
-            mock_ppmaccs, mock_cs, mock_ppmacstatus, mock_status):
+    def setUp(
+        self,
+        mock_signal,
+        mock_thread,
+        mock_event,
+        mock_comms,
+        mock_login,
+        mock_watches,
+        mock_ppmacgather,
+        mock_gather,
+        mock_ppmacaxis,
+        mock_axis,
+        mock_ppmacglobal,
+        mock_global,
+        mock_ppmaccs,
+        mock_cs,
+        mock_ppmacstatus,
+        mock_status,
+    ):
         self.options = TestOptionsTelnet()
         self.obj = Controlform(self.options)
 
@@ -113,7 +139,7 @@ class MotorTestTelnet(unittest.TestCase):
 
     @patch("PyQt5.QtWidgets.QLineEdit.keyPressEvent")
     def test_checkHistory_keyup(self, mock_event):
-        self.obj.commands = ["cmd1","cmd2","cmd3"]
+        self.obj.commands = ["cmd1", "cmd2", "cmd3"]
         self.obj.commands_i = 0
         self.obj.lneSend.setEnabled(True)
         QTest.keyClick(self.obj.lneSend, Qt.Key_Up)
@@ -123,20 +149,18 @@ class MotorTestTelnet(unittest.TestCase):
 
     @patch("PyQt5.QtWidgets.QLineEdit.keyPressEvent")
     def test_checkHistory_keydown(self, mock_event):
-        self.obj.commands = ["cmd1","cmd2","cmd3"]
+        self.obj.commands = ["cmd1", "cmd2", "cmd3"]
         self.obj.commands_i = -1
         self.obj.lneSend.setEnabled(True)
         QTest.keyClick(self.obj.lneSend, Qt.Key_Down)
         assert self.obj.commands_i == 0
-        print(self.obj.lneSend.text())
         assert self.obj.lneSend.text() == ""
         assert mock_event.called
 
     @patch("PyQt5.QtWidgets.QMessageBox.information")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
-    def test_remote_connect_auth_error(self, mock_params, 
-                        mock_connect, mock_box):
+    def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
         mock_connect.return_value = "Invalid username or password"
         ret = self.obj.remoteConnect()
         assert mock_params.called
@@ -150,8 +174,9 @@ class MotorTestTelnet(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
-    def test_remote_connect(self, mock_params, mock_connect, mock_model, 
-                                     mock_axes, mock_geo, mock_pixmap):
+    def test_remote_connect(
+        self, mock_params, mock_connect, mock_model, mock_axes, mock_geo, mock_pixmap
+    ):
         mock_model.return_value = "test"
         mock_axes.return_value = 8
         mock_geo.return_value = True
@@ -228,24 +253,71 @@ class MotorTestTelnet(unittest.TestCase):
         self.assertFalse(self.obj.btnWatches.isEnabled())
         self.assertFalse(self.obj.table.isEnabled())
         mock_pixmap.assert_called_with(self.obj.greenLedOff)
-        self.assertEqual(self.obj.lblIdentity.text(),"")
+        self.assertEqual(self.obj.lblIdentity.text(), "")
 
+    def tearDown(self):
+        self.obj.close()
+
+
+class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.disconnect")
-    def test_remote_disconnect(self, mock_disconnect, mock_params, mock_connect, 
-                                mock_model, mock_axes, mock_geo, mock_pixmap):
-        # create connection
+    @patch("dls_pmaccontrol.status.Statusform")
+    @patch("dls_pmaccontrol.status.PpmacStatusform")
+    @patch("dls_pmaccontrol.CSstatus.CSStatusForm")
+    @patch("dls_pmaccontrol.CSstatus.PpmacCSStatusForm")
+    @patch("dls_pmaccontrol.GlobalStatus.GlobalStatusForm")
+    @patch("dls_pmaccontrol.GlobalStatus.PpmacGlobalStatusForm")
+    @patch("dls_pmaccontrol.axissettings.Axissettingsform")
+    @patch("dls_pmaccontrol.axissettings.PpmacAxissettingsform")
+    @patch("dls_pmaccontrol.gather.PmacGatherform")
+    @patch("dls_pmaccontrol.ppmacgather.PpmacGatherform")
+    @patch("dls_pmaccontrol.watches.Watchesform")
+    @patch("dls_pmaccontrol.login.Loginform")
+    @patch("dls_pmaccontrol.commsThread.CommsThread")
+    @patch("PyQt5.QtCore.QEvent")
+    @patch("threading.Thread")
+    @patch("signal.signal")
+    def setUp(
+        self,
+        mock_signal,
+        mock_thread,
+        mock_event,
+        mock_comms,
+        mock_login,
+        mock_watches,
+        mock_ppmacgather,
+        mock_gather,
+        mock_ppmacaxis,
+        mock_axis,
+        mock_ppmacglobal,
+        mock_global,
+        mock_ppmaccs,
+        mock_cs,
+        mock_ppmacstatus,
+        mock_status,
+        mock_params,
+        mock_connect,
+        mock_model,
+        mock_axes,
+        mock_geo,
+        mock_pixmap,
+    ):
+        self.options = TestOptionsTelnet()
+        self.obj = Controlform(self.options)
         mock_model.return_value = "test"
         mock_axes.return_value = 8
         mock_geo.return_value = True
         mock_connect.return_value = None
-        self.obj.remoteConnect() 
-        # now disconnect
+        self.obj.remoteConnect()
+
+    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.disconnect")
+    def test_remote_disconnect(self, mock_disconnect, mock_pixmap):
         ret = self.obj.remoteDisconnect()
         assert mock_disconnect.called
         assert self.obj.windowTitle() == "Delta Tau motor controller"
@@ -279,92 +351,44 @@ class MotorTestTelnet(unittest.TestCase):
         mock_pixmap.assert_called_with(self.obj.greenLedOff)
         assert self.obj.lblIdentity.text() == ""
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
     @patch("motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
-    def test_jog_neg(self, mock_joginc, mock_addtxt, mock_params, mock_connect,
-                      mock_model, mock_axes, mock_geo, mock_pixmap):
-        # create connection
-        mock_model.return_value = "test"
-        mock_axes.return_value = 8
-        mock_geo.return_value = True
-        mock_connect.return_value = None
-        self.obj.remoteConnect()
+    def test_jog_neg(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
         self.obj.jogNeg()
-        mock_joginc.assert_called_with(self.obj.currentMotor, "neg", str(self.obj.lneJogDist.text()))
+        mock_joginc.assert_called_with(
+            self.obj.currentMotor, "neg", str(self.obj.lneJogDist.text())
+        )
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
     @patch("motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
-    def test_jog_pos(self, mock_joginc, mock_addtxt, mock_params, mock_connect,
-                      mock_model, mock_axes, mock_geo, mock_pixmap):
-        # create connection
-        mock_model.return_value = "test"
-        mock_axes.return_value = 8
-        mock_geo.return_value = True
-        mock_connect.return_value = None
-        self.obj.remoteConnect()
+    def test_jog_pos(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
         self.obj.jogPos()
-        mock_joginc.assert_called_with(self.obj.currentMotor, "pos", str(self.obj.lneJogDist.text()))
+        mock_joginc.assert_called_with(
+            self.obj.currentMotor, "pos", str(self.obj.lneJogDist.text())
+        )
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
     @patch("motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogStop")
-    def test_jog_stop(self, mock_jogstop, mock_addtxt, mock_params, mock_connect,
-                      mock_model, mock_axes, mock_geo, mock_pixmap):
-        # create connection
-        mock_model.return_value = "test"
-        mock_axes.return_value = 8
-        mock_geo.return_value = True
-        mock_connect.return_value = None
-        self.obj.remoteConnect()
+    def test_jog_stop(self, mock_jogstop, mock_addtxt):
         mock_jogstop.return_value = ("cmd", "response", True)
         self.obj.jogStop()
         mock_jogstop.assert_called_with(self.obj.currentMotor)
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
-    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
     @patch("motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.homeCommand")
-    def test_jog_home(self, mock_home, mock_addtxt, mock_params, mock_connect,
-                      mock_model, mock_axes, mock_geo, mock_pixmap):
-        # create connection
-        mock_model.return_value = "test"
-        mock_axes.return_value = 8
-        mock_geo.return_value = True
-        mock_connect.return_value = None
-        self.obj.remoteConnect()
+    def test_jog_home(self, mock_home, mock_addtxt):
         mock_home.return_value = ("cmd", "response", True)
         self.obj.jogHome()
         mock_home.assert_called_with(self.obj.currentMotor)
-        mock_addtxt.assert_called_with("cmd","response")
+        mock_addtxt.assert_called_with("cmd", "response")
 
     def tearDown(self):
         self.obj.close()
 
-class MotorTestEthernet(unittest.TestCase):
 
+class MotorTestEthernet(unittest.TestCase):
     @patch("dls_pmaccontrol.status.Statusform")
     @patch("dls_pmaccontrol.status.PpmacStatusform")
     @patch("dls_pmaccontrol.CSstatus.CSStatusForm")
@@ -381,10 +405,25 @@ class MotorTestEthernet(unittest.TestCase):
     @patch("PyQt5.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
-    def setUp(self, mock_signal, mock_thread, mock_event, mock_comms, 
-            mock_login, mock_watches, mock_ppmacgather, mock_gather, 
-            mock_ppmacaxis, mock_axis, mock_ppmacglobal, mock_global,
-            mock_ppmaccs, mock_cs, mock_ppmacstatus, mock_status):
+    def setUp(
+        self,
+        mock_signal,
+        mock_thread,
+        mock_event,
+        mock_comms,
+        mock_login,
+        mock_watches,
+        mock_ppmacgather,
+        mock_gather,
+        mock_ppmacaxis,
+        mock_axis,
+        mock_ppmacglobal,
+        mock_global,
+        mock_ppmaccs,
+        mock_cs,
+        mock_ppmacstatus,
+        mock_status,
+    ):
         self.options = TestOptionsEthernet()
         self.obj = Controlform(self.options)
 
@@ -414,8 +453,7 @@ class MotorTestEthernet(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QMessageBox.information")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.setConnectionParams")
-    def test_remote_connect_auth_error(self, mock_params, 
-                        mock_connect, mock_box):
+    def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
         mock_connect.return_value = "Invalid username or password"
         ret = self.obj.remoteConnect()
         assert mock_params.called
@@ -429,8 +467,9 @@ class MotorTestEthernet(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.setConnectionParams")
-    def test_remote_connect(self, mock_params, mock_connect, mock_model, 
-                                     mock_axes, mock_geo, mock_pixmap):
+    def test_remote_connect(
+        self, mock_params, mock_connect, mock_model, mock_axes, mock_geo, mock_pixmap
+    ):
         mock_model.return_value = "test"
         mock_axes.return_value = 8
         mock_geo.return_value = True
@@ -503,8 +542,8 @@ class MotorTestEthernet(unittest.TestCase):
     def tearDown(self):
         self.obj.close()
 
-class MotorTestSerial(unittest.TestCase):
 
+class MotorTestSerial(unittest.TestCase):
     @patch("dls_pmaccontrol.status.Statusform")
     @patch("dls_pmaccontrol.status.PpmacStatusform")
     @patch("dls_pmaccontrol.CSstatus.CSStatusForm")
@@ -521,10 +560,25 @@ class MotorTestSerial(unittest.TestCase):
     @patch("PyQt5.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
-    def setUp(self, mock_signal, mock_thread, mock_event, mock_comms, 
-            mock_login, mock_watches, mock_ppmacgather, mock_gather, 
-            mock_ppmacaxis, mock_axis, mock_ppmacglobal, mock_global,
-            mock_ppmaccs, mock_cs, mock_ppmacstatus, mock_status):
+    def setUp(
+        self,
+        mock_signal,
+        mock_thread,
+        mock_event,
+        mock_comms,
+        mock_login,
+        mock_watches,
+        mock_ppmacgather,
+        mock_gather,
+        mock_ppmacaxis,
+        mock_axis,
+        mock_ppmacglobal,
+        mock_global,
+        mock_ppmaccs,
+        mock_cs,
+        mock_ppmacstatus,
+        mock_status,
+    ):
         self.options = TestOptionsSerial()
         self.obj = Controlform(self.options)
 
@@ -555,8 +609,7 @@ class MotorTestSerial(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QMessageBox.information")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.setConnectionParams")
-    def test_remote_connect_auth_error(self, mock_params, 
-                        mock_connect, mock_box):
+    def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
         mock_connect.return_value = "Invalid username or password"
         ret = self.obj.remoteConnect()
         assert mock_params.called
@@ -570,8 +623,9 @@ class MotorTestSerial(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.setConnectionParams")
-    def test_remote_connect(self, mock_params, mock_connect, mock_model, 
-                                     mock_axes, mock_geo, mock_pixmap):
+    def test_remote_connect(
+        self, mock_params, mock_connect, mock_model, mock_axes, mock_geo, mock_pixmap
+    ):
         mock_model.return_value = "test"
         mock_axes.return_value = 8
         mock_geo.return_value = True
@@ -625,12 +679,12 @@ class MotorTestSerial(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
     @patch("PyQt5.QtWidgets.QFileDialog.getOpenFileName")
     def test_load_config_no_pmc_lines(self, mock_dialog, mock_parse):
-        #create temp file
+        # create temp file
         test_file = "/tmp/test.txt"
-        fh = open(test_file,'w')
+        fh = open(test_file, "w")
         fh.write("#define test P10\ntest = 1")
         fh.close()
-        #mock returns filename of temp file
+        # mock returns filename of temp file
         test_filename = "/tmp/test.txt", None
         mock_dialog.return_value = test_filename
         mock_parse.return_value = False
@@ -643,14 +697,13 @@ class MotorTestSerial(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QProgressDialog")
     @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
     @patch("PyQt5.QtWidgets.QFileDialog.getOpenFileName")
-    def test_load_config(self, mock_dialog, mock_parse, 
-                          mock_progress, mock_queue):
-        #create temp file
+    def test_load_config(self, mock_dialog, mock_parse, mock_progress, mock_queue):
+        # create temp file
         test_file = "/tmp/test.txt"
-        fh = open(test_file,'w')
+        fh = open(test_file, "w")
         fh.write("#define test P10\ntest = 1")
         fh.close()
-        #mock returns filename of temp file
+        # mock returns filename of temp file
         test_filename = "/tmp/test.txt", None
         mock_dialog.return_value = test_filename
         mock_parse.return_value = ["#define test P10", "test = 1"]
@@ -663,8 +716,8 @@ class MotorTestSerial(unittest.TestCase):
     def tearDown(self):
         self.obj.close()
 
-class MotorTestSsh(unittest.TestCase):
 
+class MotorTestSsh(unittest.TestCase):
     @patch("dls_pmaccontrol.status.Statusform")
     @patch("dls_pmaccontrol.status.PpmacStatusform")
     @patch("dls_pmaccontrol.CSstatus.CSStatusForm")
@@ -681,10 +734,25 @@ class MotorTestSsh(unittest.TestCase):
     @patch("PyQt5.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
-    def setUp(self, mock_signal, mock_thread, mock_event, mock_comms, 
-            mock_login, mock_watches, mock_ppmacgather, mock_gather, 
-            mock_ppmacaxis, mock_axis, mock_ppmacglobal, mock_global,
-            mock_ppmaccs, mock_cs, mock_ppmacstatus, mock_status):
+    def setUp(
+        self,
+        mock_signal,
+        mock_thread,
+        mock_event,
+        mock_comms,
+        mock_login,
+        mock_watches,
+        mock_ppmacgather,
+        mock_gather,
+        mock_ppmacaxis,
+        mock_axis,
+        mock_ppmacglobal,
+        mock_global,
+        mock_ppmaccs,
+        mock_cs,
+        mock_ppmacstatus,
+        mock_status,
+    ):
         self.options = TestOptionsSsh()
         self.obj = Controlform(self.options)
         self.obj.commsThread = mock_comms.return_value
@@ -716,8 +784,9 @@ class MotorTestSsh(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QMessageBox.information")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.setConnectionParams")
-    def test_remote_connect_auth_error(self, mock_params, 
-                        mock_connect, mock_box, mock_exec):
+    def test_remote_connect_auth_error(
+        self, mock_params, mock_connect, mock_box, mock_exec
+    ):
         mock_connect.return_value = "Invalid username or password"
         mock_exec.return_value = True
         ret = self.obj.remoteConnect()
@@ -732,8 +801,9 @@ class MotorTestSsh(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.setConnectionParams")
-    def test_remote_connect(self, mock_params, mock_connect, mock_model, 
-                                     mock_axes, mock_geo, mock_pixmap):
+    def test_remote_connect(
+        self, mock_params, mock_connect, mock_model, mock_axes, mock_geo, mock_pixmap
+    ):
         mock_model.return_value = "test"
         mock_axes.return_value = 8
         mock_geo.return_value = True
@@ -778,10 +848,9 @@ class MotorTestSsh(unittest.TestCase):
         mock_pixmap.assert_called_with(self.obj.greenLedOn)
 
     def test_update_motors(self):
-        attrs = {"resultQueue.return_value" : Mock()}
+        attrs = {"resultQueue.return_value": Mock()}
         self.obj.commsThread.configure_mock(**attrs)
-        attrs = {"qsize.return_value" : 5,
-                 "get.return_value" : ["0","0","0","0", 0]}
+        attrs = {"qsize.return_value": 5, "get.return_value": ["0", "0", "0", "0", 0]}
         self.obj.commsThread.resultQueue.configure_mock(**attrs)
         ret = self.obj.updateMotors()
         assert ret == None
@@ -795,8 +864,9 @@ class MotorTestSsh(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.setConnectionParams")
-    def test_update_identity(self, mock_params, mock_connect, mock_model, 
-                              mock_axes, mock_geo, mock_short):
+    def test_update_identity(
+        self, mock_params, mock_connect, mock_model, mock_axes, mock_geo, mock_short
+    ):
         mock_short.return_value = "name"
         # create connection
         mock_model.return_value = "test"

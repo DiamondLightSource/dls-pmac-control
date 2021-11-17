@@ -10,7 +10,7 @@ from dls_pmaclib.dls_pmacremote import (
     PmacEthernetInterface,
     PmacSerialInterface,
     PmacTelnetInterface,
-    PPmacSshInterface
+    PPmacSshInterface,
 )
 from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
 from PyQt5.QtCore import QEvent, Qt, pyqtSlot
@@ -51,7 +51,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
-        #self.parent = parent
+        # self.parent = parent
 
         self.greenLedOn = QPixmap(path.join(path.dirname(__file__), "greenLedOn.png"))
         self.greenLedOff = QPixmap(path.join(path.dirname(__file__), "greenLedOff.png"))
@@ -114,7 +114,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.ppmacgatherScreen = PpmacGatherform(self, self.currentMotor)
         self.watchesScreen = Watchesform(self)
         self.login = Loginform(self)
-        #self.energiseScreen = Energiseform(self.pmac,self)
+        # self.energiseScreen = Energiseform(self.pmac,self)
         self.commsThread = CommsThread(self)
 
         self.spnJogMotor.setValue(self.currentMotor)
@@ -162,7 +162,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.textLabel2.setText("Port:")
             self.lblPolling.setText("Polling")
             self.lnePollRate.setEnabled(False)
-            self.lblPollRate.setEnabled(False)    
+            self.lblPollRate.setEnabled(False)
 
     def useSerial(self):
         if self.ConnectionType != 2:
@@ -188,11 +188,11 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.lnePort.setText("22")
             self.textLabel1.setText("IP address:")
             self.textLabel2.setText("Port:")
-            #self.textLabel3.setText("Username:")
-            #self.textLabel4.setText("Password:")
+            # self.textLabel3.setText("Username:")
+            # self.textLabel4.setText("Password:")
             self.lblPolling.setText("Polling")
             self.lnePollRate.setEnabled(False)
-            self.lblPollRate.setEnabled(False) 
+            self.lblPollRate.setEnabled(False)
 
     def checkHistory(self, edit, event):
         if event.key() == Qt.Key_Up:
@@ -269,7 +269,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 else:
                     # try to connect again
                     connection_status = self.pmac.connect(
-                        username=self.login.username, password=self.login.password)
+                        username=self.login.username, password=self.login.password
+                    )
                     if connection_status:
                         QMessageBox.information(self, "Error", connection_status)
                         return
@@ -277,7 +278,6 @@ class Controlform(QMainWindow, Ui_ControlForm):
             else:
                 QMessageBox.information(self, "Error", connection_status)
                 return
-            
 
         # Find out the type of the PMAC
         pmac_model_str = self.pmac.getPmacModel()
@@ -306,7 +306,9 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.btnJogTo.setEnabled(True)
         self.btnEnergise.setEnabled(False)
         # disable energise button for geobrick and power pmac
-        enableEnergise = not self.pmac.isModelGeobrick() and not self.ConnectionType == 3
+        enableEnergise = (
+            not self.pmac.isModelGeobrick() and not self.ConnectionType == 3
+        )
         self.btnEnergise.setEnabled(enableEnergise)
         self.btnKillAll.setEnabled(True)
         self.btnStatus.setEnabled(True)
@@ -437,7 +439,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
     def dataGather(self):
         # if power pmac
-        #if self.ConnectionType == 3:
+        # if self.ConnectionType == 3:
         if isinstance(self.pmac, PPmacSshInterface):
             self.ppmacgatherScreen.show()
         else:
@@ -447,8 +449,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
     def watches(self):
         self.watchesScreen.show()
 
-    def pmacEnergiseAxis(self):        
-        self.energiseScreen = Energiseform(self.pmac,self)
+    def pmacEnergiseAxis(self):
+        self.energiseScreen = Energiseform(self.pmac, self)
         self.energiseScreen.show()
 
     def statusScreen(self):
@@ -588,7 +590,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.spnJogMotor.setValue(a0 + 1)
 
     # public slot
-    def jogIncrementally(self, a0): # a0 is True if 'jog inc' box checked
+    def jogIncrementally(self, a0):  # a0 is True if 'jog inc' box checked
         self.lneJogDist.setEnabled(a0)
         if a0:
             self.btnJogPos.pressed.disconnect(self.jogPosContinousStart)
@@ -636,7 +638,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 motorRow = value[4]
                 # check for special cases
                 if type(motorRow) == str:
-                    if isinstance(self.pmac,PPmacSshInterface):
+                    if isinstance(self.pmac, PPmacSshInterface):
                         if motorRow == "G":
                             self.PpmacGlobalStatusScreen.updateStatus(int(value[0], 16))
                             continue
@@ -644,7 +646,9 @@ class Controlform(QMainWindow, Ui_ControlForm):
                             self.PpmacCSStatusScreen.updateStatus(int(value[0], 16))
                             continue
                         if motorRow.startswith("FEED"):
-                            self.PpmacCSStatusScreen.updateFeed(int(round(float(value[0]))))
+                            self.PpmacCSStatusScreen.updateFeed(
+                                int(round(float(value[0])))
+                            )
                             continue
                         if motorRow == "IDENT":
                             self.updateIdentity(int(value[0]))
@@ -674,16 +678,16 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 statusWord = int(value[0].strip("$"), 16)
 
                 # define high and low limits for power pmac
-                if isinstance(self.pmac,PPmacSshInterface):
-                    loLim = bool(statusWord & 0x2000000000000000) # MinusLimit
-                    hiLim = bool(statusWord & 0x1000000000000000) # PlusLimit
-                    loLimSoft = bool(statusWord & 0x0080000000000000) # SoftMinusLimit
-                    hiLimSoft = bool(statusWord & 0x0040000000000000) # SoftPlusLimit
+                if isinstance(self.pmac, PPmacSshInterface):
+                    loLim = bool(statusWord & 0x2000000000000000)  # MinusLimit
+                    hiLim = bool(statusWord & 0x1000000000000000)  # PlusLimit
+                    loLimSoft = bool(statusWord & 0x0080000000000000)  # SoftMinusLimit
+                    hiLimSoft = bool(statusWord & 0x0040000000000000)  # SoftPlusLimit
 
                 # define high and low limits for pmac
                 else:
-                    loLim = bool(statusWord & 0x400000000000) # negative end limit set
-                    hiLim = bool(statusWord & 0x200000000000) # positive end limit set
+                    loLim = bool(statusWord & 0x400000000000)  # negative end limit set
+                    hiLim = bool(statusWord & 0x200000000000)  # positive end limit set
                     loLimSoft = False
                     hiLimSoft = False
 
@@ -793,7 +797,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 return
             for n in range(len(value)):
                 if "." in value[n]:
-                    value[n] = round(float(value[n]),1)
+                    value[n] = round(float(value[n]), 1)
                 self.watchesScreen.table.setItem(n, 1, QTableWidgetItem(str(value[n])))
 
     def customEvent(self, E):

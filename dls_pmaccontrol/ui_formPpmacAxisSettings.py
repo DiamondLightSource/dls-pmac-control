@@ -15,10 +15,14 @@ class Ui_formPpmacAxisSettings(object):
     def setupUi(self, formPpmacAxisSettings):
         formPpmacAxisSettings.setObjectName("formPpmacAxisSettings")
         formPpmacAxisSettings.resize(580, 688)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(formPpmacAxisSettings.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            formPpmacAxisSettings.sizePolicy().hasHeightForWidth()
+        )
         formPpmacAxisSettings.setSizePolicy(sizePolicy)
         formPpmacAxisSettings.setMaximumSize(QtCore.QSize(1024, 768))
         self.gridLayout_3 = QtWidgets.QGridLayout(formPpmacAxisSettings)
@@ -32,7 +36,9 @@ class Ui_formPpmacAxisSettings(object):
         self.btnUpdate = QtWidgets.QPushButton(formPpmacAxisSettings)
         self.btnUpdate.setObjectName("btnUpdate")
         self.gridLayout_3.addWidget(self.btnUpdate, 2, 0, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(185, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            185, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.gridLayout_3.addItem(spacerItem, 2, 1, 1, 1)
         self.btnClose = QtWidgets.QPushButton(formPpmacAxisSettings)
         self.btnClose.setObjectName("btnClose")
@@ -59,25 +65,37 @@ class Ui_formPpmacAxisSettings(object):
         self.textLabel2_2_2 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_2_2.setWordWrap(False)
         self.textLabel2_2_2.setObjectName("textLabel2_2_2")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.textLabel2_2_2)
+        self.formLayout.setWidget(
+            2, QtWidgets.QFormLayout.LabelRole, self.textLabel2_2_2
+        )
         self.textLabel2_3_2 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_3_2.setWordWrap(False)
         self.textLabel2_3_2.setObjectName("textLabel2_3_2")
-        self.formLayout.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.textLabel2_3_2)
+        self.formLayout.setWidget(
+            4, QtWidgets.QFormLayout.LabelRole, self.textLabel2_3_2
+        )
         self.textLabel2_4_2 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_4_2.setWordWrap(False)
         self.textLabel2_4_2.setObjectName("textLabel2_4_2")
-        self.formLayout.setWidget(6, QtWidgets.QFormLayout.LabelRole, self.textLabel2_4_2)
+        self.formLayout.setWidget(
+            6, QtWidgets.QFormLayout.LabelRole, self.textLabel2_4_2
+        )
         self.textLabel2_6_2 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_6_2.setWordWrap(False)
         self.textLabel2_6_2.setObjectName("textLabel2_6_2")
-        self.formLayout.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.textLabel2_6_2)
+        self.formLayout.setWidget(
+            8, QtWidgets.QFormLayout.LabelRole, self.textLabel2_6_2
+        )
         self.textLabel2_7_2 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_7_2.setWordWrap(False)
         self.textLabel2_7_2.setObjectName("textLabel2_7_2")
-        self.formLayout.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.textLabel2_7_2)
+        self.formLayout.setWidget(
+            10, QtWidgets.QFormLayout.LabelRole, self.textLabel2_7_2
+        )
         self.lneIx20 = QtWidgets.QLineEdit(self.groupBox2)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lneIx20.sizePolicy().hasHeightForWidth())
@@ -145,15 +163,21 @@ class Ui_formPpmacAxisSettings(object):
         self.textLabel2_2 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_2.setWordWrap(False)
         self.textLabel2_2.setObjectName("textLabel2_2")
-        self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.LabelRole, self.textLabel2_2)
+        self.formLayout_2.setWidget(
+            2, QtWidgets.QFormLayout.LabelRole, self.textLabel2_2
+        )
         self.textLabel2_3 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_3.setWordWrap(False)
         self.textLabel2_3.setObjectName("textLabel2_3")
-        self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.LabelRole, self.textLabel2_3)
+        self.formLayout_2.setWidget(
+            4, QtWidgets.QFormLayout.LabelRole, self.textLabel2_3
+        )
         self.textLabel2_4 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_4.setWordWrap(False)
         self.textLabel2_4.setObjectName("textLabel2_4")
-        self.formLayout_2.setWidget(5, QtWidgets.QFormLayout.LabelRole, self.textLabel2_4)
+        self.formLayout_2.setWidget(
+            5, QtWidgets.QFormLayout.LabelRole, self.textLabel2_4
+        )
         self.lneIx14 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx14.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx14.setMaximumSize(QtCore.QSize(31222, 32767))
@@ -162,11 +186,15 @@ class Ui_formPpmacAxisSettings(object):
         self.textLabel2_5 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_5.setWordWrap(False)
         self.textLabel2_5.setObjectName("textLabel2_5")
-        self.formLayout_2.setWidget(7, QtWidgets.QFormLayout.LabelRole, self.textLabel2_5)
+        self.formLayout_2.setWidget(
+            7, QtWidgets.QFormLayout.LabelRole, self.textLabel2_5
+        )
         self.textLabel2_6 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_6.setWordWrap(False)
         self.textLabel2_6.setObjectName("textLabel2_6")
-        self.formLayout_2.setWidget(8, QtWidgets.QFormLayout.LabelRole, self.textLabel2_6)
+        self.formLayout_2.setWidget(
+            8, QtWidgets.QFormLayout.LabelRole, self.textLabel2_6
+        )
         self.lneIx16 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx16.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx16.setMaximumSize(QtCore.QSize(31222, 32767))
@@ -175,7 +203,9 @@ class Ui_formPpmacAxisSettings(object):
         self.textLabel2_7 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_7.setWordWrap(False)
         self.textLabel2_7.setObjectName("textLabel2_7")
-        self.formLayout_2.setWidget(9, QtWidgets.QFormLayout.LabelRole, self.textLabel2_7)
+        self.formLayout_2.setWidget(
+            9, QtWidgets.QFormLayout.LabelRole, self.textLabel2_7
+        )
         self.lneIx17 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx17.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx17.setMaximumSize(QtCore.QSize(31222, 32767))
@@ -184,7 +214,9 @@ class Ui_formPpmacAxisSettings(object):
         self.textLabel2_8 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_8.setWordWrap(False)
         self.textLabel2_8.setObjectName("textLabel2_8")
-        self.formLayout_2.setWidget(10, QtWidgets.QFormLayout.LabelRole, self.textLabel2_8)
+        self.formLayout_2.setWidget(
+            10, QtWidgets.QFormLayout.LabelRole, self.textLabel2_8
+        )
         self.lneIx19 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx19.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx19.setMaximumSize(QtCore.QSize(31222, 32767))
@@ -204,7 +236,7 @@ class Ui_formPpmacAxisSettings(object):
         self.lneIx22.returnPressed.connect(formPpmacAxisSettings.sendIx22)
         self.lneIx25.returnPressed.connect(formPpmacAxisSettings.sendIx25)
         self.lneIx26.returnPressed.connect(formPpmacAxisSettings.sendIx26)
-        self.tabAxisSetup.currentChanged['int'].connect(formPpmacAxisSettings.tabChange)
+        self.tabAxisSetup.currentChanged["int"].connect(formPpmacAxisSettings.tabChange)
         self.lneIx14.returnPressed.connect(formPpmacAxisSettings.sendIx14)
         self.lneIx11.returnPressed.connect(formPpmacAxisSettings.sendIx11)
         self.lneIx12.returnPressed.connect(formPpmacAxisSettings.sendIx12)
@@ -218,26 +250,68 @@ class Ui_formPpmacAxisSettings(object):
 
     def retranslateUi(self, formPpmacAxisSettings):
         _translate = QtCore.QCoreApplication.translate
-        formPpmacAxisSettings.setWindowTitle(_translate("formPpmacAxisSettings", "Axis setup"))
-        self.textLabel1.setText(_translate("formPpmacAxisSettings", "Note this screen does not update continously.\n"
-"Hit the update button to read out the current values from pmac.\n"
-"Write demand values in the text fields and hit enter to send."))
+        formPpmacAxisSettings.setWindowTitle(
+            _translate("formPpmacAxisSettings", "Axis setup")
+        )
+        self.textLabel1.setText(
+            _translate(
+                "formPpmacAxisSettings",
+                "Note this screen does not update continously.\n"
+                "Hit the update button to read out the current values from pmac.\n"
+                "Write demand values in the text fields and hit enter to send.",
+            )
+        )
         self.btnUpdate.setText(_translate("formPpmacAxisSettings", "update"))
         self.btnClose.setText(_translate("formPpmacAxisSettings", "close"))
-        self.groupBox2.setTitle(_translate("formPpmacAxisSettings", "Safety I variables"))
-        self.textLabel2_9.setText(_translate("formPpmacAxisSettings", "Motor[x].JogTa:"))
-        self.textLabel2_2_2.setText(_translate("formPpmacAxisSettings", "Motor[x].JogTs:"))
-        self.textLabel2_3_2.setText(_translate("formPpmacAxisSettings", "Motor[x].JogSpeed:"))
-        self.textLabel2_4_2.setText(_translate("formPpmacAxisSettings", "Motor[x].HomeVel:"))
-        self.textLabel2_6_2.setText(_translate("formPpmacAxisSettings", "Motor[x].pEncStatus:"))
-        self.textLabel2_7_2.setText(_translate("formPpmacAxisSettings", "Motor[x].HomeOffset:"))
-        self.groupBox1.setTitle(_translate("formPpmacAxisSettings", "Definition I variables"))
-        self.textLabel2.setText(_translate("formPpmacAxisSettings", "Motor[x].FatalFeLimit:"))
-        self.textLabel2_2.setText(_translate("formPpmacAxisSettings", "Motor[x].WarnFeLimit:"))
-        self.textLabel2_3.setText(_translate("formPpmacAxisSettings", "Motor[x].MaxPos:"))
-        self.textLabel2_4.setText(_translate("formPpmacAxisSettings", "Motor[x].MinPos:"))
-        self.textLabel2_5.setText(_translate("formPpmacAxisSettings", "Motor[x].AbortTa:"))
-        self.textLabel2_6.setText(_translate("formPpmacAxisSettings", "Motor[x].MaxSpeed:"))
-        self.textLabel2_7.setText(_translate("formPpmacAxisSettings", "Motor[x].InvAmax:"))
-        self.textLabel2_8.setText(_translate("formPpmacAxisSettings", "Motor[x].AbortTs:"))
-        self.tabAxisSetup.setTabText(self.tabAxisSetup.indexOf(self.tab), _translate("formPpmacAxisSettings", "definition and safety"))
+        self.groupBox2.setTitle(
+            _translate("formPpmacAxisSettings", "Safety I variables")
+        )
+        self.textLabel2_9.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].JogTa:")
+        )
+        self.textLabel2_2_2.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].JogTs:")
+        )
+        self.textLabel2_3_2.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].JogSpeed:")
+        )
+        self.textLabel2_4_2.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].HomeVel:")
+        )
+        self.textLabel2_6_2.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].pEncStatus:")
+        )
+        self.textLabel2_7_2.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].HomeOffset:")
+        )
+        self.groupBox1.setTitle(
+            _translate("formPpmacAxisSettings", "Definition I variables")
+        )
+        self.textLabel2.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].FatalFeLimit:")
+        )
+        self.textLabel2_2.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].WarnFeLimit:")
+        )
+        self.textLabel2_3.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].MaxPos:")
+        )
+        self.textLabel2_4.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].MinPos:")
+        )
+        self.textLabel2_5.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].AbortTa:")
+        )
+        self.textLabel2_6.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].MaxSpeed:")
+        )
+        self.textLabel2_7.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].InvAmax:")
+        )
+        self.textLabel2_8.setText(
+            _translate("formPpmacAxisSettings", "Motor[x].AbortTs:")
+        )
+        self.tabAxisSetup.setTabText(
+            self.tabAxisSetup.indexOf(self.tab),
+            _translate("formPpmacAxisSettings", "definition and safety"),
+        )

@@ -95,12 +95,14 @@ ppmacDataSources = [
     },
 ]
 
+
 class PpmacGatherChannel:
     def __init__(self, pmac, qwtCurve):
         self.pmac = pmac
         self.qwtCurve = qwtCurve
         self.axisNo = None
         self.descNo = None
+
 
 class PmacGatherChannel:
     def __init__(self, pmac, qwtCurve):
@@ -173,7 +175,10 @@ class PmacGatherChannel:
                 self.dataSourceInfo = dataSrc
                 break
         if not self.dataSourceInfo:
-            print("### Error: could not recognise data source type with reg offset: %X" % (self.regOffset))
+            print(
+                "### Error: could not recognise data source type with reg offset: %X"
+                % (self.regOffset)
+            )
         return
 
     # Receive the array of strings straight from the source
@@ -196,7 +201,10 @@ class PmacGatherChannel:
             signMask = 0x800000
             maxValue = 0xFFFFFF
         else:
-            print("### Error: did not have valid data width information (had %d)" % (self.dataWidth))
+            print(
+                "### Error: did not have valid data width information (had %d)"
+                % (self.dataWidth)
+            )
             return None
 
         # convert each hex string value to an integer with sign

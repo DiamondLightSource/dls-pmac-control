@@ -4,7 +4,8 @@ from mock import patch
 import time
 from os import path
 import sys
-sys.path.append('/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol')
+
+sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
 from PyQt5.QtCore import Qt
 from PyQt5.QtTest import QTest, QSignalSpy
 from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem
@@ -12,6 +13,7 @@ from PyQt5.QtGui import QPixmap
 from status import Statusform, PpmacStatusform
 
 app = QApplication(sys.argv)
+
 
 class TestWidget(QMainWindow):
     def __init__(self, parent=None):
@@ -23,13 +25,12 @@ class TestWidget(QMainWindow):
 
 
 class StatusTest(unittest.TestCase):
-
     @patch("PyQt5.QtWidgets.QLabel.setToolTip")
     @patch("PyQt5.QtWidgets.QLabel.setText")
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     def setUp(self, mock_pixmap, mock_text, mock_tooltip):
         self.test_widget = TestWidget()
-        self.obj = Statusform(self.test_widget,1)
+        self.obj = Statusform(self.test_widget, 1)
 
     def test_inital_form(self):
         assert self.obj.ledGroup.title() == "Axis 1"
@@ -48,14 +49,14 @@ class StatusTest(unittest.TestCase):
     def tearDown(self):
         self.obj.close()
 
-class PpmacStatusTest(unittest.TestCase):
 
+class PpmacStatusTest(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QLabel.setToolTip")
     @patch("PyQt5.QtWidgets.QLabel.setText")
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     def setUp(self, mock_pixmap, mock_text, mock_tooltip):
         self.test_widget = TestWidget()
-        self.obj = PpmacStatusform(self.test_widget,1)
+        self.obj = PpmacStatusform(self.test_widget, 1)
 
     def test_inital_form(self):
         assert self.obj.ledGroup.title() == "Axis 1"
