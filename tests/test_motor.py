@@ -474,35 +474,31 @@ class MotorTestEthernet(unittest.TestCase):
         self.assertFalse(self.obj.lblPollRate.isEnabled())
         mock_pixmap.assert_called_with(self.obj.greenLedOn)
 
-    @unittest.skip("not working")
-    #@patch("motor.Controlform.jogNeg")
-    #@patch("motor.Controlform.jogPos")
-    #@patch("motor.Controlform.btnJogNeg.clicked.connect")
-    #@patch("motor.Controlform.btnJogPos.clicked.connect")
-    def test_jog_incrementally_true(self):#, jog_pos, jog_neg):
+    @patch("PyQt5.QtWidgets.QPushButton.released")
+    @patch("PyQt5.QtWidgets.QPushButton.pressed")
+    @patch("PyQt5.QtWidgets.QPushButton.clicked")
+    def test_jog_incrementally_true(self, mock_clicked, mock_pressed, mock_released):
         self.obj.btnJogPos.pressed.connect(self.obj.jogPosContinousStart)
         self.obj.btnJogPos.released.connect(self.obj.jogStop)
         self.obj.btnJogNeg.pressed.connect(self.obj.jogNegContinousStart)
         self.obj.btnJogNeg.released.connect(self.obj.jogStop)
         self.obj.jogIncrementally(True)
         self.assertTrue(self.obj.lneJogDist.isEnabled())
-        #QTest.mouseClick(self.obj.btnJogNeg, Qt.LeftButton)
-        #assert jog_neg.called
-        #QTest.mouseClick(self.obj.btnJogPos, Qt.LeftButton)
-        #assert jog_pos.called
-        #jog_pos.assert_called_with(self.obj.jogPos)
-        self.obj.btnJogNeg.clicked.connect.assert_called_with(self.obj.jogNeg)
+        mock_pressed.disconnect.assert_called_with(self.obj.jogNegContinousStart)
+        mock_released.disconnect.assert_called_with(self.obj.jogStop)
+        mock_clicked.connect.assert_called_with(self.obj.jogPos)
 
-    @patch("motor.Controlform.jogNeg")
-    @patch("motor.Controlform.jogPos")
-    @unittest.skip("not finished")
-    def test_jog_incrementally_false(self):
+    @patch("PyQt5.QtWidgets.QPushButton.released")
+    @patch("PyQt5.QtWidgets.QPushButton.pressed")
+    @patch("PyQt5.QtWidgets.QPushButton.clicked")
+    def test_jog_incrementally_false(self, mock_clicked, mock_pressed, mock_released):
         self.obj.btnJogNeg.clicked.connect(self.obj.jogNeg)
         self.obj.btnJogPos.clicked.connect(self.obj.jogPos)
         self.obj.jogIncrementally(False)
         self.assertFalse(self.obj.lneJogDist.isEnabled())
-        QTest.mousePress(self.obj.btnJogNeg, Qt.LeftButton)
-        QTest.mousePress(self.obj.btnJogPos, Qt.LeftButton)
+        mock_pressed.connect.assert_called_with(self.obj.jogNegContinousStart)
+        mock_released.connect.assert_called_with(self.obj.jogStop)
+        mock_clicked.connect.assert_called_with(self.obj.jogPos)
 
     def tearDown(self):
         self.obj.close()
