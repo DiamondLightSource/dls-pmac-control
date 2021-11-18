@@ -184,7 +184,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.ConnectionType = 3
             # set the server and port fields to defaults for this connection
             # type
-            self.lneServer.setText("192.168.56.10")
+            self.lneServer.setText("172.23.240.97")
             self.lnePort.setText("22")
             self.textLabel1.setText("IP address:")
             self.textLabel2.setText("Port:")
