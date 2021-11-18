@@ -45,6 +45,7 @@ class EnergiseTest(unittest.TestCase):
 
     def test_readM750x(self):
         (val1, val2) = self.obj.readM750x()
+        self.obj.parent.pmac.sendCommand.assert_called_with("m7501 m7503")
         assert val1 == 0
         assert val2 == 5
 
@@ -53,6 +54,12 @@ class EnergiseTest(unittest.TestCase):
         self.obj.val7501 = 1
         self.obj.val7503 = 3
         self.obj.updateScreen()
+        for i in [0, 16, 17]:
+            assert self.obj.lstCheckBoxes[i].isChecked() == True
+        for j in range(1, 16):
+            assert self.obj.lstCheckBoxes[j].isChecked() == False
+        for k in range(18, 32):
+            assert self.obj.lstCheckBoxes[k].isChecked() == False
 
     @patch("energise.Energiseform.readM750x")
     def test_isScreenUpToDate(self, mock_read):
@@ -68,9 +75,19 @@ class EnergiseTest(unittest.TestCase):
     def test_sendCommand_outofdate(self, mock_screen, mock_box, mock_read, mock_update):
         mock_screen.return_value = False
         mock_read.return_value = (None, None)
-        self.obj.sendCommand()
+        assert self.obj.sendCommand() == None
         assert mock_screen.called
-        assert mock_box.called
+        mock_box.assert_called_with(
+            self.obj,
+            "Error",
+            "The screen is out of date, even if "
+            "ignoring your changes!\n" + "This may be e.g. due to PLCs running in "
+            "the background which de/energised some "
+            "motors.\n"
+            "To avoid inconsistency, the screen will "
+            "reload now. Re-do your changes and submit "
+            "again.",
+        )
         assert mock_read.called
         assert mock_screen.called
 
@@ -80,5 +97,10 @@ class EnergiseTest(unittest.TestCase):
         self.obj.val7501 = 0xFF0000
         self.obj.val7503 = 0xFF0000
         self.obj.createCheckBoxes()
-        self.obj.sendCommand()
+        assert self.obj.sendCommand() == None
         assert mock_screen.called
+        cmd = "m7501=$ff0000 m7503=$ff0000"
+        self.obj.parent.pmac.sendCommand.assert_called_with(cmd)
+
+    def tearDown(self):
+        self.obj.close()

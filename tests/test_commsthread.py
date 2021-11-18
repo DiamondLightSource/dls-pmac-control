@@ -1,7 +1,6 @@
 import PyQt5
 import unittest
-from mock import patch, Mock, call
-import time
+from mock import patch, Mock
 import sys
 
 sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
@@ -100,6 +99,7 @@ class UpdatefuncTest(unittest.TestCase):
     def test_update_func_die(self, mock_get):
         mock_get.return_value = ("die", "data")
         assert self.obj.updateFunc() == True
+        mock_get.assert_called_with(block=False)
 
     @patch("PyQt5.QtCore.QCoreApplication.postEvent")
     @patch("commsThread.CustomEvent")
@@ -110,6 +110,8 @@ class UpdatefuncTest(unittest.TestCase):
         self.obj.parent.pmac.isConnectionOpen = True
         self.obj.disablePollingStatus = None
         assert self.obj.updateFunc() == None
+        self.test_widget.pmac.sendSeries.assert_called_with("data")
+        mock_get.assert_called_with(block=False)
 
     @patch("queue.Queue.get")
     def test_update_func_disable(self, mock_get):
@@ -119,6 +121,7 @@ class UpdatefuncTest(unittest.TestCase):
         ret = self.obj.updateFunc()
         assert self.obj.disablePollingStatus == True
         assert ret == None
+        mock_get.assert_called_with(block=False)
 
     @patch("PyQt5.QtCore.QCoreApplication.postEvent")
     @patch("commsThread.CustomEvent")
@@ -134,3 +137,4 @@ class UpdatefuncTest(unittest.TestCase):
         assert mock_put.call_count == 5
         assert mock_custom.called
         assert mock_event.called
+        mock_get.assert_called_with(block=False)

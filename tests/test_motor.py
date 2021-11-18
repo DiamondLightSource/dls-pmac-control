@@ -163,7 +163,7 @@ class MotorTestTelnet(unittest.TestCase):
     def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
         mock_connect.return_value = "Invalid username or password"
         ret = self.obj.remoteConnect()
-        assert mock_params.called
+        mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
         assert ret == None
@@ -182,7 +182,7 @@ class MotorTestTelnet(unittest.TestCase):
         mock_geo.return_value = True
         mock_connect.return_value = None
         ret = self.obj.remoteConnect()
-        assert mock_params.called
+        mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         assert mock_model.called
         assert self.obj.windowTitle() == "Delta Tau motor controller - test"
@@ -355,7 +355,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
     def test_jog_neg(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
-        self.obj.jogNeg()
+        assert self.obj.jogNeg() == None
         mock_joginc.assert_called_with(
             self.obj.currentMotor, "neg", str(self.obj.lneJogDist.text())
         )
@@ -364,7 +364,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
     def test_jog_pos(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
-        self.obj.jogPos()
+        assert self.obj.jogPos() == None
         mock_joginc.assert_called_with(
             self.obj.currentMotor, "pos", str(self.obj.lneJogDist.text())
         )
@@ -373,14 +373,14 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogStop")
     def test_jog_stop(self, mock_jogstop, mock_addtxt):
         mock_jogstop.return_value = ("cmd", "response", True)
-        self.obj.jogStop()
+        assert self.obj.jogStop() == None
         mock_jogstop.assert_called_with(self.obj.currentMotor)
 
     @patch("motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.homeCommand")
     def test_jog_home(self, mock_home, mock_addtxt):
         mock_home.return_value = ("cmd", "response", True)
-        self.obj.jogHome()
+        assert self.obj.jogHome() == None
         mock_home.assert_called_with(self.obj.currentMotor)
         mock_addtxt.assert_called_with("cmd", "response")
 
@@ -456,7 +456,7 @@ class MotorTestEthernet(unittest.TestCase):
     def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
         mock_connect.return_value = "Invalid username or password"
         ret = self.obj.remoteConnect()
-        assert mock_params.called
+        mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
         assert ret == None
@@ -475,7 +475,7 @@ class MotorTestEthernet(unittest.TestCase):
         mock_geo.return_value = True
         mock_connect.return_value = None
         ret = self.obj.remoteConnect()
-        assert mock_params.called
+        mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         assert mock_model.called
         assert self.obj.windowTitle() == "Delta Tau motor controller - test"
@@ -612,7 +612,7 @@ class MotorTestSerial(unittest.TestCase):
     def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
         mock_connect.return_value = "Invalid username or password"
         ret = self.obj.remoteConnect()
-        assert mock_params.called
+        mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
         assert ret == None
@@ -631,7 +631,7 @@ class MotorTestSerial(unittest.TestCase):
         mock_geo.return_value = True
         mock_connect.return_value = None
         ret = self.obj.remoteConnect()
-        assert mock_params.called
+        mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         assert mock_model.called
         assert self.obj.windowTitle() == "Delta Tau motor controller - test"
@@ -790,7 +790,7 @@ class MotorTestSsh(unittest.TestCase):
         mock_connect.return_value = "Invalid username or password"
         mock_exec.return_value = True
         ret = self.obj.remoteConnect()
-        assert mock_params.called
+        mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
         assert ret == None
@@ -809,7 +809,7 @@ class MotorTestSsh(unittest.TestCase):
         mock_geo.return_value = True
         mock_connect.return_value = None
         ret = self.obj.remoteConnect()
-        assert mock_params.called
+        mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         assert mock_model.called
         assert self.obj.windowTitle() == "Delta Tau motor controller - test"
