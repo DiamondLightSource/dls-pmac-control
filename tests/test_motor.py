@@ -772,7 +772,7 @@ class MotorTestSsh(unittest.TestCase):
         self.obj.ConnectionType = None
         self.obj.useSshConnection()
         assert self.obj.ConnectionType == 3
-        assert self.obj.lneServer.text() == "192.168.56.10"
+        assert self.obj.lneServer.text() == "172.23.240.97"
         assert self.obj.lnePort.text() == "22"
         assert self.obj.textLabel1.text() == "IP address:"
         assert self.obj.textLabel2.text() == "Port:"
