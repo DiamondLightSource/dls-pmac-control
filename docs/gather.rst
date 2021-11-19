@@ -1,12 +1,14 @@
 Data Gather
 ===========
 
-A data gather collects data for a particular motor variable over a specified length of time. This data can be plotted and saved for future reference.
+A data gather collects data for a particular motor variable over a specified length of time. The data points are plotted automatically and the data can be saved for future reference.
 
 Configure Gather
 ----------------
 
-The user can configure a data gather from the "config" tab of the gather window.
+The user can configure a data gather from the "configure" tab of the gather window (see :numref:`fig-gather-config`).
+
+.. _fig-gather-config:
 
 .. figure:: gui_images/data-gather-config.png
   :width: 600
@@ -31,9 +33,9 @@ Setup Gather
 .. figure:: gui_images/data-gather.png
   :width: 600
 
-  *caption*
+  *"gather" tab of data gather screen*
 
-Now go to the "gather" tab and click setup.
+Now go to the "gather" tab and click "setup".
 
 Trigger Gather
 --------------
@@ -43,7 +45,15 @@ Press "trigger" button to send a gather command to the controller. Once the gath
 Collect Data
 ------------
 
-Once the data gather is complete and the "collect" buttton is enabled click this to plot the data. For the PMAC, the gathered data is collected directly from the gather buffer. For the Power PMAC, the gathered data is sent to a file on the controller and this is then copied over to the local machine. 
+Once the data gather is complete and the "collect" buttton is enabled click this to plot the data (see :numref:`fig-plot`). For the PMAC, the gathered data is collected directly from the gather buffer. For the Power PMAC, the gathered data is sent to a file on the controller and this is then copied over to the local machine. 
+
+.. _fig-plot:
+
+.. figure:: gui_images/plot-data-gather.png
+  :width: 600
+
+  *Data gather plot*
+
 
 Save Gathered Data
 ------------------

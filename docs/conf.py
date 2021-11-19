@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = "DLS PMAC Control Application"
-copyright = "2021, Bonnie McCallion"
+copyright = "2021, Diamond Light Source"
 author = "Bonnie McCallion"
 
 # The full version, including alpha/beta/rc tags

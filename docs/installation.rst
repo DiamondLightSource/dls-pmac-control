@@ -1,51 +1,68 @@
 Installation Guide
 ==================
 
-
 1. Clone the 2 repos:
 
 * dls-pmac-control.git
+
 * dls-pmac-lib.git
 
 2. Create & activate a Python3 virtual environment:
 
-* dls-python3 -m venv <path-to-virtual-env>
-* source venv/bin/activate
+.. code-block:: console
 
-3. Build the dls-pmac-lib module:
+   dls-python3 -m venv <path-to-virtual-env>
 
-* Make sure to have an up-to-date version of pip and setuptools:
+   source venv/bin/activate
 
-  * pip install --upgrade pip
-  * pip install --upgrade setuptools
+3. Make sure to have an up-to-date version of pip and setuptools:
 
-* cd dls-pmac-lib
-* dls-python3 setup.py clean
-* dls-python3 setup.py build
-* dls-python3 setup.py install
+.. code-block:: console
 
-4. Build the dls-pmac-control module:
+   pip install --upgrade pip
 
-* cd dls-pmac-control
+   pip install --upgrade setuptools
 
-* Make the screens:
+4. Build the dls-pmac-lib module:
 
-  * Install pyqt5
+.. code-block:: console
 
-    * pip install pyqt5-tools
+  cd dls-pmac-lib
 
-  * Make  
- 
-    * make clean
-    * make
+  dls-python3 setup.py clean
 
-* Build the module:
+  dls-python3 setup.py build
 
-  * dls-python3 setup.py clean
-  * dls-python3 setup.py build
-  * dls-python3 setup.py install
+  dls-python3 setup.py install
 
+5. Install pyqt5:
 
-5. Run the application from within the virtual environment:
+.. code-block:: console
 
-* dls-pmac-control.py
+  cd dls-pmac-control
+
+  pip install pyqt5-tools
+
+6. Make the screens:
+
+.. code-block:: console
+
+  make clean
+
+  make
+
+7. Build the dls-pmac-control module:
+
+.. code-block:: console
+
+  dls-python3 setup.py clean
+
+  dls-python3 setup.py build
+
+  dls-python3 setup.py install
+
+8. Run the application from within the virtual environment:
+
+.. code-block:: console
+
+  dls-pmac-control.py
