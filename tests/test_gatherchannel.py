@@ -1,15 +1,11 @@
-import PyQt5
-import unittest
-from mock import patch, Mock
-import time
 import sys
+import unittest
 
-sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
-from PyQt5.QtCore import Qt, QPoint
-from PyQt5.QtTest import QTest, QSignalSpy
-from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem
+from mock import Mock
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from qwt import QwtPlotCurve
-from gatherchannel import PpmacGatherChannel, PmacGatherChannel
+
+from dls_pmaccontrol.gatherchannel import PmacGatherChannel, PpmacGatherChannel
 
 app = QApplication(sys.argv)
 
@@ -30,14 +26,6 @@ class TestWidget2(QMainWindow):
         self.pmac.configure_mock(**attrs)
 
 
-class PpmacGatherChannel:
-    def __init__(self, pmac, qwtCurve):
-        self.pmac = pmac
-        self.qwtCurve = qwtCurve
-        self.axisNo = None
-        self.descNo = None
-
-
 class PpmacGatherChannelTest(unittest.TestCase):
     def test_init(self):
         curve = QwtPlotCurve("test")
@@ -45,8 +33,8 @@ class PpmacGatherChannelTest(unittest.TestCase):
         obj = PpmacGatherChannel(test_widget.pmac, curve)
         assert obj.pmac == test_widget.pmac
         assert obj.qwtCurve == curve
-        assert obj.axisNo == None
-        assert obj.descNo == None
+        assert obj.axisNo is None
+        assert obj.descNo is None
 
 
 class GatherChannelTest(unittest.TestCase):
@@ -58,17 +46,17 @@ class GatherChannelTest(unittest.TestCase):
     def test_init(self):
         assert self.obj.pmac == self.test_widget.pmac
         assert self.obj.qwtCurve == self.curve
-        assert self.obj.axisNo == None
+        assert self.obj.axisNo is None
         assert self.obj.strData == []
         assert self.obj.rawData == []
         assert self.obj.scaledData == []
-        assert self.obj.pSrcIvar == None
+        assert self.obj.pSrcIvar is None
         assert self.obj.srcDataAddr == ""
-        assert self.obj.dataWidth == None
-        assert self.obj.dataType == None
-        assert self.obj.regOffset == None
-        assert self.obj.dataSourceInfo == None
-        assert self.obj.scalingFactor == None
+        assert self.obj.dataWidth is None
+        assert self.obj.dataType is None
+        assert self.obj.regOffset is None
+        assert self.obj.dataSourceInfo is None
+        assert self.obj.scalingFactor is None
 
     def test_setDataGatherPointer(self):
         self.obj.setDataGatherPointer("test_ivar")
@@ -80,23 +68,23 @@ class GatherChannelTest(unittest.TestCase):
 
     def test_strToRaw_no_data(self):
         self.obj.strData = []
-        assert self.obj.strToRaw() == False
+        assert self.obj.strToRaw() is False
 
     def test_strToRaw_longword(self):
         self.obj.strData = ["0x000000000000"]
         self.obj.dataWidth = 48
-        assert self.obj.strToRaw() == None
+        assert self.obj.strToRaw() is None
         assert self.obj.rawData == [0]
 
     def test_strToRaw_word(self):
         self.obj.strData = ["0x000000"]
         self.obj.dataWidth = 24
-        assert self.obj.strToRaw() == None
+        assert self.obj.strToRaw() is None
         assert self.obj.rawData == [0]
 
     def test_getScalingFactor_no_scalingCalc(self):
         self.obj.dataSourceInfo = {}
-        assert self.obj.getScalingFactor() == None
+        assert self.obj.getScalingFactor() is None
         assert self.obj.scalingFactor == 1.0
 
     def test_getScalingFactor(self):
@@ -106,13 +94,13 @@ class GatherChannelTest(unittest.TestCase):
             "scalingCalc": "1.0/(%d*32.0)",
             "scalingIvars": ("i%d08",),
         }
-        assert self.obj.getScalingFactor() == None
+        assert self.obj.getScalingFactor() is None
         self.assertEqual(self.obj.scalingFactor, 1 / 3200)
 
     def test_rawToScaled(self):
         self.obj.scalingFactor = 5
         self.obj.rawData = [10]
-        assert self.obj.rawToScaled() == None
+        assert self.obj.rawToScaled() is None
         assert self.obj.scaledData == [50]
 
 
@@ -124,7 +112,7 @@ class GatherChannelTestDataInfo(unittest.TestCase):
 
     def test_getDataInfo(self):
         ret = self.obj.getDataInfo()
-        assert ret == None
+        assert ret is None
         assert self.obj.dataWidth == 24
         assert self.obj.dataType == int
         assert self.obj.regOffset == 8

@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from qwt import QwtPlot
 
 
 class Ui_formGather(object):
@@ -414,6 +415,3 @@ class Ui_formGather(object):
         self.tabWidget2.setTabText(
             self.tabWidget2.indexOf(self.tab1), _translate("formGather", "configure")
         )
-
-
-from qwt import QwtPlot

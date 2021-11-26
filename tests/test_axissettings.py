@@ -1,14 +1,12 @@
-import PyQt5
-import unittest
-from mock import patch, Mock, call
-import time
 import sys
+import unittest
 
-sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
+from mock import Mock, patch
 from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest, QSignalSpy
-from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem
-from axissettings import Axissettingsform, PpmacAxissettingsform
+from PyQt5.QtTest import QTest
+from PyQt5.QtWidgets import QApplication, QMainWindow
+
+from dls_pmaccontrol.axissettings import Axissettingsform, PpmacAxissettingsform
 
 app = QApplication(sys.argv)
 
@@ -49,8 +47,10 @@ class AxissettingsTest(unittest.TestCase):
         self.obj.changeAxis(2)
         assert self.obj.currentMotor == 2
 
-    @patch("axissettings.Axissettingsform._updateAxisSignalControlsVars")
-    @patch("axissettings.Axissettingsform._updateAxisSetupIVars")
+    @patch(
+        "dls_pmaccontrol.axissettings.Axissettingsform._updateAxisSignalControlsVars"
+    )
+    @patch("dls_pmaccontrol.axissettings.Axissettingsform._updateAxisSetupIVars")
     def test_change_axis_visible(self, mock_setup, mock_signal):
         self.obj.show()
         self.obj.changeAxis(2)
@@ -59,8 +59,10 @@ class AxissettingsTest(unittest.TestCase):
         if self.obj.tabAxisSetup.currentIndex() != 0:
             self.assertTrue(mock_signal.called)
 
-    @patch("axissettings.Axissettingsform._updateAxisSignalControlsVars")
-    @patch("axissettings.Axissettingsform._updateAxisSetupIVars")
+    @patch(
+        "dls_pmaccontrol.axissettings.Axissettingsform._updateAxisSignalControlsVars"
+    )
+    @patch("dls_pmaccontrol.axissettings.Axissettingsform._updateAxisSetupIVars")
     def test_change_tab(self, mock_setup, mock_signal):
         QTest.mouseClick(self.obj.tabAxisSetup, Qt.LeftButton)
         assert self.obj.tabAxisSetup.currentIndex() == 1
@@ -101,7 +103,7 @@ class AxissettingsTest(unittest.TestCase):
         self.obj.sendLoopSelect()
         self.assertTrue(self.test_widget.pmac.setOnboardAxisI7000PlusIVar.called)
 
-    @patch("axissettings.Axissettingsform.axisUpdate")
+    @patch("dls_pmaccontrol.axissettings.Axissettingsform.axisUpdate")
     def test_sendIx(self, mock_update):
         ivars = [11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26]
         for i in range(len(ivars)):
@@ -122,14 +124,14 @@ class PpmacAxissettingsTest(unittest.TestCase):
         self.obj.changeAxis(2)
         assert self.obj.currentMotor == 2
 
-    @patch("axissettings.PpmacAxissettingsform._updateAxisSetupIVars")
+    @patch("dls_pmaccontrol.axissettings.PpmacAxissettingsform._updateAxisSetupIVars")
     def test_change_axis_visible(self, mock_setup):
         self.obj.show()
         self.obj.changeAxis(2)
         assert self.obj.currentMotor == 2
         self.assertTrue(mock_setup.called)
 
-    @patch("axissettings.PpmacAxissettingsform._updateAxisSetupIVars")
+    @patch("dls_pmaccontrol.axissettings.PpmacAxissettingsform._updateAxisSetupIVars")
     def test_change_tab(self, mock_setup):
         QTest.mouseClick(self.obj.tabAxisSetup, Qt.LeftButton)
         assert self.obj.tabAxisSetup.currentIndex() == 0
@@ -140,13 +142,13 @@ class PpmacAxissettingsTest(unittest.TestCase):
         assert self.obj.lneIx16.text() == "return"
         assert self.obj.lneIx23.text() == "return"
 
-    @patch("axissettings.PpmacAxissettingsform.axisUpdate")
+    @patch("dls_pmaccontrol.axissettings.PpmacAxissettingsform.axisUpdate")
     def test_setAxisSetupIVar(self, mock_update):
         self.obj.setAxisSetupIVar(12, 1234)
         self.assertTrue(mock_update.called)
 
-    @patch("axissettings.PpmacAxissettingsform.setAxisSetupIVar")
-    @patch("axissettings.PpmacAxissettingsform.axisUpdate")
+    @patch("dls_pmaccontrol.axissettings.PpmacAxissettingsform.setAxisSetupIVar")
+    @patch("dls_pmaccontrol.axissettings.PpmacAxissettingsform.axisUpdate")
     def test_sendIx(self, mock_update, mock_setup):
         ivars = [11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26]
         for i in range(len(ivars)):

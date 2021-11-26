@@ -11,12 +11,17 @@ flake8-isort = "*"
 pytest-mypy = "*"
 sphinx-rtd-theme = "*"
 doc8 = "*"
+mock = "*"
+types-mock = "*"
+types-paramiko = "*"
 
 [packages]
 numpy = "*"
 pyqt5 = "*"
-dls-pmaclib = "==2.1.0"
+#dls-pmaclib = "==2.1.0"
+dls-pmaclib = {editable = true,ref = "dls-release-beta", git = "https://gitlab.diamond.ac.uk/controls/python3/dls_pmaclib.git"}
 pythonqwt = "*"
+mock = "*"
 
 [scripts]
 # Put coverage here so we don't interfere with debugging in the IDE

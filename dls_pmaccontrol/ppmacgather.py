@@ -1,6 +1,6 @@
 import os
-import time
 import threading
+import time
 
 from numpy import arange
 from PyQt5.Qt import QPen
@@ -195,7 +195,7 @@ class PpmacGatherform(QDialog, Ui_formGather):
         gather_file = "./gather.txt"
         try:
             self.parent.pmac.getFile(tmp_file, gather_file)
-        except Exception as e:
+        except Exception:
             QMessageBox.information(
                 self, "Error", "Could not get gather file from power pmac."
             )

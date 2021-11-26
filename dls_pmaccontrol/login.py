@@ -1,10 +1,5 @@
 # -*- coding: utf-8 -*-
-
-import re
-import sys
-
-from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
-from PyQt5.QtWidgets import QApplication, QCheckBox, QDialog, QMessageBox
+from PyQt5.QtWidgets import QDialog
 
 from dls_pmaccontrol.ui_formLogin import Ui_Login
 

@@ -1,14 +1,12 @@
-import PyQt5
-import unittest
-from mock import patch
-import time
 import sys
+import unittest
 
-sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
+from mock import patch
 from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest, QSignalSpy
-from PyQt5.QtWidgets import QWidget, QApplication
-from login import Loginform
+from PyQt5.QtTest import QTest
+from PyQt5.QtWidgets import QApplication, QWidget
+
+from dls_pmaccontrol.login import Loginform
 
 app = QApplication(sys.argv)
 test_widget = QWidget()
@@ -24,7 +22,7 @@ class LoginTest(unittest.TestCase):
         self.assertTrue(self.obj.btnCancel.isEnabled())
         self.assertTrue(self.obj.btnOK.isEnabled())
 
-    @patch("login.Loginform.accept")
+    @patch("dls_pmaccontrol.login.Loginform.accept")
     def test_ok_clicked(self, mock_accept):
         self.obj.lneUsername.setText("username")
         self.obj.lnePassword.setText("password")
@@ -35,7 +33,7 @@ class LoginTest(unittest.TestCase):
         self.assertEqual(self.obj.lnePassword.text(), "")
         assert mock_accept.called
 
-    @patch("login.Loginform.reject")
+    @patch("dls_pmaccontrol.login.Loginform.reject")
     def test_cancel_clicked(self, mock_reject):
         self.obj.lneUsername.setText("username")
         self.obj.lnePassword.setText("password")

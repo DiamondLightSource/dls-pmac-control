@@ -1,22 +1,13 @@
-import PyQt5
-import unittest
-from mock import patch, Mock
-import time
 import os
 import sys
+import unittest
 
-sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
-from PyQt5.QtCore import Qt, QPoint, QEvent
-from PyQt5.QtTest import QTest, QSignalSpy
-from PyQt5.QtGui import QKeyEvent
-from PyQt5.QtWidgets import (
-    QWidget,
-    QApplication,
-    QMainWindow,
-    QTableWidgetItem,
-    QMessageBox,
-)
-from motor import Controlform
+from mock import Mock, patch
+from PyQt5.QtCore import Qt
+from PyQt5.QtTest import QTest
+from PyQt5.QtWidgets import QApplication
+
+from dls_pmaccontrol.motor import Controlform
 
 app = QApplication(sys.argv)
 
@@ -106,10 +97,10 @@ class MotorTestTelnet(unittest.TestCase):
 
     def test_initial_state(self):
         assert self.obj.ConnectionType == 0
-        assert self.obj.pmac == None
-        assert self.obj.powerpmac == None
-        assert self.obj.pollingStatus == True
-        assert self.obj.isUsingSerial == False
+        assert self.obj.pmac is None
+        assert self.obj.powerpmac is None
+        assert self.obj.pollingStatus is True
+        assert self.obj.isUsingSerial is False
         assert self.obj.lneServer.text() == "test"
         assert self.obj.lnePort.text() == "123"
         assert self.obj.currentMotor == 1
@@ -166,7 +157,7 @@ class MotorTestTelnet(unittest.TestCase):
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
-        assert ret == None
+        assert ret is None
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
@@ -186,7 +177,7 @@ class MotorTestTelnet(unittest.TestCase):
         assert mock_connect.called
         assert mock_model.called
         assert self.obj.windowTitle() == "Delta Tau motor controller - test"
-        assert ret == None
+        assert ret is None
         assert self.obj.table.rowCount() == 8
         assert self.obj.spnJogMotor.maximum() == 8
         self.assertFalse(self.obj.btnConnect.isEnabled())
@@ -318,7 +309,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.disconnect")
     def test_remote_disconnect(self, mock_disconnect, mock_pixmap):
-        ret = self.obj.remoteDisconnect()
+        self.obj.remoteDisconnect()
         assert mock_disconnect.called
         assert self.obj.windowTitle() == "Delta Tau motor controller"
         self.assertTrue(self.obj.btnConnect.isEnabled())
@@ -351,36 +342,36 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
         mock_pixmap.assert_called_with(self.obj.greenLedOff)
         assert self.obj.lblIdentity.text() == ""
 
-    @patch("motor.Controlform.addToTxtShell")
+    @patch("dls_pmaccontrol.motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
     def test_jog_neg(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
-        assert self.obj.jogNeg() == None
+        assert self.obj.jogNeg() is None
         mock_joginc.assert_called_with(
             self.obj.currentMotor, "neg", str(self.obj.lneJogDist.text())
         )
 
-    @patch("motor.Controlform.addToTxtShell")
+    @patch("dls_pmaccontrol.motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
     def test_jog_pos(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
-        assert self.obj.jogPos() == None
+        assert self.obj.jogPos() is None
         mock_joginc.assert_called_with(
             self.obj.currentMotor, "pos", str(self.obj.lneJogDist.text())
         )
 
-    @patch("motor.Controlform.addToTxtShell")
+    @patch("dls_pmaccontrol.motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogStop")
     def test_jog_stop(self, mock_jogstop, mock_addtxt):
         mock_jogstop.return_value = ("cmd", "response", True)
-        assert self.obj.jogStop() == None
+        assert self.obj.jogStop() is None
         mock_jogstop.assert_called_with(self.obj.currentMotor)
 
-    @patch("motor.Controlform.addToTxtShell")
+    @patch("dls_pmaccontrol.motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.homeCommand")
     def test_jog_home(self, mock_home, mock_addtxt):
         mock_home.return_value = ("cmd", "response", True)
-        assert self.obj.jogHome() == None
+        assert self.obj.jogHome() is None
         mock_home.assert_called_with(self.obj.currentMotor)
         mock_addtxt.assert_called_with("cmd", "response")
 
@@ -429,10 +420,10 @@ class MotorTestEthernet(unittest.TestCase):
 
     def test_initial_state(self):
         assert self.obj.ConnectionType == 1
-        assert self.obj.pmac == None
-        assert self.obj.powerpmac == None
-        assert self.obj.pollingStatus == True
-        assert self.obj.isUsingSerial == False
+        assert self.obj.pmac is None
+        assert self.obj.powerpmac is None
+        assert self.obj.pollingStatus is True
+        assert self.obj.isUsingSerial is False
         assert self.obj.lneServer.text() == "test"
         assert self.obj.lnePort.text() == "123"
         assert self.obj.currentMotor == 1
@@ -459,7 +450,7 @@ class MotorTestEthernet(unittest.TestCase):
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
-        assert ret == None
+        assert ret is None
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.isModelGeobrick")
@@ -479,7 +470,7 @@ class MotorTestEthernet(unittest.TestCase):
         assert mock_connect.called
         assert mock_model.called
         assert self.obj.windowTitle() == "Delta Tau motor controller - test"
-        assert ret == None
+        assert ret is None
         assert self.obj.table.rowCount() == 8
         assert self.obj.spnJogMotor.maximum() == 8
         self.assertFalse(self.obj.btnConnect.isEnabled())
@@ -584,10 +575,10 @@ class MotorTestSerial(unittest.TestCase):
 
     def test_initial_state(self):
         assert self.obj.ConnectionType == 2
-        assert self.obj.pmac == None
-        assert self.obj.powerpmac == None
-        assert self.obj.pollingStatus == True
-        assert self.obj.isUsingSerial == False
+        assert self.obj.pmac is None
+        assert self.obj.powerpmac is None
+        assert self.obj.pollingStatus is True
+        assert self.obj.isUsingSerial is False
         assert self.obj.lneServer.text() == "test"
         assert self.obj.lnePort.text() == "123"
         assert self.obj.currentMotor == 1
@@ -615,7 +606,7 @@ class MotorTestSerial(unittest.TestCase):
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
-        assert ret == None
+        assert ret is None
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.isModelGeobrick")
@@ -635,7 +626,7 @@ class MotorTestSerial(unittest.TestCase):
         assert mock_connect.called
         assert mock_model.called
         assert self.obj.windowTitle() == "Delta Tau motor controller - test"
-        assert ret == None
+        assert ret is None
         assert self.obj.table.rowCount() == 8
         assert self.obj.spnJogMotor.maximum() == 8
         self.assertFalse(self.obj.btnConnect.isEnabled())
@@ -673,7 +664,7 @@ class MotorTestSerial(unittest.TestCase):
     def test_load_config_no_filename(self, mock_dialog):
         test_filename = False, None
         mock_dialog.return_value = test_filename
-        assert self.obj.pmacLoadConfig() == None
+        assert self.obj.pmacLoadConfig() is None
         assert mock_dialog.called
 
     @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
@@ -688,7 +679,7 @@ class MotorTestSerial(unittest.TestCase):
         test_filename = "/tmp/test.txt", None
         mock_dialog.return_value = test_filename
         mock_parse.return_value = False
-        assert self.obj.pmacLoadConfig() == None
+        assert self.obj.pmacLoadConfig() is None
         assert mock_dialog.called
         assert mock_parse.called
         os.remove(test_file)
@@ -707,7 +698,7 @@ class MotorTestSerial(unittest.TestCase):
         test_filename = "/tmp/test.txt", None
         mock_dialog.return_value = test_filename
         mock_parse.return_value = ["#define test P10", "test = 1"]
-        assert self.obj.pmacLoadConfig() == None
+        assert self.obj.pmacLoadConfig() is None
         assert mock_dialog.called
         assert mock_parse.called
         assert mock_queue.called
@@ -759,10 +750,10 @@ class MotorTestSsh(unittest.TestCase):
 
     def test_initial_state(self):
         assert self.obj.ConnectionType == 3
-        assert self.obj.pmac == None
-        assert self.obj.powerpmac == None
-        assert self.obj.pollingStatus == True
-        assert self.obj.isUsingSerial == False
+        assert self.obj.pmac is None
+        assert self.obj.powerpmac is None
+        assert self.obj.pollingStatus is True
+        assert self.obj.isUsingSerial is False
         assert self.obj.lneServer.text() == "test"
         assert self.obj.lnePort.text() == "123"
         assert self.obj.currentMotor == 1
@@ -793,7 +784,7 @@ class MotorTestSsh(unittest.TestCase):
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
-        assert ret == None
+        assert ret is None
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.isModelGeobrick")
@@ -813,7 +804,7 @@ class MotorTestSsh(unittest.TestCase):
         assert mock_connect.called
         assert mock_model.called
         assert self.obj.windowTitle() == "Delta Tau motor controller - test"
-        assert ret == None
+        assert ret is None
         assert self.obj.table.rowCount() == 8
         assert self.obj.spnJogMotor.maximum() == 8
         self.assertFalse(self.obj.btnConnect.isEnabled())
@@ -853,7 +844,7 @@ class MotorTestSsh(unittest.TestCase):
         attrs = {"qsize.return_value": 5, "get.return_value": ["0", "0", "0", "0", 0]}
         self.obj.commsThread.resultQueue.configure_mock(**attrs)
         ret = self.obj.updateMotors()
-        assert ret == None
+        assert ret is None
         assert self.obj.lblPosition.text() == "0.0"
         assert self.obj.lblVelo.text() == "0.0"
         assert self.obj.lblFolErr.text() == "0.0"

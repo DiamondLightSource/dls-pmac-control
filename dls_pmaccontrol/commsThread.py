@@ -3,8 +3,7 @@ import time
 import traceback
 from queue import Empty, Queue
 
-from dls_pmaclib.dls_pmacremote import PmacSerialInterface
-from dls_pmaclib.dls_pmacremote import PPmacSshInterface
+from dls_pmaclib.dls_pmacremote import PmacSerialInterface, PPmacSshInterface
 from PyQt5.QtCore import QCoreApplication, QEvent
 
 
@@ -197,5 +196,5 @@ class CommsThread(object):
             evUpdatesReady = CustomEvent(self.parent.updatesReadyEventType, None)
             QCoreApplication.postEvent(self.parent, evUpdatesReady)
         else:
-            print('WARNING: Could not poll PMAC for motor status ("%s")' % returnStr)
+            print('WARNING: Could not poll PMAC for motor status ("%s")' % retStr)
         time.sleep(0.1)

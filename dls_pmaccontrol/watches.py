@@ -1,17 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import re
-import sys
 
-# from formWatches import formWatches
-# from pmactelnet import PmacTelnetInterface
-# from PyQt4.QtCore import SIGNAL, SLOT
-# from PyQt4.QtGui import QApplication, QMessageBox, QObject
-
-from PyQt5.Qt import QPen
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QFileDialog, QMessageBox, QTableWidgetItem
-from qwt import QwtPlotCurve
+from PyQt5.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
 
 from dls_pmaccontrol.ui_formWatches import Ui_formWatches
 
@@ -108,7 +99,6 @@ class Watchesform(QDialog, Ui_formWatches):
             self.panelEditWatch.setEnabled(False)
         else:
             self.panelEditWatch.setEnabled(True)
-            watch = self.getWatch(self.selectedVarName())
             # leave only the edit line edit enabled
             self.labelEditValue.setEnabled(True)
             self.lneEditValue.setEnabled(True)

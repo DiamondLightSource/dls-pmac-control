@@ -1,16 +1,14 @@
-import PyQt5
-import unittest
-from mock import patch, Mock
-import time
-from os import path
 import sys
+import unittest
+from os import path
 
-sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
+from mock import Mock, patch
 from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest, QSignalSpy
-from PyQt5.QtWidgets import QWidget, QApplication, QMainWindow, QTableWidgetItem
 from PyQt5.QtGui import QPixmap
-from CSstatus import CSStatusForm, PpmacCSStatusForm
+from PyQt5.QtTest import QTest
+from PyQt5.QtWidgets import QApplication, QMainWindow
+
+from dls_pmaccontrol.CSstatus import CSStatusForm, PpmacCSStatusForm
 
 app = QApplication(sys.argv)
 

@@ -1,20 +1,10 @@
-import PyQt5
-import unittest
-from mock import patch, Mock, call
-import time
 import sys
+import unittest
 
-sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
-from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest, QSignalSpy
-from PyQt5.QtWidgets import (
-    QWidget,
-    QApplication,
-    QMainWindow,
-    QTableWidgetItem,
-    QCheckBox,
-)
-from energise import Energiseform
+from mock import Mock, patch
+from PyQt5.QtWidgets import QApplication, QCheckBox, QMainWindow
+
+from dls_pmaccontrol.energise import Energiseform
 
 app = QApplication(sys.argv)
 
@@ -30,9 +20,9 @@ class TestWidget(QMainWindow):
 
 
 class EnergiseTest(unittest.TestCase):
-    @patch("energise.Energiseform.updateScreen")
-    @patch("energise.Energiseform.readM750x")
-    @patch("energise.Energiseform.createCheckBoxes")
+    @patch("dls_pmaccontrol.energise.Energiseform.updateScreen")
+    @patch("dls_pmaccontrol.energise.Energiseform.readM750x")
+    @patch("dls_pmaccontrol.energise.Energiseform.createCheckBoxes")
     def setUp(self, mock_boxes, mock_read, mock_update):
         mock_read.return_value = (0, 0)
         self.test_widget = TestWidget()
@@ -41,7 +31,7 @@ class EnergiseTest(unittest.TestCase):
     def test_initial_form(self):
         assert self.obj.pmac == self.test_widget.pmac
         assert self.obj.parent == self.test_widget
-        assert self.obj.lstCheckBoxes == None
+        assert self.obj.lstCheckBoxes is None
 
     def test_readM750x(self):
         (val1, val2) = self.obj.readM750x()
@@ -55,27 +45,27 @@ class EnergiseTest(unittest.TestCase):
         self.obj.val7503 = 3
         self.obj.updateScreen()
         for i in [0, 16, 17]:
-            assert self.obj.lstCheckBoxes[i].isChecked() == True
+            assert self.obj.lstCheckBoxes[i].isChecked() is True
         for j in range(1, 16):
-            assert self.obj.lstCheckBoxes[j].isChecked() == False
+            assert self.obj.lstCheckBoxes[j].isChecked() is False
         for k in range(18, 32):
-            assert self.obj.lstCheckBoxes[k].isChecked() == False
+            assert self.obj.lstCheckBoxes[k].isChecked() is False
 
-    @patch("energise.Energiseform.readM750x")
+    @patch("dls_pmaccontrol.energise.Energiseform.readM750x")
     def test_isScreenUpToDate(self, mock_read):
         mock_read.return_value = (0x00FFFF, 0x00FFFF)
         self.obj.val7501 = 0x00FFFF
         self.obj.val7503 = 0x00FFFF
-        assert self.obj.isScreenUpToDate() == True
+        assert self.obj.isScreenUpToDate() is True
 
-    @patch("energise.Energiseform.updateScreen")
-    @patch("energise.Energiseform.readM750x")
+    @patch("dls_pmaccontrol.energise.Energiseform.updateScreen")
+    @patch("dls_pmaccontrol.energise.Energiseform.readM750x")
     @patch("PyQt5.QtWidgets.QMessageBox.information")
-    @patch("energise.Energiseform.isScreenUpToDate")
+    @patch("dls_pmaccontrol.energise.Energiseform.isScreenUpToDate")
     def test_sendCommand_outofdate(self, mock_screen, mock_box, mock_read, mock_update):
         mock_screen.return_value = False
         mock_read.return_value = (None, None)
-        assert self.obj.sendCommand() == None
+        assert self.obj.sendCommand() is None
         assert mock_screen.called
         mock_box.assert_called_with(
             self.obj,
@@ -91,13 +81,13 @@ class EnergiseTest(unittest.TestCase):
         assert mock_read.called
         assert mock_screen.called
 
-    @patch("energise.Energiseform.isScreenUpToDate")
+    @patch("dls_pmaccontrol.energise.Energiseform.isScreenUpToDate")
     def test_sendCommand_uptodate(self, mock_screen):
         mock_screen.return_value = True
         self.obj.val7501 = 0xFF0000
         self.obj.val7503 = 0xFF0000
         self.obj.createCheckBoxes()
-        assert self.obj.sendCommand() == None
+        assert self.obj.sendCommand() is None
         assert mock_screen.called
         cmd = "m7501=$ff0000 m7503=$ff0000"
         self.obj.parent.pmac.sendCommand.assert_called_with(cmd)

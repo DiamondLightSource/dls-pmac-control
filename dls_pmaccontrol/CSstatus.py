@@ -671,7 +671,8 @@ class PpmacCSStatusForm(QDialog, Ui_formCSStatus):
         self.lstTooltips.append("""X/Y/Z-axis circle radius error / Error word bit 6""")
         self.lstLabelTexts.append("SoftLimit / ErrorStatus (bit 5)")
         self.lstTooltips.append(
-            """Stopped on software position limit (any motor in C.S.) / Error word bit 5"""
+            """Stopped on software position limit (any motor in C.S.) /
+ Error word bit 5"""
         )
         self.lstLabelTexts.append("RunTimeError / ErrorStatus (bit 4)")
         self.lstTooltips.append("""Run time error / Error word bit 4""")
@@ -707,11 +708,13 @@ class PpmacCSStatusForm(QDialog, Ui_formCSStatus):
         self.lstTooltips.append("""Cutter comp mode bit 0""")
         self.lstLabelTexts.append("MoveMode (bit 1)")
         self.lstTooltips.append(
-            """Move mode bit 1 (=0 for blended and spline, 1 for rapid and pvt modes) """
+            """Move mode bit 1 (=0 for blended and spline, 1 for rapid and pvt
+ modes) """
         )
         self.lstLabelTexts.append("MoveMode (bit 0)")
         self.lstTooltips.append(
-            """Move mode bit 0 (=0 for blended and pvt, 1 for rapid and spline modes) """
+            """Move mode bit 0 (=0 for blended and pvt, 1 for rapid and spline
+ modes) """
         )
         self.lstLabelTexts.append("SegMove (bit 1)")
         self.lstTooltips.append("""Segmented PVT-mode move in progress""")

@@ -1,6 +1,6 @@
 import os
-import time
 import threading
+import time
 
 from numpy import arange
 from PyQt5.Qt import QPen
@@ -12,8 +12,8 @@ from dls_pmaccontrol.gatherchannel import (
     LONGWORD,
     WORD,
     PmacGatherChannel,
-    pmacDataSources,
     motorBaseAddrs,
+    pmacDataSources,
 )
 from dls_pmaccontrol.ui_formGather import Ui_formGather
 

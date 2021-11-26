@@ -1,20 +1,12 @@
-import PyQt5
-import unittest
-from mock import patch, Mock
-import time
 import sys
+import unittest
 
-sys.path.append("/home/dlscontrols/bem-osl/dls-pmac-control/dls_pmaccontrol")
+from mock import Mock, patch
 from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest, QSignalSpy
-from PyQt5.QtWidgets import (
-    QWidget,
-    QApplication,
-    QMainWindow,
-    QTableWidgetItem,
-    QMessageBox,
-)
-from watches import Watchesform, Watch
+from PyQt5.QtTest import QTest
+from PyQt5.QtWidgets import QApplication, QMainWindow
+
+from dls_pmaccontrol.watches import Watchesform
 
 app = QApplication(sys.argv)
 
@@ -68,8 +60,8 @@ class WatchesTest(unittest.TestCase):
         self.assertFalse(self.obj.panelEditWatch.isEnabled())
         mock_box.assert_called_with(self.obj, "Cannot create watch", error_msg)
 
-    @patch("watches.Watchesform.getPolledValue")
-    @patch("watches.Watch")
+    @patch("dls_pmaccontrol.watches.Watchesform.getPolledValue")
+    @patch("dls_pmaccontrol.watches.Watch")
     def test_add_watch(self, mock_watch, mock_get_value):
         mock_get_value.return_value = "12"
         self.obj.lneVariableName.setText("watch")
@@ -88,11 +80,10 @@ class WatchesTest(unittest.TestCase):
 
     def test_get_watch_does_not_exist(self):
         error_msg = 'There is no watch for variable "test"'
-        with self.assertRaises(ValueError, msg=error_msg):
-            actual_return = self.obj.getWatch("test")
+        self.assertRaises(ValueError, msg=error_msg)
 
-    @patch("watches.Watchesform.getPolledValue")
-    @patch("watches.Watch")
+    @patch("dls_pmaccontrol.watches.Watchesform.getPolledValue")
+    @patch("dls_pmaccontrol.watches.Watch")
     def test_remove_watch(self, mock_watch, mock_get_value):
         # add watch to be removed
         mock_get_value.return_value = "3"
@@ -115,8 +106,8 @@ class WatchesTest(unittest.TestCase):
         self.assertEqual(self.obj.lneVariableName.text(), "")
         self.assertEqual(self.obj.lneEditValue.text(), "")
 
-    @patch("watches.Watchesform.getPolledValue")
-    @patch("watches.Watch")
+    @patch("dls_pmaccontrol.watches.Watchesform.getPolledValue")
+    @patch("dls_pmaccontrol.watches.Watch")
     def test_apply_edit_watch(self, mock_watch, mock_get_value):
         # add watch to be edited
         mock_get_value.return_value = "-8"

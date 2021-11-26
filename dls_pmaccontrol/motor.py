@@ -16,7 +16,6 @@ from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
 from PyQt5.QtCore import QEvent, Qt, pyqtSlot
 from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import (
-    QDialog,
     QApplication,
     QFileDialog,
     QLineEdit,
@@ -30,13 +29,13 @@ from dls_pmaccontrol.axissettings import Axissettingsform, PpmacAxissettingsform
 from dls_pmaccontrol.commsThread import CommsThread
 from dls_pmaccontrol.CSstatus import CSStatusForm, PpmacCSStatusForm
 from dls_pmaccontrol.energise import Energiseform
-from dls_pmaccontrol.watches import Watchesform
 from dls_pmaccontrol.gather import PmacGatherform
-from dls_pmaccontrol.ppmacgather import PpmacGatherform
 from dls_pmaccontrol.GlobalStatus import GlobalStatusForm, PpmacGlobalStatusForm
-from dls_pmaccontrol.status import Statusform, PpmacStatusform
-from dls_pmaccontrol.ui_formControl import Ui_ControlForm
 from dls_pmaccontrol.login import Loginform
+from dls_pmaccontrol.ppmacgather import PpmacGatherform
+from dls_pmaccontrol.status import PpmacStatusform, Statusform
+from dls_pmaccontrol.ui_formControl import Ui_ControlForm
+from dls_pmaccontrol.watches import Watchesform
 
 # from optparse import OptionParser
 
@@ -378,7 +377,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.watchesScreen.close()
         try:
             self.energiseScreen.close()
-        except:
+        except Exception:
             pass
 
     def jogNeg(self):
