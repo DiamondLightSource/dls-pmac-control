@@ -1,12 +1,9 @@
-import sys
 import unittest
 
 from mock import Mock, patch
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QMainWindow
 
 from dls_pmaccontrol.commsThread import CommsThread
-
-app = QApplication(sys.argv)
 
 
 class DummyTestWidget(QMainWindow):

@@ -1,15 +1,11 @@
 import os
-import sys
 import unittest
 
 from mock import Mock, patch
 from PyQt5.QtCore import Qt
 from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QApplication
 
 from dls_pmaccontrol.motor import Controlform
-
-app = QApplication(sys.argv)
 
 
 class DummyTestOptionsTelnet:

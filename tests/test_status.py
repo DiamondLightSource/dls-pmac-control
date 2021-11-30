@@ -1,14 +1,11 @@
-import sys
 import unittest
 from os import path
 
 from mock import patch
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QMainWindow
 
 from dls_pmaccontrol.status import PpmacStatusform, Statusform
-
-app = QApplication(sys.argv)
 
 
 class DummyTestWidget(QMainWindow):

@@ -1,17 +1,14 @@
 import os
-import sys
 import unittest
 
 from mock import Mock, patch
 from PyQt5.QtCore import QPoint, Qt
 from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QMainWindow
 from qwt import QwtPlotCurve
 
 from dls_pmaccontrol.gather import PmacGatherform
 from dls_pmaccontrol.ppmacgather import PpmacGatherform
-
-app = QApplication(sys.argv)
 
 
 class DummyTestWidget(QMainWindow):

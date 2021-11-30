@@ -1,12 +1,9 @@
-import sys
 import unittest
 
 from mock import Mock, patch
-from PyQt5.QtWidgets import QApplication, QCheckBox, QMainWindow
+from PyQt5.QtWidgets import QCheckBox, QMainWindow
 
 from dls_pmaccontrol.energise import Energiseform
-
-app = QApplication(sys.argv)
 
 
 class DummyTestWidget(QMainWindow):
