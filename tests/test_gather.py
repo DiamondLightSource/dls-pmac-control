@@ -14,14 +14,14 @@ from dls_pmaccontrol.ppmacgather import PpmacGatherform
 app = QApplication(sys.argv)
 
 
-class TestWidget(QMainWindow):
+class DummyTestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
         # self.commsThread = Mock()
 
 
-class TestGatherChannel:
+class DummyTestGatherChannel:
     def __init__(self, pmac, qwtCurve):
         self.axisNo = None
         self.pmac = pmac
@@ -61,7 +61,7 @@ class TestGatherChannel:
 
 class PmacGatherTest(unittest.TestCase):
     def setUp(self):
-        self.test_widget = TestWidget()
+        self.test_widget = DummyTestWidget()
         self.obj = PmacGatherform(self.test_widget)
 
     def test_initial_state(self):
@@ -81,7 +81,7 @@ class PmacGatherTest(unittest.TestCase):
         self.obj.parent.pmac.configure_mock(**attrs)
         for i in range(3):
             curve = QwtPlotCurve("TestCh%d" % i)
-            test_channel = TestGatherChannel(self.obj.parent.pmac, curve)
+            test_channel = DummyTestGatherChannel(self.obj.parent.pmac, curve)
             self.obj.lstChannels.append(test_channel)
         assert self.obj.gatherSetup() is None
         assert self.obj.numberOfChannels == 3
@@ -136,7 +136,7 @@ class PmacGatherTest(unittest.TestCase):
     def test_parse_data(self):
         # set up test channel
         curve = QwtPlotCurve("TestCh")
-        test_channel = TestGatherChannel(self.obj.parent.pmac, curve)
+        test_channel = DummyTestGatherChannel(self.obj.parent.pmac, curve)
         self.obj.lstChannels.append(test_channel)
         datastrings = ["test"]
         self.obj.parseData(datastrings)
@@ -183,7 +183,7 @@ class PmacGatherTest(unittest.TestCase):
         mock_dialog.return_value = test_filename
         # set up test channel
         curve = QwtPlotCurve("TestCh")
-        test_channel = TestGatherChannel(self.obj.parent.pmac, curve)
+        test_channel = DummyTestGatherChannel(self.obj.parent.pmac, curve)
         self.obj.lstChannels.append(test_channel)
         self.obj.lstChannels[0].axisNo = 1
         self.obj.lstChannels[0].dataSourceInfo = {"desc": "Test desc"}
@@ -203,7 +203,7 @@ class PmacGatherTest(unittest.TestCase):
 
 class PpmacGatherTest(unittest.TestCase):
     def setUp(self):
-        self.test_widget = TestWidget()
+        self.test_widget = DummyTestWidget()
         self.obj = PpmacGatherform(self.test_widget)
 
     def test_initial_state(self):
@@ -313,7 +313,7 @@ class PpmacGatherTest(unittest.TestCase):
         mock_dialog.return_value = test_filename
         # set up test channel
         curve = QwtPlotCurve("TestCh")
-        test_channel = TestGatherChannel(self.obj.parent.pmac, curve)
+        test_channel = DummyTestGatherChannel(self.obj.parent.pmac, curve)
         test_channel.descNo = 0
         test_channel.Data = [0]
         self.obj.lstChannels.append(test_channel)

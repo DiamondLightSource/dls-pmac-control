@@ -11,7 +11,7 @@ from dls_pmaccontrol.axissettings import Axissettingsform, PpmacAxissettingsform
 app = QApplication(sys.argv)
 
 
-class TestWidget(QMainWindow):
+class DummyTestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
@@ -40,7 +40,7 @@ class TestWidget(QMainWindow):
 
 class AxissettingsTest(unittest.TestCase):
     def setUp(self):
-        self.test_widget = TestWidget()
+        self.test_widget = DummyTestWidget()
         self.obj = Axissettingsform(self.test_widget)
 
     def test_change_axis_not_visible(self):
@@ -117,7 +117,7 @@ class AxissettingsTest(unittest.TestCase):
 
 class PpmacAxissettingsTest(unittest.TestCase):
     def setUp(self):
-        self.test_widget = TestWidget()
+        self.test_widget = DummyTestWidget()
         self.obj = PpmacAxissettingsform(self.test_widget)
 
     def test_change_axis_not_visible(self):

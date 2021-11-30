@@ -11,7 +11,7 @@ from dls_pmaccontrol.watches import Watchesform
 app = QApplication(sys.argv)
 
 
-class TestWidget(QMainWindow):
+class DummyTestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
@@ -20,7 +20,7 @@ class TestWidget(QMainWindow):
 
 class WatchesTest(unittest.TestCase):
     def setUp(self):
-        self.test_widget = TestWidget()
+        self.test_widget = DummyTestWidget()
         self.obj = Watchesform(self.test_widget)
 
     def test_inital_form(self):

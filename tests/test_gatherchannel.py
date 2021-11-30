@@ -10,7 +10,7 @@ from dls_pmaccontrol.gatherchannel import PmacGatherChannel, PpmacGatherChannel
 app = QApplication(sys.argv)
 
 
-class TestWidget(QMainWindow):
+class DummyTestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
@@ -18,7 +18,7 @@ class TestWidget(QMainWindow):
         self.pmac.configure_mock(**attrs)
 
 
-class TestWidget2(QMainWindow):
+class DummyTestWidget2(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
@@ -29,7 +29,7 @@ class TestWidget2(QMainWindow):
 class PpmacGatherChannelTest(unittest.TestCase):
     def test_init(self):
         curve = QwtPlotCurve("test")
-        test_widget = TestWidget()
+        test_widget = DummyTestWidget()
         obj = PpmacGatherChannel(test_widget.pmac, curve)
         assert obj.pmac == test_widget.pmac
         assert obj.qwtCurve == curve
@@ -40,7 +40,7 @@ class PpmacGatherChannelTest(unittest.TestCase):
 class GatherChannelTest(unittest.TestCase):
     def setUp(self):
         self.curve = QwtPlotCurve("test")
-        self.test_widget = TestWidget()
+        self.test_widget = DummyTestWidget()
         self.obj = PmacGatherChannel(self.test_widget.pmac, self.curve)
 
     def test_init(self):
@@ -107,7 +107,7 @@ class GatherChannelTest(unittest.TestCase):
 class GatherChannelTestDataInfo(unittest.TestCase):
     def setUp(self):
         self.curve = QwtPlotCurve("test")
-        self.test_widget = TestWidget2()
+        self.test_widget = DummyTestWidget2()
         self.obj = PmacGatherChannel(self.test_widget.pmac, self.curve)
 
     def test_getDataInfo(self):

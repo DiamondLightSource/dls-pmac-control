@@ -11,7 +11,7 @@ from dls_pmaccontrol.GlobalStatus import GlobalStatusForm, PpmacGlobalStatusForm
 app = QApplication(sys.argv)
 
 
-class TestWidget(QMainWindow):
+class DummyTestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.greenLedOn = QPixmap(path.join(path.dirname(__file__), "greenLedOn.png"))
@@ -25,7 +25,7 @@ class GlobalStatusTest(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QLabel.setText")
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     def test_inital_form(self, mock_pixmap, mock_text, mock_tooltip):
-        test_widget = TestWidget()
+        test_widget = DummyTestWidget()
         obj = GlobalStatusForm(test_widget)
         mock_pixmap.assert_called_with(test_widget.greenLedOff)
         assert mock_text.called
@@ -37,7 +37,7 @@ class GlobalStatusTest(unittest.TestCase):
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
-        test_widget = TestWidget()
+        test_widget = DummyTestWidget()
         obj = GlobalStatusForm(test_widget)
         obj.updateStatus(0)
         mock_pixmap.assert_called_with(test_widget.greenLedOff)
@@ -50,7 +50,7 @@ class PpmacGlobalStatusTest(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QLabel.setText")
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     def test_inital_form(self, mock_pixmap, mock_text, mock_tooltip):
-        test_widget = TestWidget()
+        test_widget = DummyTestWidget()
         obj = PpmacGlobalStatusForm(test_widget)
         mock_pixmap.assert_called_with(test_widget.greenLedOff)
         assert mock_text.called
@@ -62,7 +62,7 @@ class PpmacGlobalStatusTest(unittest.TestCase):
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
-        test_widget = TestWidget()
+        test_widget = DummyTestWidget()
         obj = PpmacGlobalStatusForm(test_widget)
         obj.updateStatus(0)
         mock_pixmap.assert_called_with(test_widget.greenLedOff)

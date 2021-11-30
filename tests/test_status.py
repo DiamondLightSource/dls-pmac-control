@@ -11,7 +11,7 @@ from dls_pmaccontrol.status import PpmacStatusform, Statusform
 app = QApplication(sys.argv)
 
 
-class TestWidget(QMainWindow):
+class DummyTestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.greenLedOn = QPixmap(path.join(path.dirname(__file__), "greenLedOn.png"))
@@ -25,7 +25,7 @@ class StatusTest(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QLabel.setText")
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     def setUp(self, mock_pixmap, mock_text, mock_tooltip):
-        self.test_widget = TestWidget()
+        self.test_widget = DummyTestWidget()
         self.obj = Statusform(self.test_widget, 1)
 
     def test_inital_form(self):
@@ -51,7 +51,7 @@ class PpmacStatusTest(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QLabel.setText")
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     def setUp(self, mock_pixmap, mock_text, mock_tooltip):
-        self.test_widget = TestWidget()
+        self.test_widget = DummyTestWidget()
         self.obj = PpmacStatusform(self.test_widget, 1)
 
     def test_inital_form(self):

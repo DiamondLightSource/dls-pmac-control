@@ -9,7 +9,7 @@ from dls_pmaccontrol.commsThread import CommsThread
 app = QApplication(sys.argv)
 
 
-class TestWidget(QMainWindow):
+class DummyTestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
@@ -31,7 +31,7 @@ class CommsthreadTest(unittest.TestCase):
     @patch("threading.Thread")
     @patch("queue.Queue")
     def setUp(self, mock_queue, mock_thread, mock_lock):
-        self.test_widget = TestWidget()
+        self.test_widget = DummyTestWidget()
         self.obj = CommsThread(self.test_widget)
 
     def test_init(self):
@@ -89,7 +89,7 @@ class UpdatefuncTest(unittest.TestCase):
     @patch("threading.Thread")
     @patch("queue.Queue")
     def setUp(self, mock_queue, mock_thread, mock_lock):
-        self.test_widget = TestWidget()
+        self.test_widget = DummyTestWidget()
         self.obj = CommsThread(self.test_widget)
 
     @patch("queue.Queue.get")

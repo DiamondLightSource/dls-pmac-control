@@ -9,7 +9,7 @@ from dls_pmaccontrol.energise import Energiseform
 app = QApplication(sys.argv)
 
 
-class TestWidget(QMainWindow):
+class DummyTestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
@@ -25,7 +25,7 @@ class EnergiseTest(unittest.TestCase):
     @patch("dls_pmaccontrol.energise.Energiseform.createCheckBoxes")
     def setUp(self, mock_boxes, mock_read, mock_update):
         mock_read.return_value = (0, 0)
-        self.test_widget = TestWidget()
+        self.test_widget = DummyTestWidget()
         self.obj = Energiseform(self.test_widget.pmac, self.test_widget)
 
     def test_initial_form(self):

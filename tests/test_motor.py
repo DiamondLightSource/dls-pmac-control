@@ -12,7 +12,7 @@ from dls_pmaccontrol.motor import Controlform
 app = QApplication(sys.argv)
 
 
-class TestOptionsTelnet:
+class DummyTestOptionsTelnet:
     def __init__(self):
         self.verbose = False
         self.protocol = "ts"
@@ -23,7 +23,7 @@ class TestOptionsTelnet:
         self.timeout = 3.0
 
 
-class TestOptionsEthernet:
+class DummyTestOptionsEthernet:
     def __init__(self):
         self.verbose = False
         self.protocol = "tcpip"
@@ -34,7 +34,7 @@ class TestOptionsEthernet:
         self.timeout = 3.0
 
 
-class TestOptionsSerial:
+class DummyTestOptionsSerial:
     def __init__(self):
         self.verbose = False
         self.protocol = "rs232"
@@ -45,7 +45,7 @@ class TestOptionsSerial:
         self.timeout = 3.0
 
 
-class TestOptionsSsh:
+class DummyTestOptionsSsh:
     def __init__(self):
         self.verbose = False
         self.protocol = "ssh"
@@ -92,7 +92,7 @@ class MotorTestTelnet(unittest.TestCase):
         mock_ppmacstatus,
         mock_status,
     ):
-        self.options = TestOptionsTelnet()
+        self.options = DummyTestOptionsTelnet()
         self.obj = Controlform(self.options)
 
     def test_initial_state(self):
@@ -298,7 +298,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
         mock_geo,
         mock_pixmap,
     ):
-        self.options = TestOptionsTelnet()
+        self.options = DummyTestOptionsTelnet()
         self.obj = Controlform(self.options)
         mock_model.return_value = "test"
         mock_axes.return_value = 8
@@ -415,7 +415,7 @@ class MotorTestEthernet(unittest.TestCase):
         mock_ppmacstatus,
         mock_status,
     ):
-        self.options = TestOptionsEthernet()
+        self.options = DummyTestOptionsEthernet()
         self.obj = Controlform(self.options)
 
     def test_initial_state(self):
@@ -570,7 +570,7 @@ class MotorTestSerial(unittest.TestCase):
         mock_ppmacstatus,
         mock_status,
     ):
-        self.options = TestOptionsSerial()
+        self.options = DummyTestOptionsSerial()
         self.obj = Controlform(self.options)
 
     def test_initial_state(self):
@@ -744,7 +744,7 @@ class MotorTestSsh(unittest.TestCase):
         mock_ppmacstatus,
         mock_status,
     ):
-        self.options = TestOptionsSsh()
+        self.options = DummyTestOptionsSsh()
         self.obj = Controlform(self.options)
         self.obj.commsThread = mock_comms.return_value
 
