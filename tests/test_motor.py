@@ -433,7 +433,7 @@ class MotorTestEthernet(unittest.TestCase):
         self.obj.ConnectionType = None
         self.obj.useSocketConnection()
         assert self.obj.ConnectionType == 1
-        assert self.obj.lneServer.text() == "10.2.2.28"
+        assert self.obj.lneServer.text() == "172.23.240.97"
         assert self.obj.lnePort.text() == "1025"
         assert self.obj.textLabel1.text() == "IP address:"
         assert self.obj.textLabel2.text() == "Port:"
