@@ -18,9 +18,9 @@ types-paramiko = "*"
 [packages]
 numpy = "*"
 pyqt5 = "*"
-dls-pmaclib = {editable = true,ref = "3.0.0.alpha0.2", git = "https://gitlab.diamond.ac.uk/controls/python3/dls_pmaclib.git"}
 pythonqwt = "*"
 mock = "*"
+dls-pmaclib = "===3.0.0b1"
 
 [scripts]
 # Put coverage here so we don't interfere with debugging in the IDE
