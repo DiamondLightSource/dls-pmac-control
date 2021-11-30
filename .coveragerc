@@ -1,5 +1,5 @@
 [run]
-source = /home/dlscontrols/bem-osl/dls-pmac-control/
+source = dls_pmaccontrol/
 omit = 
 	*/_version_git.py
 	*/tests/*
