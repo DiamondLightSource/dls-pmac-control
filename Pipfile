@@ -20,7 +20,7 @@ numpy = "*"
 pyqt5 = "*"
 pythonqwt = "*"
 mock = "*"
-dls-pmaclib = "===3.0.0b1"
+dls-pmaclib = "==3.0.0b1"
 
 [scripts]
 # Put coverage here so we don't interfere with debugging in the IDE
