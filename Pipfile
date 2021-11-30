@@ -18,8 +18,7 @@ types-paramiko = "*"
 [packages]
 numpy = "*"
 pyqt5 = "*"
-#dls-pmaclib = "==2.1.0"
-dls-pmaclib = {editable = true,ref = "dls-release-beta", git = "https://gitlab.diamond.ac.uk/controls/python3/dls_pmaclib.git"}
+dls-pmaclib = {editable = true,ref = "3.0.0.alpha0.2", git = "https://gitlab.diamond.ac.uk/controls/python3/dls_pmaclib.git"}
 pythonqwt = "*"
 mock = "*"
 

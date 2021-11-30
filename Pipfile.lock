@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2a7d8394a4a78f351d5e3e8c784da2040c163a5d2149f3f117a1d06d9bfd1200"
+            "sha256": "0412abe0dbd479b61a8612c2b4b7f4058c157af7dcc9068159c8e7878ad6ca7f"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -87,7 +87,11 @@
         "dls-pmaclib": {
             "editable": true,
             "git": "https://gitlab.diamond.ac.uk/controls/python3/dls_pmaclib.git",
-            "ref": "51b8b1c7d04c5bf424b66654e3564003fad38da2"
+            "hashes": [
+                "sha256:3b97ff23d7ccb093784e8339892e0e3be769ea1e6f77fe1aa45de36ff70dc53e",
+                "sha256:b5f111b0d362e46bca6bf78b371e40c2e4090982bab2bd85b07374909d6825fa"
+            ],
+            "ref": "91c23fa247806e88e9aa29397052316e5317ea6b"
         },
         "mock": {
             "hashes": [
