@@ -1,4 +1,5 @@
 variables:
+  # Setting QT backend to offscreen so that GUI tests can run
   QT_QPA_PLATFORM: "offscreen"
 
 include:
