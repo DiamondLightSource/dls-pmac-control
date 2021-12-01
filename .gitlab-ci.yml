@@ -1,3 +1,6 @@
+variables:
+  QT_QPA_PLATFORM: "offscreen"
+
 include:
   - project: 'controls/reports/ci_templates'
     ref: master
