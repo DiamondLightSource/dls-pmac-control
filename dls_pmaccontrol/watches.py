@@ -69,6 +69,8 @@ class Watchesform(QDialog, Ui_formWatches):
 
     def removeWatch(self):
         row = self.table.currentRow()
+        if row is -1:
+            return None
         assert type(row) is int
         varName = self.table.item(row, 0).text()
         try:
