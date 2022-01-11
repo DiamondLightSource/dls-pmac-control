@@ -82,8 +82,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.rbUseSerial.setChecked(True)
             self.ConnectionType = 2
         elif self.connectionProtocol == "ssh":
-            # use TCP/IP socket connection
-            self.rbUseSocket.setChecked(True)
+            # use ssh
+            self.rbUseSsh.setChecked(True)
             self.ConnectionType = 3
         else:
             QMessageBox.information(
