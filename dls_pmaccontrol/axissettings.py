@@ -128,10 +128,10 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
 
     def _getAxisSignalControlsVars(self):
         pmac = self.parent.pmac  # a link to the RemotePmacInterface
-        (loopSelect,captureOn,captureFlag,outputMode) = [None, None, None, None]
+        (loopSelect, captureOn, captureFlag, outputMode) = [None, None, None, None]
         if pmac.isMacroStationAxis(self.currentMotor):
             result = pmac.getAxisMsIVars(self.currentMotor, [910, 912, 913, 916])
-            if (len(result) == 4):
+            if len(result) == 4:
                 (loopSelect, captureOn, captureFlag, outputMode) = result
             else:
                 errorStr = result[0]
