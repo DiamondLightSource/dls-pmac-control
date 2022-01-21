@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from PyQt5.QtWidgets import QDialog
+from PyQt5.QtWidgets import QDialog, QMessageBox
 
 from dls_pmaccontrol.ui_formAxisSettings import Ui_formAxisSettings
 from dls_pmaccontrol.ui_formPpmacAxisSettings import Ui_formPpmacAxisSettings
@@ -128,10 +128,16 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
 
     def _getAxisSignalControlsVars(self):
         pmac = self.parent.pmac  # a link to the RemotePmacInterface
+        (loopSelect,captureOn,captureFlag,outputMode) = [None, None, None, None]
         if pmac.isMacroStationAxis(self.currentMotor):
-            (loopSelect, captureOn, captureFlag, outputMode) = pmac.getAxisMsIVars(
-                self.currentMotor, [910, 912, 913, 916]
-            )
+            result = pmac.getAxisMsIVars(self.currentMotor, [910, 912, 913, 916])
+            if (len(result) == 4):
+                (loopSelect, captureOn, captureFlag, outputMode) = result
+            else:
+                errorStr = result[0]
+                if "ERR008" in result[0]:
+                    errorStr = "ERR008: MACRO auxiliary communications error."
+                QMessageBox.information(self, "Error", errorStr)
         else:
             (
                 loopSelect,
