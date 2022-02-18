@@ -25,11 +25,12 @@ PpmacVars = {
 
 
 class Axissettingsform(QDialog, Ui_formAxisSettings):
-    def __init__(self, parent=None, currentMotor=1):
+    def __init__(self, parent=None, currentMotor=1, macroAxisStartIndex=0):
         QDialog.__init__(self, parent)
         self.setupUi(self)
 
         self.currentMotor = currentMotor
+        self.macroAxisStartIndex = macroAxisStartIndex
         self.parent = parent
 
         self.lneIx11.setToolTip("""Fatal following error [1/16 cts]""")
@@ -130,7 +131,7 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
         pmac = self.parent.pmac  # a link to the RemotePmacInterface
         (loopSelect, captureOn, captureFlag, outputMode) = [None, None, None, None]
         if pmac.isMacroStationAxis(self.currentMotor):
-            result = pmac.getAxisMsIVars(self.currentMotor, [910, 912, 913, 916])
+            result = pmac.getAxisMsIVars(self.currentMotor, [910, 912, 913, 916], self.macroAxisStartIndex)
             if len(result) == 4:
                 (loopSelect, captureOn, captureFlag, outputMode) = result
             else:

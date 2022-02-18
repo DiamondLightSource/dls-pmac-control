@@ -65,6 +65,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.lnePort.setText(options.port)
         self.currentMotor = int(options.defaultAxis)
         self.nAxes = options.nAxes
+        self.macroAxisStartIndex = int(options.macroAxisStartIndex)
 
         self.verboseMode = options.verbose
 
@@ -107,7 +108,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.PpmacCSStatusScreen = PpmacCSStatusForm(self)
         self.GlobalStatusScreen = GlobalStatusForm(self)
         self.PpmacGlobalStatusScreen = PpmacGlobalStatusForm(self)
-        self.axisSettingsScreen = Axissettingsform(self, self.currentMotor)
+        self.axisSettingsScreen = Axissettingsform(self, self.currentMotor, self.macroAxisStartIndex)
         self.ppmacaxisSettingsScreen = PpmacAxissettingsform(self, self.currentMotor)
         self.pmacgatherScreen = PmacGatherform(self, self.currentMotor)
         self.ppmacgatherScreen = PpmacGatherform(self, self.currentMotor)
@@ -871,6 +872,14 @@ def main():
         default=1,
         help="Set an axis as a default selected axis when "
         "starting up the application (default: 1)",
+    )
+    parser.add_option(
+        "-m",
+        "--macroAxisStartIndex",
+        action="store",
+        dest="macroAxisStartIndex",
+        default=0,
+        help="Set the first macro axis (default: 0)",
     )
     parser.add_option(
         "-n",
