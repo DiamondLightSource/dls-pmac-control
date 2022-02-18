@@ -21,6 +21,14 @@ PpmacVars = {
     "Ix23": "HomeVel",
     "Ix25": "pEncStatus",
     "Ix26": "HomeOffset",
+    "Ix30": "Servo.Kp",
+    "Ix31": "Servo.Kvfb",
+    "Ix32": "Servo.Kvff",
+    "Ix33": "Servo.Ki",
+    "Ix34": "Servo.SwZvInt",
+    "Ix35": "Servo.Kaff",
+    "Derivative2": "Servo.Kvifb",
+    "VFF2": "Servo.Kviff"
 }
 
 
@@ -326,6 +334,8 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
 
         self.definitionIvars = [11, 12, 13, 14, 15, 16, 17, 19]
         self.safetyIvars = [20, 21, 22, 23, 25, 26]
+        self.gainIvars = [30, 31, 32, 33, 34, 35]
+        self.directCmds = ["Derivative2", "VFF2"]
 
     def changeAxis(self, newMotor):
         self.currentMotor = newMotor
@@ -351,11 +361,34 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
             for i, retVal in enumerate(retLst):
                 exec('self.lneIx%d.setText(str("%s"))' % (ivars[i], retVal))
 
+    def _updateAxisSetupDirectCmds(self, ppmacCmds):
+        retLst = []
+        for i in range(len(ppmacCmds)):
+            varStr = PpmacVars[ str(ppmacCmds[i])]
+            cmd = ("Motor[%d]." % self.currentMotor) + varStr
+            (retStr, success) = self.parent.pmac.sendCommand(cmd)
+            if success:
+                retLst.append(retStr.strip("\r"))
+            else:
+                retLst.append("Error")
+        if retLst:
+            for i, retVal in enumerate(retLst):
+                exec('self.lne%s.setText(str("%s"))' % (ppmacCmds[i], retVal))
+
     def axisUpdate(self):
-        self._updateAxisSetupIVars(self.definitionIvars + self.safetyIvars)
+        self._updateAxisSetupIVars(self.definitionIvars + self.safetyIvars
+            + self.gainIvars)
+        self._updateAxisSetupDirectCmds(self.directCmds)
 
     def setAxisSetupIVar(self, iVarNo, newValue):
         varStr = PpmacVars["Ix" + str(iVarNo)]
+        self.setAxisSetupVars(varStr, newValue)
+
+    def setAxisSetupDirect(self, directCmd, newValue):
+        varStr = PpmacVars[directCmd]
+        self.setAxisSetupVars(varStr, newValue)
+
+    def setAxisSetupVars(self, varStr, newValue):
         cmd = ("Motor[%d]." % self.currentMotor) + varStr + ("=%s" % newValue)
         (retStr, success) = self.parent.pmac.sendCommand(cmd)
         if success:
@@ -422,4 +455,36 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
 
     def sendIx26(self):
         self.setAxisSetupIVar(26, self.lneIx26.text())
+        self.axisUpdate()
+
+    def sendIx30(self):
+        self.setAxisSetupIVar(30, self.lneIx30.text())
+        self.axisUpdate()
+
+    def sendIx31(self):
+        self.setAxisSetupIVar(31, self.lneIx31.text())
+        self.axisUpdate()
+
+    def sendIx32(self):
+        self.setAxisSetupIVar(32, self.lneIx32.text())
+        self.axisUpdate()
+
+    def sendIx33(self):
+        self.setAxisSetupIVar(33, self.lneIx33.text())
+        self.axisUpdate()
+
+    def sendIx34(self):
+        self.setAxisSetupIVar(34, self.lneIx34.text())
+        self.axisUpdate()
+
+    def sendIx35(self):
+        self.setAxisSetupIVar(35, self.lneIx35.text())
+        self.axisUpdate()
+
+    def sendDerivative2(self):
+        self.setAxisSetupDirect("Derivative2", self.lneDerivative2.text())
+        self.axisUpdate()
+
+    def sendVFF2(self):
+        self.setAxisSetupDirect("VFF2", self.lneVFF2.text())
         self.axisUpdate()

@@ -26,6 +26,13 @@
    <string>Axis setup</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_3">
+   <item row="2" column="0">
+    <widget class="QPushButton" name="btnUpdate">
+     <property name="text">
+      <string>update</string>
+     </property>
+    </widget>
+   </item>
    <item row="0" column="0" colspan="3">
     <widget class="QLabel" name="textLabel1">
      <property name="text">
@@ -35,13 +42,6 @@ Write demand values in the text fields and hit enter to send.</string>
      </property>
      <property name="wordWrap">
       <bool>false</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QPushButton" name="btnUpdate">
-     <property name="text">
-      <string>update</string>
      </property>
     </widget>
    </item>
@@ -471,6 +471,277 @@ Write demand values in the text fields and hit enter to send.</string>
        </item>
       </layout>
      </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>PID and macro</string>
+      </attribute>
+      <widget class="QGroupBox" name="groupBox1_2">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>271</width>
+         <height>330</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="title">
+        <string>Gains</string>
+       </property>
+       <layout class="QFormLayout" name="formLayout_3">
+        <item row="0" column="0">
+         <widget class="QLabel" name="textLabel2_10">
+          <property name="text">
+           <string>Proportional:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="lneIx30">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>32233</width>
+            <height>32767</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="textLabel2_2_3">
+          <property name="text">
+           <string>Derivative 1:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="lneIx31">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>32233</width>
+            <height>32767</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="textLabel2_3_3">
+          <property name="text">
+           <string>Derivative 2:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="lneDerivative2">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>32233</width>
+            <height>32767</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="textLabel2_4_3">
+          <property name="text">
+           <string>Integral:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="lneIx33">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>32233</width>
+            <height>32767</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="textLabel2_5_3">
+          <property name="text">
+           <string>Vel. Feedforward 1:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1">
+         <widget class="QLineEdit" name="lneIx32">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>32233</width>
+            <height>32767</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="textLabel2_10_2">
+          <property name="text">
+           <string>Vel. Feedforward 2:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="1">
+         <widget class="QLineEdit" name="lneVFF2">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>32233</width>
+            <height>32767</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="textLabel2_10_2_2">
+          <property name="text">
+           <string>Accel. Feedforward:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="1">
+         <widget class="QLineEdit" name="lneIx35">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>32233</width>
+            <height>32767</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QGroupBox" name="groupBox1_2_2">
+       <property name="geometry">
+        <rect>
+         <x>290</x>
+         <y>20</y>
+         <width>260</width>
+         <height>81</height>
+        </rect>
+       </property>
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="title">
+        <string>Other Servo Settings</string>
+       </property>
+       <layout class="QFormLayout" name="formLayout_4">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lLoopSelect">
+          <property name="text">
+           <string>Integrator Mode:</string>
+          </property>
+          <property name="wordWrap">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="lneIx34">
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>32222</width>
+            <height>32767</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="2">
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>30</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </widget>
    </item>
   </layout>
@@ -516,10 +787,10 @@ Write demand values in the text fields and hit enter to send.</string>
    </hints>
   </connection>
   <connection>
-   <sender>lneIx23</sender>
+   <sender>lneIx17</sender>
    <signal>returnPressed()</signal>
    <receiver>formPpmacAxisSettings</receiver>
-   <slot>sendIx23()</slot>
+   <slot>sendIx17()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>
@@ -532,122 +803,10 @@ Write demand values in the text fields and hit enter to send.</string>
    </hints>
   </connection>
   <connection>
-   <sender>lneIx21</sender>
+   <sender>lneIx16</sender>
    <signal>returnPressed()</signal>
    <receiver>formPpmacAxisSettings</receiver>
-   <slot>sendIx21()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lneIx20</sender>
-   <signal>returnPressed()</signal>
-   <receiver>formPpmacAxisSettings</receiver>
-   <slot>sendIx20()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lneIx22</sender>
-   <signal>returnPressed()</signal>
-   <receiver>formPpmacAxisSettings</receiver>
-   <slot>sendIx22()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lneIx25</sender>
-   <signal>returnPressed()</signal>
-   <receiver>formPpmacAxisSettings</receiver>
-   <slot>sendIx25()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lneIx26</sender>
-   <signal>returnPressed()</signal>
-   <receiver>formPpmacAxisSettings</receiver>
-   <slot>sendIx26()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tabAxisSetup</sender>
-   <signal>currentChanged(int)</signal>
-   <receiver>formPpmacAxisSettings</receiver>
-   <slot>tabChange()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lneIx14</sender>
-   <signal>returnPressed()</signal>
-   <receiver>formPpmacAxisSettings</receiver>
-   <slot>sendIx14()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lneIx11</sender>
-   <signal>returnPressed()</signal>
-   <receiver>formPpmacAxisSettings</receiver>
-   <slot>sendIx11()</slot>
+   <slot>sendIx16()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>
@@ -692,10 +851,10 @@ Write demand values in the text fields and hit enter to send.</string>
    </hints>
   </connection>
   <connection>
-   <sender>lneIx16</sender>
+   <sender>lneIx19</sender>
    <signal>returnPressed()</signal>
    <receiver>formPpmacAxisSettings</receiver>
-   <slot>sendIx16()</slot>
+   <slot>sendIx19()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>
@@ -708,10 +867,138 @@ Write demand values in the text fields and hit enter to send.</string>
    </hints>
   </connection>
   <connection>
-   <sender>lneIx17</sender>
+   <sender>lneIx20</sender>
    <signal>returnPressed()</signal>
    <receiver>formPpmacAxisSettings</receiver>
-   <slot>sendIx17()</slot>
+   <slot>sendIx20()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx23</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx23()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx21</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx21()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx22</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx22()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx26</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx26()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tabAxisSetup</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>tabChange()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx11</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx11()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx14</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx14()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx25</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx25()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>
@@ -740,10 +1027,138 @@ Write demand values in the text fields and hit enter to send.</string>
    </hints>
   </connection>
   <connection>
-   <sender>lneIx19</sender>
+   <sender>lneIx30</sender>
    <signal>returnPressed()</signal>
    <receiver>formPpmacAxisSettings</receiver>
-   <slot>sendIx19()</slot>
+   <slot>sendIx30()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx31</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx31()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx32</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx32()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx33</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx33()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx34</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx34()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx35</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx35()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneIx11</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendIx11()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneDerivative2</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendDerivative2()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>20</x>
+     <y>20</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lneVFF2</sender>
+   <signal>returnPressed()</signal>
+   <receiver>formPpmacAxisSettings</receiver>
+   <slot>sendVFF2()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>20</x>
