@@ -67,6 +67,9 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.nAxes = options.nAxes
         self.macroAxisStartIndex = int(options.macroAxisStartIndex)
 
+        self.username = options.username
+        self.password = options.password
+
         self.verboseMode = options.verbose
 
         self.connectionProtocol = options.protocol
@@ -113,7 +116,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.pmacgatherScreen = PmacGatherform(self, self.currentMotor)
         self.ppmacgatherScreen = PpmacGatherform(self, self.currentMotor)
         self.watchesScreen = Watchesform(self)
-        self.login = Loginform(self)
+        self.login = Loginform(self, self.username, self.password)
         # self.energiseScreen = Energiseform(self.pmac,self)
         self.commsThread = CommsThread(self)
 
@@ -257,27 +260,26 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.txtShell.append("Connecting to %s %s" % (server_name, server_port))
 
         # Connect to the interface/PMAC
-        connection_status = self.pmac.connect()
-        if connection_status:
-            is_auth_error = bool(connection_status == "Invalid username or password")
-            # if power pmac and wrong username/ password
-            if self.ConnectionType == 3 and is_auth_error:
-                # use exec instead of show to wait until login is done
-                is_clickedOK = self.login.exec()
-                if not is_clickedOK:
-                    return
-                else:
-                    # try to connect again
-                    connection_status = self.pmac.connect(
-                        username=self.login.username, password=self.login.password
-                    )
-                    if connection_status:
-                        QMessageBox.information(self, "Error", connection_status)
-                        return
-            # otherwise show error message
-            else:
-                QMessageBox.information(self, "Error", connection_status)
+        # Show login window if ssh connection
+        if self.ConnectionType == 3:
+            # use exec instead of show to wait until login is done
+            is_clickedOK = self.login.exec()
+            if not is_clickedOK:
                 return
+            else:
+                # try to connect again
+                connection_status = self.pmac.connect(
+                    username=self.login.username, password=self.login.password
+                )
+                if connection_status:
+                    QMessageBox.information(self, "Error", connection_status)
+                    return
+        else:
+            connection_status = self.pmac.connect()
+
+        if connection_status:
+            QMessageBox.information(self, "Error", connection_status)
+            return
 
         # Find out the type of the PMAC
         pmac_model_str = self.pmac.getPmacModel()
@@ -863,6 +865,20 @@ def main():
         dest="port",
         default="7017",
         help="Set IP port number to connect to (default: 7017)",
+    )
+    parser.add_option(
+        "--username",
+        action="store",
+        dest="username",
+        default="root",
+        help="Set the SSH username (default: root)",
+    )
+    parser.add_option(
+        "--password",
+        action="store",
+        dest="password",
+        default="deltatau",
+        help="Set the SSH password (default: deltatau)",
     )
     parser.add_option(
         "-a",
