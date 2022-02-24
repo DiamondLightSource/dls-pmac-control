@@ -7,7 +7,17 @@ from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QApplication, QDialog, QLabel
 
 from dls_pmaccontrol.ui_formCSStatus import Ui_formCSStatus
+from dls_pmaccontrol.ui_formPpmacCSStatus import Ui_formPpmacCSStatus
 
+AmpStatusBits = {
+    0: "No Error, Not Ready",
+    64: "No Error, Ready",
+    128: "Bus Under-Voltage Warning",
+    192: "Over-Temperature (>70°C)",
+    256: "I\u00b2T Warning/Fault, Not Ready",
+    320: "I\u00b2T Warning/Fault, Ready",
+    384: "Over-Current Fault"
+}
 
 class CSStatusForm(QDialog, Ui_formCSStatus):
     def __init__(self, parent):
@@ -589,8 +599,15 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
             else:
                 self.lstLeds[bit].setPixmap(self.greenLedOff)
 
+    def updateAmpStatus(self, value):
+        if value in AmpStatusBits:
+            strVal = AmpStatusBits[value]
+        else:
+            strVal = "Unknown status"
+        self.lneAmpStatus.setText(strVal)
 
-class PpmacCSStatusForm(QDialog, Ui_formCSStatus):
+
+class PpmacCSStatusForm(QDialog, Ui_formPpmacCSStatus):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
         self.setupUi(self)
@@ -800,7 +817,6 @@ class PpmacCSStatusForm(QDialog, Ui_formCSStatus):
                 self.lstLeds[bit].setPixmap(self.greenLedOn)
             else:
                 self.lstLeds[bit].setPixmap(self.greenLedOff)
-
 
 if __name__ == "__main__":
     a = QApplication(sys.argv)

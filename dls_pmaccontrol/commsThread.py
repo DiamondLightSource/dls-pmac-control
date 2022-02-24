@@ -3,7 +3,7 @@ import time
 import traceback
 from queue import Empty, Queue
 
-from dls_pmaclib.dls_pmacremote import PmacSerialInterface, PPmacSshInterface
+from dls_pmaclib.dls_pmacremote import PmacSerialInterface, PPmacSshInterface, PmacEthernetInterface
 from PyQt5.QtCore import QCoreApplication, QEvent
 
 
@@ -139,15 +139,18 @@ class CommsThread(object):
         if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
             if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
                 return
-        cmd = "i65???&%s??%%"
+        cmd = "i65???&%s??%%" % self.CSNum
         # Send a different command for the Power PMAC
         if isinstance(self.parent.pmac, PPmacSshInterface):
-            cmd = "i65?&%s?%%"
+            cmd = "i65?&%s?%%" % self.CSNum
+        elif isinstance(self.parent.pmac, PmacEthernetInterface):
+            # Add the 7 segment display status query
+            cmd = "i65???&%s??%%m%s90" % (self.CSNum, self.CSNum)
         axes = self.parent.pmac.getNumberOfAxes() + 1
         for motorNo in range(1, axes):
             cmd = cmd + "#" + str(motorNo) + "?PVF"
         # send polling command
-        (retStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd % self.CSNum)
+        (retStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd)
         with self.lock:
             # send watch window commands
             valueListWatch = []
@@ -186,7 +189,12 @@ class CommsThread(object):
             self.resultQueue.put([valueList[2], 0, 0, 0, "CS%s" % self.CSNum])
             # third is feedrate
             self.resultQueue.put([valueList[3], 0, 0, 0, "FEED%s" % self.CSNum])
-            valueList = valueList[4:]
+            if isinstance(self.parent.pmac, PmacEthernetInterface):
+                # fourth is 7 segment display status
+                self.resultQueue.put([valueList[4], 0, 0, 0, "M90%s" % self.CSNum])
+                valueList = valueList[5:]
+            else:
+                valueList = valueList[4:]
             cols = 4
             for motorRow, i in enumerate(range(0, len(valueList), cols)):
                 returnList = valueList[i : i + cols]

@@ -6,7 +6,7 @@ RESOURCE_DIR = dls_pmaccontrol
 COMPILED_DIR = dls_pmaccontrol
 
 #UI files to compile
-UI_FILES = formAxisSettings.ui  formControl.ui  formCSStatus.ui  formEnergise.ui  formGather.ui  formGlobalStatus.ui  formStatus.ui  formWatches.ui formPpmacAxisSettings.ui  formLogin.ui
+UI_FILES = formAxisSettings.ui  formControl.ui  formCSStatus.ui  formEnergise.ui  formGather.ui  formGlobalStatus.ui  formStatus.ui  formWatches.ui formPpmacAxisSettings.ui  formLogin.ui formPpmacCSStatus.ui
 #Qt resource files to compile
 RESOURCES =
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'dls_pmaccontrol/formCSStatus.ui'
+# Form implementation generated from reading ui file 'dls_pmaccontrol/formPpmacCSStatus.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -11,10 +11,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_formCSStatus(object):
+class Ui_formPpmacCSStatus(object):
     def setupUi(self, formCSStatus):
         formCSStatus.setObjectName("formCSStatus")
-        formCSStatus.resize(433, 311)
+        formCSStatus.setGeometry(QtCore.QRect(0, 0, 433, 311))
         formCSStatus.setSizeGripEnabled(True)
         self.gridLayout_2 = QtWidgets.QGridLayout(formCSStatus)
         self.gridLayout_2.setContentsMargins(11, 11, 11, 11)
@@ -57,30 +57,14 @@ class Ui_formCSStatus(object):
         self.gridlayout.setSpacing(6)
         self.gridlayout.setObjectName("gridlayout")
         self.gridLayout_2.addWidget(self.ledGroup, 1, 0, 1, 1)
-        self.ctrlGroup1 = QtWidgets.QGroupBox(formCSStatus)
-        self.ctrlGroup1.setObjectName("ctrlGroup1")
-        self.gridLayout1 = QtWidgets.QGridLayout(self.ctrlGroup1)
-        self.gridLayout1.setContentsMargins(11, 11, 11, 11)
-        self.gridLayout1.setSpacing(6)
-        self.gridLayout1.setObjectName("gridLayout1")
-        self.textLabel1_21 = QtWidgets.QLabel(self.ctrlGroup1)
-        self.textLabel1_21.setWordWrap(False)
-        self.textLabel1_21.setObjectName("textLabel1_21")
-        self.gridLayout1.addWidget(self.textLabel1_21, 1, 0, 1, 1)
-        self.lneAmpStatus = QtWidgets.QLineEdit(self.ctrlGroup1)
-        self.lneAmpStatus.setReadOnly(True)
-        self.lneAmpStatus.setObjectName("lneAmpStatus")
-        self.gridLayout1.addWidget(self.lneAmpStatus, 1, 1, 1, 1)
-        self.gridLayout_2.addWidget(self.ctrlGroup1, 2, 0, 1, 1)
 
         self.retranslateUi(formCSStatus)
         QtCore.QMetaObject.connectSlotsByName(formCSStatus)
 
     def retranslateUi(self, formCSStatus):
         _translate = QtCore.QCoreApplication.translate
-        formCSStatus.setWindowTitle(_translate("formCSStatus", "Status bits"))
-        self.ctrlGroup.setTitle(_translate("formCSStatus", "Co-ordinate System"))
-        self.textLabel1.setText(_translate("formCSStatus", "CS Number:"))
-        self.textLabel1_2.setText(_translate("formCSStatus", "Feed Rate:"))
-        self.ledGroup.setTitle(_translate("formCSStatus", "CS Status"))
-        self.textLabel1_21.setText(_translate("formCSStatus", "Amp Status bits (7 Segment Display Status):"))
+        formCSStatus.setWindowTitle(_translate("formPpmacCSStatus", "Status bits"))
+        self.ctrlGroup.setTitle(_translate("formPpmacCSStatus", "Co-ordinate System"))
+        self.textLabel1.setText(_translate("formPpmacCSStatus", "CS Number:"))
+        self.textLabel1_2.setText(_translate("formPpmacCSStatus", "Feed Rate:"))
+        self.ledGroup.setTitle(_translate("formPpmacCSStatus", "CS Status"))

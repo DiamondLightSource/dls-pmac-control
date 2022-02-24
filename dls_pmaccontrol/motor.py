@@ -642,10 +642,10 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 if type(motorRow) == str:
                     if isinstance(self.pmac, PPmacSshInterface):
                         if motorRow == "G":
-                            self.PpmacGlobalStatusScreen.updateStatus(int(value[0], 16))
+                            self.PpmacGlobalStatusScreen.updateStatus(int(value[0].strip("$"), 16))
                             continue
                         if motorRow.startswith("CS"):
-                            self.PpmacCSStatusScreen.updateStatus(int(value[0], 16))
+                            self.PpmacCSStatusScreen.updateStatus(int(value[0].strip("$"), 16))
                             continue
                         if motorRow.startswith("FEED"):
                             self.PpmacCSStatusScreen.updateFeed(
@@ -667,6 +667,9 @@ class Controlform(QMainWindow, Ui_ControlForm):
                             continue
                         if motorRow == "IDENT":
                             self.updateIdentity(int(value[0]))
+                            continue
+                        if motorRow.startswith("M90"):
+                            self.CSStatusScreen.updateAmpStatus(int(value[0]) & 448)
                             continue
 
                 position = str(round(float(value[1]), 1))

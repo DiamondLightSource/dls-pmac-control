@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>formCSStatus</class>
+ <class>formPpmacCSStatus</class>
  <widget class="QDialog" name="formCSStatus">
   <property name="geometry">
    <rect>
@@ -78,29 +78,6 @@
       <string>CS Status</string>
      </property>
      <layout class="QGridLayout"/>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QGroupBox" name="ctrlGroup">
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="0">
-       <widget class="QLabel" name="textLabel1_2">
-        <property name="text">
-         <string>Amp Status bits (7 Segment Display Status):</string>
-        </property>
-        <property name="wordWrap">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QLineEdit" name="lneAmpStatus">
-        <property name="readOnly">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </widget>
    </item>
   </layout>
