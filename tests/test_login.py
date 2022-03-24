@@ -14,7 +14,7 @@ test_widget = QWidget()
 
 class LoginTest(unittest.TestCase):
     def setUp(self):
-        self.obj = Loginform(test_widget)
+        self.obj = Loginform(test_widget, "", "")
 
     def test_inital_form(self):
         self.assertEqual(self.obj.lneUsername.text(), "")
@@ -29,8 +29,8 @@ class LoginTest(unittest.TestCase):
         QTest.mouseClick(self.obj.btnOK, Qt.LeftButton)
         self.assertEqual(self.obj.username, "username")
         self.assertEqual(self.obj.password, "password")
-        self.assertEqual(self.obj.lneUsername.text(), "")
-        self.assertEqual(self.obj.lnePassword.text(), "")
+        self.assertEqual(self.obj.lneUsername.text(), "username")
+        self.assertEqual(self.obj.lnePassword.text(), "password")
         assert mock_accept.called
 
     @patch("dls_pmaccontrol.login.Loginform.reject")
@@ -38,10 +38,10 @@ class LoginTest(unittest.TestCase):
         self.obj.lneUsername.setText("username")
         self.obj.lnePassword.setText("password")
         QTest.mouseClick(self.obj.btnCancel, Qt.LeftButton)
-        self.assertEqual(self.obj.username, None)
-        self.assertEqual(self.obj.password, None)
-        self.assertEqual(self.obj.lneUsername.text(), "")
-        self.assertEqual(self.obj.lnePassword.text(), "")
+        self.assertEqual(self.obj.username, "")
+        self.assertEqual(self.obj.password, "")
+        self.assertEqual(self.obj.lneUsername.text(), "username")
+        self.assertEqual(self.obj.lnePassword.text(), "password")
         assert mock_reject.called
 
     def tearDown(self):

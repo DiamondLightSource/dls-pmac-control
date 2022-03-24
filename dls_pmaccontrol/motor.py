@@ -111,7 +111,9 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.PpmacCSStatusScreen = PpmacCSStatusForm(self)
         self.GlobalStatusScreen = GlobalStatusForm(self)
         self.PpmacGlobalStatusScreen = PpmacGlobalStatusForm(self)
-        self.axisSettingsScreen = Axissettingsform(self, self.currentMotor, self.macroAxisStartIndex)
+        self.axisSettingsScreen = Axissettingsform(
+            self, self.currentMotor, self.macroAxisStartIndex
+        )
         self.ppmacaxisSettingsScreen = PpmacAxissettingsform(self, self.currentMotor)
         self.pmacgatherScreen = PmacGatherform(self, self.currentMotor)
         self.ppmacgatherScreen = PpmacGatherform(self, self.currentMotor)
@@ -642,10 +644,14 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 if type(motorRow) == str:
                     if isinstance(self.pmac, PPmacSshInterface):
                         if motorRow == "G":
-                            self.PpmacGlobalStatusScreen.updateStatus(int(value[0].strip("$"), 16))
+                            self.PpmacGlobalStatusScreen.updateStatus(
+                                int(value[0].strip("$"), 16)
+                            )
                             continue
                         if motorRow.startswith("CS"):
-                            self.PpmacCSStatusScreen.updateStatus(int(value[0].strip("$"), 16))
+                            self.PpmacCSStatusScreen.updateStatus(
+                                int(value[0].strip("$"), 16)
+                            )
                             continue
                         if motorRow.startswith("FEED"):
                             self.PpmacCSStatusScreen.updateFeed(

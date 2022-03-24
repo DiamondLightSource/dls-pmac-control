@@ -28,7 +28,7 @@ PpmacVars = {
     "Ix34": "Servo.SwZvInt",
     "Ix35": "Servo.Kaff",
     "Derivative2": "Servo.Kvifb",
-    "VFF2": "Servo.Kviff"
+    "VFF2": "Servo.Kviff",
 }
 
 
@@ -139,7 +139,9 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
         pmac = self.parent.pmac  # a link to the RemotePmacInterface
         (loopSelect, captureOn, captureFlag, outputMode) = [None, None, None, None]
         if pmac.isMacroStationAxis(self.currentMotor):
-            result = pmac.getAxisMsIVars(self.currentMotor, [910, 912, 913, 916], self.macroAxisStartIndex)
+            result = pmac.getAxisMsIVars(
+                self.currentMotor, [910, 912, 913, 916], self.macroAxisStartIndex
+            )
             if len(result) == 4:
                 (loopSelect, captureOn, captureFlag, outputMode) = result
             else:
@@ -364,7 +366,7 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
     def _updateAxisSetupDirectCmds(self, ppmacCmds):
         retLst = []
         for i in range(len(ppmacCmds)):
-            varStr = PpmacVars[ str(ppmacCmds[i])]
+            varStr = PpmacVars[str(ppmacCmds[i])]
             cmd = ("Motor[%d]." % self.currentMotor) + varStr
             (retStr, success) = self.parent.pmac.sendCommand(cmd)
             if success:
@@ -376,8 +378,9 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
                 exec('self.lne%s.setText(str("%s"))' % (ppmacCmds[i], retVal))
 
     def axisUpdate(self):
-        self._updateAxisSetupIVars(self.definitionIvars + self.safetyIvars
-            + self.gainIvars)
+        self._updateAxisSetupIVars(
+            self.definitionIvars + self.safetyIvars + self.gainIvars
+        )
         self._updateAxisSetupDirectCmds(self.directCmds)
 
     def setAxisSetupIVar(self, iVarNo, newValue):

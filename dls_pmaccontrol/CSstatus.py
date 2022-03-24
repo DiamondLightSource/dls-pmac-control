@@ -16,8 +16,9 @@ AmpStatusBits = {
     192: "Over-Temperature (>70°C)",
     256: "I\u00b2T Warning/Fault, Not Ready",
     320: "I\u00b2T Warning/Fault, Ready",
-    384: "Over-Current Fault"
+    384: "Over-Current Fault",
 }
+
 
 class CSStatusForm(QDialog, Ui_formCSStatus):
     def __init__(self, parent):
@@ -582,7 +583,7 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
     def updateFeed(self, feed):
         self._feed = feed
         # Check for integer overflow before updating
-        if not self.feedSpin.hasFocus() and (abs(feed) < 2 ** 32):
+        if not self.feedSpin.hasFocus() and (abs(feed) < 2**32):
             self.feedSpin.setValue(feed)
 
     def setFeed(self, feed):
@@ -817,6 +818,7 @@ class PpmacCSStatusForm(QDialog, Ui_formPpmacCSStatus):
                 self.lstLeds[bit].setPixmap(self.greenLedOn)
             else:
                 self.lstLeds[bit].setPixmap(self.greenLedOff)
+
 
 if __name__ == "__main__":
     a = QApplication(sys.argv)

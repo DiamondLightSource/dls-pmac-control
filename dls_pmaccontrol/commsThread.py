@@ -3,7 +3,11 @@ import time
 import traceback
 from queue import Empty, Queue
 
-from dls_pmaclib.dls_pmacremote import PmacSerialInterface, PPmacSshInterface, PmacEthernetInterface
+from dls_pmaclib.dls_pmacremote import (
+    PmacEthernetInterface,
+    PmacSerialInterface,
+    PPmacSshInterface,
+)
 from PyQt5.QtCore import QCoreApplication, QEvent
 
 

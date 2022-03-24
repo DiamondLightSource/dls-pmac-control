@@ -46,7 +46,9 @@ class Ui_formPpmacCSStatus(object):
         self.gridLayout.addWidget(self.csSpin, 0, 1, 1, 1)
         self.gridLayout_2.addWidget(self.ctrlGroup, 0, 0, 1, 1)
         self.ledGroup = QtWidgets.QGroupBox(formCSStatus)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.ledGroup.sizePolicy().hasHeightForWidth())

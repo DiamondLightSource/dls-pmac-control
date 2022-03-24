@@ -17,6 +17,9 @@ class DummyTestOptionsTelnet:
         self.defaultAxis = 1
         self.nAxes = 8
         self.timeout = 3.0
+        self.macroAxisStartIndex = 0
+        self.username = "username"
+        self.password = "password"
 
 
 class DummyTestOptionsEthernet:
@@ -28,6 +31,9 @@ class DummyTestOptionsEthernet:
         self.defaultAxis = 1
         self.nAxes = 8
         self.timeout = 3.0
+        self.macroAxisStartIndex = 0
+        self.username = "username"
+        self.password = "password"
 
 
 class DummyTestOptionsSerial:
@@ -39,6 +45,9 @@ class DummyTestOptionsSerial:
         self.defaultAxis = 1
         self.nAxes = 8
         self.timeout = 3.0
+        self.macroAxisStartIndex = 0
+        self.username = "username"
+        self.password = "password"
 
 
 class DummyTestOptionsSsh:
@@ -50,6 +59,9 @@ class DummyTestOptionsSsh:
         self.defaultAxis = 1
         self.nAxes = 8
         self.timeout = 3.0
+        self.macroAxisStartIndex = 0
+        self.username = "username"
+        self.password = "password"
 
 
 class MotorTestTelnet(unittest.TestCase):
@@ -783,13 +795,21 @@ class MotorTestSsh(unittest.TestCase):
         assert ret is None
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("dls_pmaccontrol.login.Loginform.exec")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getNumberOfAxes")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.setConnectionParams")
     def test_remote_connect(
-        self, mock_params, mock_connect, mock_model, mock_axes, mock_geo, mock_pixmap
+        self,
+        mock_params,
+        mock_connect,
+        mock_model,
+        mock_axes,
+        mock_geo,
+        mock_login,
+        mock_pixmap,
     ):
         mock_model.return_value = "test"
         mock_axes.return_value = 8
@@ -851,8 +871,16 @@ class MotorTestSsh(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.setConnectionParams")
+    @patch("dls_pmaccontrol.login.Loginform.exec")
     def test_update_identity(
-        self, mock_params, mock_connect, mock_model, mock_axes, mock_geo, mock_short
+        self,
+        mock_login,
+        mock_params,
+        mock_connect,
+        mock_model,
+        mock_axes,
+        mock_geo,
+        mock_short,
     ):
         mock_short.return_value = "name"
         # create connection
