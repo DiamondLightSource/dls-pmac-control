@@ -4,28 +4,14 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest-cov = "*"
-pytest-black = "*"
-pytest-flake8 = "*"
-flake8-isort = "*"
-pytest-mypy = "*"
-sphinx-rtd-theme = "*"
-doc8 = "*"
-mock = "*"
-types-mock = "*"
-types-paramiko = "*"
+dls-pmac-control = {editable = true, extras = ["dev"], path = "."}
 
 [packages]
-numpy = "*"
-pyqt5 = "*"
-pythonqwt = "*"
-mock = "*"
-dls-pmaclib = ">=3.0.0"
+dls-pmac-control = {editable = true, path = "."}
 
 [scripts]
-# Put coverage here so we don't interfere with debugging in the IDE
-tests = "python -m pytest --cov=dls_pmaccontrol --cov-report term"
-docs = "sphinx-build -E -b html docs build/html"
-
-[pipenv]
-allow_prereleases = true
+lint = "pre-commit run --all-files --show-diff-on-failure --color=always -v"
+tests = "pytest"
+docs = "sphinx-build -EWT --keep-going docs build/html"
+# Delete any files that git ignore hides from us
+gitclean = "git clean -fdX"
