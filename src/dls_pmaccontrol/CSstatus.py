@@ -583,7 +583,7 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
     def updateFeed(self, feed):
         self._feed = feed
         # Check for integer overflow before updating
-        if not self.feedSpin.hasFocus() and (abs(feed) < 2**32):
+        if not self.feedSpin.hasFocus() and (abs(feed) < 2 ** 32):
             self.feedSpin.setValue(feed)
 
     def setFeed(self, feed):
