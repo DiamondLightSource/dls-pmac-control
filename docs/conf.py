@@ -40,6 +40,8 @@ extensions = [
 # be found.
 nitpicky = True
 
+numfig = True
+
 # A list of (type, target) tuples (by default empty) that should be ignored when
 # generating warnings in "nitpicky mode". Note that type should include the
 # domain name if present. Example entries would be ('py:func', 'int') or
