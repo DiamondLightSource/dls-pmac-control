@@ -16,10 +16,3 @@ DLS PMAC Control Application
    watches
    gather
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
