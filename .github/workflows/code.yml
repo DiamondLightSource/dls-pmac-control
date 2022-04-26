@@ -82,13 +82,16 @@ jobs:
       PY_IGNORE_IMPORTMISMATCH: "1"
 
     steps:
+      - name: prerequisites
+        steps:
+          apt-get update 
+          apt-get install xvfb
+
       - name: Setup repo and test
-        uses: dls-controls/pipenv-run-action@v1
-        with:
-          python-version: ${{ matrix.python }}
-          pipenv-install: --dev --${{ matrix.pipenv }}
-          allow-editable-installs: ${{ matrix.pipenv == 'deploy' }}
-          pipenv-run: tests
+        steps:
+          if [ ${{ matrix.pipenv }} == 'deploy' ] ; then edit='-e'; fi
+          pipenv install ${edit} --dev --${{ matrix.pipenv }}
+          xvfb pipenv run tests
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
