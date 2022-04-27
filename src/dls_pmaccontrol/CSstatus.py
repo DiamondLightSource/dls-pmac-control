@@ -583,7 +583,7 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
     def updateFeed(self, feed):
         self._feed = feed
         # Check for integer overflow before updating
-        if not self.feedSpin.hasFocus() and (abs(feed) < 2 ** 32):
+        if not self.feedSpin.hasFocus() and (abs(feed) < 2**32):
             self.feedSpin.setValue(feed)
 
     def setFeed(self, feed):
@@ -822,8 +822,8 @@ class PpmacCSStatusForm(QDialog, Ui_formPpmacCSStatus):
 
 if __name__ == "__main__":
     a = QApplication(sys.argv)
-    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))
+    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))  # type: ignore
     w = CSStatusForm(None)
-    a.setMainWidget(w)
+    a.setMainWidget(w)  # type: ignore
     w.show()
-    a.exec_loop()
+    a.exec_loop()  # type: ignore
