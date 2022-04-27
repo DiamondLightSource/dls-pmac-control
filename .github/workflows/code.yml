@@ -61,7 +61,6 @@ jobs:
         # ${GITHUB_REPOSITORY##*/} is the repo name without org
         # Replace this with the cli command if different to the repo name
         run: pipx run --python $(which python${{ matrix.python }}) --spec dist/*.whl dls-pmac-control.py --version
-
   test:
     strategy:
       fail-fast: false
@@ -80,21 +79,16 @@ jobs:
     env:
       # https://github.com/pytest-dev/pytest/issues/2042
       PY_IGNORE_IMPORTMISMATCH: "1"
+      QT_QPA_PLATFORM: "offscreen"
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: prerequisites
-        run: |
-          sudo apt-get update 
-          sudo apt-get -y install xvfb pipenv
-
       - name: Setup repo and test
-        env: 
-          EDIT: "${{ matrix.pipenv == 'deploy' && '-e' || '' }}"
-        run: |
-          pipenv install $EDIT . --dev --${{ matrix.pipenv }}
-          xvfb-run pipenv run tests
+        uses: dls-controls/pipenv-run-action@v1
+        with:
+          python-version: ${{ matrix.python }}
+          pipenv-install: --dev --${{ matrix.pipenv }}
+          allow-editable-installs: ${{ matrix.pipenv == 'deploy' }}
+          pipenv-run: tests
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
