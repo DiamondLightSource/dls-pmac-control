@@ -464,7 +464,7 @@ class PpmacGlobalStatusForm(QDialog, Ui_formGlobalStatus):
 
 if __name__ == "__main__":
     a = QApplication(sys.argv)
-    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))  # type: ignore
+    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))  # type: ignore # noqa
     w = GlobalStatusForm(None)
     a.setMainWidget(w)  # type: ignore
     w.show()
