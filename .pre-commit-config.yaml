@@ -12,13 +12,13 @@ repos:
         name: Run black
         stages: [commit]
         language: system
-        entry: pipenv run black --check --diff
+        entry: black --check --diff
         types: [python]
 
       - id: flake8
         name: Run flake8
         stages: [commit]
         language: system
-        entry: pipenv run flake8
+        entry: flake8
         types: [python]
-        
+

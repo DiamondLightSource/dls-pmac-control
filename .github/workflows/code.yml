@@ -16,13 +16,17 @@ on:
     - cron: "0 8 * * MON"
 
 jobs:
-#   lint:
-#     runs-on: "ubuntu-latest"
-#     steps:
-#       - name: Run black, flake8, mypy
-#         uses: dls-controls/pipenv-run-action@v1
-#         with:
-#           pipenv-run: lint
+  lint:
+    runs-on: "ubuntu-latest"    
+    steps:  
+      - name: checkout 
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - run: |
+          pip install -e .[dev]
+          tox -p -e pre-commit,mypy
 
   wheel:
     strategy:
