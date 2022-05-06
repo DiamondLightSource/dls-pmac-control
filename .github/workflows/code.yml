@@ -98,7 +98,8 @@ jobs:
           python-version: ${{ matrix.python }}
 
       - run: |
-          pip install -e .[dev]
+          if [ '${{ matrix.lock }}' ] && [ -e requirements.txt ]; then lock='-r requirements.txt'; fi
+          pip install ${lock} -e .[dev]
           pytest tests
           
       - name: Upload coverage to Codecov
