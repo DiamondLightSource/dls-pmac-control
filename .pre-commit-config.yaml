@@ -22,3 +22,15 @@ repos:
         entry: flake8
         types: [python]
 
+      - id: lockfile
+        name: Create requirements.txt
+        stages: [commit]
+        language: system
+        entry: 
+          sh -c 'pip freeze > requirements.txt && 
+          sed -i /.*dls_pmaccontrol.*/d requirements.txt &&
+          if [ "$(git diff requirements.txt)" ] ; then echo WARNING requirements.txt UPDATED.; fi'
+        files: setup.*
+        verbose: true
+
+
