@@ -97,8 +97,10 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
-      - run: |
+      - name: run tests
+        run: |
           if [ '${{ matrix.lock }}' ] && [ -e requirements.txt ]; then lock='-r requirements.txt'; fi
+          set -x
           pip install ${lock} -e .[dev]
           pytest tests
           
