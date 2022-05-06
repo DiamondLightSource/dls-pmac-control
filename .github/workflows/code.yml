@@ -72,13 +72,13 @@ jobs:
       matrix:
         os: ["ubuntu-latest"] # can add windows-latest, macos-latest
         python: ["3.8", "3.9", "3.10"]
-        lock: ["true"]
+        lock: ["false"]
 
         include:
-          # Add an extra Python3.7 runner to use the lockfile
+          # Add an extra Python3.10 runner to use the lockfile
           - os: "ubuntu-latest"
             python: "3.10"
-            lock: "false"
+            lock: "true"
 
     runs-on: ${{ matrix.os }}
     env:
@@ -98,18 +98,37 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
+      - name: create requirements.txt
+        if: ${{ matrix.lock }}
+        run: if [ ! -e requirements.txt ]; then pip install -e . && pip freeze > requirements.txt; fi
+
       - name: run tests
         run: |
-          if [ '${{ matrix.lock }}' ] && [ -e requirements.txt ]; then lock='-r requirements.txt'; fi
+          if [ '${{ matrix.lock }}' ] && [ -e dev_requirements.txt ]; then lock='-r dev_requirements.txt'; fi
           set -x
-          pip install ${lock} .[dev]
+          pip install ${lock} -e .[dev]
           pytest tests
+
+      - name: create dev_requirements.txt
+        if: ${{ matrix.lock }}
+        run: |          
+          pip freeze > dev_requirements.txt
+          # remove self references from lockfiles
+          sed -i '/file:\/\//d;/ssh:\/\//d' *requirements.txt
           
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
           name: ${{ matrix.python }}/${{ matrix.os }}/${{ matrix.lock }}
           files: cov.xml
+      
+      - name: Upload lockfiles        
+        uses: actions/upload-artifact@v2
+        with:
+          name: lockfiles
+          path: |
+            requirements.txt
+            dev_requirements.txt
 
   release:
     # needs: [lint, wheel, test]
@@ -120,15 +139,17 @@ jobs:
     steps:
       - uses: actions/download-artifact@v2
         with:
-          name: dist
-          path: dist
+          path: artifacts
 
       - name: Github Release
         # We pin to the SHA, not the tag, for security reasons.
         # https://docs.github.com/en/actions/learn-github-actions/security-hardening-for-github-actions#using-third-party-actions
         uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5 # v0.1.14
         with:
-          files: dist/*
+          files: 
+            artifacts/dist/*
+            artifacts/lockfiles/requirements.txt
+            artifacts/lockfiles/dev_requirements.txt
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -137,4 +158,4 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.pypi_token }}
-        run: pipx run twine upload dist/*
+        run: pipx run twine upload artifacts/dist/*
