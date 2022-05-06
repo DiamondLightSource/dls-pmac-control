@@ -27,7 +27,7 @@ jobs:
       - name: lint
         run: |
           pip install --user .[dev]
-          tox -p -e pre-commit,mypy
+          tox -e pre-commit,mypy
 
   wheel:
     strategy:
