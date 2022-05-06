@@ -25,7 +25,7 @@ jobs:
           fetch-depth: 1
 
       - run: |
-          pip install -e .[dev]
+          pip install --user .[dev]
           tox -p -e pre-commit,mypy
 
   wheel:
