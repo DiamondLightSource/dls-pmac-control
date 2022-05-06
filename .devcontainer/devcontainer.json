@@ -50,5 +50,5 @@
     "workspaceFolder": "/workspace",
     // After the container is created, install the python project in editable form
     // This installs into the system python which is fine for a container
-    "postCreateCommand": "pip install -e .[dev]"
+    //  "postCreateCommand": "pip install -e .[dev]"
 }
