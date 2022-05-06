@@ -99,24 +99,24 @@ jobs:
           python-version: ${{ matrix.python }}
 
       - name: create requirements.txt
-        if: ${{ matrix.lock }}
-        run:
+        if: ${{ matrix.lock == 'true' }}
+        run: |
           pip install pip --upgrade 
           if [ ! -e requirements.txt ]; then pip install -e . && pip freeze > requirements.txt; fi
 
       - name: run tests
         run: |
-          if [ '${{ matrix.lock }}' ] && [ -e dev_requirements.txt ]; then lock='-r dev_requirements.txt'; fi
+          if [ '${{ matrix.lock == 'true' }}' ] && [ -e dev_requirements.txt ]; then lock='-r dev_requirements.txt'; fi
           set -x
           pip install ${lock} -e .[dev]
           pytest tests
 
       - name: create dev_requirements.txt
-        if: ${{ matrix.lock }}
+        if: ${{ matrix.lock == 'true' }}
         run: |          
           pip freeze > dev_requirements.txt
           # remove self references from lockfiles
-          sed -i '/file:\/\//d;git+https\/\//d' *requirements.txt
+          sed -i '/file:\/\//d; /git+https\/\//d' *requirements.txt
           
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
