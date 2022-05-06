@@ -100,7 +100,9 @@ jobs:
 
       - name: create requirements.txt
         if: ${{ matrix.lock }}
-        run: if [ ! -e requirements.txt ]; then pip install -e . && pip freeze > requirements.txt; fi
+        run:
+          pip install pip --upgrade 
+          if [ ! -e requirements.txt ]; then pip install -e . && pip freeze > requirements.txt; fi
 
       - name: run tests
         run: |
@@ -114,7 +116,7 @@ jobs:
         run: |          
           pip freeze > dev_requirements.txt
           # remove self references from lockfiles
-          sed -i '/file:\/\//d;/ssh:\/\//d' *requirements.txt
+          sed -i '/file:\/\//d;git+https\/\//d' *requirements.txt
           
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
