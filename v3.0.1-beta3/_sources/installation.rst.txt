@@ -65,4 +65,4 @@ Installation Guide
 
 .. code-block:: console
 
-  dls-pmac-control.py
+  dls-pmac-control
