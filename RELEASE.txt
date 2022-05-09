@@ -56,4 +56,4 @@ Installation:
        dls-python3 setup.py install
 
 5) Run the application from within the virtual environment:
-       dls-pmac-control.py
+       dls-pmac-control

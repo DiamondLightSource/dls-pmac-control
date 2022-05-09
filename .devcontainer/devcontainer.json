@@ -6,12 +6,6 @@
         "dockerfile": "Dockerfile",
         "context": "..",
         "args": {
-            // Update 'VARIANT' to pick a Python version: 3, 3.10, 3.9, 3.8, 3.7, 3.6
-            // Append -bullseye or -buster to pin to an OS version.
-            // Use -bullseye variants on local on arm64/Apple Silicon.
-            "VARIANT": "3.10-bullseye",
-            // Options
-            "NODE_VERSION": "none",
         }
     },
     "remoteEnv": {
@@ -45,10 +39,10 @@
         "nsd.vscode-epics",
         "alefragnani.bookmarks"
     ],
-    // "features": {
-    //     "docker-from-docker": "20.10",
-    //     "git": "os-provided"
-    // },
+    "features": {
+        //"docker-from-docker": "20.10",
+        "git": "os-provided"
+    },
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
     // "forwardPorts": [],
     // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
@@ -63,7 +57,8 @@
         "-v=${localEnv:HOME}/.inputrc:/root/.inputrc"
     ],
     "mounts": [
-        "source=/scratch/${localEnv:USER},target=/scratch/${localEnv:USER},type=bind,consistency=cached",
+        // map in home directory - not strictly necessary but may be useful
+        "source=${localEnv:HOME},target=${localEnv:HOME},type=bind,consistency=cached",
     ],
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,Z",
     "workspaceFolder": "/workspace",
