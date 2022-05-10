@@ -101,8 +101,9 @@ jobs:
       - name: create requirements.txt
         if: ${{ matrix.lock == 'true' }}
         run: |
+          set -x
           pip install pip --upgrade 
-          this_package=$(awk -F "=" '/name/ {print $2}' setup.cfg)
+          echo "this_package=$(awk -F "=" '/name/ {print $2}' setup.cfg)"" >> $GITHUB_ENV
           if [ ! -e requirements.txt ]; then pip install -e . && pip freeze --exclude ${this_package} > requirements.txt; fi
 
       - name: run tests
@@ -116,8 +117,6 @@ jobs:
         if: ${{ matrix.lock == 'true' }}
         run: |
           pip freeze --exclude ${this_package} > requirements_dev.txt
-          # remove self references from lockfiles
-          sed -i '/file:\/\//d; /git+https\/\//d' *requirements.txt
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
