@@ -60,8 +60,8 @@
         "source=${localEnv:HOME},target=${localEnv:HOME},type=bind,consistency=cached"
     ],
     "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
-    "workspaceFolder": "/workspace"
+    "workspaceFolder": "/workspace",
     // After the container is created, install the python project in editable form
-    // This installs into the system python which is fine for a container
-    //  "postCreateCommand": "pip install -e .[dev]"
+    // This installs into the system python of the container
+    "postCreateCommand": "pip install $([ -f requirements_dev.txt ] && echo -r requirements_dev.txt ) -e .[dev]"
 }

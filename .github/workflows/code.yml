@@ -102,19 +102,20 @@ jobs:
         if: ${{ matrix.lock == 'true' }}
         run: |
           pip install pip --upgrade 
-          if [ ! -e requirements.txt ]; then pip install -e . && pip freeze > requirements.txt; fi
+          this_package=$(awk -F "=" '/name/ {print $2}' setup.cfg)
+          if [ ! -e requirements.txt ]; then pip install -e . && pip freeze --exclude ${this_package} > requirements.txt; fi
 
       - name: run tests
         run: |
-          if [ '${{ matrix.lock == 'true' }}' ] && [ -e dev_requirements.txt ]; then lock='-r dev_requirements.txt'; fi
+          if [ '${{ matrix.lock == 'true' }}' ] && [ -e requirements_dev.txt ]; then lock='-r requirements_dev.txt'; fi
           set -x
           pip install ${lock} -e .[dev]
           pytest tests
 
-      - name: create dev_requirements.txt
+      - name: create requirements_dev.txt
         if: ${{ matrix.lock == 'true' }}
         run: |
-          pip freeze > dev_requirements.txt
+          pip freeze --exclude ${this_package} > requirements_dev.txt
           # remove self references from lockfiles
           sed -i '/file:\/\//d; /git+https\/\//d' *requirements.txt
 
@@ -130,7 +131,7 @@ jobs:
           name: lockfiles
           path: |
             requirements.txt
-            dev_requirements.txt
+            requirements_dev.txt
 
   release:
     needs: [lint, wheel, test]
@@ -149,7 +150,7 @@ jobs:
         with:
           files: artifacts/dist/*
             artifacts/lockfiles/requirements.txt
-            artifacts/lockfiles/dev_requirements.txt
+            artifacts/lockfiles/requirements_dev.txt
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
