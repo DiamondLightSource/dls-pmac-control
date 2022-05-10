@@ -1,7 +1,6 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.231.6/containers/python-3/.devcontainer/base.Dockerfile
 
 ARG BASE="mcr.microsoft.com/vscode/devcontainers/python:0-3.10-bullseye"
-ARG ENTRYPOINT=python
 FROM ${BASE}
 
 # things to make pyQt5 work
@@ -13,7 +12,7 @@ ENV XDG_RUNTIME_DIR=/tmp/runtime-vscode
 # for testing
 RUN apt-get install -y x11-apps
 
-# install runtime from DIST if this is one
+# install runtime from DIST if there is one
 RUN test -d dist && pip install dist/*.whl || :
 
-ENTRYPOINT ${ENTRYPOINT}
+CMD ["src/dls_pmaccontrol/motor.py"]

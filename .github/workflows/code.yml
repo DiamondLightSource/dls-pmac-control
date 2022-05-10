@@ -17,9 +17,9 @@ on:
 
 jobs:
   lint:
-    runs-on: "ubuntu-latest"    
-    steps:  
-      - name: checkout 
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
@@ -88,7 +88,7 @@ jobs:
       QT_QPA_PLATFORM: "offscreen"
 
     steps:
-      - name: checkout 
+      - name: checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
@@ -113,18 +113,18 @@ jobs:
 
       - name: create dev_requirements.txt
         if: ${{ matrix.lock == 'true' }}
-        run: |          
+        run: |
           pip freeze > dev_requirements.txt
           # remove self references from lockfiles
           sed -i '/file:\/\//d; /git+https\/\//d' *requirements.txt
-          
+
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
         with:
           name: ${{ matrix.python }}/${{ matrix.os }}/${{ matrix.lock }}
           files: cov.xml
-      
-      - name: Upload lockfiles        
+
+      - name: Upload lockfiles
         uses: actions/upload-artifact@v2
         with:
           name: lockfiles
@@ -147,8 +147,7 @@ jobs:
         # https://docs.github.com/en/actions/learn-github-actions/security-hardening-for-github-actions#using-third-party-actions
         uses: softprops/action-gh-release@1e07f4398721186383de40550babbdf2b84acfc5 # v0.1.14
         with:
-          files: 
-            artifacts/dist/*
+          files: artifacts/dist/*
             artifacts/lockfiles/requirements.txt
             artifacts/lockfiles/dev_requirements.txt
           generate_release_notes: true
@@ -161,7 +160,6 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.pypi_token }}
         run: pipx run twine upload artifacts/dist/*
 
-
   make-container:
     #needs: [lint, wheel, test]
     needs: [wheel]
@@ -170,12 +168,12 @@ jobs:
       contents: read
       packages: write
 
-    steps: 
+    steps:
       - name: Set outputs
         id: vars
         run: echo ::set-output name=repo_name::${GITHUB_REPOSITORY#*\/}
 
-      - name: checkout 
+      - name: checkout
         uses: actions/checkout@v2
         with:
           fetch-depth: 1
@@ -214,11 +212,9 @@ jobs:
         with:
           builder: ${{ steps.buildx.outputs.name }}
           file: .devcontainer/Dockerfile
-          # push the image to ghcr.io for tagged builds
-          push: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags') }}
-          build-args: 
-            --build-arg BASE=python:3.10
-            --build-arg ENTRYPOINT=${{ steps.vars.outputs.repo_name }}
+          # push: ${{ github.event_name == 'push' && startsWith(github.ref, 'refs/tags') }}
+          push: true
+          build-args: --build-arg BASE=python:3.10-slim
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache

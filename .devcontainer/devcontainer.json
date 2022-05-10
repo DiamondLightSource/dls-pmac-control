@@ -5,11 +5,10 @@
     "build": {
         "dockerfile": "Dockerfile",
         "context": "..",
-        "args": {
-        }
+        "args": {}
     },
     "remoteEnv": {
-        "DISPLAY": "${localEnv:DISPLAY}",
+        "DISPLAY": "${localEnv:DISPLAY}"
     },
     // Set *default* container specific settings.json values on container create.
     "settings": {
@@ -58,10 +57,10 @@
     ],
     "mounts": [
         // map in home directory - not strictly necessary but may be useful
-        "source=${localEnv:HOME},target=${localEnv:HOME},type=bind,consistency=cached",
+        "source=${localEnv:HOME},target=${localEnv:HOME},type=bind,consistency=cached"
     ],
-    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,Z",
-    "workspaceFolder": "/workspace",
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    "workspaceFolder": "/workspace"
     // After the container is created, install the python project in editable form
     // This installs into the system python which is fine for a container
     //  "postCreateCommand": "pip install -e .[dev]"
