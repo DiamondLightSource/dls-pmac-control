@@ -103,7 +103,7 @@ jobs:
         run: |
           set -x
           pip install pip --upgrade 
-          echo "this_package=$(awk -F "=" '/name/ {print $2}' setup.cfg)"" >> $GITHUB_ENV
+          echo "this_package=$(sed -n '/^ *name *= *\(.*\)$/s//\1/p' setup.cfg)" >> $GITHUB_ENV
           if [ ! -e requirements.txt ]; then pip install -e . && pip freeze --exclude ${this_package} > requirements.txt; fi
 
       - name: run tests
