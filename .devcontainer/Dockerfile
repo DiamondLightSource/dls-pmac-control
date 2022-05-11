@@ -14,7 +14,7 @@ ENV PATH=/root/.local/bin:$PATH
 # things to make pyQt5 work
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && \
     apt-get install -y --no-install-recommends \
-    ffmpeg libsm6 libxext6 libqt5gui5 libxcb-xinerama0 && \
+    libqt5gui5 libxcb-xinerama0 && \
     rm -rf /var/lib/apt/lists/*
     
 ENV XDG_RUNTIME_DIR=/tmp/runtime-vscode

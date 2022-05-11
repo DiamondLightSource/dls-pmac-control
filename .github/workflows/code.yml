@@ -21,11 +21,10 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
 
       - name: lint
         run: |
+          set -x
           pip install --user .[dev]
           tox -e pre-commit,mypy
 
@@ -39,8 +38,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
 
       - name: Create Sdist and Wheel
         # Set SOURCE_DATE_EPOCH from git commit for reproducible build
@@ -73,13 +70,13 @@ jobs:
       matrix:
         os: ["ubuntu-latest"] # can add windows-latest, macos-latest
         python: ["3.8", "3.9", "3.10"]
-        lock: ["false"]
+        lock: [false]
 
         include:
           # Add an extra Python3.10 runner to use the lockfile
           - os: "ubuntu-latest"
             python: "3.10"
-            lock: "true"
+            lock: true
 
     runs-on: ${{ matrix.os }}
     env:
@@ -91,8 +88,6 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
 
       - name: setup python ${{ matrix.python }}
         uses: actions/setup-python@v2
@@ -100,20 +95,22 @@ jobs:
           python-version: ${{ matrix.python }}
 
       - name: create requirements.txt
-        if: ${{ matrix.lock == 'true' }}
+        if: ${{ matrix.lock == true }}
         run: |
           set -x
-          if [ ! -e requirements.txt ]; then pip install -e . && pip freeze --exclude-editable > requirements.txt; fi
+          if [ ! -e requirements.txt ]; then \\
+          pip install -e . && \\
+          pip freeze --exclude-editable > requirements.txt; fi
 
       - name: run tests
         run: |
           set -x
-          if [ '${{ matrix.lock == 'true' }}' ] && [ -e requirements_dev.txt ]; then lock='-r requirements_dev.txt'; fi
+          if [ '${{ matrix.lock == true }}' ]; then lock='-r requirements_dev.txt'; fi
+          touch requirements_dev.txt
           pip install ${lock} -e .[dev]
           pytest tests
 
       - name: create requirements_dev.txt
-        if: ${{ matrix.lock == 'true' }}
         run: |
           pip freeze --exclude-editable > requirements_dev.txt
 
@@ -173,8 +170,6 @@ jobs:
 
       - name: checkout
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 1
 
       - uses: actions/download-artifact@v2
         with:
@@ -213,8 +208,7 @@ jobs:
           file: .devcontainer/Dockerfile
           context: .
           push: true
-          build-args: |
-            BASE=python:3.10-slim
+          build-args: BASE=python:3.10-slim
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=local,src=/tmp/.buildx-cache
