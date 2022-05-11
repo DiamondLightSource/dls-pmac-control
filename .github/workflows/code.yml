@@ -24,7 +24,6 @@ jobs:
 
       - name: lint
         run: |
-          set -x
           pip install --user .[dev]
           tox -e pre-commit,mypy
 
@@ -97,12 +96,12 @@ jobs:
       - name: create requirements.txt
         if: ${{ matrix.lock == true }}
         run: |
-          set -x
-          if [ ! -e requirements.txt ]; then pip install -e . && pip freeze --exclude-editable > requirements.txt; fi
+          touch requirements.txt
+          pip install -r requirements.txt -e .
+          pip freeze --exclude-editable > requirements.txt
 
       - name: run tests
         run: |
-          set -x
           if [ '${{ matrix.lock == true }}' ]; then lock='-r requirements_dev.txt'; fi
           touch requirements_dev.txt
           pip install ${lock} -e .[dev]
@@ -119,6 +118,7 @@ jobs:
           files: cov.xml
 
       - name: Upload lockfiles
+        if: ${{ matrix.lock == true }}
         uses: actions/upload-artifact@v2
         with:
           name: lockfiles
