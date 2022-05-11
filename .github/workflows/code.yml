@@ -98,9 +98,7 @@ jobs:
         if: ${{ matrix.lock == true }}
         run: |
           set -x
-          if [ ! -e requirements.txt ]; then \\
-          pip install -e . && \\
-          pip freeze --exclude-editable > requirements.txt; fi
+          if [ ! -e requirements.txt ]; then pip install -e . && pip freeze --exclude-editable > requirements.txt; fi
 
       - name: run tests
         run: |
