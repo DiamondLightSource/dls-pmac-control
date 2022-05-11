@@ -103,15 +103,12 @@ jobs:
         if: ${{ matrix.lock == 'true' }}
         run: |
           set -x
-          pip install pip --upgrade 
           if [ ! -e requirements.txt ]; then pip install -e . && pip freeze --exclude-editable > requirements.txt; fi
-        # TODO: need to think about the interaction of the two lock files. If there are both files then the
-        # requirements.txt controls what goes in runtime container, but may not be the same as what was tested here
 
       - name: run tests
         run: |
-          if [ '${{ matrix.lock == 'true' }}' ] && [ -e requirements_dev.txt ]; then lock='-r requirements_dev.txt'; fi
           set -x
+          if [ '${{ matrix.lock == 'true' }}' ] && [ -e requirements_dev.txt ]; then lock='-r requirements_dev.txt'; fi
           pip install ${lock} -e .[dev]
           pytest tests
 
@@ -151,8 +148,7 @@ jobs:
         with:
           files: |
             artifacts/dist/*
-            artifacts/lockfiles/requirements.txt
-            artifacts/lockfiles/requirements_dev.txt
+            artifacts/lockfiles/*
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -164,8 +160,7 @@ jobs:
         run: pipx run twine upload artifacts/dist/*
 
   make-container:
-    #needs: [lint, wheel, test]
-    needs: wheel
+    needs: [lint, wheel, test]
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -185,7 +180,6 @@ jobs:
         with:
           name: dist
           path: dist
-      - run: ls -R
 
       - name: Cache Docker layers
         uses: actions/cache@v2
