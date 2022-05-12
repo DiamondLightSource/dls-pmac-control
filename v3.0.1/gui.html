@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Main GUI Screen &mdash; DLS PMAC Control Application 3.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/theme_overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/dls-favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Watch Window" href="watches.html" />
+    <link rel="prev" title="Installation Guide" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: rgb(7, 43, 93)" >
+            <a href="index.html" class="icon icon-home"> DLS PMAC Control Application
+            <img src="_static/dls-logo.svg" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                3.0.1
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Main GUI Screen</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#connection">Connection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jog-ribbon">Jog Ribbon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#axis-settings">Axis Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#status-screens">Status Screens</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#polling">Polling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sending-commands">Sending Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#loading-plcs">Loading PLCs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="watches.html">Watch Window</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gather.html">Data Gather</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: rgb(7, 43, 93)" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">DLS PMAC Control Application</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Main GUI Screen</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/gui.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="main-gui-screen">
+<h1>Main GUI Screen<a class="headerlink" href="#main-gui-screen" title="Permalink to this headline"></a></h1>
+<p>Running the application will launch the following screen:</p>
+<figure class="align-default" id="id1">
+<span id="label-main"></span><a class="reference internal image-reference" href="_images/main-window-startup.png"><img alt="Initial GUI screen" src="_images/main-window-startup.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text"><em>GUI startup screen</em></span><a class="headerlink" href="#id1" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>The user must connect to a PMAC in order to access the various tools provided by the application.</p>
+<section id="connection">
+<h2>Connection<a class="headerlink" href="#connection" title="Permalink to this headline"></a></h2>
+<p>The user can connect to a PMAC using Telnet, Ethernet, or Serial connection. Connection to a Power PMAC can be achieved via the SSH protocol.</p>
+<p>To connect to the hardware select the connection type and press connect. There is the option of changing the connection parameters if required.</p>
+<p>When connecting via SSH protocol, the default username and password will be used and if this fails then the following screen (<a class="reference internal" href="#label-login"><span class="std std-numref">Fig. 2</span></a>) will be shown to promt the user for another username and password:</p>
+<figure class="align-default" id="id2">
+<span id="label-login"></span><a class="reference internal image-reference" href="_images/login.png"><img alt="screen to prompt user for SSH authentication" src="_images/login.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text"><em>Login screen to prompt user for SSH authentication</em></span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>A pop-up window will be displayed if the connection fails for the PMAC (<a class="reference internal" href="#label-refused"><span class="std std-numref">Fig. 3</span></a>) or Power PMAC (<a class="reference internal" href="#label-conn-error"><span class="std std-numref">Fig. 4</span></a>). Examples of these are shown below.</p>
+<figure class="align-default" id="id3">
+<span id="label-refused"></span><a class="reference internal image-reference" href="_images/refused-connection.png"><img alt="_images/refused-connection.png" src="_images/refused-connection.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text"><em>Pop-up window for connection refused</em></span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id4">
+<span id="label-conn-error"></span><a class="reference internal image-reference" href="_images/connection-error.png"><img alt="_images/connection-error.png" src="_images/connection-error.png" style="width: 300px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text"><em>Pop-up window for connection error</em></span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Upon successfully connecting the application will launch a screen similar to the following:</p>
+<figure class="align-default" id="id5">
+<span id="label-connected"></span><a class="reference internal image-reference" href="_images/pmac-connected.png"><img alt="GUI screen when first connected" src="_images/pmac-connected.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text"><em>GUI immediately after connecting</em></span><a class="headerlink" href="#id5" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>The user can now access the screens and features which have been enabled as shown in <a class="reference internal" href="#label-connected"><span class="std std-numref">Fig. 5</span></a>.</p>
+<figure class="align-default" id="id6">
+<span id="label-annotated"></span><a class="reference internal image-reference" href="_images/annotated-gui-main.png"><img alt="GUI screen with annotation" src="_images/annotated-gui-main.png" style="width: 600px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 6 </span><span class="caption-text"><em>Main GUI screen showing: (1) Connection protocol (2) Axis control (3) Polling window (4) Additional screens (5) Command window</em></span><a class="headerlink" href="#id6" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="jog-ribbon">
+<h2>Jog Ribbon<a class="headerlink" href="#jog-ribbon" title="Permalink to this headline"></a></h2>
+<p>The jog ribbon can be found within the main screen (<a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(2)</em>) and allows the user to move individual motors. The jog ribbon also shows the position, velocity, and following error of the current motor and shows LEDs which indicate whether a position limit has been reached.</p>
+<figure class="align-default" id="id7">
+<span id="label-red"></span><a class="reference internal image-reference" href="_images/red-hi-lim.png"><img alt="_images/red-hi-lim.png" src="_images/red-hi-lim.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 7 </span><span class="caption-text"><em>Red LED indicating motor position limit reached</em></span><a class="headerlink" href="#id7" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id8">
+<span id="label-amber"></span><a class="reference internal image-reference" href="_images/amber-hi-lim.png"><img alt="_images/amber-hi-lim.png" src="_images/amber-hi-lim.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 8 </span><span class="caption-text"><em>Amber LED indicating software motor position limit reached</em></span><a class="headerlink" href="#id8" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>Note that for the Power PMAC these LEDs will be red when hardware limits have been reached and amber when software limits have been reached (see <a class="reference internal" href="#label-amber"><span class="std std-numref">Fig. 8</span></a>). LEDs are always red for PMAC (see <a class="reference internal" href="#label-red"><span class="std std-numref">Fig. 7</span></a>) as there is no distinction between hardware and software limits.</p>
+</section>
+<section id="axis-settings">
+<h2>Axis Settings<a class="headerlink" href="#axis-settings" title="Permalink to this headline"></a></h2>
+<p>To configure the settings for a particular axis press the “settings…” button in the main screen (<a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(2)</em>). This will launch the following screen which has two tabs for PMAC models:</p>
+<figure class="align-default" id="id9">
+<a class="reference internal image-reference" href="_images/pmac-axis-settings.png"><img alt="_images/pmac-axis-settings.png" src="_images/pmac-axis-settings.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 9 </span><span class="caption-text"><em>PMAC Axis Settings (PID and macro variables)</em></span><a class="headerlink" href="#id9" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id10">
+<a class="reference internal image-reference" href="_images/pmac-axis-settings2.png"><img alt="_images/pmac-axis-settings2.png" src="_images/pmac-axis-settings2.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 10 </span><span class="caption-text"><em>PMAC Axis Settings (definition and safety variables)</em></span><a class="headerlink" href="#id10" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>The values shown on this screen can be edited by typing in new values and pressing enter. This will send a command to the hardware to set the variable to the desired value. It is expected that new values are in a format which can be interpreted by the PMAC and within an allowed range for that variable. Unlike in the polling table, values do not update periodically, instead the user must click update to read back values from the PMAC.</p>
+<p>For the Power PMAC the axis settings screen is as follows:</p>
+<figure class="align-default" id="id11">
+<span id="fig-ppmac-settings"></span><a class="reference internal image-reference" href="_images/power-pmac-axis-settings.png"><img alt="_images/power-pmac-axis-settings.png" src="_images/power-pmac-axis-settings.png" style="width: 400px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 11 </span><span class="caption-text"><em>Power PMAC Axis Settings</em></span><a class="headerlink" href="#id11" title="Permalink to this image"></a></p>
+</figcaption>
+</figure>
+<p>The screen shown in <a class="reference internal" href="#fig-ppmac-settings"><span class="std std-numref">Fig. 11</span></a> can be used in the same way as for the PMAC.</p>
+</section>
+<section id="status-screens">
+<h2>Status Screens<a class="headerlink" href="#status-screens" title="Permalink to this headline"></a></h2>
+<p>There are three status screens available to the user. One displays motor status items, one shows status items for the coordinate system, and the other shows global status items. This screens will differ slightly for PMAC and Power PMAC.</p>
+<p>To show the motor status screen press the “status…” button (shown in <a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(2)</em>). Green LEDs will light up to show that the status bit has been set. The user can hover over each status item for a more in depth explanation of what it indicates.</p>
+<p>The coordinate system status and global status screens can be found in the “additional screens” section (<em>(4)</em> <a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a>).</p>
+</section>
+<section id="polling">
+<h2>Polling<a class="headerlink" href="#polling" title="Permalink to this headline"></a></h2>
+<p>The polling table (<a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(3)</em>) shows the position, velocity, and following error of all the motors. LEDs which indicate whether a position limit has been reached are also displayed in the table. Note that for the Power PMAC an amber LED indicates a software limit and a red LED indicates a hardware limit.</p>
+<p>The polling window is updated periodically by sending a command to the PMAC to request particular values.</p>
+</section>
+<section id="sending-commands">
+<h2>Sending Commands<a class="headerlink" href="#sending-commands" title="Permalink to this headline"></a></h2>
+<p>The application includes the option to send commands directly to the PMAC using the bar shown in the “command window” in the main window (<a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(5)</em>). The checkbox labelled “show all commands sent” allows the option of displaying any commands sent by any other parts of the application. For example, when using the jog ribbon, if this box is ticked then any jog commands sent to the controller will be displayed in the command window.</p>
+</section>
+<section id="loading-plcs">
+<h2>Loading PLCs<a class="headerlink" href="#loading-plcs" title="Permalink to this headline"></a></h2>
+<p>The application allows the user to load a PLC line-by-line onto the PMAC. When the “load pmc…” button (found in <a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(4)</em>) is pressed a window is launched which allows the user to choose a PLC from their local machine. Whilst the PLC is loading a progress bar is displayed. Note that if the PLC cannot be interpreted by the controller then the application may freeze while loading the PLC.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="watches.html" class="btn btn-neutral float-right" title="Watch Window" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+   
+  <div id="other-versions-div" class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" style="visibility: hidden">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <span class="fa fa-book"> Other Versions</span>
+      3.0.1
+      <span class="fa fa-caret-down"></span>
+    </span>
+    <div class="rst-other-versions">
+      <dl id="other-versions-dl"/>
+    </div>
+  </div>
+  <script>
+    function addVersion(name) {
+      var dd = document.createElement("dd");
+      var a = document.createElement("a");
+      a.href = "../" + name;
+      a.innerText = name;
+      dd.appendChild(a);
+      document.getElementById('other-versions-dl').appendChild(dd);
+    }
+    // Get versions.txt and add a version for each line
+    fetch("../versions.txt").then(response => {
+      if (response.ok) {
+        document.getElementById('other-versions-div').style.visibility = "visible";
+        return response.text().then(text => text.split(/\r?\n/).forEach(addVersion))
+      }
+    });
+  </script>
+
+
+</body>
+</html>
