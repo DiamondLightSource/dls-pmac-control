@@ -33,4 +33,4 @@ RUN mkdir -p /root/.local && \
 FROM base as runtime
 COPY --from=developer /root/.local /root/.local
 
-CMD ["dls-pmac-control"]
+ENTRYPOINT ["dls-pmac-control"]
