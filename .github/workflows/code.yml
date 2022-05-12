@@ -162,10 +162,6 @@ jobs:
       packages: write
 
     steps:
-      - name: Set outputs
-        id: vars
-        run: echo ::set-output name=repo_name::${GITHUB_REPOSITORY#*\/}
-
       - name: checkout
         uses: actions/checkout@v2
 
@@ -202,7 +198,6 @@ jobs:
       - name: Build runtime image
         uses: docker/build-push-action@v2
         with:
-          builder: ${{ steps.buildx.outputs.name }}
           file: .devcontainer/Dockerfile
           context: .
           push: true
