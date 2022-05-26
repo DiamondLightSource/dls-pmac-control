@@ -86,11 +86,11 @@
         },
         "dls-pmaclib": {
             "hashes": [
-                "sha256:6d2717141c820b5f0deaec190d76f32d135a255d10c078cebc2507cdd8e1ba22",
-                "sha256:ce45f58d49bc3ee59a2893de9ddce03a3fb5a985da9bedfa9cbb8da9931ee343"
+                "sha256:21592edab35fa61c6ea9823bd410d7dca2e070cdbbece37ea69c73c70fe3e699",
+                "sha256:bf464a268fa4141e0f3a203413af9f22db5d782b1adac579b306efae6daf250a"
             ],
             "index": "pypi",
-            "version": "==3.0.1"
+            "version": "==3.0.2"
         },
         "mock": {
             "hashes": [
