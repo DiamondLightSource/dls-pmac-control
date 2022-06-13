@@ -121,7 +121,8 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
         retLst = self.parent.pmac.getAxisSetupIVars(self.currentMotor, ivars)
         if retLst:
             for i, retVal in enumerate(retLst):
-                exec('self.lneIx%d.setText(str("%s"))' % (ivars[i], retVal))
+                if i < len(ivars):
+                    exec('self.lneIx%d.setText(str("%s"))' % (ivars[i], retVal))
 
     def _updateAxisSignalControlsVars(self):
         (
