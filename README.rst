@@ -16,16 +16,16 @@ Releases       https://github.com/dls-controls/dls-pmac-control/releases
 ============== ==============================================================
 
 
-.. |code_ci| image:: https://github.com/dls-controls/dls_pmaccontrol/workflows/Code%20CI/badge.svg?branch=master
-    :target: https://github.com/dls-controls/dls_pmaccontrol/actions?query=workflow%3A%22Code+CI%22
+.. |code_ci| image:: https://github.com/dls-controls/dls-pmac-control/workflows/Code%20CI/badge.svg?branch=master
+    :target: https://github.com/dls-controls/dls-pmac-control/actions?query=workflow%3A%22Code+CI%22
     :alt: Code CI
 
-.. |docs_ci| image:: https://github.com/dls-controls/dls_pmaccontrol/workflows/Docs%20CI/badge.svg?branch=master
-    :target: https://github.com/dls-controls/dls_pmaccontrol/actions?query=workflow%3A%22Docs+CI%22
+.. |docs_ci| image:: https://github.com/dls-controls/dls-pmac-control/workflows/Docs%20CI/badge.svg?branch=master
+    :target: https://github.com/dls-controls/dls-pmac-control/actions?query=workflow%3A%22Docs+CI%22
     :alt: Docs CI
 
-.. |coverage| image:: https://codecov.io/gh/dls-controls/dls_pmaccontrol/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/dls-controls/dls_pmaccontrol
+.. |coverage| image:: https://codecov.io/gh/dls-controls/dls-pmac-control/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/dls-controls/dls-pmac-control
     :alt: Test Coverage
 
 .. |pypi_version| image:: https://img.shields.io/pypi/v/dls-pmaccontrol.svg
