@@ -822,8 +822,8 @@ class PpmacCSStatusForm(QDialog, Ui_formPpmacCSStatus):
 
 if __name__ == "__main__":
     a = QApplication(sys.argv)
-    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))
+    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))  # type: ignore # noqa
     w = CSStatusForm(None)
-    a.setMainWidget(w)
+    a.setMainWidget(w)  # type: ignore
     w.show()
-    a.exec_loop()
+    a.exec_loop()  # type: ignore

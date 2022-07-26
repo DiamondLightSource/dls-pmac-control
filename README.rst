@@ -1,55 +1,42 @@
-dls_pmaccontrol
+dls-pmac-control
 ===========================
 
-|build_status| |coverage| |pypi_version| |readthedocs|
+|code_ci| |docs_ci| |coverage| |pypi_version| |license|
 
-The dls_pmaccontrol package is a python application which provides a GUI front end to control the DeltaTau PMAC and Geobrick motor control systems.
-
-Documentation
--------------
-
-Full documentation is available at http://dls_pmaccontrol.readthedocs.io
-
-Source Code
------------
-
-Available from http://github.com/dls-controls/dls_pmaccontrol
-
-Installation
-------------
-
-To start using this project::
-
-    git clone https://github.com/dls-controls/dls_pmaccontrol
-
-Contributing
-------------
-
-See `CONTRIBUTING`_
-
-License
--------
-APACHE License. (see `LICENSE`_)
+The dls_pmaccontrol package is a python application which provides a GUI front 
+end to control the DeltaTau PMAC, Power PMAC and Geobrick motor control systems.
 
 
-.. |build_status| image:: https://travis-ci.com/dls-controls/dls_pmaccontrol.svg?branch=master
-    :target: https://travis-ci.com/dls-controls/dls_pmaccontrol
-    :alt: Build Status
+============== ==============================================================
+PyPI           ``pip install dls-pmac-control``
+Source code    https://github.com/dls-controls/dls-pmac-control
+Documentation  https://dls-controls.github.io/dls-pmac-control
+Releases       https://github.com/dls-controls/dls-pmac-control/releases
+============== ==============================================================
 
-.. |coverage| image:: https://coveralls.io/repos/github/dls-controls/dls_pmaccontrol/badge.svg?branch=master
-    :target: https://coveralls.io/github/dls-controls/dls_pmaccontrol?branch=master
+
+.. |code_ci| image:: https://github.com/dls-controls/dls_pmaccontrol/workflows/Code%20CI/badge.svg?branch=master
+    :target: https://github.com/dls-controls/dls_pmaccontrol/actions?query=workflow%3A%22Code+CI%22
+    :alt: Code CI
+
+.. |docs_ci| image:: https://github.com/dls-controls/dls_pmaccontrol/workflows/Docs%20CI/badge.svg?branch=master
+    :target: https://github.com/dls-controls/dls_pmaccontrol/actions?query=workflow%3A%22Docs+CI%22
+    :alt: Docs CI
+
+.. |coverage| image:: https://codecov.io/gh/dls-controls/dls_pmaccontrol/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/dls-controls/dls_pmaccontrol
     :alt: Test Coverage
 
-.. |pypi_version| image:: https://badge.fury.io/py/dls_pmaccontrol.svg
-    :target: https://badge.fury.io/py/dls_pmaccontrol
+.. |pypi_version| image:: https://img.shields.io/pypi/v/dls-pmac-control.svg
+    :target: https://pypi.org/project/dls-pmac-control
     :alt: Latest PyPI version
 
-.. |readthedocs| image:: https://readthedocs.org/projects/dls_pmaccontrol/badge/?version=latest
-    :target: http://dls_pmaccontrol.readthedocs.io
-    :alt: Documentation
+.. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
+    :target: https://opensource.org/licenses/Apache-2.0
+    :alt: Apache License
 
-.. _CONTRIBUTING:
-    https://github.com/dls-controls/dls_pmaccontrol/blob/master/CONTRIBUTING.rst
+..
+    Anything below this line is used when viewing README.rst and will be replaced
+    when included in index.rst
 
-.. _LICENSE:
-    https://github.com/dls-controls/dls_pmaccontrol/blob/master/LICENSE
+See https://dls-controls.github.io/dls-pmac-control for more detailed documentation.

@@ -940,7 +940,7 @@ class PpmacStatusform(QDialog, Ui_formStatus):
 
 if __name__ == "__main__":
     a = QApplication(sys.argv)
-    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))
+    QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))  # type: ignore # noqa
     w = Statusform(None, None)
     a.setMainWidget(w)
     w.show()

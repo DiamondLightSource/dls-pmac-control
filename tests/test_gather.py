@@ -69,7 +69,7 @@ class PmacGatherTest(unittest.TestCase):
         self.assertTrue(self.obj.btnApplyConf.isEnabled())
 
     def test_gather_config(self):
-        mid = QPoint(2, self.obj.chkPlot1.height() / 2)
+        mid = QPoint(2, int(self.obj.chkPlot1.height() / 2))
         QTest.mouseClick(self.obj.chkPlot1, Qt.LeftButton, pos=mid)
         assert self.obj.gatherConfig() is True
 

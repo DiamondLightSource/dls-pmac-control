@@ -37,6 +37,8 @@ from dls_pmaccontrol.status import PpmacStatusform, Statusform
 from dls_pmaccontrol.ui_formControl import Ui_ControlForm
 from dls_pmaccontrol.watches import Watchesform
 
+from . import __version__
+
 # from optparse import OptionParser
 
 if __name__ == "__main__":
@@ -923,7 +925,16 @@ def main():
         default=3.0,
         help="Set the communication timeout (default: 3 seconds, " "minimum: 1 second)",
     )
+    parser.add_option(
+        "--version",
+        action="store_true",
+        help="get the version of dls-pmac-control",
+    )
     (options, args) = parser.parse_args()
+
+    if options.version:
+        print(__version__)
+        exit(0)
 
     app = QApplication(sys.argv)
     app.lastWindowClosed.connect(app.quit)

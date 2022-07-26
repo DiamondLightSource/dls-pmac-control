@@ -23,6 +23,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+src/*/_version.py
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -42,10 +43,9 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
-*,cover
-*.mypy_cache
-*.pytest_cache
 cov.xml
+.pytest_cache/
+.mypy_cache/
 
 # Translations
 *.mo
@@ -65,11 +65,3 @@ target/
 /venv/
 /lightweight-venv/
 /installed.files
-
-# virtualenv
-venv/
-ENV/
-
-*~
-.svn*
-.idea
