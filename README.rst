@@ -8,7 +8,8 @@ end to control the DeltaTau PMAC, Power PMAC and Geobrick motor control systems.
 
 
 ============== ==============================================================
-PyPI           ``pip install dls-pmac-control``
+PyPI           ``pip install dls-pmaccontrol``
+launch with    ``dls-pmac-control``
 Source code    https://github.com/dls-controls/dls-pmac-control
 Documentation  https://dls-controls.github.io/dls-pmac-control
 Releases       https://github.com/dls-controls/dls-pmac-control/releases
@@ -27,8 +28,8 @@ Releases       https://github.com/dls-controls/dls-pmac-control/releases
     :target: https://codecov.io/gh/dls-controls/dls_pmaccontrol
     :alt: Test Coverage
 
-.. |pypi_version| image:: https://img.shields.io/pypi/v/dls-pmac-control.svg
-    :target: https://pypi.org/project/dls-pmac-control
+.. |pypi_version| image:: https://img.shields.io/pypi/v/dls-pmaccontrol.svg
+    :target: https://pypi.org/project/dls-pmaccontrol
     :alt: Latest PyPI version
 
 .. |license| image:: https://img.shields.io/badge/License-Apache%202.0-blue.svg
