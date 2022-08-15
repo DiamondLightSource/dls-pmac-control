@@ -26,7 +26,7 @@ jobs:
         run: sleep 60
 
       - name: Install python version
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
 
@@ -34,17 +34,18 @@ jobs:
         # Can delete this if you don't use graphviz in your docs
         run: sudo apt-get install graphviz
 
-      - name: checkout 
+      - name: checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: |
+          touch requirements_dev.txt
+          pip install -r requirements_dev.txt -e .[dev]
 
       - name: Build docs
-        run: |
-          set -x
-          touch requirements.txt
-          pip install -r requirements.txt --user .[dev]
-          tox -e docs
+        run: tox -e docs
 
       - name: Move to versioned directory
         # e.g. master or 0.1.2

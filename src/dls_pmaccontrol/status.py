@@ -689,14 +689,16 @@ class PpmacStatusform(QDialog, Ui_formStatus):
         self.lstTooltips.append("""{Reserved for future use} """)
         self.lstTooltips.append("""{Reserved for future use} """)
         self.lstTooltips.append(
-            """Soft limit direction: This bit is set to 1 if the most recent move stopped,
+            """Soft limit direction: This bit is set to 1 if the most recent
+move stopped,
  modified, or rejected due to a software position limit was affected because of
  the negative soft limit. It is 0 if such move was limited by the positive soft
  limit, or if no suchlimiting has occurred since power-on/reset. """
         )
 
         self.lstTooltips.append(
-            """Backlash direction: This bit is 1 if the motor’s backlash function is enabled and
+            """Backlash direction: This bit is 1 if the motor’s backlash function
+is enabled and
  the motor is executing or has most recently executed a position move in the negative
  direction. It is 0 otherwise. """
         )
@@ -706,7 +708,8 @@ class PpmacStatusform(QDialog, Ui_formStatus):
  It is 0 otherwise. """
         )
         self.lstTooltips.append(
-            """Stopped on software position limit: This bit is 1 if the motor has stopped, or
+            """Stopped on software position limit: This bit is 1 if the motor
+has stopped, or
  if the present move will be stopped, because it reached or will reach either
  its positive or negative software overtravel limit, even if it is presently
  not in that limit. It is 0 at all other times, including when into a limit,
@@ -787,7 +790,8 @@ class PpmacStatusform(QDialog, Ui_formStatus):
  control. It is zero if the motor is in open-loop mode (enabled or disabled). """
         )
         self.lstTooltips.append(
-            """Desired velocity zero: This bit is set to 1 if the motor is in closed-loop
+            """Desired velocity zero: This bit is set to 1
+ if the motor is in closed-loop
  control and the commanded velocity is zero (i.e. it is trying to hold position), or it
  is in open-loop mode (enabled or disabled) with the actual velocity exactly equal to
  zero. It is zero either if the motor is in closed-loop mode with non-zero commanded
