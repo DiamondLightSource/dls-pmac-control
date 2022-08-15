@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Data Gather &mdash; DLS PMAC Control Application 0.1.dev1+gef4cd98 documentation</title>
+  <title>Data Gather &mdash; DLS PMAC Control Application 3.0.2.dev27+g162d68d documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -17,6 +17,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -33,7 +34,7 @@
             <img src="_static/dls-logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                master
+                main
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -84,10 +85,10 @@
            <div itemprop="articleBody">
              
   <section id="data-gather">
-<h1>Data Gather<a class="headerlink" href="#data-gather" title="Permalink to this headline"></a></h1>
+<h1>Data Gather<a class="headerlink" href="#data-gather" title="Permalink to this heading"></a></h1>
 <p>A data gather collects data for a particular motor variable over a specified length of time. The data points are plotted automatically and the data can be saved for future reference.</p>
 <section id="configure-gather">
-<h2>Configure Gather<a class="headerlink" href="#configure-gather" title="Permalink to this headline"></a></h2>
+<h2>Configure Gather<a class="headerlink" href="#configure-gather" title="Permalink to this heading"></a></h2>
 <p>The user can configure a data gather from the “configure” tab of the gather window (see <a class="reference internal" href="#fig-gather-config"><span class="std std-numref">Fig. 14</span></a>).</p>
 <figure class="align-default" id="id1">
 <span id="fig-gather-config"></span><a class="reference internal image-reference" href="_images/data-gather-config.png"><img alt="_images/data-gather-config.png" src="_images/data-gather-config.png" style="width: 600px;" /></a>
@@ -107,7 +108,7 @@
 </ol>
 </section>
 <section id="setup-gather">
-<h2>Setup Gather<a class="headerlink" href="#setup-gather" title="Permalink to this headline"></a></h2>
+<h2>Setup Gather<a class="headerlink" href="#setup-gather" title="Permalink to this heading"></a></h2>
 <figure class="align-default" id="id2">
 <a class="reference internal image-reference" href="_images/data-gather.png"><img alt="_images/data-gather.png" src="_images/data-gather.png" style="width: 600px;" /></a>
 <figcaption>
@@ -117,11 +118,11 @@
 <p>Now go to the “gather” tab and click “setup”.</p>
 </section>
 <section id="trigger-gather">
-<h2>Trigger Gather<a class="headerlink" href="#trigger-gather" title="Permalink to this headline"></a></h2>
+<h2>Trigger Gather<a class="headerlink" href="#trigger-gather" title="Permalink to this heading"></a></h2>
 <p>Press “trigger” button to send a gather command to the controller. Once the gather has completed the user will be able to collect the data.</p>
 </section>
 <section id="collect-data">
-<h2>Collect Data<a class="headerlink" href="#collect-data" title="Permalink to this headline"></a></h2>
+<h2>Collect Data<a class="headerlink" href="#collect-data" title="Permalink to this heading"></a></h2>
 <p>Once the data gather is complete and the “collect” buttton is enabled click this to plot the data (see <a class="reference internal" href="#fig-plot"><span class="std std-numref">Fig. 16</span></a>). For the PMAC, the gathered data is collected directly from the gather buffer. For the Power PMAC, the gathered data is sent to a file on the controller and this is then copied over to the local machine.</p>
 <figure class="align-default" id="id3">
 <span id="fig-plot"></span><a class="reference internal image-reference" href="_images/plot-data-gather.png"><img alt="_images/plot-data-gather.png" src="_images/plot-data-gather.png" style="width: 600px;" /></a>
@@ -131,7 +132,7 @@
 </figure>
 </section>
 <section id="save-gathered-data">
-<h2>Save Gathered Data<a class="headerlink" href="#save-gathered-data" title="Permalink to this headline"></a></h2>
+<h2>Save Gathered Data<a class="headerlink" href="#save-gathered-data" title="Permalink to this heading"></a></h2>
 <p>The user may wish to save the data that has been gathered. To do this click the “save data…” button and specify a file location and a file name.</p>
 </section>
 </section>
@@ -165,7 +166,7 @@
   <div id="other-versions-div" class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" style="visibility: hidden">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"> Other Versions</span>
-      master
+      main
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Main GUI Screen &mdash; DLS PMAC Control Application 0.1.dev1+gef4cd98 documentation</title>
+  <title>Main GUI Screen &mdash; DLS PMAC Control Application 3.0.2.dev27+g162d68d documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -17,6 +17,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -34,7 +35,7 @@
             <img src="_static/dls-logo.svg" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                master
+                main
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -87,7 +88,7 @@
            <div itemprop="articleBody">
              
   <section id="main-gui-screen">
-<h1>Main GUI Screen<a class="headerlink" href="#main-gui-screen" title="Permalink to this headline"></a></h1>
+<h1>Main GUI Screen<a class="headerlink" href="#main-gui-screen" title="Permalink to this heading"></a></h1>
 <p>Running the application will launch the following screen:</p>
 <figure class="align-default" id="id1">
 <span id="label-main"></span><a class="reference internal image-reference" href="_images/main-window-startup.png"><img alt="Initial GUI screen" src="_images/main-window-startup.png" style="width: 600px;" /></a>
@@ -97,7 +98,7 @@
 </figure>
 <p>The user must connect to a PMAC in order to access the various tools provided by the application.</p>
 <section id="connection">
-<h2>Connection<a class="headerlink" href="#connection" title="Permalink to this headline"></a></h2>
+<h2>Connection<a class="headerlink" href="#connection" title="Permalink to this heading"></a></h2>
 <p>The user can connect to a PMAC using Telnet, Ethernet, or Serial connection. Connection to a Power PMAC can be achieved via the SSH protocol.</p>
 <p>To connect to the hardware select the connection type and press connect. There is the option of changing the connection parameters if required.</p>
 <p>When connecting via SSH protocol, the default username and password will be used and if this fails then the following screen (<a class="reference internal" href="#label-login"><span class="std std-numref">Fig. 2</span></a>) will be shown to promt the user for another username and password:</p>
@@ -136,7 +137,7 @@
 </figure>
 </section>
 <section id="jog-ribbon">
-<h2>Jog Ribbon<a class="headerlink" href="#jog-ribbon" title="Permalink to this headline"></a></h2>
+<h2>Jog Ribbon<a class="headerlink" href="#jog-ribbon" title="Permalink to this heading"></a></h2>
 <p>The jog ribbon can be found within the main screen (<a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(2)</em>) and allows the user to move individual motors. The jog ribbon also shows the position, velocity, and following error of the current motor and shows LEDs which indicate whether a position limit has been reached.</p>
 <figure class="align-default" id="id7">
 <span id="label-red"></span><a class="reference internal image-reference" href="_images/red-hi-lim.png"><img alt="_images/red-hi-lim.png" src="_images/red-hi-lim.png" style="width: 400px;" /></a>
@@ -153,7 +154,7 @@
 <p>Note that for the Power PMAC these LEDs will be red when hardware limits have been reached and amber when software limits have been reached (see <a class="reference internal" href="#label-amber"><span class="std std-numref">Fig. 8</span></a>). LEDs are always red for PMAC (see <a class="reference internal" href="#label-red"><span class="std std-numref">Fig. 7</span></a>) as there is no distinction between hardware and software limits.</p>
 </section>
 <section id="axis-settings">
-<h2>Axis Settings<a class="headerlink" href="#axis-settings" title="Permalink to this headline"></a></h2>
+<h2>Axis Settings<a class="headerlink" href="#axis-settings" title="Permalink to this heading"></a></h2>
 <p>To configure the settings for a particular axis press the “settings…” button in the main screen (<a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(2)</em>). This will launch the following screen which has two tabs for PMAC models:</p>
 <figure class="align-default" id="id9">
 <a class="reference internal image-reference" href="_images/pmac-axis-settings.png"><img alt="_images/pmac-axis-settings.png" src="_images/pmac-axis-settings.png" style="width: 400px;" /></a>
@@ -178,22 +179,22 @@
 <p>The screen shown in <a class="reference internal" href="#fig-ppmac-settings"><span class="std std-numref">Fig. 11</span></a> can be used in the same way as for the PMAC.</p>
 </section>
 <section id="status-screens">
-<h2>Status Screens<a class="headerlink" href="#status-screens" title="Permalink to this headline"></a></h2>
+<h2>Status Screens<a class="headerlink" href="#status-screens" title="Permalink to this heading"></a></h2>
 <p>There are three status screens available to the user. One displays motor status items, one shows status items for the coordinate system, and the other shows global status items. This screens will differ slightly for PMAC and Power PMAC.</p>
 <p>To show the motor status screen press the “status…” button (shown in <a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(2)</em>). Green LEDs will light up to show that the status bit has been set. The user can hover over each status item for a more in depth explanation of what it indicates.</p>
 <p>The coordinate system status and global status screens can be found in the “additional screens” section (<em>(4)</em> <a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a>).</p>
 </section>
 <section id="polling">
-<h2>Polling<a class="headerlink" href="#polling" title="Permalink to this headline"></a></h2>
+<h2>Polling<a class="headerlink" href="#polling" title="Permalink to this heading"></a></h2>
 <p>The polling table (<a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(3)</em>) shows the position, velocity, and following error of all the motors. LEDs which indicate whether a position limit has been reached are also displayed in the table. Note that for the Power PMAC an amber LED indicates a software limit and a red LED indicates a hardware limit.</p>
 <p>The polling window is updated periodically by sending a command to the PMAC to request particular values.</p>
 </section>
 <section id="sending-commands">
-<h2>Sending Commands<a class="headerlink" href="#sending-commands" title="Permalink to this headline"></a></h2>
+<h2>Sending Commands<a class="headerlink" href="#sending-commands" title="Permalink to this heading"></a></h2>
 <p>The application includes the option to send commands directly to the PMAC using the bar shown in the “command window” in the main window (<a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(5)</em>). The checkbox labelled “show all commands sent” allows the option of displaying any commands sent by any other parts of the application. For example, when using the jog ribbon, if this box is ticked then any jog commands sent to the controller will be displayed in the command window.</p>
 </section>
 <section id="loading-plcs">
-<h2>Loading PLCs<a class="headerlink" href="#loading-plcs" title="Permalink to this headline"></a></h2>
+<h2>Loading PLCs<a class="headerlink" href="#loading-plcs" title="Permalink to this heading"></a></h2>
 <p>The application allows the user to load a PLC line-by-line onto the PMAC. When the “load pmc…” button (found in <a class="reference internal" href="#label-annotated"><span class="std std-numref">Fig. 6</span></a> <em>(4)</em>) is pressed a window is launched which allows the user to choose a PLC from their local machine. Whilst the PLC is loading a progress bar is displayed. Note that if the PLC cannot be interpreted by the controller then the application may freeze while loading the PLC.</p>
 </section>
 </section>
@@ -228,7 +229,7 @@
   <div id="other-versions-div" class="rst-versions" data-toggle="rst-versions" role="note" aria-label="Versions" style="visibility: hidden">
     <span class="rst-current-version" data-toggle="rst-current-version">
       <span class="fa fa-book"> Other Versions</span>
-      master
+      main
       <span class="fa fa-caret-down"></span>
     </span>
     <div class="rst-other-versions">

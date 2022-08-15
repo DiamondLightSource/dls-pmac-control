@@ -1,1 +1,6 @@
 master
+v3.0.1-beta4
+v3.0.1-beta3
+v3.0.1-beta2
+v3.0.1-beta
+v3.0.1
