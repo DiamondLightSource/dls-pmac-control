@@ -1,14 +1,14 @@
 API
 ===
 
-.. automodule:: python3_pip_skeleton
+.. automodule:: dls_pmaccontrol
 
-    ``python3_pip_skeleton``
+    ``dls_pmaccontrol``
     -----------------------------------
 
-This is the internal API reference for python3_pip_skeleton
+This is the internal API reference for dls_pmaccontrol
 
-.. data:: python3_pip_skeleton.__version__
+.. data:: dls_pmaccontrol.__version__
     :type: str
 
     Version number as calculated by https://github.com/pypa/setuptools_scm
