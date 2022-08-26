@@ -3,12 +3,12 @@
 Reference
 =========
 
-Practical step-by-step guides for the more experienced user.
+Technical reference material including APIs and release notes.
 
 .. toctree::
     :caption: Reference
 
-    reference/contributing
+    reference/api
     Releases <https://github.com/dls-controls/dls-pmac-control/releases>
     Index <genindex.html#http://>
 

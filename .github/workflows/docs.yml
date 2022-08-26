@@ -2,10 +2,6 @@ name: Docs CI
 
 on:
   push:
-    branches:
-      # Add more branches here to publish docs from other branches
-      - master
-      - main
     tags:
       - "*"
   pull_request:
@@ -48,7 +44,7 @@ jobs:
         run: tox -e docs
 
       - name: Move to versioned directory
-        # e.g. master or 0.1.2
+        # e.g. main or 0.1.2
         run: mv build/html ".github/pages/${GITHUB_REF##*/}"
 
       - name: Write versions.txt
