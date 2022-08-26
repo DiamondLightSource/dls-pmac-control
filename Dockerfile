@@ -13,6 +13,7 @@ RUN apt-get update && apt-get upgrade -y && \
     git \
     net-tools \
     vim \
+    libqt5gui5 libxcb-xinerama0 \
     && rm -rf /var/lib/apt/lists/* \
     && busybox --install
 
@@ -36,7 +37,13 @@ RUN cd /project && \
 
 FROM python:3.10-slim as runtime
 
-# Add apt-get system dependecies for runtime here if needed
+# things to make pyQt5 work
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && \
+    apt-get install -y --no-install-recommends \
+    libqt5gui5 libxcb-xinerama0 && \
+    rm -rf /var/lib/apt/lists/*
+    
+ENV XDG_RUNTIME_DIR=/tmp/runtime-vscode
 
 COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
