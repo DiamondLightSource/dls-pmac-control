@@ -27,6 +27,8 @@ RUN cd /project && \
 
 RUN python -m venv /venv
 ENV PATH=/venv/bin:$PATH
+# allow tests to run headless in the dev container
+ENV QT_QPA_PLATFORM=offscreen
 
 RUN cd /project && \
     pip install --upgrade pip && \
