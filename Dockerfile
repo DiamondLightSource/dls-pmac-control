@@ -33,7 +33,7 @@ ENV QT_QPA_PLATFORM=offscreen
 RUN cd /project && \
     pip install --upgrade pip && \
     pip install -r requirements.txt dist/*.whl && \
-    pip freeze  > requirements.txt && \
+    pip freeze  > dist/requirements.txt && \
     # we don't want to include our own wheel in requirements - remove with sed
     # and replace with a comment to avoid a zero length asset upload later
     sed -i '/file:/s/^/# Requirements for /' dist/requirements.txt
