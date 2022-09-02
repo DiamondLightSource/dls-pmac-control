@@ -4,15 +4,15 @@
 # list see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import python3_pip_skeleton
+import dls_pmaccontrol
 
 # -- General configuration ------------------------------------------------
 
 # General information about the project.
-project = "python3-pip-skeleton"
+project = "dls-pmac-control"
 
 # The full version, including alpha/beta/rc tags.
-release = python3_pip_skeleton.__version__
+release = dls_pmaccontrol.__version__
 
 # The short X.Y version.
 if "+" in release:
