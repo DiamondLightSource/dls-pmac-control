@@ -10,22 +10,22 @@ end to control the DeltaTau PMAC, Power PMAC and Geobrick motor control systems.
 ============== ==============================================================
 PyPI           ``pip install dls-pmaccontrol``
 launch with    ``dls-pmac-control``
-Source code    https://github.com/dls-controls/dls-pmac-control
-Documentation  https://dls-controls.github.io/dls-pmac-control
-Releases       https://github.com/dls-controls/dls-pmac-control/releases
+Source code    https://github.com/DiamondLightSource/dls-pmac-control
+Documentation  https://DiamondLightSource.github.io/dls-pmac-control
+Releases       https://github.com/DiamondLightSource/dls-pmac-control/releases
 ============== ==============================================================
 
 
-.. |code_ci| image:: https://github.com/dls-controls/dls-pmac-control/workflows/Code%20CI/badge.svg?branch=master
-    :target: https://github.com/dls-controls/dls-pmac-control/actions?query=workflow%3A%22Code+CI%22
+.. |code_ci| image:: https://github.com/DiamondLightSource/dls-pmac-control/workflows/Code%20CI/badge.svg?branch=master
+    :target: https://github.com/DiamondLightSource/dls-pmac-control/actions?query=workflow%3A%22Code+CI%22
     :alt: Code CI
 
-.. |docs_ci| image:: https://github.com/dls-controls/dls-pmac-control/workflows/Docs%20CI/badge.svg?branch=master
-    :target: https://github.com/dls-controls/dls-pmac-control/actions?query=workflow%3A%22Docs+CI%22
+.. |docs_ci| image:: https://github.com/DiamondLightSource/dls-pmac-control/workflows/Docs%20CI/badge.svg?branch=master
+    :target: https://github.com/DiamondLightSource/dls-pmac-control/actions?query=workflow%3A%22Docs+CI%22
     :alt: Docs CI
 
-.. |coverage| image:: https://codecov.io/gh/dls-controls/dls-pmac-control/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/dls-controls/dls-pmac-control
+.. |coverage| image:: https://codecov.io/gh/DiamondLightSource/dls-pmac-control/branch/master/graph/badge.svg
+    :target: https://codecov.io/gh/DiamondLightSource/dls-pmac-control
     :alt: Test Coverage
 
 .. |pypi_version| image:: https://img.shields.io/pypi/v/dls-pmaccontrol.svg
@@ -40,4 +40,4 @@ Releases       https://github.com/dls-controls/dls-pmac-control/releases
     Anything below this line is used when viewing README.rst and will be replaced
     when included in index.rst
 
-See https://dls-controls.github.io/dls-pmac-control for more detailed documentation.
+See https://DiamondLightSource.github.io/dls-pmac-control for more detailed documentation.
