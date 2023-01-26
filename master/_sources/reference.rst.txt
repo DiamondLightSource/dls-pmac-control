@@ -8,7 +8,7 @@ Technical reference material including APIs and release notes.
 .. toctree::
     :caption: Reference
 
-    Releases <https://github.com/dls-controls/dls-pmac-control/releases>
+    Releases <https://github.com/DiamondLightSource/dls-pmac-control/releases>
     Index <genindex.html#http://>
 
 ..
