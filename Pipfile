@@ -1,0 +1,32 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest-cov = "*"
+pytest-black = "*"
+pytest-flake8 = "*"
+flake8-isort = "*"
+pytest-mypy = "*"
+sphinx = "==4.3.2"
+sphinx-rtd-theme = "*"
+doc8 = "*"
+mock = "*"
+types-mock = "*"
+types-paramiko = "*"
+
+[packages]
+numpy = "*"
+pyqt5 = "*"
+pythonqwt = "*"
+mock = "*"
+dls-pmaclib = ">=3.0.0"
+
+[scripts]
+# Put coverage here so we don't interfere with debugging in the IDE
+tests = "python -m pytest --cov=dls_pmaccontrol --cov-report term"
+docs = "sphinx-build -E -b html docs build/html"
+
+[pipenv]
+allow_prereleases = true
