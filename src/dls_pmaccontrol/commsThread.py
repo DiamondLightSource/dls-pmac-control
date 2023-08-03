@@ -146,7 +146,9 @@ class CommsThread(object):
         cmd = "i65???&%s??%%" % self.CSNum
         # Send a different command for the Power PMAC
         if isinstance(self.parent.pmac, PPmacSshInterface):
-            cmd = "i65?&%s?%%" % self.CSNum
+            # The %% is because % needs escaping - only one % is actually sent
+            # There has to be a space before the first BrickLV string to avoid its B being interpreted as a 'begin' command
+            cmd = "i65?&%s?%% BrickLV.BusUnderVoltage BrickLV.BusOverVoltage BrickLV.OverTemp" % self.CSNum
         elif isinstance(self.parent.pmac, PmacEthernetInterface):
             # Add the 7 segment display status query
             cmd = "i65???&%s??%%m%s90" % (self.CSNum, self.CSNum)
@@ -197,6 +199,14 @@ class CommsThread(object):
                 # fourth is 7 segment display status
                 self.resultQueue.put([valueList[4], 0, 0, 0, "M90%s" % self.CSNum])
                 valueList = valueList[5:]
+            elif isinstance(self.parent.pmac, PPmacSshInterface):
+                # Brick Under Voltage Status
+                self.resultQueue.put([valueList[4], 0, 0, 0, "UVOL"])
+                # Brick Over Voltage Status
+                self.resultQueue.put([valueList[5], 0, 0, 0, "OVOL"])
+                # Brick Over Temperature Status
+                self.resultQueue.put([valueList[6], 0, 0, 0, "OTEMP"])
+                valueList = valueList[7:]
             else:
                 valueList = valueList[4:]
             cols = 4

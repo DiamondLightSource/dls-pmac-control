@@ -663,6 +663,18 @@ class Controlform(QMainWindow, Ui_ControlForm):
                         if motorRow == "IDENT":
                             self.updateIdentity(int(value[0]))
                             continue
+                        if motorRow == "UVOL":
+                            if int(value[0]) != 0:
+                                print("Under voltage!", str(value[0]))
+                            continue
+                        if motorRow == "OVOL":
+                            if int(value[0]) != 0:
+                                print("Over voltage!", str(value[0]))
+                            continue
+                        if motorRow == "OTEMP":
+                            if int(value[0]) != 0:
+                                print("Over temperature!", str(value[0]))
+                            continue
                     else:
                         if motorRow == "G":
                             self.GlobalStatusScreen.updateStatus(int(value[0], 16))
