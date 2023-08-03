@@ -153,8 +153,13 @@ class CommsThread(object):
             # Add the 7 segment display status query
             cmd = "i65???&%s??%%m%s90" % (self.CSNum, self.CSNum)
         axes = self.parent.pmac.getNumberOfAxes() + 1
-        for motorNo in range(1, axes):
-            cmd = cmd + "#" + str(motorNo) + "?PVF"
+        if isinstance(self.parent.pmac, PPmacSshInterface):
+            # Number of axes is hard-coded for now until axes vs channels issue is resolved
+            for motorNo in range(0, 8):
+                cmd = cmd + "#" + str(motorNo) + "?PVF BrickLV.Chan[" + str(motorNo) + "].I2tFaultStatus BrickLV.Chan[" + str(motorNo) + "].OverCurrent"
+        else:
+            for motorNo in range(1, axes):
+                cmd = cmd + "#" + str(motorNo) + "?PVF"
         # send polling command
         (retStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd)
         with self.lock:
@@ -209,7 +214,10 @@ class CommsThread(object):
                 valueList = valueList[7:]
             else:
                 valueList = valueList[4:]
-            cols = 4
+            if isinstance(self.parent.pmac, PPmacSshInterface):
+                cols = 6
+            else:
+                cols = 4
             for motorRow, i in enumerate(range(0, len(valueList), cols)):
                 returnList = valueList[i : i + cols]
                 returnList.append(motorRow)

@@ -641,7 +641,10 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 return
 
             try:
-                motorRow = value[4]
+                if isinstance(self.pmac, PPmacSshInterface):
+                    motorRow = value[6]
+                else:
+                    motorRow = value[4]
                 # check for special cases
                 if type(motorRow) == str:
                     if isinstance(self.pmac, PPmacSshInterface):
@@ -695,6 +698,14 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 position = str(round(float(value[1]), 1))
                 velocity = str(round(float(value[2]), 1))
                 folerr = str(round(float(value[3]), 1))
+
+                if isinstance(self.pmac, PPmacSshInterface):
+                    i2t_fault = str(round(float(value[4]), 1))
+                    over_current = str(round(float(value[5]), 1))
+                    if int(value[4]) != 0:
+                        print("i2t_fault =", int(value[4]))
+                    if int(value[5]) != 0:
+                        print("over_current =", int(value[5]))
 
                 self.__item(motorRow, 0).setText(position)
                 self.__item(motorRow, 1).setText(velocity)
