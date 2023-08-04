@@ -757,6 +757,16 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 else:
                     self.__item(motorRow, 4).setIcon(QIcon(self.redLedOff))
 
+                # set amplifier status indicators in polling table
+                if i2t_fault:
+                    self.__item(motorRow, 5).setIcon(QIcon(self.redLedOn))
+                else:
+                    self.__item(motorRow, 5).setIcon(QIcon(self.redLedOff))
+                if over_current:
+                    self.__item(motorRow, 6).setIcon(QIcon(self.redLedOn))
+                else:
+                    self.__item(motorRow, 6).setIcon(QIcon(self.redLedOff))
+
                 # Update also the jog ribbon
                 if motorRow + 1 == self.currentMotor:
                     self.lblPosition.setText(position)
