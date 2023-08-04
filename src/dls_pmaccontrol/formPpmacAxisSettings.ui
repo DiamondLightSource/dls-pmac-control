@@ -36,7 +36,7 @@
    <item row="0" column="0" colspan="3">
     <widget class="QLabel" name="textLabel1">
      <property name="text">
-      <string>Note this screen does not update continously.
+      <string>Note this screen does not update continuously.
 Hit the update button to read out the current values from pmac.
 Write demand values in the text fields and hit enter to send.</string>
      </property>
