@@ -699,13 +699,29 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 velocity = str(round(float(value[2]), 1))
                 folerr = str(round(float(value[3]), 1))
 
+                i2t_fault = False
+                under_voltage = False
+                over_voltage = False
+                over_current = False
+                over_temperature = False
+
                 if isinstance(self.pmac, PPmacSshInterface):
-                    i2t_fault = str(round(float(value[4]), 1))
-                    over_current = str(round(float(value[5]), 1))
-                    if int(value[4]) != 0:
-                        print("i2t_fault =", int(value[4]))
-                    if int(value[5]) != 0:
-                        print("over_current =", int(value[5]))
+                    if int(value[4]) > 0:
+                        i2t_fault = True
+                    if int(value[5]) > 0:
+                        over_current = True
+                elif isinstance(self.pmac, PmacEthernetInterface):
+                    amp_status = ((int(value[4])&448)>>6)
+                    if amp_status == 2:
+                        under_voltage = True
+                    elif amp_status == 3:
+                        over_temperature = True
+                    elif amp_status == 4:
+                        over_voltage = True
+                    elif amp_status == 5:
+                        i2t_fault = True
+                    elif amp_status == 6:
+                        over_current = True
 
                 self.__item(motorRow, 0).setText(position)
                 self.__item(motorRow, 1).setText(velocity)
