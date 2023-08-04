@@ -158,8 +158,9 @@ class CommsThread(object):
             for motorNo in range(0, 8):
                 cmd = cmd + "#" + str(motorNo) + "?PVF BrickLV.Chan[" + str(motorNo) + "].I2tFaultStatus BrickLV.Chan[" + str(motorNo) + "].OverCurrent"
         else:
-            for motorNo in range(1, axes):
-                cmd = cmd + "#" + str(motorNo) + "?PVF"
+            for motorNo in range(1, 9):
+                cmd = cmd + "#" + str(motorNo) + "?PVFm" + str(motorNo) + "90"
+
         # send polling command
         (retStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd)
         with self.lock:
@@ -217,7 +218,8 @@ class CommsThread(object):
             if isinstance(self.parent.pmac, PPmacSshInterface):
                 cols = 6
             else:
-                cols = 4
+                cols = 5
+
             for motorRow, i in enumerate(range(0, len(valueList), cols)):
                 returnList = valueList[i : i + cols]
                 returnList.append(motorRow)

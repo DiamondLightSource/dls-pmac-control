@@ -644,7 +644,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 if isinstance(self.pmac, PPmacSshInterface):
                     motorRow = value[6]
                 else:
-                    motorRow = value[4]
+                    motorRow = value[5]
                 # check for special cases
                 if type(motorRow) == str:
                     if isinstance(self.pmac, PPmacSshInterface):
