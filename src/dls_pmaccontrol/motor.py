@@ -633,6 +633,10 @@ class Controlform(QMainWindow, Ui_ControlForm):
     # and the jog ribbon.
     def updateMotors(self):
 
+        under_voltage = False
+        over_voltage = False
+        over_temperature = False
+
         self.commsThread.resultQueue.qsize()
         for queItem in range(0, self.commsThread.resultQueue.qsize()):
             try:
@@ -641,10 +645,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 return
 
             try:
-                if isinstance(self.pmac, PPmacSshInterface):
-                    motorRow = value[6]
-                else:
-                    motorRow = value[5]
+                motorRow = value[6]
                 # check for special cases
                 if type(motorRow) == str:
                     if isinstance(self.pmac, PPmacSshInterface):
@@ -668,15 +669,15 @@ class Controlform(QMainWindow, Ui_ControlForm):
                             continue
                         if motorRow == "UVOL":
                             if int(value[0]) != 0:
-                                print("Under voltage!", str(value[0]))
+                                under_voltage = True
                             continue
                         if motorRow == "OVOL":
                             if int(value[0]) != 0:
-                                print("Over voltage!", str(value[0]))
+                                over_voltage = True
                             continue
                         if motorRow == "OTEMP":
                             if int(value[0]) != 0:
-                                print("Over temperature!", str(value[0]))
+                                over_temperature = True
                             continue
                     else:
                         if motorRow == "G":
