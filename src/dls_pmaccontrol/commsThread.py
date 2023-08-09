@@ -200,32 +200,30 @@ class CommsThread(object):
                     print("Received malformed response to poll request: ", valueList)
                 return
 
-            self.resultQueue.put([valueList[0], 0, 0, 0, "IDENT"])
-            # first value is global status
-            self.resultQueue.put([valueList[1], 0, 0, 0, "G"])
-            # second value is the CS
-            self.resultQueue.put([valueList[2], 0, 0, 0, "CS%s" % self.CSNum])
-            # third is feedrate
-            self.resultQueue.put([valueList[3], 0, 0, 0, "FEED%s" % self.CSNum])
+            # Identifier i65
+            self.resultQueue.put([valueList[0], 0, 0, 0, 0, 0, "IDENT"])
+            # Global status
+            self.resultQueue.put([valueList[1], 0, 0, 0, 0, 0, "G"])
+            # CS status
+            self.resultQueue.put([valueList[2], 0, 0, 0, 0, 0, "CS%s" % self.CSNum])
+            # Fedrate
+            self.resultQueue.put([valueList[3], 0, 0, 0, 0, 0, "FEED%s" % self.CSNum])
             if isinstance(self.parent.pmac, PmacEthernetInterface):
-                # fourth is 7 segment display status
-                self.resultQueue.put([valueList[4], 0, 0, 0, "M90%s" % self.CSNum])
+                # 7 segment display status
+                self.resultQueue.put([valueList[4], 0, 0, 0, 0, 0, "M90%s" % self.CSNum])
                 valueList = valueList[5:]
             elif isinstance(self.parent.pmac, PPmacSshInterface):
                 # Brick Under Voltage Status
-                self.resultQueue.put([valueList[4], 0, 0, 0, "UVOL"])
+                self.resultQueue.put([valueList[4], 0, 0, 0, 0, 0, "UVOL"])
                 # Brick Over Voltage Status
-                self.resultQueue.put([valueList[5], 0, 0, 0, "OVOL"])
+                self.resultQueue.put([valueList[5], 0, 0, 0, 0, 0, "OVOL"])
                 # Brick Over Temperature Status
-                self.resultQueue.put([valueList[6], 0, 0, 0, "OTEMP"])
+                self.resultQueue.put([valueList[6], 0, 0, 0, 0, 0, "OTEMP"])
                 valueList = valueList[7:]
             else:
                 valueList = valueList[4:]
-            if isinstance(self.parent.pmac, PPmacSshInterface):
-                cols = 6
-            else:
-                cols = 5
-
+            # All request chunks contain 7 elements
+            cols = 6
             for motorRow, i in enumerate(range(0, len(valueList), cols)):
                 returnList = valueList[i : i + cols]
                 returnList.append(motorRow)
