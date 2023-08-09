@@ -153,13 +153,19 @@ class CommsThread(object):
             # Add the 7 segment display status query
             cmd = "i65???&%s??%%m%s90" % (self.CSNum, self.CSNum)
         axes = self.parent.pmac.getNumberOfAxes() + 1
-        if isinstance(self.parent.pmac, PPmacSshInterface):
-            # Number of axes is hard-coded for now until axes vs channels issue is resolved
-            for motorNo in range(0, 8):
-                cmd = cmd + "#" + str(motorNo) + "?PVF BrickLV.Chan[" + str(motorNo) + "].I2tFaultStatus BrickLV.Chan[" + str(motorNo) + "].OverCurrent"
-        else:
-            for motorNo in range(1, 9):
-                cmd = cmd + "#" + str(motorNo) + "?PVFm" + str(motorNo) + "90"
+        for motorNo in range(1, axes):
+            cmd = cmd + "#" + str(motorNo) + "?PVF "
+            # Amplifier status checks only apply to the first 8 axes
+            if motorNo < 9:
+                if isinstance(self.parent.pmac, PPmacSshInterface):
+                    # PowerBrick channels are zero-indexed
+                    cmd = cmd + "BrickLV.Chan[" + str(motorNo - 1) + "].I2tFaultStatus BrickLV.Chan[" + str(motorNo - 1) + "].OverCurrent"
+                else:
+                    # Add a dummy request to keep the request chunks the same length
+                    cmd = cmd + "m" + str(motorNo) + "90 p70"
+            else:
+                # Use two dummy requests to keep the request chunks the same length
+                cmd = cmd + "p80 p81"
 
         # send polling command
         (retStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd)
