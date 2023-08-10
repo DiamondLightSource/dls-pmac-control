@@ -692,9 +692,6 @@ class Controlform(QMainWindow, Ui_ControlForm):
                         if motorRow == "IDENT":
                             self.updateIdentity(int(value[0]))
                             continue
-                        if motorRow.startswith("M90"):
-                            self.CSStatusScreen.updateAmpStatus(int(value[0]) & 448)
-                            continue
 
                 else:
                     position = str(round(float(value[1]), 1))

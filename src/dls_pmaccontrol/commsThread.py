@@ -151,7 +151,7 @@ class CommsThread(object):
             cmd = "i65?&%s?%% BrickLV.BusUnderVoltage BrickLV.BusOverVoltage BrickLV.OverTemp" % self.CSNum
         elif isinstance(self.parent.pmac, PmacEthernetInterface):
             # Add the 7 segment display status query
-            cmd = "i65???&%s??%%m%s90" % (self.CSNum, self.CSNum)
+            cmd = "i65???&%s??%%" % self.CSNum
         axes = self.parent.pmac.getNumberOfAxes() + 1
         for motorNo in range(1, axes):
             cmd = cmd + "#" + str(motorNo) + "?PVF "
@@ -208,11 +208,8 @@ class CommsThread(object):
             self.resultQueue.put([valueList[2], 0, 0, 0, 0, 0, "CS%s" % self.CSNum])
             # Fedrate
             self.resultQueue.put([valueList[3], 0, 0, 0, 0, 0, "FEED%s" % self.CSNum])
-            if isinstance(self.parent.pmac, PmacEthernetInterface):
-                # 7 segment display status
-                self.resultQueue.put([valueList[4], 0, 0, 0, 0, 0, "M90%s" % self.CSNum])
-                valueList = valueList[5:]
-            elif isinstance(self.parent.pmac, PPmacSshInterface):
+
+            if isinstance(self.parent.pmac, PPmacSshInterface):
                 # Brick Under Voltage Status
                 self.resultQueue.put([valueList[4], 0, 0, 0, 0, 0, "UVOL"])
                 # Brick Over Voltage Status
