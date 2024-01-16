@@ -159,11 +159,13 @@ class CommsThread(object):
                     # PowerBrick channels are zero-indexed
                     cmd = cmd + "BrickLV.Chan[" + str(motorNo - 1) + "].I2tFaultStatus BrickLV.Chan[" + str(motorNo - 1) + "].OverCurrent"
                 else:
-                    # Add a dummy request to keep the request chunks the same length
-                    cmd = cmd + "m" + str(motorNo) + "90 p70"
+                    # Add a dummy request to keep the request chunks 
+                    # the same length (p99 always returns zero)
+                    cmd = cmd + "m" + str(motorNo) + "90 p99"
             else:
-                # Use two dummy requests to keep the request chunks the same length
-                cmd = cmd + "p80 p81"
+                # Use two dummy requests to keep the request chunks
+                # the same length (p99 always returns zero)
+                cmd = cmd + "p99 p99"
 
         # send polling command
         (retStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd)
