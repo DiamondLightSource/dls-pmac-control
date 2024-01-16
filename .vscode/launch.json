@@ -5,21 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug Unit Test",
+            "name": "dls_pmacontrol",
             "type": "python",
             "request": "launch",
-            "justMyCode": false,
-            "program": "${file}",
-            "purpose": [
-                "debug-test"
-            ],
-            "console": "integratedTerminal",
-            "env": {
-                // The default config in setup.cfg's "[tool:pytest]" adds coverage.
-                // Cannot have coverage and debugging at the same time.
-                // https://github.com/microsoft/vscode-python/issues/693
-                "PYTEST_ADDOPTS": "--no-cov"
-            },
-        }
+            "module": "dls_pmaccontrol.motor",
+            "args": [
+                "-v",
+                "--protocol=ssh",
+                "--server=172.23.59.7",
+                "--port=22",
+            ]
+        },
     ]
 }
