@@ -5,7 +5,7 @@ from unittest.mock import Mock, patch
 from PyQt5.QtCore import Qt
 from PyQt5.QtTest import QTest
 
-from dls_pmac_control.motor import Controlform
+from dls_pmac_control.__main__ import Controlform
 
 
 class DummyTestOptionsTelnet:
@@ -350,7 +350,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
         mock_pixmap.assert_called_with(self.obj.greenLedOff)
         assert self.obj.lblIdentity.text() == ""
 
-    @patch("dls_pmac_control.motor.Controlform.addToTxtShell")
+    @patch("dls_pmac_control.__main__.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
     def test_jog_neg(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
@@ -359,7 +359,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
             self.obj.currentMotor, "neg", str(self.obj.lneJogDist.text())
         )
 
-    @patch("dls_pmac_control.motor.Controlform.addToTxtShell")
+    @patch("dls_pmac_control.__main__.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
     def test_jog_pos(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
@@ -368,14 +368,14 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
             self.obj.currentMotor, "pos", str(self.obj.lneJogDist.text())
         )
 
-    @patch("dls_pmac_control.motor.Controlform.addToTxtShell")
+    @patch("dls_pmac_control.__main__.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogStop")
     def test_jog_stop(self, mock_jogstop, mock_addtxt):
         mock_jogstop.return_value = ("cmd", "response", True)
         assert self.obj.jogStop() is None
         mock_jogstop.assert_called_with(self.obj.currentMotor)
 
-    @patch("dls_pmac_control.motor.Controlform.addToTxtShell")
+    @patch("dls_pmac_control.__main__.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.homeCommand")
     def test_jog_home(self, mock_home, mock_addtxt):
         mock_home.return_value = ("cmd", "response", True)
