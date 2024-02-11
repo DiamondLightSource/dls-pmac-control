@@ -1,4 +1,3 @@
-
 # Form implementation generated from reading ui file 'dls_pmac_control/formWatches.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4

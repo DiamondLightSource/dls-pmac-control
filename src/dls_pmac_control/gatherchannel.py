@@ -138,7 +138,6 @@ class PmacGatherChannel:
     # address to determine: datawidth, datatype, unit and scaling factor
     # result is returned in a dictionary
     def getDataInfo(self):
-
         # read the gather I variable from the pmac
         (retStr, status) = self.pmac.sendCommand(self.pSrcIvar)
         if not status:

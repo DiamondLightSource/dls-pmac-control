@@ -1,4 +1,3 @@
-
 import re
 import sys
 
@@ -81,7 +80,6 @@ class Energiseform(QDialog, Ui_formEnergise):
     #                set the corresponding checkboxes to reflect the read
     #                back value.
     def sendCommand(self):
-
         # Make sure that self.val7501 and self.val7503 truly reflect the
         # current values of M7501 and M7503 (on the PMAC)
         if not self.isScreenUpToDate():

@@ -148,7 +148,10 @@ class CommsThread:
         if isinstance(self.parent.pmac, PPmacSshInterface):
             # The %% is because % needs escaping - only one % is actually sent
             # There has to be a space before the first BrickLV string to avoid its B being interpreted as a 'begin' command
-            cmd = "i65?&%s?%% BrickLV.BusUnderVoltage BrickLV.BusOverVoltage BrickLV.OverTemp" % self.CSNum
+            cmd = (
+                "i65?&%s?%% BrickLV.BusUnderVoltage BrickLV.BusOverVoltage BrickLV.OverTemp"
+                % self.CSNum
+            )
         elif isinstance(self.parent.pmac, PmacEthernetInterface):
             # Add the 7 segment display status query
             cmd = "i65???&%s??%%" % self.CSNum
@@ -159,7 +162,14 @@ class CommsThread:
             if motorNo < 9:
                 if isinstance(self.parent.pmac, PPmacSshInterface):
                     # PowerBrick channels are zero-indexed
-                    cmd = cmd + "BrickLV.Chan[" + str(motorNo - 1) + "].I2tFaultStatus BrickLV.Chan[" + str(motorNo - 1) + "].OverCurrent"
+                    cmd = (
+                        cmd
+                        + "BrickLV.Chan["
+                        + str(motorNo - 1)
+                        + "].I2tFaultStatus BrickLV.Chan["
+                        + str(motorNo - 1)
+                        + "].OverCurrent"
+                    )
                 else:
                     # Add a dummy request to keep the request chunks
                     # the same length (p99 always returns zero)

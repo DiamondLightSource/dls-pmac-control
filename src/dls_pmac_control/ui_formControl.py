@@ -1,4 +1,3 @@
-
 # Form implementation generated from reading ui file 'dls_pmac_control/formControl.ui'
 #
 # Created by: PyQt5 UI code generator 5.12.2
@@ -21,7 +20,9 @@ class Ui_ControlForm:
         self.gridLayout_2.setSpacing(6)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.grpJog = QtWidgets.QGroupBox(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.grpJog.sizePolicy().hasHeightForWidth())
@@ -35,7 +36,9 @@ class Ui_ControlForm:
         self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.spnJogMotor = QtWidgets.QSpinBox(self.grpJog)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.spnJogMotor.sizePolicy().hasHeightForWidth())
@@ -91,7 +94,9 @@ class Ui_ControlForm:
         self.lblPosition.setMinimumSize(QtCore.QSize(0, 28))
         self.lblPosition.setFrameShape(QtWidgets.QFrame.Box)
         self.lblPosition.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.lblPosition.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.lblPosition.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+        )
         self.lblPosition.setWordWrap(False)
         self.lblPosition.setObjectName("lblPosition")
         self.gridLayout.addWidget(self.lblPosition, 3, 1, 1, 1)
@@ -121,7 +126,9 @@ class Ui_ControlForm:
         self.lblVelo.setMinimumSize(QtCore.QSize(0, 28))
         self.lblVelo.setFrameShape(QtWidgets.QFrame.Box)
         self.lblVelo.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.lblVelo.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.lblVelo.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+        )
         self.lblVelo.setWordWrap(False)
         self.lblVelo.setObjectName("lblVelo")
         self.gridLayout.addWidget(self.lblVelo, 4, 1, 1, 1)
@@ -151,7 +158,9 @@ class Ui_ControlForm:
         self.lblFolErr.setMinimumSize(QtCore.QSize(0, 28))
         self.lblFolErr.setFrameShape(QtWidgets.QFrame.Box)
         self.lblFolErr.setFrameShadow(QtWidgets.QFrame.Sunken)
-        self.lblFolErr.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.lblFolErr.setAlignment(
+            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+        )
         self.lblFolErr.setWordWrap(False)
         self.lblFolErr.setObjectName("lblFolErr")
         self.gridLayout.addWidget(self.lblFolErr, 5, 1, 1, 1)
@@ -184,7 +193,9 @@ class Ui_ControlForm:
         self.gridLayout.addWidget(self.btnJogStop, 5, 3, 1, 1)
         self.lneJogDist = QtWidgets.QLineEdit(self.grpJog)
         self.lneJogDist.setEnabled(False)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lneJogDist.sizePolicy().hasHeightForWidth())
@@ -208,7 +219,9 @@ class Ui_ControlForm:
         self.gridLayout.addWidget(self.textLabel3, 2, 0, 1, 1)
         self.lneJogTo = QtWidgets.QLineEdit(self.grpJog)
         self.lneJogTo.setEnabled(False)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lneJogTo.sizePolicy().hasHeightForWidth())
@@ -234,12 +247,16 @@ class Ui_ControlForm:
         self.gridLayout.addWidget(self.btnKillMotor, 6, 3, 1, 1)
         self.gridLayout_2.addWidget(self.grpJog, 0, 1, 1, 1)
         self.groupBox1 = QtWidgets.QGroupBox(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox1.sizePolicy().hasHeightForWidth())
         self.groupBox1.setSizePolicy(sizePolicy)
-        self.groupBox1.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.groupBox1.setAlignment(
+            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+        )
         self.groupBox1.setObjectName("groupBox1")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox1)
         self.verticalLayout.setContentsMargins(11, 11, 11, 11)
@@ -253,17 +270,23 @@ class Ui_ControlForm:
         self.gridLayout_3.setSpacing(6)
         self.gridLayout_3.setObjectName("gridLayout_3")
         self.rbUseTerminalServer = QtWidgets.QRadioButton(self.btnGroupProtocol)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.rbUseTerminalServer.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.rbUseTerminalServer.sizePolicy().hasHeightForWidth()
+        )
         self.rbUseTerminalServer.setSizePolicy(sizePolicy)
         self.rbUseTerminalServer.setChecked(False)
         self.rbUseTerminalServer.setObjectName("rbUseTerminalServer")
         self.gridLayout_3.addWidget(self.rbUseTerminalServer, 0, 0, 1, 1)
         self.rbUseSocket = QtWidgets.QRadioButton(self.btnGroupProtocol)
         self.rbUseSocket.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.rbUseSocket.sizePolicy().hasHeightForWidth())
@@ -271,7 +294,9 @@ class Ui_ControlForm:
         self.rbUseSocket.setObjectName("rbUseSocket")
         self.gridLayout_3.addWidget(self.rbUseSocket, 1, 0, 1, 1)
         self.rbUseSerial = QtWidgets.QRadioButton(self.btnGroupProtocol)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.rbUseSerial.sizePolicy().hasHeightForWidth())
@@ -281,7 +306,9 @@ class Ui_ControlForm:
         self.gridLayout_3.addWidget(self.rbUseSerial, 2, 0, 1, 1)
         self.rbUseSsh = QtWidgets.QRadioButton(self.btnGroupProtocol)
         self.rbUseSsh.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.rbUseSsh.sizePolicy().hasHeightForWidth())
@@ -339,7 +366,9 @@ class Ui_ControlForm:
         self.hboxlayout1.addWidget(self.chkShowAll)
         self.gridLayout_2.addLayout(self.hboxlayout1, 7, 0, 1, 2)
         self.frame3 = QtWidgets.QFrame(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.frame3.sizePolicy().hasHeightForWidth())
@@ -385,7 +414,9 @@ class Ui_ControlForm:
         self.gridLayout_4.addWidget(self.btnGlobalStatus, 2, 6, 1, 1)
         self.btnKillAll = QtWidgets.QPushButton(self.frame3)
         self.btnKillAll.setEnabled(False)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.btnKillAll.sizePolicy().hasHeightForWidth())
@@ -422,7 +453,9 @@ class Ui_ControlForm:
         self.gridLayout_4.addWidget(self.btnWatches, 2, 4, 1, 1)
         self.gridLayout_2.addWidget(self.frame3, 5, 0, 1, 2)
         self.splitter = QtWidgets.QSplitter(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.splitter.sizePolicy().hasHeightForWidth())
@@ -430,7 +463,9 @@ class Ui_ControlForm:
         self.splitter.setOrientation(QtCore.Qt.Vertical)
         self.splitter.setObjectName("splitter")
         self.table = QtWidgets.QTableWidget(self.splitter)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.table.sizePolicy().hasHeightForWidth())
@@ -470,7 +505,9 @@ class Ui_ControlForm:
         self.table.verticalHeader().setDefaultSectionSize(20)
         self.txtShell = QtWidgets.QTextEdit(self.splitter)
         self.txtShell.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+        )
         sizePolicy.setHorizontalStretch(1)
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(self.txtShell.sizePolicy().hasHeightForWidth())
@@ -487,7 +524,9 @@ class Ui_ControlForm:
         self.horizontalLayout_6.setSpacing(6)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.lblIdentity = QtWidgets.QLabel(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Preferred)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Preferred
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.lblIdentity.sizePolicy().hasHeightForWidth())
@@ -529,7 +568,7 @@ class Ui_ControlForm:
         ControlForm.setCentralWidget(self.widget)
 
         self.retranslateUi(ControlForm)
-        self.spnJogMotor.valueChanged['int'].connect(ControlForm.jogChangeMotor)
+        self.spnJogMotor.valueChanged["int"].connect(ControlForm.jogChangeMotor)
         self.btnJogPos.clicked.connect(ControlForm.jogPos)
         self.btnSend.clicked.connect(ControlForm.sendSingleCommand)
         self.lneSend.returnPressed.connect(ControlForm.sendSingleCommand)
@@ -537,20 +576,24 @@ class Ui_ControlForm:
         self.lneServer.returnPressed.connect(self.lnePort.selectAll)
         self.lneServer.returnPressed.connect(self.lnePort.setFocus)
         self.lnePort.returnPressed.connect(self.rbUseTerminalServer.setFocus)
-        self.rbUseTerminalServer.clicked.connect(ControlForm.useTerminalServerConnection)
+        self.rbUseTerminalServer.clicked.connect(
+            ControlForm.useTerminalServerConnection
+        )
         self.rbUseSocket.clicked.connect(ControlForm.useSocketConnection)
         self.rbUseSsh.clicked.connect(ControlForm.useSshConnection)
         self.btnDisconnect.clicked.connect(ControlForm.remoteDisconnect)
         self.btnConnect.clicked.connect(ControlForm.remoteConnect)
         self.lnePort.returnPressed.connect(ControlForm.remoteConnect)
         self.btnKillMotor.clicked.connect(ControlForm.killMotor)
-        self.chkJogInc.toggled['bool'].connect(ControlForm.jogIncrementally)
+        self.chkJogInc.toggled["bool"].connect(ControlForm.jogIncrementally)
         self.btnJogStop.clicked.connect(ControlForm.jogStop)
         self.btnJogTo.clicked.connect(ControlForm.jogGoToPosition)
         self.btnSettings.clicked.connect(ControlForm.jogParameters)
         self.btnStatus.clicked.connect(ControlForm.statusScreen)
         self.btnJogNeg.clicked.connect(ControlForm.jogNeg)
-        self.table.cellDoubleClicked['int','int'].connect(ControlForm.chooseMotorFromTable)
+        self.table.cellDoubleClicked["int", "int"].connect(
+            ControlForm.chooseMotorFromTable
+        )
         self.btnGather.clicked.connect(ControlForm.dataGather)
         self.btnWatches.clicked.connect(ControlForm.watches)
         self.btnPollingStatus.clicked.connect(ControlForm.pmacPollingStatus)
@@ -592,9 +635,13 @@ class Ui_ControlForm:
 
     def retranslateUi(self, ControlForm):
         _translate = QtCore.QCoreApplication.translate
-        ControlForm.setWindowTitle(_translate("ControlForm", "Delta Tau motor controller"))
+        ControlForm.setWindowTitle(
+            _translate("ControlForm", "Delta Tau motor controller")
+        )
         self.grpJog.setTitle(_translate("ControlForm", "Jog ribbon"))
-        self.spnJogMotor.setToolTip(_translate("ControlForm", "Choose the motor to jog"))
+        self.spnJogMotor.setToolTip(
+            _translate("ControlForm", "Choose the motor to jog")
+        )
         self.btnJogNeg.setText(_translate("ControlForm", "jog neg"))
         self.btnHome.setText(_translate("ControlForm", "home"))
         self.btnJogPos.setText(_translate("ControlForm", "jog pos"))
@@ -639,7 +686,12 @@ class Ui_ControlForm:
         self.lblPolling.setText(_translate("ControlForm", "Polling"))
         self.lblPollRate.setText(_translate("ControlForm", "Hz"))
         self.btnGlobalStatus.setText(_translate("ControlForm", "Global Status..."))
-        self.btnKillAll.setToolTip(_translate("ControlForm", "Kill All (CTRL-K) motion by opening servo loops and setting zero velocity"))
+        self.btnKillAll.setToolTip(
+            _translate(
+                "ControlForm",
+                "Kill All (CTRL-K) motion by opening servo loops and setting zero velocity",
+            )
+        )
         self.btnKillAll.setText(_translate("ControlForm", "KILL ALL!"))
         self.btnLoadFile.setText(_translate("ControlForm", "load pmc..."))
         self.btnPollingStatus.setText(_translate("ControlForm", "disable polling"))
@@ -659,34 +711,37 @@ class Ui_ControlForm:
         item.setText(_translate("ControlForm", "i2t fault"))
         item = self.table.horizontalHeaderItem(6)
         item.setText(_translate("ControlForm", "over current"))
-        self.txtShell.setHtml(_translate("ControlForm", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Courier\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<table border=\"0\" style=\"-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;\">\n"
-"<tr>\n"
-"<td style=\"border: none;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\"><br /></span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\"><br /></span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\"><br /></span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\"><br /></span></p>\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;\"><br /></p>\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:8pt;\"><br /></span></p></td></tr></table></body></html>"))
+        self.txtShell.setHtml(
+            _translate(
+                "ControlForm",
+                '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">\n'
+                '<html><head><meta name="qrichtext" content="1" /><style type="text/css">\n'
+                "p, li { white-space: pre-wrap; }\n"
+                "</style></head><body style=\" font-family:'Courier'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+                '<table border="0" style="-qt-table-type: root; margin-top:4px; margin-bottom:4px; margin-left:4px; margin-right:4px;">\n'
+                "<tr>\n"
+                '<td style="border: none;">\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>\n'
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><br /></p>\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:10pt;"><br /></p>\n'
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:10pt;"><br /></span></p>\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"><br /></p>\n'
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:8pt;"><br /></span></p>\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"><br /></p>\n'
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:8pt;"><br /></span></p>\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"><br /></p>\n'
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:8pt;"><br /></span></p>\n'
+                '<p style="-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:8pt;"><br /></p>\n'
+                '<p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"><span style=" font-size:8pt;"><br /></span></p></td></tr></table></body></html>',
+            )
+        )
         self.lblIdentity.setText(_translate("ControlForm", "Test"))
         self.lblUnderVoltage.setText(_translate("ControlForm", "Under Voltage"))
         self.lblOverVoltage.setText(_translate("ControlForm", "Over Voltage"))
         self.lblOverTemperature.setText(_translate("ControlForm", "Over Temperature"))
-
-

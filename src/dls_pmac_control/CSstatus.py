@@ -556,9 +556,7 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
             for bit in range(0, 24):
                 i = 24 * (word - 1) + bit
                 self.lstLeds.append(QLabel(self.ledGroup))
-                self.lstLabels.append(
-                    QLabel(f"Word{word + 1} Bit{bit}", self.ledGroup)
-                )
+                self.lstLabels.append(QLabel(f"Word{word + 1} Bit{bit}", self.ledGroup))
                 ledGroupLayout.addWidget(self.lstLeds[i], bit, word * 2)
                 ledGroupLayout.addWidget(self.lstLabels[i], bit, word * 2 + 1)
                 self.lstLeds[i].setPixmap(self.greenLedOff)
@@ -769,9 +767,7 @@ class PpmacCSStatusForm(QDialog, Ui_formPpmacCSStatus):
             for bit in range(0, 16):
                 i = 16 * (word - 1) + bit
                 self.lstLeds.append(QLabel(self.ledGroup))
-                self.lstLabels.append(
-                    QLabel(f"Word{word + 1} Bit{bit}", self.ledGroup)
-                )
+                self.lstLabels.append(QLabel(f"Word{word + 1} Bit{bit}", self.ledGroup))
                 ledGroupLayout.addWidget(self.lstLeds[i], bit, word * 2)
                 ledGroupLayout.addWidget(self.lstLabels[i], bit, word * 2 + 1)
                 self.lstLeds[i].setPixmap(self.greenLedOff)
