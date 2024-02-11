@@ -261,7 +261,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         server_name = self.lneServer.text()
         server_port = self.lnePort.text()
         self.pmac.setConnectionParams(server_name, server_port)
-        self.txtShell.append("Connecting to %s %s" % (server_name, server_port))
+        self.txtShell.append(f"Connecting to {server_name} {server_port}")
 
         # Connect to the interface/PMAC
         # Show login window if ssh connection
@@ -638,7 +638,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         over_temperature = False
 
         self.commsThread.resultQueue.qsize()
-        for queItem in range(0, self.commsThread.resultQueue.qsize()):
+        for _queItem in range(0, self.commsThread.resultQueue.qsize()):
             try:
                 value = self.commsThread.resultQueue.get(False)
             except Empty:
@@ -865,7 +865,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
     def updateWatches(self):
         self.commsThread.watchesQueue.qsize()
-        for queItem in range(0, self.commsThread.watchesQueue.qsize()):
+        for _queItem in range(0, self.commsThread.watchesQueue.qsize()):
             try:
                 value = self.commsThread.watchesQueue.get(False)
             except Empty:

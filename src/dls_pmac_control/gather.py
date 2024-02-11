@@ -123,7 +123,7 @@ class PmacGatherform(QDialog, Ui_formGather):
         self.parent.pmac.sendCommand(cmd)
 
         # Clear the plot by setting empty plotitems
-        for chIndex, ch in enumerate(self.lstChannels):
+        for _chIndex, ch in enumerate(self.lstChannels):
             ch.qwtCurve.setData([], [])
 
         # reset the data channels from class GatherChannel
@@ -141,8 +141,8 @@ class PmacGatherform(QDialog, Ui_formGather):
             baseAddress = motorBaseAddrs[axisSpinBox.value() - 1]
             dataWidth = pmacDataSources[cmbBox.currentIndex()]["size"]
             ivar = "i50%02d" % (index + 1)
-            addr = "$%X%05X" % (dataWidth, baseAddress + dataOffset)
-            cmd = "%s=%s" % (ivar, addr)
+            addr = f"${dataWidth:X}{baseAddress + dataOffset:05X}"
+            cmd = f"{ivar}={addr}"
             if chkBox.isChecked():
                 self.parent.pmac.sendCommand(cmd)
 
@@ -314,7 +314,7 @@ class PmacGatherform(QDialog, Ui_formGather):
     def plotData(self):
 
         # xAxisData = range(self.numberOfSamples)
-        for chIndex, ch in enumerate(self.lstChannels):
+        for _chIndex, ch in enumerate(self.lstChannels):
             data = ch.scaledData
             # print "*** plotting data channel %d **************"%chIndex
             # print "datatype: %s"%str(ch.dataType)

@@ -127,7 +127,7 @@ class CommsThread:
             else:
                 err = ""
                 if not wasSuccessful:
-                    err = "%s: command '%s' generated '%s'" % (
+                    err = "{}: command '{}' generated '{}'".format(
                         self.lineNumber,
                         command,
                         pmacResponseStr.replace("\r", " ").replace("\x07", ""),

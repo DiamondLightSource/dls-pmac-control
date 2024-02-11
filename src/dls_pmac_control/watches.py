@@ -150,9 +150,9 @@ class Watch:
         # check type matches before sending command to set variable
         assert type(newValue) in (str, int, float)
         if self.varName[-2:] == "->":
-            self._sendPMACCommand("%s%s" % (self.varName, str(newValue)))
+            self._sendPMACCommand(f"{self.varName}{str(newValue)}")
         else:
-            self._sendPMACCommand("%s=%s" % (self.varName, str(newValue)))
+            self._sendPMACCommand(f"{self.varName}={str(newValue)}")
 
     def _sendPMACCommand(self, command):
         """Send a command to PMAC.

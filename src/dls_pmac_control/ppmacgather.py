@@ -99,7 +99,7 @@ class PpmacGatherform(QDialog, Ui_formGather):
 
     def gatherConfig(self):
         # Clear the plot by setting empty plotitems
-        for chIndex, ch in enumerate(self.lstChannels):
+        for _chIndex, ch in enumerate(self.lstChannels):
             ch.qwtCurve.setData([], [])
 
         # Reset the data channels from class PpmacGatherChannel
@@ -120,7 +120,7 @@ class PpmacGatherform(QDialog, Ui_formGather):
             addr_str = ppmacDataSources[cmBox.currentIndex()]["addr"]
             gather_addr = "Gather.Addr[%d]" % items
             addr = "Motor[%d].%s" % (axisSpinBox.value(), addr_str)
-            cmd = "%s=%s" % (gather_addr, addr)
+            cmd = f"{gather_addr}={addr}"
 
             if chkBox.isChecked():
                 items += 1

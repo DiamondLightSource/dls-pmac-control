@@ -113,7 +113,7 @@ class Energiseform(QDialog, Ui_formEnergise):
         self.val7503 = newVal7503
 
         # Write m7501, m7503 to the PMAC
-        cmd = "m7501=$%x m7503=$%x" % (self.val7501, self.val7503)
+        cmd = f"m7501=${self.val7501:x} m7503=${self.val7503:x}"
         (retStr, retStatus) = self.pmac.sendCommand(cmd)
         if not retStatus:
             QMessageBox.information(self, "Error", "Send command error:\n" + retStr)

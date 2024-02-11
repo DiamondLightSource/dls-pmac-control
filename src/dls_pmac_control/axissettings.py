@@ -375,7 +375,7 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
                 retLst.append("Error")
         if retLst:
             for i, retVal in enumerate(retLst):
-                exec('self.lne%s.setText(str("%s"))' % (ppmacCmds[i], retVal))
+                exec(f'self.lne{ppmacCmds[i]}.setText(str("{retVal}"))')
 
     def axisUpdate(self):
         self._updateAxisSetupIVars(
