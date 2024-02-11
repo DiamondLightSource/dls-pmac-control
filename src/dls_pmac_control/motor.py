@@ -632,7 +632,6 @@ class Controlform(QMainWindow, Ui_ControlForm):
     # Called when an event comes out of the polling thread
     # and the jog ribbon.
     def updateMotors(self):
-
         under_voltage = False
         over_voltage = False
         over_temperature = False
@@ -647,7 +646,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             try:
                 motorRow = value[6]
                 # check for special cases
-                if type(motorRow) == str:
+                if isinstance(motorRow, str):
                     if isinstance(self.pmac, PPmacSshInterface):
                         if motorRow == "G":
                             self.PpmacGlobalStatusScreen.updateStatus(
@@ -702,14 +701,13 @@ class Controlform(QMainWindow, Ui_ControlForm):
                     over_current = False
 
                     if motorRow < 8:
-
                         if isinstance(self.pmac, PPmacSshInterface):
                             if int(value[4]) > 0:
                                 i2t_fault = True
                             if int(value[5]) > 0:
                                 over_current = True
                         elif isinstance(self.pmac, PmacEthernetInterface):
-                            amp_status = ((int(value[4])&448)>>6)
+                            amp_status = (int(value[4]) & 448) >> 6
                             if amp_status == 5:
                                 i2t_fault = True
                             elif amp_status == 6:
@@ -732,13 +730,21 @@ class Controlform(QMainWindow, Ui_ControlForm):
                     if isinstance(self.pmac, PPmacSshInterface):
                         loLim = bool(statusWord & 0x2000000000000000)  # MinusLimit
                         hiLim = bool(statusWord & 0x1000000000000000)  # PlusLimit
-                        loLimSoft = bool(statusWord & 0x0080000000000000)  # SoftMinusLimit
-                        hiLimSoft = bool(statusWord & 0x0040000000000000)  # SoftPlusLimit
+                        loLimSoft = bool(
+                            statusWord & 0x0080000000000000
+                        )  # SoftMinusLimit
+                        hiLimSoft = bool(
+                            statusWord & 0x0040000000000000
+                        )  # SoftPlusLimit
 
                     # define high and low limits for pmac
                     else:
-                        loLim = bool(statusWord & 0x400000000000)  # negative end limit set
-                        hiLim = bool(statusWord & 0x200000000000)  # positive end limit set
+                        loLim = bool(
+                            statusWord & 0x400000000000
+                        )  # negative end limit set
+                        hiLim = bool(
+                            statusWord & 0x200000000000
+                        )  # positive end limit set
                         loLimSoft = False
                         hiLimSoft = False
 

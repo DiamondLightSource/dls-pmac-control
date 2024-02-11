@@ -187,7 +187,6 @@ class PmacGatherform(QDialog, Ui_formGather):
         return True
 
     def gatherSetup(self, numberOfSamples=1):
-
         # Run through the bitmasks i5050 and i5051 to see which of the
         # 48 channels should be sampled.
         bitOffset = 1
@@ -223,10 +222,8 @@ class PmacGatherform(QDialog, Ui_formGather):
 
         # Run through all the channels to sample from
         self.oddNumberOfWords = False
-        for chIndex, ch in enumerate(self.lstChannels):
-
+        for _, ch in enumerate(self.lstChannels):
             # Get the data info
-            # print "channel: %d"%chIndex
             ch.getDataInfo()
 
             # Figure out the data width and odd/even number of data words
@@ -312,7 +309,6 @@ class PmacGatherform(QDialog, Ui_formGather):
             ch.rawToScaled()
 
     def plotData(self):
-
         # xAxisData = range(self.numberOfSamples)
         for _chIndex, ch in enumerate(self.lstChannels):
             data = ch.scaledData
@@ -430,7 +426,7 @@ class PmacGatherform(QDialog, Ui_formGather):
             QMessageBox.information(
                 self,
                 "Error",
-                "Could not open file for writing."
+                "Could not open file for writing.",
                 # buttons=1,
                 # p_str_1="OK",
             )

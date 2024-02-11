@@ -1,4 +1,3 @@
-
 import re
 
 from PyQt5.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
@@ -23,7 +22,7 @@ class Watchesform(QDialog, Ui_formWatches):
     def addWatch(self):
         varName = str(self.lneVariableName.text())
         try:
-            assert type(varName) is str
+            assert isinstance(varName, str)
             varName = varName.lower()
             if varName in unsafeCommands:
                 raise ValueError("%s is an unsafe command" % varName)
@@ -50,8 +49,8 @@ class Watchesform(QDialog, Ui_formWatches):
         varName = varName.lower()
         try:
             watch = self._watches[varName]
-        except KeyError:
-            raise ValueError('There is no watch for variable "%s"' % varName)
+        except KeyError as e:
+            raise ValueError(msg='There is no watch for variable "%s"' % varName) from e
         return watch
 
     def updateWatch(self, row):
@@ -70,13 +69,13 @@ class Watchesform(QDialog, Ui_formWatches):
         row = self.table.currentRow()
         if row == -1:
             return None
-        assert type(row) is int
+        assert isinstance(row, int)
         varName = self.table.item(row, 0).text()
         try:
             del self._watches[varName]
             self.parent.commsThread.remove_watch(varName)
-        except KeyError:
-            raise ValueError('There is no watch for variable "%s"' % varName)
+        except KeyError as e:
+            raise ValueError(msg='There is no watch for variable "%s"' % varName) from e
         try:
             self.table.removeRow(row)
             # self.updateEditWatchPanel()
