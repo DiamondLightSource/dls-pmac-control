@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 import re
 
@@ -115,7 +114,7 @@ class Watchesform(QDialog, Ui_formWatches):
             self.updateCurrentWatch()
             self.lneEditValue.setText("")
             self.panelEditWatch.setEnabled(False)
-        except (ValueError, IOError) as e:
+        except (OSError, ValueError) as e:
             self.lneEditValue.setText("")
             self.panelEditWatch.setEnabled(False)
             QMessageBox.information(self, "Cannot change value", str(e))
@@ -162,7 +161,7 @@ class Watch:
         # Get response from PMAC; the 2nd returned boolean indicates absence of timeout
         (s, wasNoTimeout) = self.pmac.sendCommand(command)
         if not wasNoTimeout:
-            raise IOError("Connection to PMAC timed out")
+            raise OSError("Connection to PMAC timed out")
 
         # Check whether PMAC doesn't reply with an ERRxx type response
         matchObject = re.match(r"^\x07(ERR\d+)\r$", s)

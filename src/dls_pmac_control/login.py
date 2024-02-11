@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from PyQt5.QtWidgets import QDialog
 
 from dls_pmac_control.ui_formLogin import Ui_Login

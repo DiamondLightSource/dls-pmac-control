@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'dls_pmac_control/formControl.ui'
 #
@@ -9,7 +8,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_ControlForm(object):
+class Ui_ControlForm:
     def setupUi(self, ControlForm):
         ControlForm.setObjectName("ControlForm")
         ControlForm.resize(675, 805)

@@ -1,7 +1,7 @@
 import unittest
 from os import path
+from unittest.mock import patch
 
-from mock import patch
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMainWindow
 

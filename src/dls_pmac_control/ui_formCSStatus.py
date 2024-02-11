@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'src/dls_pmac_control/formCSStatus.ui'
 #
@@ -6,10 +5,10 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 
-class Ui_formCSStatus(object):
+class Ui_formCSStatus:
     def setupUi(self, formCSStatus):
         formCSStatus.setObjectName("formCSStatus")
         formCSStatus.resize(433, 311)

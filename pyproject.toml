@@ -99,6 +99,10 @@ commands =
 [tool.ruff]
 src = ["src", "tests"]
 line-length = 88
+# ignoring line to long for the moment to avoid signficant changes to the code
+lint.ignore = [
+    "E501", # line too long
+]
 lint.select = [
     "B",  # flake8-bugbear - https://docs.astral.sh/ruff/rules/#flake8-bugbear-b
     "C4", # flake8-comprehensions - https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4

@@ -1,7 +1,7 @@
 import sys
 import unittest
+from unittest.mock import patch
 
-from mock import patch
 from PyQt5.QtCore import Qt
 from PyQt5.QtTest import QTest
 from PyQt5.QtWidgets import QApplication, QWidget

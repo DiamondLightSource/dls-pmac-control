@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sys
 
 from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot

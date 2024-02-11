@@ -3,10 +3,12 @@ import time
 import traceback
 from queue import Empty, Queue
 
+from dls_pmaclib.dls_pmacremote import (
+    PmacEthernetInterface,
+    PmacSerialInterface,
+    PPmacSshInterface,
+)
 from PyQt5.QtCore import QCoreApplication, QEvent
-
-from dls_pmaclib.dls_pmacremote import (PmacEthernetInterface,
-                                        PmacSerialInterface, PPmacSshInterface)
 
 
 class CustomEvent(QEvent):
@@ -20,7 +22,7 @@ class CustomEvent(QEvent):
         return self._data
 
 
-class CommsThread(object):
+class CommsThread:
     def __init__(self, parent):
         self.parent = parent
         self.CSNum = 1
@@ -159,7 +161,7 @@ class CommsThread(object):
                     # PowerBrick channels are zero-indexed
                     cmd = cmd + "BrickLV.Chan[" + str(motorNo - 1) + "].I2tFaultStatus BrickLV.Chan[" + str(motorNo - 1) + "].OverCurrent"
                 else:
-                    # Add a dummy request to keep the request chunks 
+                    # Add a dummy request to keep the request chunks
                     # the same length (p99 always returns zero)
                     cmd = cmd + "m" + str(motorNo) + "90 p99"
             else:

@@ -1,5 +1,4 @@
 #!/bin/env dls-python2.6
-# -*- coding: utf-8 -*-
 
 import sys
 

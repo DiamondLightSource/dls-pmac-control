@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'dls_pmac_control/formPpmacAxisSettings.ui'
 #
@@ -6,10 +5,10 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 
 
-class Ui_formPpmacAxisSettings(object):
+class Ui_formPpmacAxisSettings:
     def setupUi(self, formPpmacAxisSettings):
         formPpmacAxisSettings.setObjectName("formPpmacAxisSettings")
         formPpmacAxisSettings.resize(580, 688)

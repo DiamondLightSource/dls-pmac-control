@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'dls_pmac_control/formGather.ui'
 #
@@ -12,7 +11,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from qwt import QwtPlot
 
 
-class Ui_formGather(object):
+class Ui_formGather:
     def setupUi(self, formGather):
         formGather.setObjectName("formGather")
         formGather.resize(608, 429)

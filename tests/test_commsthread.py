@@ -1,6 +1,6 @@
 import unittest
+from unittest.mock import Mock, patch
 
-from mock import Mock, patch
 from PyQt5.QtWidgets import QMainWindow
 
 from dls_pmac_control.commsThread import CommsThread

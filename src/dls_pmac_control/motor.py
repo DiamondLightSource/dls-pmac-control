@@ -6,28 +6,36 @@ from optparse import OptionParser
 from os import path
 from queue import Empty
 
+from dls_pmaclib.dls_pmacremote import (
+    PmacEthernetInterface,
+    PmacSerialInterface,
+    PmacTelnetInterface,
+    PPmacSshInterface,
+)
+from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
 from PyQt5.QtCore import QEvent, Qt, pyqtSlot
 from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import (QApplication, QFileDialog, QLineEdit, QMainWindow,
-                             QMessageBox, QProgressDialog, QTableWidgetItem)
+from PyQt5.QtWidgets import (
+    QApplication,
+    QFileDialog,
+    QLineEdit,
+    QMainWindow,
+    QMessageBox,
+    QProgressDialog,
+    QTableWidgetItem,
+)
 
-from dls_pmac_control.axissettings import (Axissettingsform,
-                                          PpmacAxissettingsform)
+from dls_pmac_control.axissettings import Axissettingsform, PpmacAxissettingsform
 from dls_pmac_control.commsThread import CommsThread
 from dls_pmac_control.CSstatus import CSStatusForm, PpmacCSStatusForm
 from dls_pmac_control.energise import Energiseform
 from dls_pmac_control.gather import PmacGatherform
-from dls_pmac_control.GlobalStatus import (GlobalStatusForm,
-                                          PpmacGlobalStatusForm)
+from dls_pmac_control.GlobalStatus import GlobalStatusForm, PpmacGlobalStatusForm
 from dls_pmac_control.login import Loginform
 from dls_pmac_control.ppmacgather import PpmacGatherform
 from dls_pmac_control.status import PpmacStatusform, Statusform
 from dls_pmac_control.ui_formControl import Ui_ControlForm
 from dls_pmac_control.watches import Watchesform
-from dls_pmaclib.dls_pmacremote import (PmacEthernetInterface,
-                                        PmacSerialInterface,
-                                        PmacTelnetInterface, PPmacSshInterface)
-from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
 
 from . import __version__
 

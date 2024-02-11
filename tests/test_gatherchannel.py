@@ -1,6 +1,6 @@
 import unittest
+from unittest.mock import Mock
 
-from mock import Mock
 from PyQt5.QtWidgets import QMainWindow
 from qwt import QwtPlotCurve
 
