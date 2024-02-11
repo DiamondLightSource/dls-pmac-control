@@ -1,53 +1,26 @@
-# This file is for use as a devcontainer and a runtime container
-# 
-# The devcontainer should use the build target and run as root with podman 
+# The devcontainer should use the developer target and run as root with podman
 # or docker with user namespaces.
-#
-FROM python:3.10 as build
+ARG PYTHON_VERSION=3.11
+FROM python:${PYTHON_VERSION} as developer
 
 # Add any system dependencies for the developer/build environment here
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
-    build-essential \
-    busybox \
-    git \
-    net-tools \
-    vim \
-    libqt5gui5 libxcb-xinerama0 \
-    && rm -rf /var/lib/apt/lists/* \
-    && busybox --install
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    graphviz \
+    && rm -rf /var/lib/apt/lists/*
 
-COPY . /project
-
-RUN cd /project && \
-    pip install --upgrade pip build && \
-    export SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct) && \
-    python -m build --sdist --wheel && \
-    touch requirements.txt
-
+# Set up a virtual environment and put it in PATH
 RUN python -m venv /venv
 ENV PATH=/venv/bin:$PATH
-# allow tests to run headless in the dev container
-ENV QT_QPA_PLATFORM=offscreen
 
-RUN cd /project && \
-    pip install --upgrade pip && \
-    pip install -r requirements.txt dist/*.whl && \
-    pip freeze  > dist/requirements.txt && \
-    # we don't want to include our own wheel in requirements - remove with sed
-    # and replace with a comment to avoid a zero length asset upload later
-    sed -i '/file:/s/^/# Requirements for /' dist/requirements.txt
+# The build stage installs the context into the venv
+FROM developer as build
+COPY . /context
+WORKDIR /context
+RUN pip install .
 
-FROM python:3.10-slim as runtime
-
-# things to make pyQt5 work
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && \
-    apt-get install -y --no-install-recommends \
-    libqt5gui5 libxcb-xinerama0 && \
-    rm -rf /var/lib/apt/lists/*
-    
-ENV XDG_RUNTIME_DIR=/tmp/runtime-vscode
-
+# The runtime stage copies the built venv into a slim runtime container
+FROM python:${PYTHON_VERSION}-slim as runtime
+# Add apt-get system dependecies for runtime here if needed
 COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
 

@@ -5,16 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "dls_pmacontrol",
+            "name": "Debug Unit Test",
             "type": "python",
             "request": "launch",
-            "module": "dls_pmaccontrol.motor",
-            "args": [
-                "-v",
-                "--protocol=ssh",
-                "--server=172.23.59.7",
-                "--port=22",
-            ]
-        },
+            "justMyCode": false,
+            "program": "${file}",
+            "purpose": [
+                "debug-test"
+            ],
+            "console": "integratedTerminal",
+        }
     ]
 }

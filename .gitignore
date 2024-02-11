@@ -1,7 +1,6 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-*.class
 
 # C extensions
 *.so
@@ -9,7 +8,6 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
-.venv
 build/
 develop-eggs/
 dist/
@@ -65,4 +63,8 @@ target/
 .venv*
 venv*
 
+# further build artifacts
+lockfiles/
 
+# ruff cache
+.ruff_cache/
