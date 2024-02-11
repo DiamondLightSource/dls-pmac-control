@@ -1,9 +1,0 @@
-[run]
-source = dls_pmaccontrol/
-omit = 
-	*/_version_git.py
-	*/tests/*
-	*/ui_form*
-	*__init__.py
-	*__main__.py
-        /setup.py
