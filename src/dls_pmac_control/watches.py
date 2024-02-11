@@ -50,7 +50,8 @@ class Watchesform(QDialog, Ui_formWatches):
         try:
             watch = self._watches[varName]
         except KeyError as e:
-            raise ValueError(msg='There is no watch for variable "%s"' % varName) from e
+            print('There is no watch for variable "%s"' % varName)
+            raise ValueError() from e
         return watch
 
     def updateWatch(self, row):
@@ -75,7 +76,8 @@ class Watchesform(QDialog, Ui_formWatches):
             del self._watches[varName]
             self.parent.commsThread.remove_watch(varName)
         except KeyError as e:
-            raise ValueError(msg='There is no watch for variable "%s"' % varName) from e
+            print('There is no watch for variable "%s"' % varName)
+            raise ValueError() from e
         try:
             self.table.removeRow(row)
             # self.updateEditWatchPanel()
