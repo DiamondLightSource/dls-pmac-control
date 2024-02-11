@@ -6,11 +6,16 @@ FROM python:${PYTHON_VERSION} as developer
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update && apt-get install -y --no-install-recommends \
     graphviz \
+    libqt5gui5 libxcb-xinerama0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up a virtual environment and put it in PATH
 RUN python -m venv /venv
 ENV PATH=/venv/bin:$PATH
+
+# allow tests to run headless in the dev container
+ENV QT_QPA_PLATFORM=offscreen
+ENV XDG_RUNTIME_DIR=/tmp/runtime-vscode
 
 # The build stage installs the context into the venv
 FROM developer as build
@@ -27,3 +32,4 @@ ENV PATH=/venv/bin:$PATH
 # change this entrypoint if it is not the same as the repo
 ENTRYPOINT ["dls-pmac-control"]
 CMD ["--version"]
+

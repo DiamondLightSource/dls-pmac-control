@@ -861,9 +861,9 @@ class MotorTestSsh(unittest.TestCase):
         self.obj.commsThread.resultQueue.configure_mock(**attrs)
         ret = self.obj.updateMotors()
         assert ret is None
-        assert self.obj.lblPosition.text() == "0.0"
-        assert self.obj.lblVelo.text() == "0.0"
-        assert self.obj.lblFolErr.text() == "0.0"
+        assert float(self.obj.lblPosition.text()) == 0.0
+        assert float(self.obj.lblVelo.text()) == 0.0
+        assert float(self.obj.lblFolErr.text()) == 0.0
 
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getShortModelName")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.isModelGeobrick")
