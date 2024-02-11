@@ -8,8 +8,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qwt import QwtPlotCurve
 
-from dls_pmaccontrol.gatherchannel import PpmacGatherChannel, ppmacDataSources
-from dls_pmaccontrol.ui_formGather import Ui_formGather
+from dls_pmac_control.gatherchannel import PpmacGatherChannel, ppmacDataSources
+from dls_pmac_control.ui_formGather import Ui_formGather
 
 # TODO - this needs the logic decoupled from the GUI and moved into pmaclib
 #  work has started in pmaclib but currently duplicates code in this module

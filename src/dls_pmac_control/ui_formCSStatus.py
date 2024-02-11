@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'src/dls_pmaccontrol/formCSStatus.ui'
+# Form implementation generated from reading ui file 'src/dls_pmac_control/formCSStatus.ui'
 #
 # Created by: PyQt5 UI code generator 5.12.2
 #

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'dls_pmaccontrol/formControl.ui'
+# Form implementation generated from reading ui file 'dls_pmac_control/formControl.ui'
 #
 # Created by: PyQt5 UI code generator 5.12.2
 #

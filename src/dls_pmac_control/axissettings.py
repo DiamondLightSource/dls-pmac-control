@@ -2,8 +2,8 @@
 
 from PyQt5.QtWidgets import QDialog, QMessageBox
 
-from dls_pmaccontrol.ui_formAxisSettings import Ui_formAxisSettings
-from dls_pmaccontrol.ui_formPpmacAxisSettings import Ui_formPpmacAxisSettings
+from dls_pmac_control.ui_formAxisSettings import Ui_formAxisSettings
+from dls_pmac_control.ui_formPpmacAxisSettings import Ui_formPpmacAxisSettings
 
 # Power PMAC I-Variable Equivalents
 PpmacVars = {

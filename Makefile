@@ -1,9 +1,9 @@
 ###### EDIT #####################
 #Directory with ui and resource files
-RESOURCE_DIR = dls_pmaccontrol
+RESOURCE_DIR = dls_pmac_control
 
 #Directory for compiled resources
-COMPILED_DIR = dls_pmaccontrol
+COMPILED_DIR = dls_pmac_control
 
 #UI files to compile
 UI_FILES = formAxisSettings.ui  formControl.ui  formCSStatus.ui  formEnergise.ui  formGather.ui  formGlobalStatus.ui  formStatus.ui  formWatches.ui formPpmacAxisSettings.ui  formLogin.ui formPpmacCSStatus.ui

@@ -5,7 +5,7 @@ from mock import patch
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QMainWindow
 
-from dls_pmaccontrol.GlobalStatus import GlobalStatusForm, PpmacGlobalStatusForm
+from dls_pmac_control.GlobalStatus import GlobalStatusForm, PpmacGlobalStatusForm
 
 
 class DummyTestWidget(QMainWindow):

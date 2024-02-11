@@ -11,6 +11,6 @@ def main(args=None):
     args = parser.parse_args(args)
 
 
-# test with: pipenv run python -m dls_pmaccontrol
+# test with: pipenv run python -m dls_pmac_control
 if __name__ == "__main__":
     main()

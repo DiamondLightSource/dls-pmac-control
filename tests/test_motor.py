@@ -5,7 +5,7 @@ from mock import Mock, patch
 from PyQt5.QtCore import Qt
 from PyQt5.QtTest import QTest
 
-from dls_pmaccontrol.motor import Controlform
+from dls_pmac_control.motor import Controlform
 
 
 class DummyTestOptionsTelnet:
@@ -65,19 +65,19 @@ class DummyTestOptionsSsh:
 
 
 class MotorTestTelnet(unittest.TestCase):
-    @patch("dls_pmaccontrol.status.Statusform")
-    @patch("dls_pmaccontrol.status.PpmacStatusform")
-    @patch("dls_pmaccontrol.CSstatus.CSStatusForm")
-    @patch("dls_pmaccontrol.CSstatus.PpmacCSStatusForm")
-    @patch("dls_pmaccontrol.GlobalStatus.GlobalStatusForm")
-    @patch("dls_pmaccontrol.GlobalStatus.PpmacGlobalStatusForm")
-    @patch("dls_pmaccontrol.axissettings.Axissettingsform")
-    @patch("dls_pmaccontrol.axissettings.PpmacAxissettingsform")
-    @patch("dls_pmaccontrol.gather.PmacGatherform")
-    @patch("dls_pmaccontrol.ppmacgather.PpmacGatherform")
-    @patch("dls_pmaccontrol.watches.Watchesform")
-    @patch("dls_pmaccontrol.login.Loginform")
-    @patch("dls_pmaccontrol.commsThread.CommsThread")
+    @patch("dls_pmac_control.status.Statusform")
+    @patch("dls_pmac_control.status.PpmacStatusform")
+    @patch("dls_pmac_control.CSstatus.CSStatusForm")
+    @patch("dls_pmac_control.CSstatus.PpmacCSStatusForm")
+    @patch("dls_pmac_control.GlobalStatus.GlobalStatusForm")
+    @patch("dls_pmac_control.GlobalStatus.PpmacGlobalStatusForm")
+    @patch("dls_pmac_control.axissettings.Axissettingsform")
+    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform")
+    @patch("dls_pmac_control.gather.PmacGatherform")
+    @patch("dls_pmac_control.ppmacgather.PpmacGatherform")
+    @patch("dls_pmac_control.watches.Watchesform")
+    @patch("dls_pmac_control.login.Loginform")
+    @patch("dls_pmac_control.commsThread.CommsThread")
     @patch("PyQt5.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
@@ -265,19 +265,19 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
-    @patch("dls_pmaccontrol.status.Statusform")
-    @patch("dls_pmaccontrol.status.PpmacStatusform")
-    @patch("dls_pmaccontrol.CSstatus.CSStatusForm")
-    @patch("dls_pmaccontrol.CSstatus.PpmacCSStatusForm")
-    @patch("dls_pmaccontrol.GlobalStatus.GlobalStatusForm")
-    @patch("dls_pmaccontrol.GlobalStatus.PpmacGlobalStatusForm")
-    @patch("dls_pmaccontrol.axissettings.Axissettingsform")
-    @patch("dls_pmaccontrol.axissettings.PpmacAxissettingsform")
-    @patch("dls_pmaccontrol.gather.PmacGatherform")
-    @patch("dls_pmaccontrol.ppmacgather.PpmacGatherform")
-    @patch("dls_pmaccontrol.watches.Watchesform")
-    @patch("dls_pmaccontrol.login.Loginform")
-    @patch("dls_pmaccontrol.commsThread.CommsThread")
+    @patch("dls_pmac_control.status.Statusform")
+    @patch("dls_pmac_control.status.PpmacStatusform")
+    @patch("dls_pmac_control.CSstatus.CSStatusForm")
+    @patch("dls_pmac_control.CSstatus.PpmacCSStatusForm")
+    @patch("dls_pmac_control.GlobalStatus.GlobalStatusForm")
+    @patch("dls_pmac_control.GlobalStatus.PpmacGlobalStatusForm")
+    @patch("dls_pmac_control.axissettings.Axissettingsform")
+    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform")
+    @patch("dls_pmac_control.gather.PmacGatherform")
+    @patch("dls_pmac_control.ppmacgather.PpmacGatherform")
+    @patch("dls_pmac_control.watches.Watchesform")
+    @patch("dls_pmac_control.login.Loginform")
+    @patch("dls_pmac_control.commsThread.CommsThread")
     @patch("PyQt5.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
@@ -350,7 +350,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
         mock_pixmap.assert_called_with(self.obj.greenLedOff)
         assert self.obj.lblIdentity.text() == ""
 
-    @patch("dls_pmaccontrol.motor.Controlform.addToTxtShell")
+    @patch("dls_pmac_control.motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
     def test_jog_neg(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
@@ -359,7 +359,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
             self.obj.currentMotor, "neg", str(self.obj.lneJogDist.text())
         )
 
-    @patch("dls_pmaccontrol.motor.Controlform.addToTxtShell")
+    @patch("dls_pmac_control.motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
     def test_jog_pos(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
@@ -368,14 +368,14 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
             self.obj.currentMotor, "pos", str(self.obj.lneJogDist.text())
         )
 
-    @patch("dls_pmaccontrol.motor.Controlform.addToTxtShell")
+    @patch("dls_pmac_control.motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogStop")
     def test_jog_stop(self, mock_jogstop, mock_addtxt):
         mock_jogstop.return_value = ("cmd", "response", True)
         assert self.obj.jogStop() is None
         mock_jogstop.assert_called_with(self.obj.currentMotor)
 
-    @patch("dls_pmaccontrol.motor.Controlform.addToTxtShell")
+    @patch("dls_pmac_control.motor.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.homeCommand")
     def test_jog_home(self, mock_home, mock_addtxt):
         mock_home.return_value = ("cmd", "response", True)
@@ -388,19 +388,19 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
 
 
 class MotorTestEthernet(unittest.TestCase):
-    @patch("dls_pmaccontrol.status.Statusform")
-    @patch("dls_pmaccontrol.status.PpmacStatusform")
-    @patch("dls_pmaccontrol.CSstatus.CSStatusForm")
-    @patch("dls_pmaccontrol.CSstatus.PpmacCSStatusForm")
-    @patch("dls_pmaccontrol.GlobalStatus.GlobalStatusForm")
-    @patch("dls_pmaccontrol.GlobalStatus.PpmacGlobalStatusForm")
-    @patch("dls_pmaccontrol.axissettings.Axissettingsform")
-    @patch("dls_pmaccontrol.axissettings.PpmacAxissettingsform")
-    @patch("dls_pmaccontrol.gather.PmacGatherform")
-    @patch("dls_pmaccontrol.ppmacgather.PpmacGatherform")
-    @patch("dls_pmaccontrol.watches.Watchesform")
-    @patch("dls_pmaccontrol.login.Loginform")
-    @patch("dls_pmaccontrol.commsThread.CommsThread")
+    @patch("dls_pmac_control.status.Statusform")
+    @patch("dls_pmac_control.status.PpmacStatusform")
+    @patch("dls_pmac_control.CSstatus.CSStatusForm")
+    @patch("dls_pmac_control.CSstatus.PpmacCSStatusForm")
+    @patch("dls_pmac_control.GlobalStatus.GlobalStatusForm")
+    @patch("dls_pmac_control.GlobalStatus.PpmacGlobalStatusForm")
+    @patch("dls_pmac_control.axissettings.Axissettingsform")
+    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform")
+    @patch("dls_pmac_control.gather.PmacGatherform")
+    @patch("dls_pmac_control.ppmacgather.PpmacGatherform")
+    @patch("dls_pmac_control.watches.Watchesform")
+    @patch("dls_pmac_control.login.Loginform")
+    @patch("dls_pmac_control.commsThread.CommsThread")
     @patch("PyQt5.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
@@ -543,19 +543,19 @@ class MotorTestEthernet(unittest.TestCase):
 
 
 class MotorTestSerial(unittest.TestCase):
-    @patch("dls_pmaccontrol.status.Statusform")
-    @patch("dls_pmaccontrol.status.PpmacStatusform")
-    @patch("dls_pmaccontrol.CSstatus.CSStatusForm")
-    @patch("dls_pmaccontrol.CSstatus.PpmacCSStatusForm")
-    @patch("dls_pmaccontrol.GlobalStatus.GlobalStatusForm")
-    @patch("dls_pmaccontrol.GlobalStatus.PpmacGlobalStatusForm")
-    @patch("dls_pmaccontrol.axissettings.Axissettingsform")
-    @patch("dls_pmaccontrol.axissettings.PpmacAxissettingsform")
-    @patch("dls_pmaccontrol.gather.PmacGatherform")
-    @patch("dls_pmaccontrol.ppmacgather.PpmacGatherform")
-    @patch("dls_pmaccontrol.watches.Watchesform")
-    @patch("dls_pmaccontrol.login.Loginform")
-    @patch("dls_pmaccontrol.commsThread.CommsThread")
+    @patch("dls_pmac_control.status.Statusform")
+    @patch("dls_pmac_control.status.PpmacStatusform")
+    @patch("dls_pmac_control.CSstatus.CSStatusForm")
+    @patch("dls_pmac_control.CSstatus.PpmacCSStatusForm")
+    @patch("dls_pmac_control.GlobalStatus.GlobalStatusForm")
+    @patch("dls_pmac_control.GlobalStatus.PpmacGlobalStatusForm")
+    @patch("dls_pmac_control.axissettings.Axissettingsform")
+    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform")
+    @patch("dls_pmac_control.gather.PmacGatherform")
+    @patch("dls_pmac_control.ppmacgather.PpmacGatherform")
+    @patch("dls_pmac_control.watches.Watchesform")
+    @patch("dls_pmac_control.login.Loginform")
+    @patch("dls_pmac_control.commsThread.CommsThread")
     @patch("PyQt5.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
@@ -717,19 +717,19 @@ class MotorTestSerial(unittest.TestCase):
 
 
 class MotorTestSsh(unittest.TestCase):
-    @patch("dls_pmaccontrol.status.Statusform")
-    @patch("dls_pmaccontrol.status.PpmacStatusform")
-    @patch("dls_pmaccontrol.CSstatus.CSStatusForm")
-    @patch("dls_pmaccontrol.CSstatus.PpmacCSStatusForm")
-    @patch("dls_pmaccontrol.GlobalStatus.GlobalStatusForm")
-    @patch("dls_pmaccontrol.GlobalStatus.PpmacGlobalStatusForm")
-    @patch("dls_pmaccontrol.axissettings.Axissettingsform")
-    @patch("dls_pmaccontrol.axissettings.PpmacAxissettingsform")
-    @patch("dls_pmaccontrol.gather.PmacGatherform")
-    @patch("dls_pmaccontrol.ppmacgather.PpmacGatherform")
-    @patch("dls_pmaccontrol.watches.Watchesform")
-    @patch("dls_pmaccontrol.login.Loginform")
-    @patch("dls_pmaccontrol.commsThread.CommsThread")
+    @patch("dls_pmac_control.status.Statusform")
+    @patch("dls_pmac_control.status.PpmacStatusform")
+    @patch("dls_pmac_control.CSstatus.CSStatusForm")
+    @patch("dls_pmac_control.CSstatus.PpmacCSStatusForm")
+    @patch("dls_pmac_control.GlobalStatus.GlobalStatusForm")
+    @patch("dls_pmac_control.GlobalStatus.PpmacGlobalStatusForm")
+    @patch("dls_pmac_control.axissettings.Axissettingsform")
+    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform")
+    @patch("dls_pmac_control.gather.PmacGatherform")
+    @patch("dls_pmac_control.ppmacgather.PpmacGatherform")
+    @patch("dls_pmac_control.watches.Watchesform")
+    @patch("dls_pmac_control.login.Loginform")
+    @patch("dls_pmac_control.commsThread.CommsThread")
     @patch("PyQt5.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
@@ -779,7 +779,7 @@ class MotorTestSsh(unittest.TestCase):
         self.assertFalse(self.obj.lnePollRate.isEnabled())
         self.assertFalse(self.obj.lblPollRate.isEnabled())
 
-    @patch("dls_pmaccontrol.login.Loginform.exec")
+    @patch("dls_pmac_control.login.Loginform.exec")
     @patch("PyQt5.QtWidgets.QMessageBox.information")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.setConnectionParams")
@@ -795,7 +795,7 @@ class MotorTestSsh(unittest.TestCase):
         assert ret is None
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
-    @patch("dls_pmaccontrol.login.Loginform.exec")
+    @patch("dls_pmac_control.login.Loginform.exec")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getNumberOfAxes")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getPmacModel")
@@ -871,7 +871,7 @@ class MotorTestSsh(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.setConnectionParams")
-    @patch("dls_pmaccontrol.login.Loginform.exec")
+    @patch("dls_pmac_control.login.Loginform.exec")
     def test_update_identity(
         self,
         mock_login,
