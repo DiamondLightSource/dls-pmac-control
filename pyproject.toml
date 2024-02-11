@@ -40,7 +40,7 @@ dev = [
 ]
 
 [project.scripts]
-dls-pmac-control = "dls_pmac_control.motor:main"
+dls-pmac-control = "dls_pmac_control.__main__:main"
 
 [project.urls]
 GitHub = "https://github.com/DiamondLightSource/dls-pmac-control"
