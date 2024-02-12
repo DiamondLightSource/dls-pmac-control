@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=build /venv/ /venv/
 ENV PATH=/venv/bin:$PATH
+ENV XDG_RUNTIME_DIR=/tmp/runtime-:$USER
 
 # change this entrypoint if it is not the same as the repo
 ENTRYPOINT ["dls-pmac-control"]
