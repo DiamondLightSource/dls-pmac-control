@@ -1,13 +1,15 @@
 # The devcontainer should use the developer target and run as root with podman
 # or docker with user namespaces.
 ARG PYTHON_VERSION=3.11
-FROM python:${PYTHON_VERSION} as developer
+FROM python:${PYTHON_VERSION} as system
 
-# Add any system dependencies for the developer/build environment here
+# Add any system dependencies for developer and runtime targets
 RUN apt-get update && apt-get install -y --no-install-recommends \
     graphviz \
     libqt5gui5 libxcb-xinerama0 \
     && rm -rf /var/lib/apt/lists/*
+
+FROM system as developer
 
 # Set up a virtual environment and put it in PATH
 RUN python -m venv /venv
