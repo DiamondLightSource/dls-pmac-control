@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: dls-pmac-control
+  name: dls-pmaccontrol
   title: dls-pmac-control
   description: GUI for low level control and monitoring of turbo pmac and power pmac motion controllers
 spec:

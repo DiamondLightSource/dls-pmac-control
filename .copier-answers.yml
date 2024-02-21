@@ -6,7 +6,7 @@ author_name: Giles Knap
 component_owner: group:default/sscc
 description: GUI for low level control and monitoring of turbo pmac and power pmac
     motion controllers
-distribution_name: dls-pmac-control
+distribution_name: dls-pmaccontrol
 docker: true
 docs_type: sphinx
 git_platform: github.com
