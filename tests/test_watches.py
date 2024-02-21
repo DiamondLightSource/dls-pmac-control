@@ -1,11 +1,11 @@
 import unittest
+from unittest.mock import Mock, patch
 
-from mock import Mock, patch
 from PyQt5.QtCore import Qt
 from PyQt5.QtTest import QTest
 from PyQt5.QtWidgets import QMainWindow
 
-from dls_pmaccontrol.watches import Watchesform
+from dls_pmac_control.watches import Watchesform
 
 
 class DummyTestWidget(QMainWindow):
@@ -57,8 +57,8 @@ class WatchesTest(unittest.TestCase):
         self.assertFalse(self.obj.panelEditWatch.isEnabled())
         mock_box.assert_called_with(self.obj, "Cannot create watch", error_msg)
 
-    @patch("dls_pmaccontrol.watches.Watchesform.getPolledValue")
-    @patch("dls_pmaccontrol.watches.Watch")
+    @patch("dls_pmac_control.watches.Watchesform.getPolledValue")
+    @patch("dls_pmac_control.watches.Watch")
     def test_add_watch(self, mock_watch, mock_get_value):
         mock_get_value.return_value = "12"
         self.obj.lneVariableName.setText("watch")
@@ -79,8 +79,8 @@ class WatchesTest(unittest.TestCase):
         error_msg = 'There is no watch for variable "test"'
         self.assertRaises(ValueError, msg=error_msg)
 
-    @patch("dls_pmaccontrol.watches.Watchesform.getPolledValue")
-    @patch("dls_pmaccontrol.watches.Watch")
+    @patch("dls_pmac_control.watches.Watchesform.getPolledValue")
+    @patch("dls_pmac_control.watches.Watch")
     def test_remove_watch(self, mock_watch, mock_get_value):
         # add watch to be removed
         mock_get_value.return_value = "3"
@@ -103,8 +103,8 @@ class WatchesTest(unittest.TestCase):
         self.assertEqual(self.obj.lneVariableName.text(), "")
         self.assertEqual(self.obj.lneEditValue.text(), "")
 
-    @patch("dls_pmaccontrol.watches.Watchesform.getPolledValue")
-    @patch("dls_pmaccontrol.watches.Watch")
+    @patch("dls_pmac_control.watches.Watchesform.getPolledValue")
+    @patch("dls_pmac_control.watches.Watch")
     def test_apply_edit_watch(self, mock_watch, mock_get_value):
         # add watch to be edited
         mock_get_value.return_value = "-8"

@@ -1,9 +1,9 @@
 import unittest
+from unittest.mock import Mock, patch
 
-from mock import Mock, patch
 from PyQt5.QtWidgets import QMainWindow
 
-from dls_pmaccontrol.commsThread import CommsThread
+from dls_pmac_control.commsThread import CommsThread
 
 
 class DummyTestWidget(QMainWindow):
@@ -60,21 +60,21 @@ class CommsthreadTest(unittest.TestCase):
         assert self.obj.read_watch("test") is None
 
     @patch("PyQt5.QtCore.QCoreApplication.postEvent")
-    @patch("dls_pmaccontrol.commsThread.CustomEvent")
+    @patch("dls_pmac_control.commsThread.CustomEvent")
     def test_send_tick(self, mock_custom, mock_event):
         self.obj.sendTick(0, "err")
         assert mock_custom.called
         assert mock_event.called
 
     @patch("PyQt5.QtCore.QCoreApplication.postEvent")
-    @patch("dls_pmaccontrol.commsThread.CustomEvent")
+    @patch("dls_pmac_control.commsThread.CustomEvent")
     def test_send_complete(self, mock_custom, mock_event):
         self.obj.sendComplete("msg")
         assert self.obj.gen is None
         assert mock_custom.called
         assert mock_event.called
 
-    @patch("dls_pmaccontrol.commsThread.CommsThread.updateFunc")
+    @patch("dls_pmac_control.commsThread.CommsThread.updateFunc")
     def test_update_thread(self, mock_updatefunc):
         mock_updatefunc.return_value = True
         self.obj.updateThread()
@@ -96,7 +96,7 @@ class UpdatefuncTest(unittest.TestCase):
         mock_get.assert_called_with(block=False)
 
     @patch("PyQt5.QtCore.QCoreApplication.postEvent")
-    @patch("dls_pmaccontrol.commsThread.CustomEvent")
+    @patch("dls_pmac_control.commsThread.CustomEvent")
     @patch("queue.Queue.put")
     @patch("queue.Queue.get")
     def test_update_func_sendseries(self, mock_get, mock_put, mock_custom, mock_event):
@@ -118,7 +118,7 @@ class UpdatefuncTest(unittest.TestCase):
         mock_get.assert_called_with(block=False)
 
     @patch("PyQt5.QtCore.QCoreApplication.postEvent")
-    @patch("dls_pmaccontrol.commsThread.CustomEvent")
+    @patch("dls_pmac_control.commsThread.CustomEvent")
     @patch("queue.Queue.put")
     @patch("queue.Queue.get")
     def test_update_func_cancel(self, mock_get, mock_put, mock_custom, mock_event):

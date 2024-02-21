@@ -2,7 +2,10 @@ Control Application Alpha Release
 28th September 2021
 Bonnie McCallion
 
-Currently data gather is fully functional for the Power PMAC and there is a simple watch window for both 
+UPDATE:2024-02 updating to the python copier template - these instructions will
+require review.
+
+Currently data gather is fully functional for the Power PMAC and there is a simple watch window for both
 PMAC and Power PMAC. Tested on OSL demo hardware, further testing to be done by DLS.
 
 To Do:
@@ -13,12 +16,12 @@ To Do:
 
 Notes:
  - Loading a pmc file works for the Power PMAC but existing files for PMAC might not work. Some PMAC commands
-do not work for Power PMAC (e.g. clear command does not work) and might cause the application to crash/ get 
+do not work for Power PMAC (e.g. clear command does not work) and might cause the application to crash/ get
 stuck while downloading.
  - There is no Ix24 equivalent for the Power PMAC so this has not been included in the axis settings screen.
  - No scaling has been included for the Power PMAC data gather. Might need to include some checks for this.
- - When changing # of samples/ sample time in the config tab you must press enter to change the values. 
- - Watch window variables are not reformatted before being shown and when writing new values to variables 
+ - When changing # of samples/ sample time in the config tab you must press enter to change the values.
+ - Watch window variables are not reformatted before being shown and when writing new values to variables
 the value may be changed (e.g. rounded or converted to a different format).
 
 Installation:
@@ -46,7 +49,7 @@ Installation:
   i. Make the screens:
     - Install pyqt5
        pip install pyqt5-tools
-    - Make   
+    - Make
        make clean
        make
 

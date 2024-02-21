@@ -1,10 +1,10 @@
 /**
-\mainpage dls_pmaccontrol Python Module
+\mainpage dls_pmac_control Python Module
 \section intro_sec Introduction
-The dls_pmaccontrol package is a python application which provides a GUI front end to control the DeltaTau PMAC and Geobrick motor control systems.
+The dls_pmac_control package is a python application which provides a GUI front end to control the DeltaTau PMAC and Geobrick motor control systems.
 
 \section Installation
-dls_pmaccontrol is developed and tested on Python 2.6. Qt4, PyQt and Qwt5 are used to render the graphical user interface. These packages must be pre-installed on the system before building and running dls_pmaccontrol. The module uses make and python setuptools/distribute to build and output a python egg.
+dls_pmac_control is developed and tested on Python 2.6. Qt4, PyQt and Qwt5 are used to render the graphical user interface. These packages must be pre-installed on the system before building and running dls_pmac_control. The module uses make and python setuptools/distribute to build and output a python egg.
 The dls_pmaclib package is also required for this application. This package is also available on the <a href="http://controls.diamond.ac.uk/downloads/python/index.php">Diamond Control Downloads</a> page.
 
 For Mac OS X the following <a href="http://www.macports.org/ports.php">MacPorts</a> provide the necessary dependencies:
