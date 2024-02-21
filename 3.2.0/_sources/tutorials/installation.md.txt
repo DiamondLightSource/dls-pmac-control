@@ -24,7 +24,7 @@ $ source /path/to/venv/bin/activate
 You can now use `pip` to install the library and its dependencies:
 
 ```
-$ python3 -m pip install dls-pmac-control
+$ python3 -m pip install dls-pmaccontrol
 ```
 
 If you require a feature that is not currently released you can also install
