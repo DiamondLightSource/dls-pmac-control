@@ -23,6 +23,7 @@ requires-python = ">=3.9"
 dev = [
     "copier",
     "mock",
+    "mypy",
     "myst-parser",
     "pipdeptree",
     "pre-commit",
@@ -53,8 +54,8 @@ name = "Giles Knap"
 [tool.setuptools_scm]
 write_to = "src/dls_pmac_control/_version.py"
 
-[tool.pyright]
-reportMissingImports = false # Ignore missing stubs in imported modules
+[tool.mypy]
+ignore_missing_imports = true # Ignore missing stubs in imported modules
 
 [tool.pytest.ini_options]
 # Run pytest with all our checkers, and don't spam us with massive tracebacks on error
@@ -80,21 +81,20 @@ legacy_tox_ini = """
 [tox]
 skipsdist=True
 
-[testenv:{pre-commit,pyright,pytest,docs}]
+[testenv:{pre-commit,type-checking,tests,docs}]
 # Don't create a virtualenv for the command, requires tox-direct plugin
 direct = True
 passenv = *
 allowlist_externals =
     pytest
     pre-commit
-    pyright
+    mypy
     sphinx-build
     sphinx-autobuild
 commands =
-    pytest: pytest --cov=dls_pmac_control --cov-report term --cov-report xml:cov.xml {posargs}
-    # TODO: pyright disabled becaue pyQT gives 290 errors - will investigate
-    # pyright: pyright src {posargs}
     pre-commit: pre-commit run --all-files {posargs}
+    type-checking: mypy src tests {posargs}
+    tests: pytest --cov=dls_pmac_control --cov-report term --cov-report xml:cov.xml {posargs}
     docs: sphinx-{posargs:build -EW --keep-going} -T docs build/html
 """
 

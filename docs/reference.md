@@ -8,4 +8,5 @@ Technical reference material including APIs and release notes.
 
 reference/*
 genindex
+Release Notes <https://github.com/DiamondLightSource/dls-pmac-control/releases>
 ```

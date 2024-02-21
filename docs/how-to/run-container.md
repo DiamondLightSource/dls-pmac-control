@@ -1,6 +1,6 @@
 # Run in a container
 
-Pre-built containers with {\{repo_name}} and its dependencies already
+Pre-built containers with dls-pmac-control and its dependencies already
 installed are available on [Github Container Registry](https://ghcr.io/DiamondLightSource/dls-pmac-control).
 
 ## Starting the container
