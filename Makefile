@@ -34,4 +34,3 @@ $(COMPILED_DIR)/%_rc.py : $(RESOURCE_DIR)/%.qrc
 
 clean :
 	$(RM) $(COMPILED_UI) $(COMPILED_RESOURCES) $(COMPILED_UI:.py=.pyc) $(COMPILED_RESOURCES:.py=.pyc)
-

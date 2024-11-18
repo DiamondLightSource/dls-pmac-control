@@ -359,7 +359,7 @@ class PpmacGatherform(QDialog, Ui_formGather):
             dataLists.append(channel.Data)
         fptr.write(line + "\n")
 
-        for lineNo, lineData in enumerate(zip(*dataLists)):
+        for lineNo, lineData in enumerate(zip(*dataLists, strict=False)):
             line = "%d," % lineNo
             for data_point in lineData:
                 line += f"{data_point:f},"

@@ -5,6 +5,6 @@ metadata:
   title: dls-pmac-control
   description: GUI for low level control and monitoring of turbo pmac and power pmac motion controllers
 spec:
-  type: documentation
-  lifecycle: experimental
+  type: user-interface
+  lifecycle: production
   owner: group:default/sscc
