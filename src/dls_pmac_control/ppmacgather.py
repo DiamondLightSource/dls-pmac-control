@@ -229,7 +229,7 @@ class PpmacGatherform(QDialog, Ui_formGather):
         # gathering function
         self.sampleTime = self.nServoCyclesGather * self.servoCycleTime
         realSampleFreq = 1.0 / self.sampleTime
-        self.txtLblFreq.setText("%.3f kHz" % realSampleFreq)
+        self.txtLblFreq.setText(f"{realSampleFreq:.3f} kHz")
         self.txtLblSignalLen.setText("%.2f ms" % (self.sampleTime * self.nGatherPoints))
 
     # ############## button clicked slots from here
@@ -362,6 +362,6 @@ class PpmacGatherform(QDialog, Ui_formGather):
         for lineNo, lineData in enumerate(zip(*dataLists)):
             line = "%d," % lineNo
             for data_point in lineData:
-                line += "%f," % data_point
+                line += f"{data_point:f},"
             fptr.write(line + "\n")
         fptr.close()

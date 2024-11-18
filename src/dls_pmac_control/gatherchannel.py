@@ -155,7 +155,7 @@ class PmacGatherChannel:
             self.dataWidth = LONGWORD
             self.dataType = float
         else:
-            print("### Error: Could not get data width and type from: %s" % (retStr))
+            print(f"### Error: Could not get data width and type from: {retStr}")
 
         # Figure out what data the address point to
         dataAddr = int(retStr[2:-1], 16)
@@ -166,7 +166,7 @@ class PmacGatherChannel:
         try:
             self.axisNo = motorBaseAddrs.index(mBaseAddr) + 1
         except Exception:
-            print("### Error: could not recognise motor base address: %X" % (mBaseAddr))
+            print(f"### Error: could not recognise motor base address: {mBaseAddr:X}")
 
         # Get the data source info (unit, scaling algorithm and so on)
         for dataSrc in pmacDataSources:
@@ -175,8 +175,7 @@ class PmacGatherChannel:
                 break
         if not self.dataSourceInfo:
             print(
-                "### Error: could not recognise data source type with reg offset: %X"
-                % (self.regOffset)
+                f"### Error: could not recognise data source type with reg offset: {self.regOffset:X}"
             )
         return
 
@@ -227,7 +226,7 @@ class PmacGatherChannel:
             ivar = partIvar % self.axisNo
             (retStr, status) = self.pmac.sendCommand(ivar)
             if not status:
-                print("### Error: did not receive response to: %s" % ivar)
+                print(f"### Error: did not receive response to: {ivar}")
                 return None
             # if hex value...
             if retStr[0] == "$":
@@ -245,8 +244,7 @@ class PmacGatherChannel:
             self.scalingFactor = eval(algorithm)
         except Exception:
             print(
-                "### Error: did not evaluate expression correctly. Expr: %s"
-                % (algorithm)
+                f"### Error: did not evaluate expression correctly. Expr: {algorithm}"
             )
             return None
 

@@ -107,7 +107,7 @@ class CommsThread:
                     self.gen.close()
                     self.sendComplete("Download cancelled by the user")
             else:
-                print("WARNING: don't know what to do with cmd %s" % cmd)
+                print(f"WARNING: don't know what to do with cmd {cmd}")
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
             time.sleep(0.1)
             return
@@ -143,18 +143,15 @@ class CommsThread:
         if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
             if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
                 return
-        cmd = "i65???&%s??%%" % self.CSNum
+        cmd = f"i65???&{self.CSNum}??%"
         # Send a different command for the Power PMAC
         if isinstance(self.parent.pmac, PPmacSshInterface):
             # The %% is because % needs escaping - only one % is actually sent
             # There has to be a space before the first BrickLV string to avoid its B being interpreted as a 'begin' command
-            cmd = (
-                "i65?&%s?%% BrickLV.BusUnderVoltage BrickLV.BusOverVoltage BrickLV.OverTemp"
-                % self.CSNum
-            )
+            cmd = f"i65?&{self.CSNum}?% BrickLV.BusUnderVoltage BrickLV.BusOverVoltage BrickLV.OverTemp"
         elif isinstance(self.parent.pmac, PmacEthernetInterface):
             # Add the 7 segment display status query
-            cmd = "i65???&%s??%%" % self.CSNum
+            cmd = f"i65???&{self.CSNum}??%"
         axes = self.parent.pmac.getNumberOfAxes() + 1
         for motorNo in range(1, axes):
             cmd = cmd + "#" + str(motorNo) + "?PVF "
@@ -199,9 +196,7 @@ class CommsThread:
             # fourth is the PMAC identity
             if valueList[0].startswith("\x07"):
                 # error, probably in buffer
-                print(
-                    "i65 returned %s, sending CLOSE command" % valueList[0].__repr__()
-                )
+                print(f"i65 returned {valueList[0].__repr__()}, sending CLOSE command")
                 self.parent.pmac.sendCommand("CLOSE")
                 return
 
@@ -217,9 +212,9 @@ class CommsThread:
             # Global status
             self.resultQueue.put([valueList[1], 0, 0, 0, 0, 0, "G"])
             # CS status
-            self.resultQueue.put([valueList[2], 0, 0, 0, 0, 0, "CS%s" % self.CSNum])
+            self.resultQueue.put([valueList[2], 0, 0, 0, 0, 0, f"CS{self.CSNum}"])
             # Fedrate
-            self.resultQueue.put([valueList[3], 0, 0, 0, 0, 0, "FEED%s" % self.CSNum])
+            self.resultQueue.put([valueList[3], 0, 0, 0, 0, 0, f"FEED{self.CSNum}"])
 
             if isinstance(self.parent.pmac, PPmacSshInterface):
                 # Brick Under Voltage Status
@@ -241,5 +236,5 @@ class CommsThread:
             evUpdatesReady = CustomEvent(self.parent.updatesReadyEventType, None)
             QCoreApplication.postEvent(self.parent, evUpdatesReady)
         else:
-            print('WARNING: Could not poll PMAC for motor status ("%s")' % retStr)
+            print(f'WARNING: Could not poll PMAC for motor status ("{retStr}")')
         time.sleep(0.1)

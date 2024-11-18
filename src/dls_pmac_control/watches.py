@@ -25,11 +25,11 @@ class Watchesform(QDialog, Ui_formWatches):
             assert isinstance(varName, str)
             varName = varName.lower()
             if varName in unsafeCommands:
-                raise ValueError("%s is an unsafe command" % varName)
+                raise ValueError(f"{varName} is an unsafe command")
             if re.search(r"[\+\-=\^/]", varName) is not None:
-                raise ValueError("%s is not a valid variable" % varName)
+                raise ValueError(f"{varName} is not a valid variable")
             if varName in self._watches:
-                raise ValueError("There is already a watch for %s" % varName)
+                raise ValueError(f"There is already a watch for {varName}")
             # create watch object
             watch = Watch(self.parent.pmac, varName)
         except ValueError as e:
@@ -50,7 +50,7 @@ class Watchesform(QDialog, Ui_formWatches):
         try:
             watch = self._watches[varName]
         except KeyError as e:
-            print('There is no watch for variable "%s"' % varName)
+            print(f'There is no watch for variable "{varName}"')
             raise ValueError() from e
         return watch
 
@@ -76,7 +76,7 @@ class Watchesform(QDialog, Ui_formWatches):
             del self._watches[varName]
             self.parent.commsThread.remove_watch(varName)
         except KeyError as e:
-            print('There is no watch for variable "%s"' % varName)
+            print(f'There is no watch for variable "{varName}"')
             raise ValueError() from e
         try:
             self.table.removeRow(row)
@@ -167,4 +167,4 @@ class Watch:
         # Check whether PMAC doesn't reply with an ERRxx type response
         matchObject = re.match(r"^\x07(ERR\d+)\r$", s)
         if matchObject or "error" in s:
-            raise ValueError('Error: cannot set value for "%s"' % self.varName)
+            raise ValueError(f'Error: cannot set value for "{self.varName}"')

@@ -144,7 +144,7 @@ class PmacGatherTest(unittest.TestCase):
     def test_calc_sample_time(self):
         self.obj.nServoCyclesGather = 1
         self.obj.nGatherPoints = 1
-        attrs = {"sendCommand.return_value": ("$8388608\x0D", True)}
+        attrs = {"sendCommand.return_value": ("$8388608\x0d", True)}
         self.obj.parent.pmac.configure_mock(**attrs)
         self.obj.calcSampleTime()
         assert self.obj.servoCycleTime == 1.0

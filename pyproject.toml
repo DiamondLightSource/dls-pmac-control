@@ -104,6 +104,7 @@ line-length = 88
 # ignoring line to long for the moment to avoid signficant changes to the code
 lint.ignore = [
     "E501", # line too long
+    "E721", # use isinstance instead of compare to type
 ]
 lint.select = [
     "B",  # flake8-bugbear - https://docs.astral.sh/ruff/rules/#flake8-bugbear-b

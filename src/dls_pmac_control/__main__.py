@@ -283,7 +283,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         # Find out the type of the PMAC
         pmac_model_str = self.pmac.getPmacModel()
         if pmac_model_str:
-            self.setWindowTitle("Delta Tau motor controller - %s" % pmac_model_str)
+            self.setWindowTitle(f"Delta Tau motor controller - {pmac_model_str}")
         else:
             QMessageBox.information(self, "Error", "Could not determine PMAC model")
             return
@@ -434,7 +434,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
     # see TURBO SRM page 289
     def killAllMotors(self):
         # print "killing all motors!"
-        command = "\x0B"
+        command = "\x0b"
         (returnString, status) = self.pmac.sendCommand(command)
         self.addToTxtShell("CTRL-K")
 
@@ -860,7 +860,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 if subdomainNum != 0:
                     text += "%02d" % subdomainNum
                     text += self.subdomainLetters[domain][subdomainLetter]
-                text += " %s " % self.pmac.getShortModelName()
+                text += f" {self.pmac.getShortModelName()} "
                 text += "%d" % pmacNum
             self.lblIdentity.setText(text)
 

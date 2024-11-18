@@ -391,7 +391,7 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
         self.setAxisSetupVars(varStr, newValue)
 
     def setAxisSetupVars(self, varStr, newValue):
-        cmd = ("Motor[%d]." % self.currentMotor) + varStr + ("=%s" % newValue)
+        cmd = ("Motor[%d]." % self.currentMotor) + varStr + (f"={newValue}")
         (retStr, success) = self.parent.pmac.sendCommand(cmd)
         if success:
             self.axisUpdate()

@@ -119,7 +119,7 @@ class PmacGatherform(QDialog, Ui_formGather):
                 tmpIvar |= 0x01 << bit
         if tmpIvar == 0:
             return False
-        cmd = "i5051=0 i5050=$%x" % tmpIvar
+        cmd = f"i5051=0 i5050=${tmpIvar:x}"
         self.parent.pmac.sendCommand(cmd)
 
         # Clear the plot by setting empty plotitems
@@ -336,7 +336,7 @@ class PmacGatherform(QDialog, Ui_formGather):
         # gathering function
         self.sampleTime = self.nServoCyclesGather * self.servoCycleTime
         realSampleFreq = 1.0 / self.sampleTime
-        self.txtLblFreq.setText("%.3f kHz" % realSampleFreq)
+        self.txtLblFreq.setText(f"{realSampleFreq:.3f} kHz")
         self.txtLblSignalLen.setText("%.2f ms" % (self.sampleTime * self.nGatherPoints))
 
     # ############## button clicked slots from here
@@ -447,6 +447,6 @@ class PmacGatherform(QDialog, Ui_formGather):
         for lineNo, lineData in enumerate(zip(*dataLists)):
             line = "%d," % lineNo
             for data_point in lineData:
-                line += "%f," % data_point
+                line += f"{data_point:f},"
             fptr.write(line + "\n")
         fptr.close()
