@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "DLS PMAC Control",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "dls_pmac_control"
+        },
+        {
             "name": "Debug Unit Test",
             "type": "debugpy",
             "request": "launch",
