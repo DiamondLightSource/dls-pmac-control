@@ -287,29 +287,45 @@ class GlobalStatusForm(QDialog, Ui_formGlobalStatus):
         there are more than I18 words available."""
         )
         # Bit 10
-        self.lstLabelTexts.append("(For Internal use)")
-        self.lstTooltips.append("""(For Internal use)""")
+        self.lstLabelTexts.append("MACRO Ring Check Active")
+        self.lstTooltips.append(
+            """This bit is 1 when the Turbo PMAC is performing a diagnostic test of the MACRO ring. It is 0 otherwise"""
+        )
         # Bit 9
-        self.lstLabelTexts.append("(For Internal use)")
-        self.lstTooltips.append("""(For Internal use)""")
+        self.lstLabelTexts.append("MACRO Ring Active")
+        self.lstTooltips.append(
+            """This bit is 1 when the MACRO ring is actively transmitting data. It is 0 otherwise (when the ring is faulted)"""
+        )
         # Bit 8
-        self.lstLabelTexts.append("(For Internal use)")
-        self.lstTooltips.append("""(For Internal use)""")
+        self.lstLabelTexts.append("Modbus Active")
+        self.lstTooltips.append(
+            """This bit is 1 when the Modbus Ethernet interface is active. It is 0 otherwise"""
+        )
         # Bit 7
-        self.lstLabelTexts.append("(Reserved for future use)")
-        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("Bad FSAVE Flash Sector")
+        self.lstTooltips.append(
+            """This bit is 1 when the Turbo PMAC has detected a bad sector in flash memory when attempting an FSAVE fast parameter save. It is 0 otherwise"""
+        )
         # Bit 6
-        self.lstLabelTexts.append("(Reserved for future use)")
-        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("Clearing FSAVE Flash Sector")
+        self.lstTooltips.append(
+            """This bit is 1 when the Turbo PMAC is clearing a sector in flash memory as part of an FSAVE fast parameter save. It is 0 otherwise"""
+        )
         # Bit 5
-        self.lstLabelTexts.append("(Reserved for future use)")
-        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("Ring Break Message Received")
+        self.lstTooltips.append(
+            """This bit is 1 when the Turbo PMAC has received a message from the MACRO ring that there is a ring break somewhere on the network. It is 0 otherwise"""
+        )
         # Bit 4
-        self.lstLabelTexts.append("(Reserved for future use)")
-        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("Ring Break Detected")
+        self.lstTooltips.append(
+            """This bit is 1 when the Turbo PMAC has detected a break on the MACRO ring coming into it. It is 0 otherwise"""
+        )
         # Bit 3
-        self.lstLabelTexts.append("(Reserved for future use)")
-        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("Ring Sync Packet Fault")
+        self.lstTooltips.append(
+            """This bit is 1 when the Turbo PMAC has not received the expected 'sync packet' over the MACRO ring. It is 0 otherwise"""
+        )
         # Bit 2
         self.lstLabelTexts.append("(Reserved for future use)")
         self.lstTooltips.append("""(Reserved for future use)""")
@@ -317,8 +333,10 @@ class GlobalStatusForm(QDialog, Ui_formGlobalStatus):
         self.lstLabelTexts.append("(Reserved for future use)")
         self.lstTooltips.append("""(Reserved for future use)""")
         # Bit 0
-        self.lstLabelTexts.append("(Reserved for future use)")
-        self.lstTooltips.append("""(Reserved for future use)""")
+        self.lstLabelTexts.append("Abort Input")
+        self.lstTooltips.append(
+            """(Geo Brick amplifier only) This bit is 1 when the Turbo PMAC has received a hardware 'abort' command input. It is 0 otherwise"""
+        )
 
         self.lstLabelTexts.reverse()
         self.lstTooltips.reverse()
