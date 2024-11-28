@@ -140,7 +140,7 @@ class PmacGatherform(QDialog, Ui_formGather):
             dataOffset = pmacDataSources[cmbBox.currentIndex()]["reg"]
             baseAddress = motorBaseAddrs[axisSpinBox.value() - 1]
             dataWidth = pmacDataSources[cmbBox.currentIndex()]["size"]
-            ivar = "i50%02d" % (index + 1)
+            ivar = f"i50{index + 1:02d}"
             addr = f"${dataWidth:X}{baseAddress + dataOffset:05X}"
             cmd = f"{ivar}={addr}"
             if chkBox.isChecked():
@@ -150,7 +150,7 @@ class PmacGatherform(QDialog, Ui_formGather):
                 # GatherChannel.
 
                 # print "Set data: %s"%cmd
-                curve = QwtPlotCurve("Ch%d" % index)
+                curve = QwtPlotCurve(f"Ch{index}")
                 curve.attach(self.qwtPlot)
                 # curve = self.qwtPlot.insertCurve("Ch%d"%index)
                 channel = PmacGatherChannel(self.parent.pmac, curve)
@@ -183,7 +183,7 @@ class PmacGatherform(QDialog, Ui_formGather):
             self.qwtPlot.enableAxis(self.qwtPlot.yLeft, False)
             self.qwtPlot.enableAxis(self.qwtPlot.yRight, False)
         # set the sampling time (in servo cycles)
-        self.parent.pmac.sendCommand("i5049=%d" % int(str(self.lneSampleTime.text())))
+        self.parent.pmac.sendCommand(f"i5049={int(str(self.lneSampleTime.text()))}")
         return True
 
     def gatherSetup(self, numberOfSamples=1):
@@ -191,7 +191,7 @@ class PmacGatherform(QDialog, Ui_formGather):
         # 48 channels should be sampled.
         bitOffset = 1
         for ivarMask in range(5050, 5052):
-            (retStr, status) = self.parent.pmac.sendCommand("i%d" % ivarMask)
+            (retStr, status) = self.parent.pmac.sendCommand(f"i{ivarMask}")
 
             # For each channel to sample, get the ivariable with the
             # ivariable to sample from,
@@ -202,7 +202,7 @@ class PmacGatherform(QDialog, Ui_formGather):
             for bit in range(WORD):
                 if (int(retStr.strip("$")[:-1], 16) >> bit & 0x01) > 0:
                     chIndex = bit + bitOffset
-                    ivar = "i50%02d" % chIndex
+                    ivar = f"i50{chIndex:02d}"
                     chCount += 1
                     if chCount > len(self.lstChannels):
                         print(
@@ -238,7 +238,7 @@ class PmacGatherform(QDialog, Ui_formGather):
         gatherBufSize = 47 + ((readWords / 2) * numberOfSamples)
         # print "number of words: %d - number of samples: %d"%(
         # self.numberOfWords, numberOfSamples)
-        self.parent.pmac.sendCommand("define gather %d" % gatherBufSize)
+        self.parent.pmac.sendCommand(f"define gather {gatherBufSize}")
         return
 
     def triggerWait(self, waittime):
@@ -436,16 +436,12 @@ class PmacGatherform(QDialog, Ui_formGather):
         dataLists = []
         line = "point,"
         for i, channel in enumerate(self.lstChannels):
-            line += "CH%d Axis%d %s," % (
-                i,
-                channel.axisNo,
-                channel.dataSourceInfo["desc"],
-            )
+            line += f'CH{i} Axis{channel.axisNo} {channel.dataSourceInfo["desc"]},'
             dataLists.append(channel.scaledData)
         fptr.write(line + "\n")
 
         for lineNo, lineData in enumerate(zip(*dataLists, strict=False)):
-            line = "%d," % lineNo
+            line = f"{lineNo},"
             for data_point in lineData:
                 line += f"{data_point:f},"
             fptr.write(line + "\n")

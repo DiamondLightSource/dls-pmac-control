@@ -118,8 +118,8 @@ class PpmacGatherform(QDialog, Ui_formGather):
             chkBox = self.lstCheckboxes[index]
 
             addr_str = ppmacDataSources[cmBox.currentIndex()]["addr"]
-            gather_addr = "Gather.Addr[%d]" % items
-            addr = "Motor[%d].%s" % (axisSpinBox.value(), addr_str)
+            gather_addr = f"Gather.Addr[{items}]"
+            addr = f"Motor[{axisSpinBox.value()}].{addr_str}"
             cmd = f"{gather_addr}={addr}"
 
             if chkBox.isChecked():
@@ -128,7 +128,7 @@ class PpmacGatherform(QDialog, Ui_formGather):
 
                 # create a new curve for the qwt plot and instanciate a
                 # PpmacGatherChannel.
-                curve = QwtPlotCurve("Ch%d" % index)
+                curve = QwtPlotCurve(f"Ch{index}")
                 curve.attach(self.qwtPlot)
                 channel = PpmacGatherChannel(self.parent.pmac, curve)
                 self.lstChannels.append(channel)
@@ -161,17 +161,17 @@ class PpmacGatherform(QDialog, Ui_formGather):
             self.qwtPlot.enableAxis(self.qwtPlot.yRight, False)
 
         # set the number of items to gather
-        self.parent.pmac.sendCommand("Gather.items=%d" % items)
+        self.parent.pmac.sendCommand(f"Gather.items={items}")
         return True
 
     def gatherSetup(self, numberOfSamples=1):
         # set the sampling time (in servo cycles)
         self.parent.pmac.sendCommand(
-            "Gather.Period=%d" % int(str(self.lneSampleTime.text()))
+            f"Gather.Period={int(str(self.lneSampleTime.text()))}"
         )
         # set the number of samples
         self.parent.pmac.sendCommand(
-            "Gather.MaxSamples=%d" % int(str(self.lneNumberSamples.text()))
+            f"Gather.MaxSamples={int(str(self.lneNumberSamples.text()))}"
         )
         return
 
@@ -351,16 +351,12 @@ class PpmacGatherform(QDialog, Ui_formGather):
         dataLists = []
         line = "point,"
         for i, channel in enumerate(self.lstChannels):
-            line += "CH%d, Axis %d, %s, " % (
-                i,
-                channel.axisNo,
-                ppmacDataSources[channel.descNo]["desc"],
-            )
+            line += f'CH{i}, Axis {channel.axisNo}, {ppmacDataSources[channel.descNo]["desc"]}, '
             dataLists.append(channel.Data)
         fptr.write(line + "\n")
 
         for lineNo, lineData in enumerate(zip(*dataLists, strict=False)):
-            line = "%d," % lineNo
+            line = f"{lineNo},"
             for data_point in lineData:
                 line += f"{data_point:f},"
             fptr.write(line + "\n")

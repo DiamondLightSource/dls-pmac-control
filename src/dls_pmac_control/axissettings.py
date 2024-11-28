@@ -120,7 +120,7 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
         if retLst:
             for i, retVal in enumerate(retLst):
                 if i < len(ivars):
-                    exec('self.lneIx%d.setText(str("%s"))' % (ivars[i], retVal))
+                    exec(f'self.lneIx{ivars[i]}.setText(str("{retVal}"))')
 
     def _updateAxisSignalControlsVars(self):
         (
@@ -352,7 +352,7 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
         retLst = []
         for i in range(len(ivars)):
             varStr = PpmacVars["Ix" + str(ivars[i])]
-            cmd = ("Motor[%d]." % self.currentMotor) + varStr
+            cmd = (f"Motor[{self.currentMotor}].") + varStr
             (retStr, success) = self.parent.pmac.sendCommand(cmd)
             if success:
                 retLst.append(retStr.strip("\r"))
@@ -360,13 +360,13 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
                 retLst.append("Error")
         if retLst:
             for i, retVal in enumerate(retLst):
-                exec('self.lneIx%d.setText(str("%s"))' % (ivars[i], retVal))
+                exec(f'self.lneIx{ivars[i]}.setText(str("{retVal}"))')
 
     def _updateAxisSetupDirectCmds(self, ppmacCmds):
         retLst = []
         for i in range(len(ppmacCmds)):
             varStr = PpmacVars[str(ppmacCmds[i])]
-            cmd = ("Motor[%d]." % self.currentMotor) + varStr
+            cmd = (f"Motor[{self.currentMotor}].") + varStr
             (retStr, success) = self.parent.pmac.sendCommand(cmd)
             if success:
                 retLst.append(retStr.strip("\r"))
@@ -391,12 +391,12 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
         self.setAxisSetupVars(varStr, newValue)
 
     def setAxisSetupVars(self, varStr, newValue):
-        cmd = ("Motor[%d]." % self.currentMotor) + varStr + (f"={newValue}")
+        cmd = (f"Motor[{self.currentMotor}].") + varStr + (f"={newValue}")
         (retStr, success) = self.parent.pmac.sendCommand(cmd)
         if success:
             self.axisUpdate()
         else:
-            print("cannot set value for Motor[%d].%s" % (self.currentMotor, varStr))
+            print(f"cannot set value for Motor[{self.currentMotor}].{varStr}")
 
     # public slot
     @staticmethod

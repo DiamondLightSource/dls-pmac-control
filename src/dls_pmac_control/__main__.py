@@ -425,7 +425,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
     # Send a #Xk command to kill the current motor.
     def killMotor(self):
-        command = "#%dk" % self.currentMotor
+        command = f"#{self.currentMotor}k"
         (returnString, status) = self.pmac.sendCommand(command)
         self.addToTxtShell(command)
 
@@ -858,10 +858,10 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 )
                 text = self.domainNames[domain]
                 if subdomainNum != 0:
-                    text += "%02d" % subdomainNum
+                    text += f"{subdomainNum:02d}"
                     text += self.subdomainLetters[domain][subdomainLetter]
                 text += f" {self.pmac.getShortModelName()} "
-                text += "%d" % pmacNum
+                text += f"{pmacNum:d}"
             self.lblIdentity.setText(text)
 
     def updateWatches(self):

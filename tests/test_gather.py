@@ -77,7 +77,7 @@ class PmacGatherTest(unittest.TestCase):
         attrs = {"sendCommand.return_value": ("$010101", True)}
         self.obj.parent.pmac.configure_mock(**attrs)
         for i in range(3):
-            curve = QwtPlotCurve("TestCh%d" % i)
+            curve = QwtPlotCurve(f"TestCh{i}")
             test_channel = DummyTestGatherChannel(self.obj.parent.pmac, curve)
             self.obj.lstChannels.append(test_channel)
         assert self.obj.gatherSetup() is None

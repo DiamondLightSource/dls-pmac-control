@@ -575,9 +575,7 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
 
     def setFeed(self, feed):
         if feed != self._feed:
-            self.parent().pmac.sendCommand(
-                "&%d%%%d" % (self.parent().commsThread.CSNum, feed)
-            )
+            self.parent().pmac.sendCommand(f"&{self.parent().commsThread.CSNum}%{feed}")
 
     def updateStatus(self, CSStatusHexWord):
         for bit in range(0, 72):
@@ -785,9 +783,7 @@ class PpmacCSStatusForm(QDialog, Ui_formPpmacCSStatus):
 
     def setFeed(self, feed):
         if feed != self._feed:
-            self.parent().pmac.sendCommand(
-                "&%d%%%d" % (self.parent().commsThread.CSNum, feed)
-            )
+            self.parent().pmac.sendCommand(f"&{self.parent().commsThread.CSNum}%{feed}")
 
     def updateStatus(self, CSStatusHexWord):
         for bit in range(0, 64):

@@ -36,7 +36,7 @@ class CSStatusTest(unittest.TestCase):
 
     def test_change_cs(self):
         QTest.keyClick(self.obj.csSpin, Qt.Key_Up)
-        assert self.obj.ledGroup.title() == ("CS %d" % self.obj.csSpin.value())
+        assert self.obj.ledGroup.title() == (f"CS {self.obj.csSpin.value()}")
 
     def test_update_feed(self):
         self.obj.updateFeed(50)
@@ -71,7 +71,7 @@ class PpmacCSStatusTest(unittest.TestCase):
 
     def test_change_cs(self):
         QTest.keyClick(self.obj.csSpin, Qt.Key_Up)
-        assert self.obj.ledGroup.title() == ("CS %d" % self.obj.csSpin.value())
+        assert self.obj.ledGroup.title() == (f"CS {self.obj.csSpin.value()}")
 
     def test_update_feed(self):
         self.obj.updateFeed(50)

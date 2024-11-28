@@ -200,8 +200,7 @@ class PmacGatherChannel:
             maxValue = 0xFFFFFF
         else:
             print(
-                "### Error: did not have valid data width information (had %d)"
-                % (self.dataWidth)
+                f"### Error: did not have valid data width information (had {self.dataWidth})"
             )
             return None
 
