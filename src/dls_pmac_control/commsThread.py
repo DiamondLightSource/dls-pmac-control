@@ -146,7 +146,6 @@ class CommsThread:
         cmd = f"i65???&{self.CSNum}??%"
         # Send a different command for the Power PMAC
         if isinstance(self.parent.pmac, PPmacSshInterface):
-            # The %% is because % needs escaping - only one % is actually sent
             # There has to be a space before the first BrickLV string to avoid its B being interpreted as a 'begin' command
             cmd = f"i65?&{self.CSNum}?% BrickLV.BusUnderVoltage BrickLV.BusOverVoltage BrickLV.OverTemp"
         elif isinstance(self.parent.pmac, PmacEthernetInterface):
