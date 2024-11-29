@@ -140,6 +140,19 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.lblIdentity.setText("")
         self.txtShell.clear()
 
+    # Calculate servo cycle time in kHz
+    def calculateServoCycleTime(self):
+        if isinstance(self.pmac, PPmacSshInterface):
+            cmd = "Sys.ServoPeriod"  # in msec
+        else:
+            cmd = "I10"  # in 1 / 2^23 msec
+        (retStr, status) = self.pmac.sendCommand(cmd)
+        ivarI10 = float(retStr.strip("$")[:-1])
+        if isinstance(self.pmac, PPmacSshInterface):
+            self.servoCycleTime = 1.0 / ivarI10
+        else:
+            self.servoCycleTime = 8388608.0 / ivarI10
+
     def useTerminalServerConnection(self):
         if self.ConnectionType != 0:
             self.ConnectionType = 0
@@ -287,6 +300,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
         else:
             QMessageBox.information(self, "Error", "Could not determine PMAC model")
             return
+
+        self.calculateServoCycleTime()
 
         self.table.setRowCount(self.pmac.getNumberOfAxes())
         self.spnJogMotor.setMaximum(self.pmac.getNumberOfAxes())
@@ -689,7 +704,12 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
                 else:
                     position = str(round(float(value[1]), 1))
-                    velocity = str(round(float(value[2]), 1))
+                    if isinstance(self.pmac, PPmacSshInterface):
+                        velocity = str(round(float(value[2]), 1))
+                    else:
+                        # On Turbo PMAC velocity is returned in counts per servo cycle
+                        # so you have to use the servo cycle time to convert it to cts/msec
+                        velocity = str(round(float(value[2]) * self.servoCycleTime, 1))
                     folerr = str(round(float(value[3]), 1))
 
                     i2t_fault = False
