@@ -168,17 +168,26 @@ class MotorTestTelnet(unittest.TestCase):
         assert ret is None
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.sendCommand")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
-    def test_remote_connect(
-        self, mock_params, mock_connect, mock_model, mock_axes, mock_geo, mock_pixmap
+    def test_remote_connect_telnet_interface(
+        self,
+        mock_params,
+        mock_connect,
+        mock_model,
+        mock_axes,
+        mock_geo,
+        mock_send,
+        mock_pixmap,
     ):
         mock_model.return_value = "test"
         mock_axes.return_value = 8
         mock_geo.return_value = True
+        mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
         ret = self.obj.remoteConnect()
         mock_params.assert_called_with("test", "123")
@@ -260,6 +269,7 @@ class MotorTestTelnet(unittest.TestCase):
 
 class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.sendCommand")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getPmacModel")
@@ -304,6 +314,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
         mock_model,
         mock_axes,
         mock_geo,
+        mock_send,
         mock_pixmap,
     ):
         self.options = DummyTestOptionsTelnet()
@@ -311,6 +322,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
         mock_model.return_value = "test"
         mock_axes.return_value = 8
         mock_geo.return_value = True
+        mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
         self.obj.remoteConnect()
 
@@ -461,17 +473,26 @@ class MotorTestEthernet(unittest.TestCase):
         assert ret is None
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.sendCommand")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.getNumberOfAxes")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.setConnectionParams")
-    def test_remote_connect(
-        self, mock_params, mock_connect, mock_model, mock_axes, mock_geo, mock_pixmap
+    def test_remote_connect_ethernet_interface(
+        self,
+        mock_params,
+        mock_connect,
+        mock_model,
+        mock_axes,
+        mock_geo,
+        mock_send,
+        mock_pixmap,
     ):
         mock_model.return_value = "test"
         mock_axes.return_value = 8
         mock_geo.return_value = True
+        mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
         ret = self.obj.remoteConnect()
         mock_params.assert_called_with("test", "123")
@@ -617,17 +638,26 @@ class MotorTestSerial(unittest.TestCase):
         assert ret is None
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.sendCommand")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.getNumberOfAxes")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.setConnectionParams")
-    def test_remote_connect(
-        self, mock_params, mock_connect, mock_model, mock_axes, mock_geo, mock_pixmap
+    def test_remote_connect_serial_interface(
+        self,
+        mock_params,
+        mock_connect,
+        mock_model,
+        mock_axes,
+        mock_geo,
+        mock_send,
+        mock_pixmap,
     ):
         mock_model.return_value = "test"
         mock_axes.return_value = 8
         mock_geo.return_value = True
+        mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
         ret = self.obj.remoteConnect()
         mock_params.assert_called_with("test", "123")
@@ -796,24 +826,27 @@ class MotorTestSsh(unittest.TestCase):
 
     @patch("PyQt5.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmac_control.login.Loginform.exec")
+    @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.sendCommand")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getNumberOfAxes")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getPmacModel")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.setConnectionParams")
-    def test_remote_connect(
+    def test_remote_connect_ssh_interface(
         self,
         mock_params,
         mock_connect,
         mock_model,
         mock_axes,
         mock_geo,
+        mock_send,
         mock_login,
         mock_pixmap,
     ):
         mock_model.return_value = "test"
         mock_axes.return_value = 8
         mock_geo.return_value = True
+        mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
         ret = self.obj.remoteConnect()
         mock_params.assert_called_with("test", "123")
@@ -866,6 +899,7 @@ class MotorTestSsh(unittest.TestCase):
         assert float(self.obj.lblFolErr.text()) == 0.0
 
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getShortModelName")
+    @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.sendCommand")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getNumberOfAxes")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getPmacModel")
@@ -880,6 +914,7 @@ class MotorTestSsh(unittest.TestCase):
         mock_model,
         mock_axes,
         mock_geo,
+        mock_send,
         mock_short,
     ):
         mock_short.return_value = "name"
@@ -887,6 +922,7 @@ class MotorTestSsh(unittest.TestCase):
         mock_model.return_value = "test"
         mock_axes.return_value = 8
         mock_geo.return_value = True
+        mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
         self.obj.remoteConnect()
         self.obj.updateIdentity(1)
