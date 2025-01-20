@@ -504,16 +504,16 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
         has been processed."""
         )
         # Bit 7
-        self.lstLabelTexts.append("Reserved for future use" "")
+        self.lstLabelTexts.append("Reserved for future use")
         self.lstTooltips.append("""Reserved for future use""")
         # Bit 6
-        self.lstLabelTexts.append("Reserved for future use" "")
+        self.lstLabelTexts.append("Reserved for future use")
         self.lstTooltips.append("""Reserved for future use""")
         # Bit 5
-        self.lstLabelTexts.append("Reserved for future use" "")
+        self.lstLabelTexts.append("Reserved for future use")
         self.lstTooltips.append("""Reserved for future use""")
         # Bit 4
-        self.lstLabelTexts.append("Reserved for future use" "")
+        self.lstLabelTexts.append("Reserved for future use")
         self.lstTooltips.append("""Reserved for future use""")
         # Bit 3
         self.lstLabelTexts.append("Radius Error")

@@ -436,7 +436,7 @@ class PmacGatherform(QDialog, Ui_formGather):
         dataLists = []
         line = "point,"
         for i, channel in enumerate(self.lstChannels):
-            line += f'CH{i} Axis{channel.axisNo} {channel.dataSourceInfo["desc"]},'
+            line += f"CH{i} Axis{channel.axisNo} {channel.dataSourceInfo['desc']},"
             dataLists.append(channel.scaledData)
         fptr.write(line + "\n")
 

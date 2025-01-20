@@ -932,7 +932,7 @@ def main():
         action="store_true",
         dest="verbose",
         default=False,
-        help="Print more details (than necessary in most " "cases...)",
+        help="Print more details (than necessary in most cases...)",
     )
     parser.add_option(
         "-o",
@@ -996,8 +996,7 @@ def main():
         "--naxes",
         action="store",
         dest="nAxes",
-        help="Display and poll NAXES axes. Default is 32 for a "
-        "PMAC, 8 for a geoBrick",
+        help="Display and poll NAXES axes. Default is 32 for a PMAC, 8 for a GeoBrick",
     )
     parser.add_option(
         "-t",
@@ -1006,7 +1005,7 @@ def main():
         type="float",
         dest="timeout",
         default=3.0,
-        help="Set the communication timeout (default: 3 seconds, " "minimum: 1 second)",
+        help="Set the communication timeout (default: 3 seconds, minimum: 1 second)",
     )
     parser.add_option(
         "--version",
