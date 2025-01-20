@@ -23,8 +23,7 @@ class Watchesform(QDialog, Ui_formWatches):
         varName = str(self.lneVariableName.text())
         try:
             assert isinstance(varName, str)
-            varName = varName.lower()
-            if varName in unsafeCommands:
+            if varName.lower() in unsafeCommands:
                 raise ValueError(f"{varName} is an unsafe command")
             if re.search(r"[\+\-=\^/]", varName) is not None:
                 raise ValueError(f"{varName} is not a valid variable")
@@ -46,7 +45,6 @@ class Watchesform(QDialog, Ui_formWatches):
 
     # return watch object
     def getWatch(self, varName):
-        varName = varName.lower()
         try:
             watch = self._watches[varName]
         except KeyError as e:
