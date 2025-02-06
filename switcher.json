@@ -4,10 +4,6 @@
     "url": "https://DiamondLightSource.github.io/dls-pmac-control/master/"
   },
   {
-    "version": "3.2.3b2",
-    "url": "https://DiamondLightSource.github.io/dls-pmac-control/3.2.3b2/"
-  },
-  {
     "version": "3.2.3b1",
     "url": "https://DiamondLightSource.github.io/dls-pmac-control/3.2.3b1/"
   },
@@ -34,6 +30,10 @@
   {
     "version": "3.0.1b1",
     "url": "https://DiamondLightSource.github.io/dls-pmac-control/3.0.1b1/"
+  },
+  {
+    "version": "3.2.3b2",
+    "url": "https://DiamondLightSource.github.io/dls-pmac-control/3.2.3b2/"
   },
   {
     "version": "v3.0.1",
