@@ -16,7 +16,7 @@ dependencies = ["dls-pmaclib >= 3.1.2", "numpy", "pyqt5 <6.0", "pythonqwt"]
 dynamic = ["version"]
 license.file = "LICENSE"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.11"
 
 [dependency-groups]
 dev = [
