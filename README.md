@@ -8,6 +8,8 @@
 The dls_pmac_control package is a python application which provides a GUI front
 end to control the DeltaTau PMAC, Power PMAC and Geobrick motor control systems.
 
+What            | Where
+:---:           | :---:
 Source          | <https://github.com/DiamondLightSource/dls-pmac-control>
 :---:           | :---:
 PyPI            | `pip install dls-pmaccontrol`
