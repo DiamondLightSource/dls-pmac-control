@@ -3,7 +3,8 @@ on:
     inputs:
       python-version:
         type: string
-        description: The version of python to install
+        description: The version of python to install, default is from .python-version file
+        default: ""
         required: true
       runs-on:
         type: string
@@ -17,6 +18,7 @@ env:
   # https://github.com/pytest-dev/pytest/issues/2042
   PY_IGNORE_IMPORTMISMATCH: "1"
   QT_QPA_PLATFORM: offscreen
+  UV_PYTHON: ${{ inputs.python-version }}
 
 jobs:
   run:
@@ -24,7 +26,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # Need this to get version number from last tag
           fetch-depth: 0
@@ -51,11 +53,14 @@ jobs:
           python-version: ${{ inputs.python-version }}
           pip-install: ".[dev]"
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
       - name: Run tests
-        run: tox -e tests
+        run: uv run --locked tox -e tests
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           name: ${{ inputs.python-version }}/${{ inputs.runs-on }}
           files: cov.xml
