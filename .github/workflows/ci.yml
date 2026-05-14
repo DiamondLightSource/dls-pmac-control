@@ -31,11 +31,11 @@ jobs:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   container:
-    needs: test
-    if: always()
+    needs: check
+    if: needs.check.outputs.branch-pr == ''
     uses: ./.github/workflows/_container.yml
     with:
-      publish: ${{ needs.test.result == 'success' }}
+      publish: ${{ needs.check.result == 'success' }}
     permissions:
       contents: read
       packages: write
