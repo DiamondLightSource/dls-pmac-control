@@ -7,6 +7,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     graphviz \
     libglib2.0-0 \
     libqt5gui5 libxcb-xinerama0 \
+    python3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set up a virtual environment and put it in PATH
