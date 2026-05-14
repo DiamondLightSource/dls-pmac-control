@@ -4,11 +4,7 @@ FROM ghcr.io/diamondlightsource/ubuntu-devcontainer:noble AS developer
 
 # Add any system dependencies for the developer/build environment here
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
-    graphviz \
-    libglib2.0-0 \
-    libqt5gui5 libxcb-xinerama0 \
-    dist-clean \
-    && rm -rf /var/lib/apt/lists/*
+    dist-clean
 
 ENV XDG_RUNTIME_DIR=/tmp/runtime-vscode
 
