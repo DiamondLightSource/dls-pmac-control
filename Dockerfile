@@ -7,12 +7,8 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     graphviz \
     libglib2.0-0 \
     libqt5gui5 libxcb-xinerama0 \
-    python3 \
+    dist-clean \
     && rm -rf /var/lib/apt/lists/*
-
-# Set up a virtual environment and put it in PATH
-RUN python -m venv /venv
-ENV PATH=/venv/bin:$PATH
 
 ENV XDG_RUNTIME_DIR=/tmp/runtime-vscode
 
@@ -63,8 +59,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libqt5gui5 libxcb-xinerama0 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=build /venv/ /venv/
-ENV PATH=/venv/bin:$PATH
+# Copy the python installation from the build stage
+COPY --from=build /python /python
+
+# Copy the environment, but not the source code
+COPY --from=build /app/.venv /app/.venv
+ENV PATH=/app/.venv/bin:$PATH
 ENV XDG_RUNTIME_DIR=/tmp/runtime-:$USER
 
 # change this entrypoint if it is not the same as the repo
