@@ -29,11 +29,11 @@ jobs:
       python-version: ${{ matrix.python-version }}
 
   container:
-    needs: check
-    if: needs.check.outputs.branch-pr == ''
+    needs: test
+    if: always()
     uses: ./.github/workflows/_container.yml
     with:
-      publish: ${{ needs.check.result == 'success' }}
+      publish: ${{ needs.test.result == 'success' }}
     permissions:
       contents: read
       packages: write
