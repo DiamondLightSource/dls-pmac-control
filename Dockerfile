@@ -50,8 +50,8 @@ RUN uv pip install -e .
 ENV PATH=/app/.venv/bin:$PATH
 
 # Alternate entrypoint to allow devcontainer to attach
-ENTRYPOINT [ "/bin/bash", "-c", "--" ]
-CMD [ "while true; do sleep 30; done;" ]
+# ENTRYPOINT [ "/bin/bash", "-c", "--" ]
+# CMD [ "while true; do sleep 30; done;" ]
 
 
 # The runtime stage copies the built venv into a runtime container
