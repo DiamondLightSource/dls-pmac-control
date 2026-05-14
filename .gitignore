@@ -69,3 +69,6 @@ lockfiles/
 
 # ruff cache
 .ruff_cache/
+
+# for local development
+local_stuff/*
