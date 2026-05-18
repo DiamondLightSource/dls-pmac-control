@@ -2,26 +2,19 @@
 # or docker with user namespaces.
 FROM ghcr.io/diamondlightsource/ubuntu-devcontainer:noble AS developer
 
-# Add any system dependencies for the developer/build environment here
+# Add any system dependencies for the developer/build environment here.
+# PyQt6 from PyPI bundles its own Qt6, so only the dynamic libs it loads at
+# import time (libEGL/libGL, X11/xcb, glib) are needed here.
 RUN apt-get update -y && apt-get install -y --no-install-recommends \
     graphviz \
-    ffmpeg \
     libsm6 \
     libxext6 \
     libgl1 \
     libegl1 \
-    freeglut3-dev \
     libglib2.0-0 \
-    libgl1-mesa-dev \
-    qt6-base-dev \
-    qt6-webengine-dev \
-    libqt6qml6 \
-    libqt6core6 \
-    libqt6gui6 \
-    python3-pyqt6 \
-    libxcb-cursor0\
+    libxcb-cursor0 \
     && apt-get dist-clean \
-    && rm -rf /var/lib/apt/lists/* 
+    && rm -rf /var/lib/apt/lists/*
 
 ENV XDG_RUNTIME_DIR=/tmp/runtime-vscode
 
@@ -67,9 +60,17 @@ ENV PATH=/app/.venv/bin:$PATH
 # The runtime stage copies the built venv into a runtime container
 FROM ubuntu:noble AS runtime
 
-# Add apt-get system dependecies for runtime here if needed
+# Runtime libs needed by the PyQt6 wheel (which bundles Qt6 but loads these
+# from the system at import time).
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libqt5gui5 libxcb-xinerama0 \
+    libegl1 \
+    libgl1 \
+    libglib2.0-0 \
+    libxkbcommon0 \
+    libxcb-cursor0 \
+    libxcb-xinerama0 \
+    libfontconfig1 \
+    libdbus-1-3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the python installation from the build stage

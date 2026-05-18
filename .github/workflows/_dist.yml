@@ -29,6 +29,9 @@ jobs:
       - name: Check for packaging errors
         run: uvx twine check --strict dist/*
 
+      - name: Install Qt runtime libs
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libegl1 libgl1
+
       - name: Install produced wheel
         run: python -m pip install dist/*.whl
 

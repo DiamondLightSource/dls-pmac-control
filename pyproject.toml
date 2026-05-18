@@ -13,7 +13,6 @@ description = "GUI for low level control and monitoring of turbo pmac and power 
 dependencies = [
     "dls-pmaclib >= 3.1.2",
     "numpy",
-    "pyqt5 <6.0",
     "pythonqwt",
     "pyqt6",
 ]
@@ -29,7 +28,6 @@ dev = [
     "mypy",
     "pre-commit",
     "pydata-sphinx-theme>=0.12",
-    "pyqt5-stubs",
     "pytest",
     "pytest-cov",
     "ruff",
