@@ -11,6 +11,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libqt5gui5 \
     libxcb-cursor0 \
     libgl1 \
+    libegl1 \
     freeglut3-dev \
     libglib2.0-0 \
     libgl1-mesa-dev \
