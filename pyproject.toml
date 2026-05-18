@@ -36,6 +36,7 @@ dev = [
     "tox-uv",
     "types-mock",
     "coverage",
+    "pytest-qt",
 ]
 
 [project.scripts]
