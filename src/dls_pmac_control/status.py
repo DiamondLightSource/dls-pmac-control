@@ -943,6 +943,5 @@ if __name__ == "__main__":
     a = QApplication(sys.argv)
     QObject.connect(a, pyqtSignal("lastWindowClosed()"), a, pyqtSlot("quit()"))  # type: ignore # noqa
     w = Statusform(None, None)
-    a.setMainWidget(w)
     w.show()
-    a.exec_loop()
+    a.exec()
