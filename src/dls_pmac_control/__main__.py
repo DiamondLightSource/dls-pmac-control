@@ -13,9 +13,9 @@ from dls_pmaclib.dls_pmacremote import (
     PPmacSshInterface,
 )
 from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
-from PyQt5.QtCore import QEvent, Qt, pyqtSlot
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import (
+from PyQt6.QtCore import QEvent, Qt, pyqtSlot
+from PyQt6.QtGui import QIcon, QPixmap
+from PyQt6.QtWidgets import (
     QApplication,
     QFileDialog,
     QLineEdit,

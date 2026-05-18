@@ -3,9 +3,9 @@ import threading
 import time
 
 from numpy import arange
-from PyQt5.Qt import QPen
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QFileDialog, QMessageBox
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPen
+from PyQt6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qwt import QwtPlotCurve
 
 from dls_pmac_control.gatherchannel import (

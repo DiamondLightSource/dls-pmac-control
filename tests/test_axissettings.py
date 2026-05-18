@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QMainWindow
+from PyQt6.QtCore import Qt
+from PyQt6.QtTest import QTest
+from PyQt6.QtWidgets import QMainWindow
 
 from dls_pmac_control.axissettings import Axissettingsform, PpmacAxissettingsform
 

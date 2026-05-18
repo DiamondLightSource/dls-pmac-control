@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from PyQt5.QtWidgets import QCheckBox, QMainWindow
+from PyQt6.QtWidgets import QCheckBox, QMainWindow
 
 from dls_pmac_control.energise import Energiseform
 
@@ -57,7 +57,7 @@ class EnergiseTest(unittest.TestCase):
 
     @patch("dls_pmac_control.energise.Energiseform.updateScreen")
     @patch("dls_pmac_control.energise.Energiseform.readM750x")
-    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    @patch("PyQt6.QtWidgets.QMessageBox.information")
     @patch("dls_pmac_control.energise.Energiseform.isScreenUpToDate")
     def test_sendCommand_outofdate(self, mock_screen, mock_box, mock_read, mock_update):
         mock_screen.return_value = False

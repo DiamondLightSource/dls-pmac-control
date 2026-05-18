@@ -8,7 +8,7 @@ from dls_pmaclib.dls_pmacremote import (
     PmacSerialInterface,
     PPmacSshInterface,
 )
-from PyQt5.QtCore import QCoreApplication, QEvent
+from PyQt6.QtCore import QCoreApplication, QEvent
 
 
 class CustomEvent(QEvent):

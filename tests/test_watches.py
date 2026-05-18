@@ -1,9 +1,9 @@
 import unittest
 from unittest.mock import Mock, patch
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QMainWindow
+from PyQt6.QtCore import Qt
+from PyQt6.QtTest import QTest
+from PyQt6.QtWidgets import QMainWindow
 
 from dls_pmac_control.watches import Watchesform
 
@@ -29,7 +29,7 @@ class WatchesTest(unittest.TestCase):
         self.assertFalse(self.obj.panelEditWatch.isEnabled())
         self.assertEqual(self.obj.table.rowCount(), 0)
 
-    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    @patch("PyQt6.QtWidgets.QMessageBox.information")
     def test_add_unsafe_watch(self, mock_box):
         self.obj.lneVariableName.setText("jog")
         QTest.mouseClick(self.obj.btnAddWatch, Qt.LeftButton)
@@ -38,7 +38,7 @@ class WatchesTest(unittest.TestCase):
         self.assertFalse(self.obj.panelEditWatch.isEnabled())
         mock_box.assert_called_with(self.obj, "Cannot create watch", error_msg)
 
-    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    @patch("PyQt6.QtWidgets.QMessageBox.information")
     def test_add_invalid_watch(self, mock_box):
         self.obj.lneVariableName.setText("#1j+")
         QTest.mouseClick(self.obj.btnAddWatch, Qt.LeftButton)
@@ -47,7 +47,7 @@ class WatchesTest(unittest.TestCase):
         self.assertFalse(self.obj.panelEditWatch.isEnabled())
         mock_box.assert_called_with(self.obj, "Cannot create watch", error_msg)
 
-    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    @patch("PyQt6.QtWidgets.QMessageBox.information")
     def test_add_existing_watch(self, mock_box):
         self.obj._watches = {"test": 0}
         self.obj.lneVariableName.setText("test")

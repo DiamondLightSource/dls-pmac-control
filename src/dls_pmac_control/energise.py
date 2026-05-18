@@ -1,8 +1,8 @@
 import re
 import sys
 
-from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
-from PyQt5.QtWidgets import QApplication, QCheckBox, QDialog, QMessageBox
+from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
+from PyQt6.QtWidgets import QApplication, QCheckBox, QDialog, QMessageBox
 
 from dls_pmac_control.ui_formEnergise import Ui_formEnergise
 
@@ -27,7 +27,7 @@ class Energiseform(QDialog, Ui_formEnergise):
     # Create the 2 columns of check-boxes
     def createCheckBoxes(self):
         chkGroupLayout = self.chkGroup.layout()
-        chkGroupLayout.setAlignment(Qt.AlignTop)
+        chkGroupLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.lstCheckBoxes = []
         for axis in range(1, 33):
             qCheckBox = QCheckBox("chkBox" + str(axis), self.chkGroup)

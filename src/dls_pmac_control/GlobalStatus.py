@@ -1,7 +1,7 @@
 import sys
 
-from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
-from PyQt5.QtWidgets import QApplication, QDialog, QLabel
+from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
+from PyQt6.QtWidgets import QApplication, QDialog, QLabel
 
 from dls_pmac_control.ui_formGlobalStatus import Ui_formGlobalStatus
 
@@ -17,7 +17,7 @@ class GlobalStatusForm(QDialog, Ui_formGlobalStatus):
         self.redLedOff = parent.redLedOff
 
         ledGroupLayout = self.ledGroup.layout()
-        ledGroupLayout.setAlignment(Qt.AlignTop)
+        ledGroupLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.lstLeds = []
         self.lstLabels = []
         self.lstLabelTexts = []
@@ -378,7 +378,7 @@ class PpmacGlobalStatusForm(QDialog, Ui_formGlobalStatus):
         self.redLedOff = parent.redLedOff
 
         ledGroupLayout = self.ledGroup.layout()
-        ledGroupLayout.setAlignment(Qt.AlignTop)
+        ledGroupLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.lstLeds = []
         self.lstLabels = []
         self.lstLabelTexts = []

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QDialog, QMessageBox
+from PyQt6.QtWidgets import QDialog, QMessageBox
 
 from dls_pmac_control.ui_formAxisSettings import Ui_formAxisSettings
 from dls_pmac_control.ui_formPpmacAxisSettings import Ui_formPpmacAxisSettings

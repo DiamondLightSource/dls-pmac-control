@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from PyQt5.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow
 from qwt import QwtPlotCurve
 
 from dls_pmac_control.gatherchannel import PmacGatherChannel, PpmacGatherChannel

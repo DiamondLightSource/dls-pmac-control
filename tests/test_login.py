@@ -2,9 +2,9 @@ import sys
 import unittest
 from unittest.mock import patch
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt6.QtCore import Qt
+from PyQt6.QtTest import QTest
+from PyQt6.QtWidgets import QApplication, QWidget
 
 from dls_pmac_control.login import Loginform
 

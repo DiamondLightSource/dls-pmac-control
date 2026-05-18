@@ -1,10 +1,10 @@
 # Form implementation generated from reading ui file 'dls_pmac_control/formPpmacAxisSettings.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt6 UI code generator 5.12.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 
 class Ui_formPpmacAxisSettings:
@@ -12,7 +12,7 @@ class Ui_formPpmacAxisSettings:
         formPpmacAxisSettings.setObjectName("formPpmacAxisSettings")
         formPpmacAxisSettings.resize(580, 688)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -33,7 +33,10 @@ class Ui_formPpmacAxisSettings:
         self.textLabel1.setObjectName("textLabel1")
         self.gridLayout_3.addWidget(self.textLabel1, 0, 0, 1, 3)
         spacerItem = QtWidgets.QSpacerItem(
-            185, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+            185,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
         )
         self.gridLayout_3.addItem(spacerItem, 2, 1, 1, 1)
         self.btnClose = QtWidgets.QPushButton(formPpmacAxisSettings)
@@ -90,7 +93,7 @@ class Ui_formPpmacAxisSettings:
         )
         self.lneIx20 = QtWidgets.QLineEdit(self.groupBox2)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -225,7 +228,7 @@ class Ui_formPpmacAxisSettings:
         self.groupBox1_2 = QtWidgets.QGroupBox(self.tab_2)
         self.groupBox1_2.setGeometry(QtCore.QRect(10, 20, 271, 330))
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -318,7 +321,7 @@ class Ui_formPpmacAxisSettings:
         self.groupBox1_2_2 = QtWidgets.QGroupBox(self.tab_2)
         self.groupBox1_2_2.setGeometry(QtCore.QRect(290, 20, 260, 81))
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -346,7 +349,10 @@ class Ui_formPpmacAxisSettings:
         self.lneIx34.setObjectName("lneIx34")
         self.formLayout_4.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lneIx34)
         spacerItem1 = QtWidgets.QSpacerItem(
-            30, 0, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+            30,
+            0,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
         )
         self.formLayout_4.setItem(2, QtWidgets.QFormLayout.SpanningRole, spacerItem1)
         self.tabAxisSetup.addTab(self.tab_2, "")

@@ -2,9 +2,9 @@ import os
 import unittest
 from unittest.mock import Mock, patch
 
-from PyQt5.QtCore import QPoint, Qt
-from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QMainWindow
+from PyQt6.QtCore import QPoint, Qt
+from PyQt6.QtTest import QTest
+from PyQt6.QtWidgets import QMainWindow
 from qwt import QwtPlotCurve
 
 from dls_pmac_control.gather import PmacGatherform
@@ -162,13 +162,13 @@ class PmacGatherTest(unittest.TestCase):
         self.assertFalse(self.obj.btnCollect.isEnabled())
         self.assertTrue(self.obj.btnSave.isEnabled())
 
-    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    @patch("PyQt6.QtWidgets.QMessageBox.information")
     def test_save_clicked_no_data(self, mock_box):
         self.obj.lstChannels = []
         ret = self.obj.saveClicked()
         assert ret is None
 
-    @patch("PyQt5.QtWidgets.QFileDialog.getSaveFileName")
+    @patch("PyQt6.QtWidgets.QFileDialog.getSaveFileName")
     def test_save_clicked(self, mock_dialog):
         # create temp file
         test_file = "/tmp/test.txt"
@@ -210,14 +210,14 @@ class PpmacGatherTest(unittest.TestCase):
         self.assertFalse(self.obj.btnSave.isEnabled())
         self.assertTrue(self.obj.btnApplyConf.isEnabled())
 
-    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    @patch("PyQt6.QtWidgets.QMessageBox.information")
     def test_change_no_samples(self, mock_box):
         self.obj.lneNumberSamples.setText("1000")
         QTest.keyClick(self.obj.lneNumberSamples, Qt.Key_Enter)
         assert self.obj.nGatherPoints == 1000
         assert self.obj.nServoCyclesGather == 0
 
-    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    @patch("PyQt6.QtWidgets.QMessageBox.information")
     def test_change_sample_time(self, mock_box):
         self.obj.lneSampleTime.setText("5")
         QTest.keyClick(self.obj.lneSampleTime, Qt.Key_Enter)
@@ -298,7 +298,7 @@ class PpmacGatherTest(unittest.TestCase):
         self.assertFalse(self.obj.btnCollect.isEnabled())
         self.assertTrue(self.obj.btnSave.isEnabled())
 
-    @patch("PyQt5.QtWidgets.QFileDialog.getSaveFileName")
+    @patch("PyQt6.QtWidgets.QFileDialog.getSaveFileName")
     def test_save_clicked(self, mock_dialog):
         # create temp file
         test_file = "/tmp/test.txt"

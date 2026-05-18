@@ -2,8 +2,8 @@ import os
 import unittest
 from unittest.mock import Mock, patch
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest
+from PyQt6.QtCore import Qt
+from PyQt6.QtTest import QTest
 
 from dls_pmac_control.__main__ import Controlform
 
@@ -78,7 +78,7 @@ class MotorTestTelnet(unittest.TestCase):
     @patch("dls_pmac_control.watches.Watchesform")
     @patch("dls_pmac_control.login.Loginform")
     @patch("dls_pmac_control.commsThread.CommsThread")
-    @patch("PyQt5.QtCore.QEvent")
+    @patch("PyQt6.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
     def setUp(
@@ -126,7 +126,7 @@ class MotorTestTelnet(unittest.TestCase):
         self.assertFalse(self.obj.lnePollRate.isEnabled())
         self.assertFalse(self.obj.lblPollRate.isEnabled())
 
-    @patch("PyQt5.QtWidgets.QLineEdit.keyPressEvent")
+    @patch("PyQt6.QtWidgets.QLineEdit.keyPressEvent")
     def test_checkHistory_empty(self, mock_event):
         self.obj.commands = []
         self.obj.commands_i = 0
@@ -136,7 +136,7 @@ class MotorTestTelnet(unittest.TestCase):
         assert self.obj.lneSend.text() == ""
         assert mock_event.called
 
-    @patch("PyQt5.QtWidgets.QLineEdit.keyPressEvent")
+    @patch("PyQt6.QtWidgets.QLineEdit.keyPressEvent")
     def test_checkHistory_keyup(self, mock_event):
         self.obj.commands = ["cmd1", "cmd2", "cmd3"]
         self.obj.commands_i = 0
@@ -146,7 +146,7 @@ class MotorTestTelnet(unittest.TestCase):
         assert self.obj.lneSend.text() == "cmd3"
         assert mock_event.called
 
-    @patch("PyQt5.QtWidgets.QLineEdit.keyPressEvent")
+    @patch("PyQt6.QtWidgets.QLineEdit.keyPressEvent")
     def test_checkHistory_keydown(self, mock_event):
         self.obj.commands = ["cmd1", "cmd2", "cmd3"]
         self.obj.commands_i = -1
@@ -156,7 +156,7 @@ class MotorTestTelnet(unittest.TestCase):
         assert self.obj.lneSend.text() == ""
         assert mock_event.called
 
-    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    @patch("PyQt6.QtWidgets.QMessageBox.information")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
     def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
@@ -167,7 +167,7 @@ class MotorTestTelnet(unittest.TestCase):
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
         assert ret is None
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.sendCommand")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
@@ -228,7 +228,7 @@ class MotorTestTelnet(unittest.TestCase):
         self.assertFalse(self.obj.lblPollRate.isEnabled())
         mock_pixmap.assert_called_with(self.obj.greenLedOn)
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_remote_disconnect_pmac_none(self, mock_pixmap):
         self.obj.pmac = None
         self.obj.remoteDisconnect()
@@ -268,7 +268,7 @@ class MotorTestTelnet(unittest.TestCase):
 
 
 class MotorTestTelnetConnectionRequired(unittest.TestCase):
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.sendCommand")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.getNumberOfAxes")
@@ -288,7 +288,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("dls_pmac_control.watches.Watchesform")
     @patch("dls_pmac_control.login.Loginform")
     @patch("dls_pmac_control.commsThread.CommsThread")
-    @patch("PyQt5.QtCore.QEvent")
+    @patch("PyQt6.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
     def setUp(
@@ -326,7 +326,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
         mock_connect.return_value = None
         self.obj.remoteConnect()
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.disconnect")
     def test_remote_disconnect(self, mock_disconnect, mock_pixmap):
         self.obj.remoteDisconnect()
@@ -413,7 +413,7 @@ class MotorTestEthernet(unittest.TestCase):
     @patch("dls_pmac_control.watches.Watchesform")
     @patch("dls_pmac_control.login.Loginform")
     @patch("dls_pmac_control.commsThread.CommsThread")
-    @patch("PyQt5.QtCore.QEvent")
+    @patch("PyQt6.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
     def setUp(
@@ -461,7 +461,7 @@ class MotorTestEthernet(unittest.TestCase):
         self.assertFalse(self.obj.lnePollRate.isEnabled())
         self.assertFalse(self.obj.lblPollRate.isEnabled())
 
-    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    @patch("PyQt6.QtWidgets.QMessageBox.information")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.setConnectionParams")
     def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
@@ -472,7 +472,7 @@ class MotorTestEthernet(unittest.TestCase):
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
         assert ret is None
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.sendCommand")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.getNumberOfAxes")
@@ -533,9 +533,9 @@ class MotorTestEthernet(unittest.TestCase):
         self.assertFalse(self.obj.lblPollRate.isEnabled())
         mock_pixmap.assert_called_with(self.obj.greenLedOn)
 
-    @patch("PyQt5.QtWidgets.QPushButton.released")
-    @patch("PyQt5.QtWidgets.QPushButton.pressed")
-    @patch("PyQt5.QtWidgets.QPushButton.clicked")
+    @patch("PyQt6.QtWidgets.QPushButton.released")
+    @patch("PyQt6.QtWidgets.QPushButton.pressed")
+    @patch("PyQt6.QtWidgets.QPushButton.clicked")
     def test_jog_incrementally_true(self, mock_clicked, mock_pressed, mock_released):
         self.obj.btnJogPos.pressed.connect(self.obj.jogPosContinousStart)
         self.obj.btnJogPos.released.connect(self.obj.jogStop)
@@ -547,9 +547,9 @@ class MotorTestEthernet(unittest.TestCase):
         mock_released.disconnect.assert_called_with(self.obj.jogStop)
         mock_clicked.connect.assert_called_with(self.obj.jogPos)
 
-    @patch("PyQt5.QtWidgets.QPushButton.released")
-    @patch("PyQt5.QtWidgets.QPushButton.pressed")
-    @patch("PyQt5.QtWidgets.QPushButton.clicked")
+    @patch("PyQt6.QtWidgets.QPushButton.released")
+    @patch("PyQt6.QtWidgets.QPushButton.pressed")
+    @patch("PyQt6.QtWidgets.QPushButton.clicked")
     def test_jog_incrementally_false(self, mock_clicked, mock_pressed, mock_released):
         self.obj.btnJogNeg.clicked.connect(self.obj.jogNeg)
         self.obj.btnJogPos.clicked.connect(self.obj.jogPos)
@@ -577,7 +577,7 @@ class MotorTestSerial(unittest.TestCase):
     @patch("dls_pmac_control.watches.Watchesform")
     @patch("dls_pmac_control.login.Loginform")
     @patch("dls_pmac_control.commsThread.CommsThread")
-    @patch("PyQt5.QtCore.QEvent")
+    @patch("PyQt6.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
     def setUp(
@@ -626,7 +626,7 @@ class MotorTestSerial(unittest.TestCase):
         self.assertTrue(self.obj.lnePollRate.isEnabled())
         self.assertTrue(self.obj.lblPollRate.isEnabled())
 
-    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    @patch("PyQt6.QtWidgets.QMessageBox.information")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.setConnectionParams")
     def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
@@ -637,7 +637,7 @@ class MotorTestSerial(unittest.TestCase):
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
         assert ret is None
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.sendCommand")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.isModelGeobrick")
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.getNumberOfAxes")
@@ -698,7 +698,7 @@ class MotorTestSerial(unittest.TestCase):
         self.assertFalse(self.obj.lblPollRate.isEnabled())
         mock_pixmap.assert_called_with(self.obj.greenLedOn)
 
-    @patch("PyQt5.QtWidgets.QFileDialog.getOpenFileName")
+    @patch("PyQt6.QtWidgets.QFileDialog.getOpenFileName")
     def test_load_config_no_filename(self, mock_dialog):
         test_filename = False, None
         mock_dialog.return_value = test_filename
@@ -706,7 +706,7 @@ class MotorTestSerial(unittest.TestCase):
         assert mock_dialog.called
 
     @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
-    @patch("PyQt5.QtWidgets.QFileDialog.getOpenFileName")
+    @patch("PyQt6.QtWidgets.QFileDialog.getOpenFileName")
     def test_load_config_no_pmc_lines(self, mock_dialog, mock_parse):
         # create temp file
         test_file = "/tmp/test.txt"
@@ -723,9 +723,9 @@ class MotorTestSerial(unittest.TestCase):
         os.remove(test_file)
 
     @patch("queue.Queue.put")
-    @patch("PyQt5.QtWidgets.QProgressDialog")
+    @patch("PyQt6.QtWidgets.QProgressDialog")
     @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
-    @patch("PyQt5.QtWidgets.QFileDialog.getOpenFileName")
+    @patch("PyQt6.QtWidgets.QFileDialog.getOpenFileName")
     def test_load_config(self, mock_dialog, mock_parse, mock_progress, mock_queue):
         # create temp file
         test_file = "/tmp/test.txt"
@@ -760,7 +760,7 @@ class MotorTestSsh(unittest.TestCase):
     @patch("dls_pmac_control.watches.Watchesform")
     @patch("dls_pmac_control.login.Loginform")
     @patch("dls_pmac_control.commsThread.CommsThread")
-    @patch("PyQt5.QtCore.QEvent")
+    @patch("PyQt6.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
     def setUp(
@@ -810,7 +810,7 @@ class MotorTestSsh(unittest.TestCase):
         self.assertFalse(self.obj.lblPollRate.isEnabled())
 
     @patch("dls_pmac_control.login.Loginform.exec")
-    @patch("PyQt5.QtWidgets.QMessageBox.information")
+    @patch("PyQt6.QtWidgets.QMessageBox.information")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.connect")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.setConnectionParams")
     def test_remote_connect_auth_error(
@@ -824,7 +824,7 @@ class MotorTestSsh(unittest.TestCase):
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
         assert ret is None
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmac_control.login.Loginform.exec")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.sendCommand")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.isModelGeobrick")

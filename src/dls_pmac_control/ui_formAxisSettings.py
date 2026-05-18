@@ -1,10 +1,10 @@
 # Form implementation generated from reading ui file 'dls_pmac_control/formAxisSettings.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt6 UI code generator 5.12.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 
 class Ui_formAxisSettings:
@@ -12,7 +12,7 @@ class Ui_formAxisSettings:
         formAxisSettings.setObjectName("formAxisSettings")
         formAxisSettings.resize(508, 548)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -140,7 +140,7 @@ class Ui_formAxisSettings:
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.textLabel2_9)
         self.lneIx20 = QtWidgets.QLineEdit(self.groupBox2)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed
+            QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -226,7 +226,7 @@ class Ui_formAxisSettings:
         self.gridLayout.setObjectName("gridLayout")
         self.groupBox1_2 = QtWidgets.QGroupBox(self.tab1)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -317,7 +317,7 @@ class Ui_formAxisSettings:
         self.gridLayout.addWidget(self.groupBox1_2, 0, 0, 2, 1)
         self.groupBox1_2_2 = QtWidgets.QGroupBox(self.tab1)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+            QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -385,11 +385,17 @@ class Ui_formAxisSettings:
         )
         self.gridLayout.addWidget(self.groupBox1_2_2, 0, 1, 1, 1)
         spacerItem = QtWidgets.QSpacerItem(
-            20, 125, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+            20,
+            125,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
         )
         self.gridLayout.addItem(spacerItem, 1, 1, 2, 1)
         spacerItem1 = QtWidgets.QSpacerItem(
-            20, 26, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding
+            20,
+            26,
+            QtWidgets.QSizePolicy.Policy.Minimum,
+            QtWidgets.QSizePolicy.Policy.Expanding,
         )
         self.gridLayout.addItem(spacerItem1, 2, 0, 1, 1)
         self.tabAxisSetup.addTab(self.tab1, "")
@@ -398,7 +404,10 @@ class Ui_formAxisSettings:
         self.btnUpdate.setObjectName("btnUpdate")
         self.gridLayout_3.addWidget(self.btnUpdate, 2, 0, 1, 1)
         spacerItem2 = QtWidgets.QSpacerItem(
-            185, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+            185,
+            20,
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Minimum,
         )
         self.gridLayout_3.addItem(spacerItem2, 2, 1, 1, 1)
         self.btnClose = QtWidgets.QPushButton(formAxisSettings)

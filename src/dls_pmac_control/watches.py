@@ -1,6 +1,6 @@
 import re
 
-from PyQt5.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
+from PyQt6.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
 
 from dls_pmac_control.ui_formWatches import Ui_formWatches
 

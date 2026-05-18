@@ -1,10 +1,10 @@
 # Form implementation generated from reading ui file 'src/dls_pmac_control/formCSStatus.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt6 UI code generator 5.12.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtWidgets
+from PyQt6 import QtCore, QtWidgets
 
 
 class Ui_formCSStatus:
@@ -43,7 +43,8 @@ class Ui_formCSStatus:
         self.gridLayout_2.addWidget(self.ctrlGroup, 0, 0, 1, 1)
         self.ledGroup = QtWidgets.QGroupBox(formCSStatus)
         sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Expanding,
         )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)

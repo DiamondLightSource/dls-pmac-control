@@ -2,8 +2,8 @@ import unittest
 from os import path
 from unittest.mock import patch
 
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMainWindow
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QMainWindow
 
 from dls_pmac_control.status import PpmacStatusform, Statusform
 
@@ -18,9 +18,9 @@ class DummyTestWidget(QMainWindow):
 
 
 class StatusTest(unittest.TestCase):
-    @patch("PyQt5.QtWidgets.QLabel.setToolTip")
-    @patch("PyQt5.QtWidgets.QLabel.setText")
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setToolTip")
+    @patch("PyQt6.QtWidgets.QLabel.setText")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def setUp(self, mock_pixmap, mock_text, mock_tooltip):
         self.test_widget = DummyTestWidget()
         self.obj = Statusform(self.test_widget, 1)
@@ -33,7 +33,7 @@ class StatusTest(unittest.TestCase):
         assert self.obj.currentAxis == 5
         assert self.obj.ledGroup.title() == "Axis 5"
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
         self.obj.updateStatus(0)
         mock_pixmap.assert_called_with(self.test_widget.greenLedOff)
@@ -44,9 +44,9 @@ class StatusTest(unittest.TestCase):
 
 
 class PpmacStatusTest(unittest.TestCase):
-    @patch("PyQt5.QtWidgets.QLabel.setToolTip")
-    @patch("PyQt5.QtWidgets.QLabel.setText")
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setToolTip")
+    @patch("PyQt6.QtWidgets.QLabel.setText")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def setUp(self, mock_pixmap, mock_text, mock_tooltip):
         self.test_widget = DummyTestWidget()
         self.obj = PpmacStatusform(self.test_widget, 1)
@@ -59,7 +59,7 @@ class PpmacStatusTest(unittest.TestCase):
         assert self.obj.currentAxis == 3
         assert self.obj.ledGroup.title() == "Axis 3"
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
         self.obj.updateStatus(0)
         mock_pixmap.assert_called_with(self.test_widget.greenLedOff)

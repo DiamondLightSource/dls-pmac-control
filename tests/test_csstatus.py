@@ -2,10 +2,10 @@ import unittest
 from os import path
 from unittest.mock import Mock, patch
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QMainWindow
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtTest import QTest
+from PyQt6.QtWidgets import QMainWindow
 
 from dls_pmac_control.CSstatus import CSStatusForm, PpmacCSStatusForm
 
@@ -23,9 +23,9 @@ class DummyTestWidget(QMainWindow):
 
 
 class CSStatusTest(unittest.TestCase):
-    @patch("PyQt5.QtWidgets.QLabel.setToolTip")
-    @patch("PyQt5.QtWidgets.QLabel.setText")
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setToolTip")
+    @patch("PyQt6.QtWidgets.QLabel.setText")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def setUp(self, mock_pixmap, mock_text, mock_tooltip):
         self.test_widget = DummyTestWidget()
         self.obj = CSStatusForm(self.test_widget)
@@ -47,7 +47,7 @@ class CSStatusTest(unittest.TestCase):
         QTest.keyClick(self.obj.feedSpin, Qt.Key_Down)
         assert self.obj.feedSpin.value() == 99
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
         self.obj.updateStatus(0)
         mock_pixmap.assert_called_with(self.test_widget.greenLedOff)
@@ -58,9 +58,9 @@ class CSStatusTest(unittest.TestCase):
 
 
 class PpmacCSStatusTest(unittest.TestCase):
-    @patch("PyQt5.QtWidgets.QLabel.setToolTip")
-    @patch("PyQt5.QtWidgets.QLabel.setText")
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setToolTip")
+    @patch("PyQt6.QtWidgets.QLabel.setText")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def setUp(self, mock_pixmap, mock_text, mock_tooltip):
         self.test_widget = DummyTestWidget()
         self.obj = PpmacCSStatusForm(self.test_widget)
@@ -82,7 +82,7 @@ class PpmacCSStatusTest(unittest.TestCase):
         QTest.keyClick(self.obj.feedSpin, Qt.Key_Down)
         assert self.obj.feedSpin.value() == 99
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
         self.obj.updateStatus(0)
         mock_pixmap.assert_called_with(self.test_widget.greenLedOff)

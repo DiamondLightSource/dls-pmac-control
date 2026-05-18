@@ -2,8 +2,8 @@
 
 import sys
 
-from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
-from PyQt5.QtWidgets import QApplication, QDialog, QLabel
+from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
+from PyQt6.QtWidgets import QApplication, QDialog, QLabel
 
 from dls_pmac_control.ui_formCSStatus import Ui_formCSStatus
 from dls_pmac_control.ui_formPpmacCSStatus import Ui_formPpmacCSStatus
@@ -23,7 +23,7 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
         self._feed = 100
 
         ledGroupLayout = self.ledGroup.layout()
-        ledGroupLayout.setAlignment(Qt.AlignTop)
+        ledGroupLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.lstLeds = []
         self.lstLabels = []
         self.lstLabelTexts = []
@@ -600,7 +600,7 @@ class PpmacCSStatusForm(QDialog, Ui_formPpmacCSStatus):
         self._feed = 100
 
         ledGroupLayout = self.ledGroup.layout()
-        ledGroupLayout.setAlignment(Qt.AlignTop)
+        ledGroupLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.lstLeds = []
         self.lstLabels = []
         self.lstLabelTexts = []

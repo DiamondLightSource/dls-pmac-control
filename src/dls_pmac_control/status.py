@@ -1,8 +1,7 @@
 import sys
 
-from PyQt5.Qt import QApplication
-from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
-from PyQt5.QtWidgets import QDialog, QLabel
+from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
+from PyQt6.QtWidgets import QApplication, QDialog, QLabel
 
 from dls_pmac_control.ui_formStatus import Ui_formStatus
 
@@ -21,7 +20,7 @@ class Statusform(QDialog, Ui_formStatus):
         self.ledGroup.setTitle("Axis " + str(axis))
 
         ledGroupLayout = self.ledGroup.layout()
-        ledGroupLayout.setAlignment(Qt.AlignTop)
+        ledGroupLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.lstLeds = []
         self.lstLabels = []
         self.lstLabelTexts = []
@@ -563,7 +562,7 @@ class PpmacStatusform(QDialog, Ui_formStatus):
         self.ledGroup.setTitle("Axis " + str(axis))
 
         ledGroupLayout = self.ledGroup.layout()
-        ledGroupLayout.setAlignment(Qt.AlignTop)
+        ledGroupLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.lstLeds = []
         self.lstLabels = []
         self.lstLabelTexts = []
