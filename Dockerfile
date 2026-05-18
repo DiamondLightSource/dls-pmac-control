@@ -8,7 +8,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     ffmpeg \
     libsm6 \
     libxext6 \
-    libqt5gui5 \
+    libqt6gui6 \
     libxcb-cursor0 \
     libgl1 \
     libegl1 \
