@@ -10,6 +10,7 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libxext6 \
     libqt5gui5 \
     libxcb-cursor0 \
+    libgl1 \
     && apt-get dist-clean
 
 ENV XDG_RUNTIME_DIR=/tmp/runtime-vscode
