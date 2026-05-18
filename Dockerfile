@@ -12,6 +12,8 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libxcb-cursor0 \
     libgl1 \
     freeglut3-dev \
+    libglib2.0-0 \
+    libgl1-mesa-dev \
     && apt-get dist-clean
 
 ENV XDG_RUNTIME_DIR=/tmp/runtime-vscode
