@@ -8,13 +8,18 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     ffmpeg \
     libsm6 \
     libxext6 \
-    libqt6gui6 \
-    libxcb-cursor0 \
     libgl1 \
     libegl1 \
     freeglut3-dev \
     libglib2.0-0 \
     libgl1-mesa-dev \
+    qt6-base-dev \
+    qt6-webengine-dev \
+    libqt6qml6 \
+    libqt6core6 \
+    libqt6gui6 \
+    python3-pyqt6 \
+    libxcb-cursor0\
     && apt-get dist-clean \
     && rm -rf /var/lib/apt/lists/* 
 
