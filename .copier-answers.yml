@@ -1,5 +1,5 @@
 # Changes here will be overwritten by Copier
-_commit: 2.5.0
+_commit: 5.1.0
 _src_path: gh:DiamondLightSource/python-copier-template
 author_email: giles.knap@diamond.ac.uk
 author_name: Giles Knap
@@ -10,7 +10,8 @@ description: GUI for low level control and monitoring of turbo pmac and power pm
     motion controllers
 distribution_name: dls-pmaccontrol
 docker: true
-docs_type: sphinx
+docker_debug: true
+docs_type: README
 git_platform: github.com
 github_org: DiamondLightSource
 package_name: dls_pmac_control

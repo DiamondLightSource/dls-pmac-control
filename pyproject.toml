@@ -7,8 +7,6 @@ name = "dls-pmaccontrol"
 classifiers = [
     "Development Status :: 3 - Alpha",
     "License :: OSI Approved :: Apache Software License",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
 ]
 description = "GUI for low level control and monitoring of turbo pmac and power pmac motion controllers"
@@ -16,26 +14,22 @@ dependencies = ["dls-pmaclib >= 3.1.2", "numpy", "pyqt5 <6.0", "pythonqwt"]
 dynamic = ["version"]
 license.file = "LICENSE"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "copier",
     "mock",
     "mypy",
-    "myst-parser",
-    "pipdeptree",
     "pre-commit",
     "pydata-sphinx-theme>=0.12",
     "pyqt5-stubs",
     "pytest",
     "pytest-cov",
     "ruff",
-    "sphinx-autobuild",
-    "sphinx-copybutton",
-    "sphinx-design",
-    "tox-direct",
+    "tox-uv",
     "types-mock",
+    "coverage",
 ]
 
 [project.scripts]
@@ -48,7 +42,6 @@ GitHub = "https://github.com/DiamondLightSource/dls-pmac-control"
 email = "giles.knap@diamond.ac.uk"
 name = "Giles Knap"
 
-
 [tool.setuptools_scm]
 version_file = "src/dls_pmac_control/_version.py"
 
@@ -58,7 +51,7 @@ ignore_missing_imports = true # Ignore missing stubs in imported modules
 [tool.pytest.ini_options]
 # Run pytest with all our checkers, and don't spam us with massive tracebacks on error
 addopts = """
-    --tb=native -vv --doctest-modules --doctest-glob="*.rst"
+    --tb=native -vv
     """
 # https://iscinumpy.gitlab.io/post/bound-version-constraints/#watch-for-warnings
 filterwarnings = ["error", "ignore::DeprecationWarning"]
@@ -66,35 +59,61 @@ filterwarnings = ["error", "ignore::DeprecationWarning"]
 testpaths = "docs src tests"
 
 [tool.coverage.run]
+patch = ["subprocess"]
 data_file = "/tmp/dls_pmac_control.coverage"
 
 [tool.coverage.paths]
 # Tests are run from installed location, map back to the src directory
 source = ["src", "**/site-packages/"]
 
-# tox must currently be configured via an embedded ini string
-# See: https://github.com/tox-dev/tox/issues/999
 [tool.tox]
-legacy_tox_ini = """
-[tox]
-skipsdist=True
+skipsdist = true
+# envs to runs automatically with tox -p
+env_list = ["pre-commit", "type-checking", "tests"]
 
-[testenv:{pre-commit,type-checking,tests,docs}]
-# Don't create a virtualenv for the command, requires tox-direct plugin
-direct = True
-passenv = *
-allowlist_externals =
-    pytest
-    pre-commit
-    mypy
-    sphinx-build
-    sphinx-autobuild
-commands =
-    pre-commit: pre-commit run --all-files --show-diff-on-failure {posargs}
-    type-checking: mypy src tests {posargs}
-    tests: pytest --cov=dls_pmac_control --cov-report term --cov-report xml:cov.xml {posargs}
-    docs: sphinx-{posargs:build -EW --keep-going} -T docs build/html
-"""
+[tool.tox.env_run_base]
+# Pass all environment variables to the test environments
+passenv = ["*"]
+
+[tool.tox.env.pre-commit]
+description = "Run pre-commit on all files"
+commands = [
+    [
+        "pre-commit",
+        "run",
+        "--all-files",
+        "--show-diff-on-failure",
+        { replace = "posargs", default = [
+        ], extend = true },
+    ],
+]
+
+[tool.tox.env.type-checking]
+description = "Run mypy"
+commands = [
+    [
+        "mypy",
+        "src",
+        "tests",
+        { replace = "posargs", default = [
+        ], extend = true },
+    ],
+]
+
+[tool.tox.env.tests]
+description = "Run tests with coverage"
+commands = [
+    [
+        "pytest",
+        "--cov=dls_pmac_control",
+        "--cov-report",
+        "term",
+        "--cov-report",
+        "xml:cov.xml",
+        { replace = "posargs", default = [
+        ], extend = true },
+    ],
+]
 
 [tool.ruff]
 src = ["src", "tests"]
@@ -109,6 +128,7 @@ lint.select = [
     "C4",  # flake8-comprehensions - https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
     "E",   # pycodestyle errors - https://docs.astral.sh/ruff/rules/#error-e
     "F",   # pyflakes rules - https://docs.astral.sh/ruff/rules/#pyflakes-f
+    "N",   # pep8-naming - https://docs.astral.sh/ruff/rules/#pep8-naming-n
     "W",   # pycodestyle warnings - https://docs.astral.sh/ruff/rules/#warning-w
     "I",   # isort - https://docs.astral.sh/ruff/rules/#isort-i
     "UP",  # pyupgrade - https://docs.astral.sh/ruff/rules/#pyupgrade-up
