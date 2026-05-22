@@ -13,6 +13,8 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends \
     libegl1 \
     libglib2.0-0 \
     libxcb-cursor0 \
+    libxkbcommon-x11-0 \
+    qt6-base-dev \
     && apt-get dist-clean \
     && rm -rf /var/lib/apt/lists/*
 
