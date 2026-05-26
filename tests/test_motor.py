@@ -114,9 +114,9 @@ class MotorTestTelnet(unittest.TestCase):
         assert self.obj.currentMotor == 1
         assert self.obj.nAxes == 8
 
-    def test_useTerminalServerConnection(self):
+    def test_use_terminal_server_connection(self):
         self.obj.ConnectionType = None
-        self.obj.useTerminalServerConnection()
+        self.obj.use_terminal_server_connection()
         assert self.obj.ConnectionType == 0
         assert self.obj.lneServer.text() == "blxxi-nt-tserv-01"
         assert self.obj.lnePort.text() == "7017"
@@ -127,7 +127,7 @@ class MotorTestTelnet(unittest.TestCase):
         self.assertFalse(self.obj.lblPollRate.isEnabled())
 
     @patch("PyQt6.QtWidgets.QLineEdit.keyPressEvent")
-    def test_checkHistory_empty(self, mock_event):
+    def test_check_history_empty(self, mock_event):
         self.obj.commands = []
         self.obj.commands_i = 0
         self.obj.lneSend.setEnabled(True)
@@ -137,7 +137,7 @@ class MotorTestTelnet(unittest.TestCase):
         assert mock_event.called
 
     @patch("PyQt6.QtWidgets.QLineEdit.keyPressEvent")
-    def test_checkHistory_keyup(self, mock_event):
+    def test_check_history_keyup(self, mock_event):
         self.obj.commands = ["cmd1", "cmd2", "cmd3"]
         self.obj.commands_i = 0
         self.obj.lneSend.setEnabled(True)
@@ -147,7 +147,7 @@ class MotorTestTelnet(unittest.TestCase):
         assert mock_event.called
 
     @patch("PyQt6.QtWidgets.QLineEdit.keyPressEvent")
-    def test_checkHistory_keydown(self, mock_event):
+    def test_check_history_keydown(self, mock_event):
         self.obj.commands = ["cmd1", "cmd2", "cmd3"]
         self.obj.commands_i = -1
         self.obj.lneSend.setEnabled(True)
@@ -161,7 +161,7 @@ class MotorTestTelnet(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.setConnectionParams")
     def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
         mock_connect.return_value = "Invalid username or password"
-        ret = self.obj.remoteConnect()
+        ret = self.obj.remote_connect()
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
@@ -189,7 +189,7 @@ class MotorTestTelnet(unittest.TestCase):
         mock_geo.return_value = True
         mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
-        ret = self.obj.remoteConnect()
+        ret = self.obj.remote_connect()
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         assert mock_model.called
@@ -231,7 +231,7 @@ class MotorTestTelnet(unittest.TestCase):
     @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_remote_disconnect_pmac_none(self, mock_pixmap):
         self.obj.pmac = None
-        self.obj.remoteDisconnect()
+        self.obj.remote_disconnect()
         self.assertEqual(self.obj.windowTitle(), "Delta Tau motor controller")
         self.assertTrue(self.obj.btnConnect.isEnabled())
         self.assertFalse(self.obj.btnDisconnect.isEnabled())
@@ -324,12 +324,12 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
         mock_geo.return_value = True
         mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
-        self.obj.remoteConnect()
+        self.obj.remote_connect()
 
     @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.disconnect")
     def test_remote_disconnect(self, mock_disconnect, mock_pixmap):
-        self.obj.remoteDisconnect()
+        self.obj.remote_disconnect()
         assert mock_disconnect.called
         assert self.obj.windowTitle() == "Delta Tau motor controller"
         self.assertTrue(self.obj.btnConnect.isEnabled())
@@ -366,7 +366,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
     def test_jog_neg(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
-        assert self.obj.jogNeg() is None
+        assert self.obj.jog_neg() is None
         mock_joginc.assert_called_with(
             self.obj.currentMotor, "neg", str(self.obj.lneJogDist.text())
         )
@@ -375,7 +375,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogInc")
     def test_jog_pos(self, mock_joginc, mock_addtxt):
         mock_joginc.return_value = ("cmd", "response", True)
-        assert self.obj.jogPos() is None
+        assert self.obj.jog_pos() is None
         mock_joginc.assert_called_with(
             self.obj.currentMotor, "pos", str(self.obj.lneJogDist.text())
         )
@@ -384,14 +384,14 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.jogStop")
     def test_jog_stop(self, mock_jogstop, mock_addtxt):
         mock_jogstop.return_value = ("cmd", "response", True)
-        assert self.obj.jogStop() is None
+        assert self.obj.jog_stop() is None
         mock_jogstop.assert_called_with(self.obj.currentMotor)
 
     @patch("dls_pmac_control.__main__.Controlform.addToTxtShell")
     @patch("dls_pmaclib.dls_pmacremote.PmacTelnetInterface.homeCommand")
     def test_jog_home(self, mock_home, mock_addtxt):
         mock_home.return_value = ("cmd", "response", True)
-        assert self.obj.jogHome() is None
+        assert self.obj.jog_home() is None
         mock_home.assert_called_with(self.obj.currentMotor)
         mock_addtxt.assert_called_with("cmd", "response")
 
@@ -449,9 +449,9 @@ class MotorTestEthernet(unittest.TestCase):
         assert self.obj.currentMotor == 1
         assert self.obj.nAxes == 8
 
-    def test_useSocketConnection(self):
+    def test_use_socket_connection(self):
         self.obj.ConnectionType = None
-        self.obj.useSocketConnection()
+        self.obj.use_socket_connection()
         assert self.obj.ConnectionType == 1
         assert self.obj.lneServer.text() == "172.23.240.97"
         assert self.obj.lnePort.text() == "1025"
@@ -466,7 +466,7 @@ class MotorTestEthernet(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.setConnectionParams")
     def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
         mock_connect.return_value = "Invalid username or password"
-        ret = self.obj.remoteConnect()
+        ret = self.obj.remote_connect()
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
@@ -494,7 +494,7 @@ class MotorTestEthernet(unittest.TestCase):
         mock_geo.return_value = True
         mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
-        ret = self.obj.remoteConnect()
+        ret = self.obj.remote_connect()
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         assert mock_model.called
@@ -537,27 +537,27 @@ class MotorTestEthernet(unittest.TestCase):
     @patch("PyQt6.QtWidgets.QPushButton.pressed")
     @patch("PyQt6.QtWidgets.QPushButton.clicked")
     def test_jog_incrementally_true(self, mock_clicked, mock_pressed, mock_released):
-        self.obj.btnJogPos.pressed.connect(self.obj.jogPosContinousStart)
-        self.obj.btnJogPos.released.connect(self.obj.jogStop)
-        self.obj.btnJogNeg.pressed.connect(self.obj.jogNegContinousStart)
-        self.obj.btnJogNeg.released.connect(self.obj.jogStop)
-        self.obj.jogIncrementally(True)
+        self.obj.btnJogPos.pressed.connect(self.obj.jog_pos_continous_start)
+        self.obj.btnJogPos.released.connect(self.obj.jog_stop)
+        self.obj.btnJogNeg.pressed.connect(self.obj.jog_neg_continous_start)
+        self.obj.btnJogNeg.released.connect(self.obj.jog_stop)
+        self.obj.jog_incrementally(True)
         self.assertTrue(self.obj.lneJogDist.isEnabled())
-        mock_pressed.disconnect.assert_called_with(self.obj.jogNegContinousStart)
-        mock_released.disconnect.assert_called_with(self.obj.jogStop)
-        mock_clicked.connect.assert_called_with(self.obj.jogPos)
+        mock_pressed.disconnect.assert_called_with(self.obj.jog_neg_continous_start)
+        mock_released.disconnect.assert_called_with(self.obj.jog_stop)
+        mock_clicked.connect.assert_called_with(self.obj.jog_pos)
 
     @patch("PyQt6.QtWidgets.QPushButton.released")
     @patch("PyQt6.QtWidgets.QPushButton.pressed")
     @patch("PyQt6.QtWidgets.QPushButton.clicked")
     def test_jog_incrementally_false(self, mock_clicked, mock_pressed, mock_released):
-        self.obj.btnJogNeg.clicked.connect(self.obj.jogNeg)
-        self.obj.btnJogPos.clicked.connect(self.obj.jogPos)
-        self.obj.jogIncrementally(False)
+        self.obj.btnJogNeg.clicked.connect(self.obj.jog_neg)
+        self.obj.btnJogPos.clicked.connect(self.obj.jog_pos)
+        self.obj.jog_incrementally(False)
         self.assertFalse(self.obj.lneJogDist.isEnabled())
-        mock_pressed.connect.assert_called_with(self.obj.jogNegContinousStart)
-        mock_released.connect.assert_called_with(self.obj.jogStop)
-        mock_clicked.connect.assert_called_with(self.obj.jogPos)
+        mock_pressed.connect.assert_called_with(self.obj.jog_neg_continous_start)
+        mock_released.connect.assert_called_with(self.obj.jog_stop)
+        mock_clicked.connect.assert_called_with(self.obj.jog_pos)
 
     def tearDown(self):
         self.obj.close()
@@ -613,9 +613,9 @@ class MotorTestSerial(unittest.TestCase):
         assert self.obj.currentMotor == 1
         assert self.obj.nAxes == 8
 
-    def test_useSerial(self):
+    def test_use_serial(self):
         self.obj.ConnectionType = None
-        self.obj.useSerial()
+        self.obj.use_serial()
         assert self.obj.ConnectionType == 2
         assert self.obj.lneServer.text() == "/dev/ttyUSB0"
         assert self.obj.lnePort.text() == "38400"
@@ -631,7 +631,7 @@ class MotorTestSerial(unittest.TestCase):
     @patch("dls_pmaclib.dls_pmacremote.PmacSerialInterface.setConnectionParams")
     def test_remote_connect_auth_error(self, mock_params, mock_connect, mock_box):
         mock_connect.return_value = "Invalid username or password"
-        ret = self.obj.remoteConnect()
+        ret = self.obj.remote_connect()
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
@@ -659,7 +659,7 @@ class MotorTestSerial(unittest.TestCase):
         mock_geo.return_value = True
         mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
-        ret = self.obj.remoteConnect()
+        ret = self.obj.remote_connect()
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         assert mock_model.called
@@ -702,7 +702,7 @@ class MotorTestSerial(unittest.TestCase):
     def test_load_config_no_filename(self, mock_dialog):
         test_filename = False, None
         mock_dialog.return_value = test_filename
-        assert self.obj.pmacLoadConfig() is None
+        assert self.obj.pmac_load_config() is None
         assert mock_dialog.called
 
     @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
@@ -717,7 +717,7 @@ class MotorTestSerial(unittest.TestCase):
         test_filename = "/tmp/test.txt", None
         mock_dialog.return_value = test_filename
         mock_parse.return_value = False
-        assert self.obj.pmacLoadConfig() is None
+        assert self.obj.pmac_load_config() is None
         assert mock_dialog.called
         assert mock_parse.called
         os.remove(test_file)
@@ -736,7 +736,7 @@ class MotorTestSerial(unittest.TestCase):
         test_filename = "/tmp/test.txt", None
         mock_dialog.return_value = test_filename
         mock_parse.return_value = ["#define test P10", "test = 1"]
-        assert self.obj.pmacLoadConfig() is None
+        assert self.obj.pmac_load_config() is None
         assert mock_dialog.called
         assert mock_parse.called
         assert mock_queue.called
@@ -797,9 +797,9 @@ class MotorTestSsh(unittest.TestCase):
         assert self.obj.currentMotor == 1
         assert self.obj.nAxes == 8
 
-    def test_useSshConnection(self):
+    def test_use_ssh_connection(self):
         self.obj.ConnectionType = None
-        self.obj.useSshConnection()
+        self.obj.use_ssh_connection()
         assert self.obj.ConnectionType == 3
         assert self.obj.lneServer.text() == "172.23.240.97"
         assert self.obj.lnePort.text() == "22"
@@ -818,7 +818,7 @@ class MotorTestSsh(unittest.TestCase):
     ):
         mock_connect.return_value = "Invalid username or password"
         mock_exec.return_value = True
-        ret = self.obj.remoteConnect()
+        ret = self.obj.remote_connect()
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         mock_box.assert_called_with(self.obj, "Error", "Invalid username or password")
@@ -848,7 +848,7 @@ class MotorTestSsh(unittest.TestCase):
         mock_geo.return_value = True
         mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
-        ret = self.obj.remoteConnect()
+        ret = self.obj.remote_connect()
         mock_params.assert_called_with("test", "123")
         assert mock_connect.called
         assert mock_model.called
@@ -892,7 +892,7 @@ class MotorTestSsh(unittest.TestCase):
         self.obj.commsThread.configure_mock(**attrs)
         attrs = {"qsize.return_value": 5, "get.return_value": ["0", "0", "0", "0", 0]}
         self.obj.commsThread.resultQueue.configure_mock(**attrs)
-        ret = self.obj.updateMotors()
+        ret = self.obj.update_motors()
         assert ret is None
         assert float(self.obj.lblPosition.text()) == 0.0
         assert float(self.obj.lblVelo.text()) == 0.0
@@ -924,8 +924,8 @@ class MotorTestSsh(unittest.TestCase):
         mock_geo.return_value = True
         mock_send.return_value = ("1677721.6", True)
         mock_connect.return_value = None
-        self.obj.remoteConnect()
-        self.obj.updateIdentity(1)
+        self.obj.remote_connect()
+        self.obj.update_identity(1)
         assert self.obj.lblIdentity.text() == "BL name 1"
 
     def tearDown(self):

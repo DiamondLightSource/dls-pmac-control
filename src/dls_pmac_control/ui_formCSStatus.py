@@ -7,16 +7,16 @@
 from PyQt6 import QtCore, QtWidgets
 
 
-class Ui_formCSStatus:
-    def setupUi(self, formCSStatus):
-        formCSStatus.setObjectName("formCSStatus")
-        formCSStatus.resize(433, 311)
-        formCSStatus.setSizeGripEnabled(True)
-        self.gridLayout_2 = QtWidgets.QGridLayout(formCSStatus)
+class UiFormCSStatus:
+    def setup_ui(self, form_cs_status):
+        form_cs_status.setObjectName("formCSStatus")
+        form_cs_status.resize(433, 311)
+        form_cs_status.setSizeGripEnabled(True)
+        self.gridLayout_2 = QtWidgets.QGridLayout(form_cs_status)
         self.gridLayout_2.setContentsMargins(11, 11, 11, 11)
         self.gridLayout_2.setSpacing(6)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.ctrlGroup = QtWidgets.QGroupBox(formCSStatus)
+        self.ctrlGroup = QtWidgets.QGroupBox(form_cs_status)
         self.ctrlGroup.setObjectName("ctrlGroup")
         self.gridLayout = QtWidgets.QGridLayout(self.ctrlGroup)
         self.gridLayout.setContentsMargins(11, 11, 11, 11)
@@ -41,15 +41,15 @@ class Ui_formCSStatus:
         self.csSpin.setObjectName("csSpin")
         self.gridLayout.addWidget(self.csSpin, 0, 1, 1, 1)
         self.gridLayout_2.addWidget(self.ctrlGroup, 0, 0, 1, 1)
-        self.ledGroup = QtWidgets.QGroupBox(formCSStatus)
-        sizePolicy = QtWidgets.QSizePolicy(
+        self.ledGroup = QtWidgets.QGroupBox(form_cs_status)
+        size_policy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.Preferred,
             QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.ledGroup.sizePolicy().hasHeightForWidth())
-        self.ledGroup.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.ledGroup.sizePolicy().hasHeightForWidth())
+        self.ledGroup.setSizePolicy(size_policy)
         self.ledGroup.setObjectName("ledGroup")
         self.gridlayout = QtWidgets.QGridLayout(self.ledGroup)
         self.gridlayout.setContentsMargins(11, 11, 11, 11)
@@ -57,12 +57,12 @@ class Ui_formCSStatus:
         self.gridlayout.setObjectName("gridlayout")
         self.gridLayout_2.addWidget(self.ledGroup, 1, 0, 1, 1)
 
-        self.retranslateUi(formCSStatus)
-        QtCore.QMetaObject.connectSlotsByName(formCSStatus)
+        self.retranslate_ui(form_cs_status)
+        QtCore.QMetaObject.connectSlotsByName(form_cs_status)
 
-    def retranslateUi(self, formCSStatus):
+    def retranslate_ui(self, form_cs_status):
         _translate = QtCore.QCoreApplication.translate
-        formCSStatus.setWindowTitle(_translate("formCSStatus", "Status bits"))
+        form_cs_status.setWindowTitle(_translate("formCSStatus", "Status bits"))
         self.ctrlGroup.setTitle(_translate("formCSStatus", "Co-ordinate System"))
         self.textLabel1.setText(_translate("formCSStatus", "CS Number:"))
         self.textLabel1_2.setText(_translate("formCSStatus", "Feed Rate:"))

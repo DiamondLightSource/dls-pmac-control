@@ -7,27 +7,29 @@
 from PyQt6 import QtCore, QtWidgets
 
 
-class Ui_formAxisSettings:
-    def setupUi(self, formAxisSettings):
-        formAxisSettings.setObjectName("formAxisSettings")
-        formAxisSettings.resize(508, 548)
-        sizePolicy = QtWidgets.QSizePolicy(
+class UiFormAxisSettings:
+    def setup_ui(self, form_axis_settings):
+        form_axis_settings.setObjectName("formAxisSettings")
+        form_axis_settings.resize(508, 548)
+        size_policy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(formAxisSettings.sizePolicy().hasHeightForWidth())
-        formAxisSettings.setSizePolicy(sizePolicy)
-        formAxisSettings.setMaximumSize(QtCore.QSize(1024, 768))
-        self.gridLayout_3 = QtWidgets.QGridLayout(formAxisSettings)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(
+            form_axis_settings.sizePolicy().hasHeightForWidth()
+        )
+        form_axis_settings.setSizePolicy(size_policy)
+        form_axis_settings.setMaximumSize(QtCore.QSize(1024, 768))
+        self.gridLayout_3 = QtWidgets.QGridLayout(form_axis_settings)
         self.gridLayout_3.setContentsMargins(11, 11, 11, 11)
         self.gridLayout_3.setSpacing(6)
         self.gridLayout_3.setObjectName("gridLayout_3")
-        self.textLabel1 = QtWidgets.QLabel(formAxisSettings)
+        self.textLabel1 = QtWidgets.QLabel(form_axis_settings)
         self.textLabel1.setWordWrap(False)
         self.textLabel1.setObjectName("textLabel1")
         self.gridLayout_3.addWidget(self.textLabel1, 0, 0, 1, 3)
-        self.tabAxisSetup = QtWidgets.QTabWidget(formAxisSettings)
+        self.tabAxisSetup = QtWidgets.QTabWidget(form_axis_settings)
         self.tabAxisSetup.setObjectName("tabAxisSetup")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
@@ -139,13 +141,13 @@ class Ui_formAxisSettings:
         self.textLabel2_9.setObjectName("textLabel2_9")
         self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.textLabel2_9)
         self.lneIx20 = QtWidgets.QLineEdit(self.groupBox2)
-        sizePolicy = QtWidgets.QSizePolicy(
+        size_policy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lneIx20.sizePolicy().hasHeightForWidth())
-        self.lneIx20.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.lneIx20.sizePolicy().hasHeightForWidth())
+        self.lneIx20.setSizePolicy(size_policy)
         self.lneIx20.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx20.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneIx20.setObjectName("lneIx20")
@@ -225,13 +227,13 @@ class Ui_formAxisSettings:
         self.gridLayout.setSpacing(6)
         self.gridLayout.setObjectName("gridLayout")
         self.groupBox1_2 = QtWidgets.QGroupBox(self.tab1)
-        sizePolicy = QtWidgets.QSizePolicy(
+        size_policy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox1_2.sizePolicy().hasHeightForWidth())
-        self.groupBox1_2.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.groupBox1_2.sizePolicy().hasHeightForWidth())
+        self.groupBox1_2.setSizePolicy(size_policy)
         self.groupBox1_2.setObjectName("groupBox1_2")
         self.formLayout_3 = QtWidgets.QFormLayout(self.groupBox1_2)
         self.formLayout_3.setContentsMargins(11, 11, 11, 11)
@@ -316,15 +318,15 @@ class Ui_formAxisSettings:
         self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.lneIx65)
         self.gridLayout.addWidget(self.groupBox1_2, 0, 0, 2, 1)
         self.groupBox1_2_2 = QtWidgets.QGroupBox(self.tab1)
-        sizePolicy = QtWidgets.QSizePolicy(
+        size_policy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(
             self.groupBox1_2_2.sizePolicy().hasHeightForWidth()
         )
-        self.groupBox1_2_2.setSizePolicy(sizePolicy)
+        self.groupBox1_2_2.setSizePolicy(size_policy)
         self.groupBox1_2_2.setObjectName("groupBox1_2_2")
         self.formLayout_4 = QtWidgets.QFormLayout(self.groupBox1_2_2)
         self.formLayout_4.setFieldGrowthPolicy(
@@ -384,88 +386,88 @@ class Ui_formAxisSettings:
             3, QtWidgets.QFormLayout.FieldRole, self.lneOutputMode
         )
         self.gridLayout.addWidget(self.groupBox1_2_2, 0, 1, 1, 1)
-        spacerItem = QtWidgets.QSpacerItem(
+        spacer_item = QtWidgets.QSpacerItem(
             20,
             125,
             QtWidgets.QSizePolicy.Policy.Minimum,
             QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        self.gridLayout.addItem(spacerItem, 1, 1, 2, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(
+        self.gridLayout.addItem(spacer_item, 1, 1, 2, 1)
+        spacer_item1 = QtWidgets.QSpacerItem(
             20,
             26,
             QtWidgets.QSizePolicy.Policy.Minimum,
             QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        self.gridLayout.addItem(spacerItem1, 2, 0, 1, 1)
+        self.gridLayout.addItem(spacer_item1, 2, 0, 1, 1)
         self.tabAxisSetup.addTab(self.tab1, "")
         self.gridLayout_3.addWidget(self.tabAxisSetup, 1, 0, 1, 3)
-        self.btnUpdate = QtWidgets.QPushButton(formAxisSettings)
+        self.btnUpdate = QtWidgets.QPushButton(form_axis_settings)
         self.btnUpdate.setObjectName("btnUpdate")
         self.gridLayout_3.addWidget(self.btnUpdate, 2, 0, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(
+        spacer_item2 = QtWidgets.QSpacerItem(
             185,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridLayout_3.addItem(spacerItem2, 2, 1, 1, 1)
-        self.btnClose = QtWidgets.QPushButton(formAxisSettings)
+        self.gridLayout_3.addItem(spacer_item2, 2, 1, 1, 1)
+        self.btnClose = QtWidgets.QPushButton(form_axis_settings)
         self.btnClose.setObjectName("btnClose")
         self.gridLayout_3.addWidget(self.btnClose, 2, 2, 1, 1)
 
-        self.retranslateUi(formAxisSettings)
+        self.retranslate_ui(form_axis_settings)
         self.tabAxisSetup.setCurrentIndex(1)
-        self.btnUpdate.clicked.connect(formAxisSettings.axisUpdate)
-        self.btnClose.clicked.connect(formAxisSettings.close)
-        self.lneIx11.returnPressed.connect(formAxisSettings.sendIx11)
-        self.lneIx12.returnPressed.connect(formAxisSettings.sendIx12)
-        self.lneIx13.returnPressed.connect(formAxisSettings.sendIx13)
-        self.lneIx14.returnPressed.connect(formAxisSettings.sendIx14)
-        self.lneIx15.returnPressed.connect(formAxisSettings.sendIx15)
-        self.lneIx16.returnPressed.connect(formAxisSettings.sendIx16)
-        self.lneIx17.returnPressed.connect(formAxisSettings.sendIx17)
-        self.lneIx19.returnPressed.connect(formAxisSettings.sendIx19)
-        self.lneIx20.returnPressed.connect(formAxisSettings.sendIx20)
-        self.lneIx21.returnPressed.connect(formAxisSettings.sendIx21)
-        self.lneIx22.returnPressed.connect(formAxisSettings.sendIx22)
-        self.lneIx23.returnPressed.connect(formAxisSettings.sendIx23)
-        self.lneIx24.returnPressed.connect(formAxisSettings.sendIx24)
-        self.lneIx25.returnPressed.connect(formAxisSettings.sendIx25)
-        self.lneIx26.returnPressed.connect(formAxisSettings.sendIx26)
-        self.lneIx30.returnPressed.connect(formAxisSettings.sendIx30)
-        self.lneIx31.returnPressed.connect(formAxisSettings.sendIx31)
-        self.lneIx32.returnPressed.connect(formAxisSettings.sendIx32)
-        self.lneIx33.returnPressed.connect(formAxisSettings.sendIx33)
-        self.lneIx34.returnPressed.connect(formAxisSettings.sendIx34)
-        self.lneIx35.returnPressed.connect(formAxisSettings.sendIx35)
-        self.lneIx65.returnPressed.connect(formAxisSettings.sendIx65)
-        self.lneLoopSelect.returnPressed.connect(formAxisSettings.sendLoopSelect)
-        self.lneCaptureOn.returnPressed.connect(formAxisSettings.sendCaptureOn)
-        self.lneCaptureFlag.returnPressed.connect(formAxisSettings.sendCaptureFlag)
-        self.lneOutputMode.returnPressed.connect(formAxisSettings.sendOutputMode)
-        self.tabAxisSetup.currentChanged["int"].connect(formAxisSettings.tabChange)
-        QtCore.QMetaObject.connectSlotsByName(formAxisSettings)
-        formAxisSettings.setTabOrder(self.lneIx11, self.lneIx12)
-        formAxisSettings.setTabOrder(self.lneIx12, self.lneIx13)
-        formAxisSettings.setTabOrder(self.lneIx13, self.lneIx14)
-        formAxisSettings.setTabOrder(self.lneIx14, self.lneIx15)
-        formAxisSettings.setTabOrder(self.lneIx15, self.lneIx16)
-        formAxisSettings.setTabOrder(self.lneIx16, self.lneIx17)
-        formAxisSettings.setTabOrder(self.lneIx17, self.lneIx19)
-        formAxisSettings.setTabOrder(self.lneIx19, self.lneIx20)
-        formAxisSettings.setTabOrder(self.lneIx20, self.lneIx21)
-        formAxisSettings.setTabOrder(self.lneIx21, self.lneIx22)
-        formAxisSettings.setTabOrder(self.lneIx22, self.lneIx23)
-        formAxisSettings.setTabOrder(self.lneIx23, self.lneIx24)
-        formAxisSettings.setTabOrder(self.lneIx24, self.lneIx25)
-        formAxisSettings.setTabOrder(self.lneIx25, self.lneIx26)
-        formAxisSettings.setTabOrder(self.lneIx26, self.btnUpdate)
-        formAxisSettings.setTabOrder(self.btnUpdate, self.btnClose)
+        self.btnUpdate.clicked.connect(form_axis_settings.axisUpdate)
+        self.btnClose.clicked.connect(form_axis_settings.close)
+        self.lneIx11.returnPressed.connect(form_axis_settings.sendIx11)
+        self.lneIx12.returnPressed.connect(form_axis_settings.sendIx12)
+        self.lneIx13.returnPressed.connect(form_axis_settings.sendIx13)
+        self.lneIx14.returnPressed.connect(form_axis_settings.sendIx14)
+        self.lneIx15.returnPressed.connect(form_axis_settings.sendIx15)
+        self.lneIx16.returnPressed.connect(form_axis_settings.sendIx16)
+        self.lneIx17.returnPressed.connect(form_axis_settings.sendIx17)
+        self.lneIx19.returnPressed.connect(form_axis_settings.sendIx19)
+        self.lneIx20.returnPressed.connect(form_axis_settings.sendIx20)
+        self.lneIx21.returnPressed.connect(form_axis_settings.sendIx21)
+        self.lneIx22.returnPressed.connect(form_axis_settings.sendIx22)
+        self.lneIx23.returnPressed.connect(form_axis_settings.sendIx23)
+        self.lneIx24.returnPressed.connect(form_axis_settings.sendIx24)
+        self.lneIx25.returnPressed.connect(form_axis_settings.sendIx25)
+        self.lneIx26.returnPressed.connect(form_axis_settings.sendIx26)
+        self.lneIx30.returnPressed.connect(form_axis_settings.sendIx30)
+        self.lneIx31.returnPressed.connect(form_axis_settings.sendIx31)
+        self.lneIx32.returnPressed.connect(form_axis_settings.sendIx32)
+        self.lneIx33.returnPressed.connect(form_axis_settings.sendIx33)
+        self.lneIx34.returnPressed.connect(form_axis_settings.sendIx34)
+        self.lneIx35.returnPressed.connect(form_axis_settings.sendIx35)
+        self.lneIx65.returnPressed.connect(form_axis_settings.sendIx65)
+        self.lneLoopSelect.returnPressed.connect(form_axis_settings.sendLoopSelect)
+        self.lneCaptureOn.returnPressed.connect(form_axis_settings.sendCaptureOn)
+        self.lneCaptureFlag.returnPressed.connect(form_axis_settings.sendCaptureFlag)
+        self.lneOutputMode.returnPressed.connect(form_axis_settings.sendOutputMode)
+        self.tabAxisSetup.currentChanged["int"].connect(form_axis_settings.tabChange)
+        QtCore.QMetaObject.connectSlotsByName(form_axis_settings)
+        form_axis_settings.setTabOrder(self.lneIx11, self.lneIx12)
+        form_axis_settings.setTabOrder(self.lneIx12, self.lneIx13)
+        form_axis_settings.setTabOrder(self.lneIx13, self.lneIx14)
+        form_axis_settings.setTabOrder(self.lneIx14, self.lneIx15)
+        form_axis_settings.setTabOrder(self.lneIx15, self.lneIx16)
+        form_axis_settings.setTabOrder(self.lneIx16, self.lneIx17)
+        form_axis_settings.setTabOrder(self.lneIx17, self.lneIx19)
+        form_axis_settings.setTabOrder(self.lneIx19, self.lneIx20)
+        form_axis_settings.setTabOrder(self.lneIx20, self.lneIx21)
+        form_axis_settings.setTabOrder(self.lneIx21, self.lneIx22)
+        form_axis_settings.setTabOrder(self.lneIx22, self.lneIx23)
+        form_axis_settings.setTabOrder(self.lneIx23, self.lneIx24)
+        form_axis_settings.setTabOrder(self.lneIx24, self.lneIx25)
+        form_axis_settings.setTabOrder(self.lneIx25, self.lneIx26)
+        form_axis_settings.setTabOrder(self.lneIx26, self.btnUpdate)
+        form_axis_settings.setTabOrder(self.btnUpdate, self.btnClose)
 
-    def retranslateUi(self, formAxisSettings):
+    def retranslate_ui(self, form_axis_settings):
         _translate = QtCore.QCoreApplication.translate
-        formAxisSettings.setWindowTitle(_translate("formAxisSettings", "Axis setup"))
+        form_axis_settings.setWindowTitle(_translate("formAxisSettings", "Axis setup"))
         self.textLabel1.setText(
             _translate(
                 "formAxisSettings",

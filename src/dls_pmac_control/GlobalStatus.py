@@ -3,21 +3,21 @@ import sys
 from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt6.QtWidgets import QApplication, QDialog, QLabel
 
-from dls_pmac_control.ui_formGlobalStatus import Ui_formGlobalStatus
+from dls_pmac_control.ui_formGlobalStatus import UiFormGlobalStatus
 
 
-class GlobalStatusForm(QDialog, Ui_formGlobalStatus):
+class GlobalStatusForm(QDialog, UiFormGlobalStatus):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
         self.greenLedOn = parent.greenLedOn
         self.greenLedOff = parent.greenLedOff
         self.redLedOn = parent.redLedOn
         self.redLedOff = parent.redLedOff
 
-        ledGroupLayout = self.ledGroup.layout()
-        ledGroupLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        led_group_layout = self.ledGroup.layout()
+        led_group_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.lstLeds = []
         self.lstLabels = []
         self.lstLabelTexts = []
@@ -348,37 +348,37 @@ class GlobalStatusForm(QDialog, Ui_formGlobalStatus):
         for bit in range(0, 48):
             if bit < 24:
                 row = bit
-                ledGroupLayout.addWidget(self.lstLeds[bit], row, 0)
-                ledGroupLayout.addWidget(self.lstLabels[bit], row, 1)
+                led_group_layout.addWidget(self.lstLeds[bit], row, 0)
+                led_group_layout.addWidget(self.lstLabels[bit], row, 1)
             else:
                 row = bit - 24
-                ledGroupLayout.addWidget(self.lstLeds[bit], row, 2)
-                ledGroupLayout.addWidget(self.lstLabels[bit], row, 4)
+                led_group_layout.addWidget(self.lstLeds[bit], row, 2)
+                led_group_layout.addWidget(self.lstLabels[bit], row, 4)
             self.lstLeds[bit].setPixmap(self.greenLedOff)
             self.lstLabels[bit].setText(self.lstLabelTexts[bit])
             self.lstLabels[bit].setToolTip(self.lstTooltips[bit])
 
-    def updateStatus(self, statusHexWord):
+    def update_status(self, status_hex_word):
         for bit in range(0, 48):
-            bitMask = 1 << bit
-            if bool(statusHexWord & bitMask):
+            bit_mask = 1 << bit
+            if bool(status_hex_word & bit_mask):
                 self.lstLeds[bit].setPixmap(self.greenLedOn)
             else:
                 self.lstLeds[bit].setPixmap(self.greenLedOff)
 
 
-class PpmacGlobalStatusForm(QDialog, Ui_formGlobalStatus):
+class PpmacGlobalStatusForm(QDialog, UiFormGlobalStatus):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
         self.greenLedOn = parent.greenLedOn
         self.greenLedOff = parent.greenLedOff
         self.redLedOn = parent.redLedOn
         self.redLedOff = parent.redLedOff
 
-        ledGroupLayout = self.ledGroup.layout()
-        ledGroupLayout.setAlignment(Qt.AlignmentFlag.AlignTop)
+        led_group_layout = self.ledGroup.layout()
+        led_group_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.lstLeds = []
         self.lstLabels = []
         self.lstLabelTexts = []
@@ -460,20 +460,20 @@ class PpmacGlobalStatusForm(QDialog, Ui_formGlobalStatus):
         for bit in range(0, 32):
             if bit < 16:
                 row = bit
-                ledGroupLayout.addWidget(self.lstLeds[bit], row, 0)
-                ledGroupLayout.addWidget(self.lstLabels[bit], row, 1)
+                led_group_layout.addWidget(self.lstLeds[bit], row, 0)
+                led_group_layout.addWidget(self.lstLabels[bit], row, 1)
             else:
                 row = bit - 16
-                ledGroupLayout.addWidget(self.lstLeds[bit], row, 2)
-                ledGroupLayout.addWidget(self.lstLabels[bit], row, 4)
+                led_group_layout.addWidget(self.lstLeds[bit], row, 2)
+                led_group_layout.addWidget(self.lstLabels[bit], row, 4)
             self.lstLeds[bit].setPixmap(self.greenLedOff)
             self.lstLabels[bit].setText(self.lstLabelTexts[bit])
             self.lstLabels[bit].setToolTip(self.lstTooltips[bit])
 
-    def updateStatus(self, statusHexWord):
+    def update_status(self, status_hex_word):
         for bit in range(0, 32):
-            bitMask = 1 << bit
-            if bool(statusHexWord & bitMask):
+            bit_mask = 1 << bit
+            if bool(status_hex_word & bit_mask):
                 self.lstLeds[bit].setPixmap(self.greenLedOn)
             else:
                 self.lstLeds[bit].setPixmap(self.greenLedOff)

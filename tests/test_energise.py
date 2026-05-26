@@ -30,17 +30,17 @@ class EnergiseTest(unittest.TestCase):
         assert self.obj.parent == self.test_widget
         assert self.obj.lstCheckBoxes is None
 
-    def test_readM750x(self):
-        (val1, val2) = self.obj.readM750x()
+    def test_read_m750x(self):
+        (val1, val2) = self.obj.read_m750x()
         self.obj.parent.pmac.sendCommand.assert_called_with("m7501 m7503")
         assert val1 == 0
         assert val2 == 5
 
     def test_update_screen(self):
-        self.obj.createCheckBoxes()
+        self.obj.create_check_boxes()
         self.obj.val7501 = 1
         self.obj.val7503 = 3
-        self.obj.updateScreen()
+        self.obj.update_screen()
         for i in [0, 16, 17]:
             assert self.obj.lstCheckBoxes[i].isChecked() is True
         for j in range(1, 16):
@@ -49,20 +49,22 @@ class EnergiseTest(unittest.TestCase):
             assert self.obj.lstCheckBoxes[k].isChecked() is False
 
     @patch("dls_pmac_control.energise.Energiseform.readM750x")
-    def test_isScreenUpToDate(self, mock_read):
+    def test_is_screen_up_to_date(self, mock_read):
         mock_read.return_value = (0x00FFFF, 0x00FFFF)
         self.obj.val7501 = 0x00FFFF
         self.obj.val7503 = 0x00FFFF
-        assert self.obj.isScreenUpToDate() is True
+        assert self.obj.is_screen_up_to_date() is True
 
     @patch("dls_pmac_control.energise.Energiseform.updateScreen")
     @patch("dls_pmac_control.energise.Energiseform.readM750x")
     @patch("PyQt6.QtWidgets.QMessageBox.information")
     @patch("dls_pmac_control.energise.Energiseform.isScreenUpToDate")
-    def test_sendCommand_outofdate(self, mock_screen, mock_box, mock_read, mock_update):
+    def test_send_command_outofdate(
+        self, mock_screen, mock_box, mock_read, mock_update
+    ):
         mock_screen.return_value = False
         mock_read.return_value = (None, None)
-        assert self.obj.sendCommand() is None
+        assert self.obj.send_command() is None
         assert mock_screen.called
         mock_box.assert_called_with(
             self.obj,
@@ -79,12 +81,12 @@ class EnergiseTest(unittest.TestCase):
         assert mock_screen.called
 
     @patch("dls_pmac_control.energise.Energiseform.isScreenUpToDate")
-    def test_sendCommand_uptodate(self, mock_screen):
+    def test_send_command_uptodate(self, mock_screen):
         mock_screen.return_value = True
         self.obj.val7501 = 0xFF0000
         self.obj.val7503 = 0xFF0000
-        self.obj.createCheckBoxes()
-        assert self.obj.sendCommand() is None
+        self.obj.create_check_boxes()
+        assert self.obj.send_command() is None
         assert mock_screen.called
         cmd = "m7501=$ff0000 m7503=$ff0000"
         self.obj.parent.pmac.sendCommand.assert_called_with(cmd)

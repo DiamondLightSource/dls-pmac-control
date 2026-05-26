@@ -1,7 +1,7 @@
 from PyQt6.QtWidgets import QDialog, QMessageBox
 
-from dls_pmac_control.ui_formAxisSettings import Ui_formAxisSettings
-from dls_pmac_control.ui_formPpmacAxisSettings import Ui_formPpmacAxisSettings
+from dls_pmac_control.ui_formAxisSettings import UiFormAxisSettings
+from dls_pmac_control.ui_formPpmacAxisSettings import UiFormPpmacAxisSettings
 
 # Power PMAC I-Variable Equivalents
 PpmacVars = {
@@ -30,13 +30,13 @@ PpmacVars = {
 }
 
 
-class Axissettingsform(QDialog, Ui_formAxisSettings):
-    def __init__(self, parent=None, currentMotor=1, macroAxisStartIndex=0):
+class Axissettingsform(QDialog, UiFormAxisSettings):
+    def __init__(self, parent=None, current_motor=1, macro_axis_start_index=0):
         QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
-        self.currentMotor = currentMotor
-        self.macroAxisStartIndex = macroAxisStartIndex
+        self.currentMotor = current_motor
+        self.macroAxisStartIndex = macro_axis_start_index
         self.parent = parent
 
         self.lneIx11.setToolTip("""Fatal following error [1/16 cts]""")
@@ -108,162 +108,162 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
         self.safetyIvars = [20, 21, 22, 23, 24, 25, 26]
         self.pidIvars = [30, 31, 32, 33, 34, 35, 65]
 
-    def changeAxis(self, newMotor):
-        self.currentMotor = newMotor
+    def change_axis(self, new_motor):
+        self.currentMotor = new_motor
         if self.isVisible():
-            self.axisUpdate()
+            self.axis_update()
 
     # Updates I-variable line edits for this axis and I-variables listed in
     # ivars
-    def _updateAxisSetupIVars(self, ivars):
-        retLst = self.parent.pmac.getAxisSetupIVars(self.currentMotor, ivars)
-        if retLst:
-            for i, retVal in enumerate(retLst):
+    def _update_axis_setup_i_vars(self, ivars):
+        ret_lst = self.parent.pmac.getAxisSetupIVars(self.currentMotor, ivars)
+        if ret_lst:
+            for i, ret_val in enumerate(ret_lst):
                 if i < len(ivars):
-                    exec(f'self.lneIx{ivars[i]}.setText(str("{retVal}"))')
+                    exec(f'self.lneIx{ivars[i]}.setText(str("{ret_val}"))')
 
-    def _updateAxisSignalControlsVars(self):
+    def _update_axis_signal_controls_vars(self):
         (
-            loopSelect,
-            captureOn,
-            captureFlag,
-            outputMode,
-        ) = self._getAxisSignalControlsVars()
-        self.lneLoopSelect.setText(loopSelect)
-        self.lneCaptureOn.setText(captureOn)
-        self.lneCaptureFlag.setText(captureFlag)
-        self.lneOutputMode.setText(outputMode)
+            loop_select,
+            capture_on,
+            capture_flag,
+            output_mode,
+        ) = self._get_axis_signal_controls_vars()
+        self.lneLoopSelect.setText(loop_select)
+        self.lneCaptureOn.setText(capture_on)
+        self.lneCaptureFlag.setText(capture_flag)
+        self.lneOutputMode.setText(output_mode)
 
-    def _getAxisSignalControlsVars(self):
+    def _get_axis_signal_controls_vars(self):
         pmac = self.parent.pmac  # a link to the RemotePmacInterface
-        (loopSelect, captureOn, captureFlag, outputMode) = [None, None, None, None]
+        (loop_select, capture_on, capture_flag, output_mode) = [None, None, None, None]
         if pmac.isMacroStationAxis(self.currentMotor):
             result = pmac.getAxisMsIVars(
                 self.currentMotor, [910, 912, 913, 916], self.macroAxisStartIndex
             )
             if len(result) == 4:
-                (loopSelect, captureOn, captureFlag, outputMode) = result
+                (loop_select, capture_on, capture_flag, output_mode) = result
             else:
-                errorStr = result[0]
+                error_str = result[0]
                 if "ERR008" in result[0]:
-                    errorStr = "ERR008: MACRO auxiliary communications error."
-                QMessageBox.information(self, "Error", errorStr)
+                    error_str = "ERR008: MACRO auxiliary communications error."
+                QMessageBox.information(self, "Error", error_str)
         else:
             (
-                loopSelect,
-                captureOn,
-                captureFlag,
-                outputMode,
+                loop_select,
+                capture_on,
+                capture_flag,
+                output_mode,
             ) = pmac.getOnboardAxisI7000PlusVars(self.currentMotor, [0, 2, 3, 6])
-        return loopSelect, captureOn, captureFlag, outputMode
+        return loop_select, capture_on, capture_flag, output_mode
 
-    def axisUpdate(self):
-        selectedTabIndex = self.tabAxisSetup.currentIndex()
-        if selectedTabIndex == 0:
+    def axis_update(self):
+        selected_tab_index = self.tabAxisSetup.currentIndex()
+        if selected_tab_index == 0:
             # The "definition and safety" tab is selected
-            self._updateAxisSetupIVars(self.definitionIvars + self.safetyIvars)
+            self._update_axis_setup_i_vars(self.definitionIvars + self.safetyIvars)
         else:
             # The "PID and macro" tab is selected
-            self._updateAxisSetupIVars(self.pidIvars)
-            self._updateAxisSignalControlsVars()
+            self._update_axis_setup_i_vars(self.pidIvars)
+            self._update_axis_signal_controls_vars()
 
-    def tabChange(self):
-        self.axisUpdate()
+    def tab_change(self):
+        self.axis_update()
 
     # public slot
     @staticmethod
-    def axisClose():
+    def axis_close():
         print("axissettingsform.axisClose(): Not implemented yet")
 
-    def sendIx11(self):
+    def send_ix11(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 11, self.lneIx11.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx12(self):
+    def send_ix12(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 12, self.lneIx12.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx13(self):
+    def send_ix13(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 13, self.lneIx13.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx14(self):
+    def send_ix14(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 14, self.lneIx14.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx15(self):
+    def send_ix15(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 15, self.lneIx15.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx16(self):
+    def send_ix16(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 16, self.lneIx16.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx17(self):
+    def send_ix17(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 17, self.lneIx17.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx19(self):
+    def send_ix19(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 19, self.lneIx19.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx20(self):
+    def send_ix20(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 20, self.lneIx20.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx21(self):
+    def send_ix21(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 21, self.lneIx21.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx22(self):
+    def send_ix22(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 22, self.lneIx22.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx23(self):
+    def send_ix23(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 23, self.lneIx23.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx24(self):
+    def send_ix24(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 24, self.lneIx24.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx25(self):
+    def send_ix25(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 25, self.lneIx25.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx26(self):
+    def send_ix26(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 26, self.lneIx26.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx30(self):
+    def send_ix30(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 30, self.lneIx30.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx31(self):
+    def send_ix31(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 31, self.lneIx31.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx32(self):
+    def send_ix32(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 32, self.lneIx32.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx33(self):
+    def send_ix33(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 33, self.lneIx33.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx34(self):
+    def send_ix34(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 34, self.lneIx34.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx35(self):
+    def send_ix35(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 35, self.lneIx35.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendIx65(self):
+    def send_ix65(self):
         self.parent.pmac.setAxisSetupIVar(self.currentMotor, 65, self.lneIx65.text())
-        self.axisUpdate()
+        self.axis_update()
 
-    def sendLoopSelect(self):
+    def send_loop_select(self):
         pmac = self.parent.pmac
         if pmac.isMacroStationAxis(self.currentMotor):
             pmac.setAxisMsIVar(self.currentMotor, 910, self.lneLoopSelect.text())
@@ -272,7 +272,7 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
                 self.currentMotor, 0, self.lneLoopSelect.text()
             )
 
-    def sendCaptureOn(self):
+    def send_capture_on(self):
         pmac = self.parent.pmac
         if pmac.isMacroStationAxis(self.currentMotor):
             pmac.setAxisMsIVar(self.currentMotor, 912, self.lneCaptureOn.text())
@@ -281,7 +281,7 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
                 self.currentMotor, 2, self.lneCaptureOn.text()
             )
 
-    def sendCaptureFlag(self):
+    def send_capture_flag(self):
         pmac = self.parent.pmac
         if pmac.isMacroStationAxis(self.currentMotor):
             pmac.setAxisMsIVar(self.currentMotor, 913, self.lneCaptureFlag.text())
@@ -290,7 +290,7 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
                 self.currentMotor, 3, self.lneCaptureFlag.text()
             )
 
-    def sendOutputMode(self):
+    def send_output_mode(self):
         pmac = self.parent.pmac
         if pmac.isMacroStationAxis(self.currentMotor):
             pmac.setAxisMsIVar(self.currentMotor, 916, self.lneOutputMode.text())
@@ -300,12 +300,12 @@ class Axissettingsform(QDialog, Ui_formAxisSettings):
             )
 
 
-class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
-    def __init__(self, parent=None, currentMotor=1):
+class PpmacAxissettingsform(QDialog, UiFormPpmacAxisSettings):
+    def __init__(self, parent=None, current_motor=1):
         QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
-        self.currentMotor = currentMotor
+        self.currentMotor = current_motor
         self.parent = parent
 
         self.lneIx11.setToolTip("Fatal (shutdown) following error limit [cts]")
@@ -338,155 +338,155 @@ class PpmacAxissettingsform(QDialog, Ui_formPpmacAxisSettings):
         self.gainIvars = [30, 31, 32, 33, 34, 35]
         self.directCmds = ["Derivative2", "VFF2"]
 
-    def changeAxis(self, newMotor):
-        self.currentMotor = newMotor
+    def change_axis(self, new_motor):
+        self.currentMotor = new_motor
         if self.isVisible():
-            self.axisUpdate()
+            self.axis_update()
 
-    def tabChange(self):
-        self.axisUpdate()
+    def tab_change(self):
+        self.axis_update()
 
     # Updates I-variable line edits for this axis and I-variables listed in
     # ivars
-    def _updateAxisSetupIVars(self, ivars):
-        retLst = []
+    def _update_axis_setup_i_vars(self, ivars):
+        ret_lst = []
         for i in range(len(ivars)):
-            varStr = PpmacVars["Ix" + str(ivars[i])]
-            cmd = (f"Motor[{self.currentMotor}].") + varStr
-            (retStr, success) = self.parent.pmac.sendCommand(cmd)
+            var_str = PpmacVars["Ix" + str(ivars[i])]
+            cmd = (f"Motor[{self.currentMotor}].") + var_str
+            (ret_str, success) = self.parent.pmac.sendCommand(cmd)
             if success:
-                retLst.append(retStr.strip("\r"))
+                ret_lst.append(ret_str.strip("\r"))
             else:
-                retLst.append("Error")
-        if retLst:
-            for i, retVal in enumerate(retLst):
-                exec(f'self.lneIx{ivars[i]}.setText(str("{retVal}"))')
+                ret_lst.append("Error")
+        if ret_lst:
+            for i, ret_val in enumerate(ret_lst):
+                exec(f'self.lneIx{ivars[i]}.setText(str("{ret_val}"))')
 
-    def _updateAxisSetupDirectCmds(self, ppmacCmds):
-        retLst = []
-        for i in range(len(ppmacCmds)):
-            varStr = PpmacVars[str(ppmacCmds[i])]
-            cmd = (f"Motor[{self.currentMotor}].") + varStr
-            (retStr, success) = self.parent.pmac.sendCommand(cmd)
+    def _update_axis_setup_direct_cmds(self, ppmac_cmds):
+        ret_lst = []
+        for i in range(len(ppmac_cmds)):
+            var_str = PpmacVars[str(ppmac_cmds[i])]
+            cmd = (f"Motor[{self.currentMotor}].") + var_str
+            (ret_str, success) = self.parent.pmac.sendCommand(cmd)
             if success:
-                retLst.append(retStr.strip("\r"))
+                ret_lst.append(ret_str.strip("\r"))
             else:
-                retLst.append("Error")
-        if retLst:
-            for i, retVal in enumerate(retLst):
-                exec(f'self.lne{ppmacCmds[i]}.setText(str("{retVal}"))')
+                ret_lst.append("Error")
+        if ret_lst:
+            for i, ret_val in enumerate(ret_lst):
+                exec(f'self.lne{ppmac_cmds[i]}.setText(str("{ret_val}"))')
 
-    def axisUpdate(self):
-        self._updateAxisSetupIVars(
+    def axis_update(self):
+        self._update_axis_setup_i_vars(
             self.definitionIvars + self.safetyIvars + self.gainIvars
         )
-        self._updateAxisSetupDirectCmds(self.directCmds)
+        self._update_axis_setup_direct_cmds(self.directCmds)
 
-    def setAxisSetupIVar(self, iVarNo, newValue):
-        varStr = PpmacVars["Ix" + str(iVarNo)]
-        self.setAxisSetupVars(varStr, newValue)
+    def set_axis_setup_i_var(self, i_var_no, new_value):
+        var_str = PpmacVars["Ix" + str(i_var_no)]
+        self.set_axis_setup_vars(var_str, new_value)
 
-    def setAxisSetupDirect(self, directCmd, newValue):
-        varStr = PpmacVars[directCmd]
-        self.setAxisSetupVars(varStr, newValue)
+    def set_axis_setup_direct(self, direct_cmd, new_value):
+        var_str = PpmacVars[direct_cmd]
+        self.set_axis_setup_vars(var_str, new_value)
 
-    def setAxisSetupVars(self, varStr, newValue):
-        cmd = (f"Motor[{self.currentMotor}].") + varStr + (f"={newValue}")
-        (retStr, success) = self.parent.pmac.sendCommand(cmd)
+    def set_axis_setup_vars(self, var_str, new_value):
+        cmd = (f"Motor[{self.currentMotor}].") + var_str + (f"={new_value}")
+        (ret_str, success) = self.parent.pmac.sendCommand(cmd)
         if success:
-            self.axisUpdate()
+            self.axis_update()
         else:
-            print(f"cannot set value for Motor[{self.currentMotor}].{varStr}")
+            print(f"cannot set value for Motor[{self.currentMotor}].{var_str}")
 
     # public slot
     @staticmethod
-    def axisClose():
+    def axis_close():
         print("axissettingsform.axisClose(): Not implemented yet")
 
-    def sendIx11(self):
-        self.setAxisSetupIVar(11, self.lneIx11.text())
-        self.axisUpdate()
+    def send_ix11(self):
+        self.set_axis_setup_i_var(11, self.lneIx11.text())
+        self.axis_update()
 
-    def sendIx12(self):
-        self.setAxisSetupIVar(12, self.lneIx12.text())
-        self.axisUpdate()
+    def send_ix12(self):
+        self.set_axis_setup_i_var(12, self.lneIx12.text())
+        self.axis_update()
 
-    def sendIx13(self):
-        self.setAxisSetupIVar(13, self.lneIx13.text())
-        self.axisUpdate()
+    def send_ix13(self):
+        self.set_axis_setup_i_var(13, self.lneIx13.text())
+        self.axis_update()
 
-    def sendIx14(self):
-        self.setAxisSetupIVar(14, self.lneIx14.text())
-        self.axisUpdate()
+    def send_ix14(self):
+        self.set_axis_setup_i_var(14, self.lneIx14.text())
+        self.axis_update()
 
-    def sendIx15(self):
-        self.setAxisSetupIVar(15, self.lneIx15.text())
-        self.axisUpdate()
+    def send_ix15(self):
+        self.set_axis_setup_i_var(15, self.lneIx15.text())
+        self.axis_update()
 
-    def sendIx16(self):
-        self.setAxisSetupIVar(16, self.lneIx16.text())
-        self.axisUpdate()
+    def send_ix16(self):
+        self.set_axis_setup_i_var(16, self.lneIx16.text())
+        self.axis_update()
 
-    def sendIx17(self):
-        self.setAxisSetupIVar(17, self.lneIx17.text())
-        self.axisUpdate()
+    def send_ix17(self):
+        self.set_axis_setup_i_var(17, self.lneIx17.text())
+        self.axis_update()
 
-    def sendIx19(self):
-        self.setAxisSetupIVar(19, self.lneIx19.text())
-        self.axisUpdate()
+    def send_ix19(self):
+        self.set_axis_setup_i_var(19, self.lneIx19.text())
+        self.axis_update()
 
-    def sendIx20(self):
-        self.setAxisSetupIVar(20, self.lneIx20.text())
-        self.axisUpdate()
+    def send_ix20(self):
+        self.set_axis_setup_i_var(20, self.lneIx20.text())
+        self.axis_update()
 
-    def sendIx21(self):
-        self.setAxisSetupIVar(21, self.lneIx21.text())
-        self.axisUpdate()
+    def send_ix21(self):
+        self.set_axis_setup_i_var(21, self.lneIx21.text())
+        self.axis_update()
 
-    def sendIx22(self):
-        self.setAxisSetupIVar(22, self.lneIx22.text())
-        self.axisUpdate()
+    def send_ix22(self):
+        self.set_axis_setup_i_var(22, self.lneIx22.text())
+        self.axis_update()
 
-    def sendIx23(self):
-        self.setAxisSetupIVar(23, self.lneIx23.text())
-        self.axisUpdate()
+    def send_ix23(self):
+        self.set_axis_setup_i_var(23, self.lneIx23.text())
+        self.axis_update()
 
-    def sendIx25(self):
-        self.setAxisSetupIVar(25, self.lneIx25.text())
-        self.axisUpdate()
+    def send_ix25(self):
+        self.set_axis_setup_i_var(25, self.lneIx25.text())
+        self.axis_update()
 
-    def sendIx26(self):
-        self.setAxisSetupIVar(26, self.lneIx26.text())
-        self.axisUpdate()
+    def send_ix26(self):
+        self.set_axis_setup_i_var(26, self.lneIx26.text())
+        self.axis_update()
 
-    def sendIx30(self):
-        self.setAxisSetupIVar(30, self.lneIx30.text())
-        self.axisUpdate()
+    def send_ix30(self):
+        self.set_axis_setup_i_var(30, self.lneIx30.text())
+        self.axis_update()
 
-    def sendIx31(self):
-        self.setAxisSetupIVar(31, self.lneIx31.text())
-        self.axisUpdate()
+    def send_ix31(self):
+        self.set_axis_setup_i_var(31, self.lneIx31.text())
+        self.axis_update()
 
-    def sendIx32(self):
-        self.setAxisSetupIVar(32, self.lneIx32.text())
-        self.axisUpdate()
+    def send_ix32(self):
+        self.set_axis_setup_i_var(32, self.lneIx32.text())
+        self.axis_update()
 
-    def sendIx33(self):
-        self.setAxisSetupIVar(33, self.lneIx33.text())
-        self.axisUpdate()
+    def send_ix33(self):
+        self.set_axis_setup_i_var(33, self.lneIx33.text())
+        self.axis_update()
 
-    def sendIx34(self):
-        self.setAxisSetupIVar(34, self.lneIx34.text())
-        self.axisUpdate()
+    def send_ix34(self):
+        self.set_axis_setup_i_var(34, self.lneIx34.text())
+        self.axis_update()
 
-    def sendIx35(self):
-        self.setAxisSetupIVar(35, self.lneIx35.text())
-        self.axisUpdate()
+    def send_ix35(self):
+        self.set_axis_setup_i_var(35, self.lneIx35.text())
+        self.axis_update()
 
-    def sendDerivative2(self):
-        self.setAxisSetupDirect("Derivative2", self.lneDerivative2.text())
-        self.axisUpdate()
+    def send_derivative2(self):
+        self.set_axis_setup_direct("Derivative2", self.lneDerivative2.text())
+        self.axis_update()
 
-    def sendVFF2(self):
-        self.setAxisSetupDirect("VFF2", self.lneVFF2.text())
-        self.axisUpdate()
+    def send_vff2(self):
+        self.set_axis_setup_direct("VFF2", self.lneVFF2.text())
+        self.axis_update()

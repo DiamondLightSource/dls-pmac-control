@@ -2,7 +2,7 @@
 WORD = 24
 LONGWORD = 48
 # initialise the data addresses that the PMAC can gather from
-motorBaseAddrs = [
+motor_base_addrs = [
     0x080,
     0x100,
     0x180,
@@ -37,7 +37,7 @@ motorBaseAddrs = [
     0x1000,
 ]
 
-pmacDataSources = [
+pmac_data_sources = [
     {
         "reg": 0x08,
         "desc": "Motor present desired position",
@@ -72,7 +72,7 @@ pmacDataSources = [
     },
 ]
 
-ppmacDataSources = [
+ppmac_data_sources = [
     {
         "desc": "Motor present desired position",
         "unit": "[cts]",
@@ -97,15 +97,15 @@ ppmacDataSources = [
 
 
 class PpmacGatherChannel:
-    def __init__(self, pmac, qwtCurve):
+    def __init__(self, pmac, qwt_curve):
         self.pmac = pmac
-        self.qwtCurve = qwtCurve
+        self.qwtCurve = qwt_curve
         self.axisNo = None
         self.descNo = None
 
 
 class PmacGatherChannel:
-    def __init__(self, pmac, qwtCurve):
+    def __init__(self, pmac, qwt_curve):
         self.axisNo = None
         self.pmac = pmac
 
@@ -128,50 +128,50 @@ class PmacGatherChannel:
 
         self.scalingFactor = None
 
-        self.qwtCurve = qwtCurve
+        self.qwtCurve = qwt_curve
 
-    def setDataGatherPointer(self, ivar):
+    def set_data_gather_pointer(self, ivar):
         self.pSrcIvar = ivar
         return
 
     # Read the address of a gather I variable and interpret the
     # address to determine: datawidth, datatype, unit and scaling factor
     # result is returned in a dictionary
-    def getDataInfo(self):
+    def get_data_info(self):
         # read the gather I variable from the pmac
-        (retStr, status) = self.pmac.sendCommand(self.pSrcIvar)
+        (ret_str, status) = self.pmac.sendCommand(self.pSrcIvar)
         if not status:
             return None
 
         # Get the data width and type from the first digit in the hex-value
-        lenWord = retStr.strip("$")[0]
-        if lenWord == "0" or lenWord == "4":
+        len_word = ret_str.strip("$")[0]
+        if len_word == "0" or len_word == "4":
             self.dataWidth = WORD
             self.dataType = int
-        elif lenWord == "8":
+        elif len_word == "8":
             self.dataWidth = LONGWORD
             self.dataType = int
-        elif lenWord == "C":
+        elif len_word == "C":
             self.dataWidth = LONGWORD
             self.dataType = float
         else:
-            print(f"### Error: Could not get data width and type from: {retStr}")
+            print(f"### Error: Could not get data width and type from: {ret_str}")
 
         # Figure out what data the address point to
-        dataAddr = int(retStr[2:-1], 16)
-        self.regOffset = 0x7F & dataAddr
+        data_addr = int(ret_str[2:-1], 16)
+        self.regOffset = 0x7F & data_addr
 
         # Figure out what axis we are looking at
-        mBaseAddr = dataAddr & 0xFFF80
+        m_base_addr = data_addr & 0xFFF80
         try:
-            self.axisNo = motorBaseAddrs.index(mBaseAddr) + 1
+            self.axisNo = motor_base_addrs.index(m_base_addr) + 1
         except Exception:
-            print(f"### Error: could not recognise motor base address: {mBaseAddr:X}")
+            print(f"### Error: could not recognise motor base address: {m_base_addr:X}")
 
         # Get the data source info (unit, scaling algorithm and so on)
-        for dataSrc in pmacDataSources:
-            if dataSrc["reg"] == self.regOffset:
-                self.dataSourceInfo = dataSrc
+        for data_src in pmac_data_sources:
+            if data_src["reg"] == self.regOffset:
+                self.dataSourceInfo = data_src
                 break
         if not self.dataSourceInfo:
             print(
@@ -180,12 +180,12 @@ class PmacGatherChannel:
         return
 
     # Receive the array of strings straight from the source
-    def setStrData(self, strData):
-        self.strData = strData
+    def set_str_data(self, str_data):
+        self.strData = str_data
         return
 
     # Convert the array of hexadecimal strings to int or float arrays
-    def strToRaw(self):
+    def str_to_raw(self):
         # if we have no data yet, return with error
         if not (len(self.strData) > 0):
             return False
@@ -193,11 +193,11 @@ class PmacGatherChannel:
         # Check the data width to be able to make a proper conversion
         # from string to signed integer/float
         if self.dataWidth == LONGWORD:
-            signMask = 0x800000000000
-            maxValue = 0xFFFFFFFFFFFF
+            sign_mask = 0x800000000000
+            max_value = 0xFFFFFFFFFFFF
         elif self.dataWidth == WORD:
-            signMask = 0x800000
-            maxValue = 0xFFFFFF
+            sign_mask = 0x800000
+            max_value = 0xFFFFFF
         else:
             print(
                 f"### Error: did not have valid data width information (had {self.dataWidth})"
@@ -206,38 +206,38 @@ class PmacGatherChannel:
 
         # convert each hex string value to an integer with sign
         self.rawData = []
-        for strDataPoint in self.strData:
-            val = int(strDataPoint, 16)
-            if val & signMask:
-                val -= maxValue
+        for str_data_point in self.strData:
+            val = int(str_data_point, 16)
+            if val & sign_mask:
+                val -= max_value
             self.rawData.append(val)
         return
 
-    def getScalingFactor(self):
+    def get_scaling_factor(self):
         # if a scaling algorithm doesn't exist we just set scaling factor to 1
         if "scalingCalc" not in self.dataSourceInfo:
             self.scalingFactor = 1.0
             return
 
         # Get the necessary I variable factors from the pmac
-        ivarFactors = []
-        for partIvar in self.dataSourceInfo["scalingIvars"]:
-            ivar = partIvar % self.axisNo
-            (retStr, status) = self.pmac.sendCommand(ivar)
+        ivar_factors = []
+        for part_ivar in self.dataSourceInfo["scalingIvars"]:
+            ivar = part_ivar % self.axisNo
+            (ret_str, status) = self.pmac.sendCommand(ivar)
             if not status:
                 print(f"### Error: did not receive response to: {ivar}")
                 return None
             # if hex value...
-            if retStr[0] == "$":
-                ivarFactor = int(retStr.strip("$"), 16)
+            if ret_str[0] == "$":
+                ivar_factor = int(ret_str.strip("$"), 16)
             else:
-                ivarFactor = float(retStr[:-1])
-            ivarFactors.append(ivarFactor)
+                ivar_factor = float(ret_str[:-1])
+            ivar_factors.append(ivar_factor)
 
         # calculate the final scaling factor from the ivar factors
         # and the algorithm as described in the pmac manual
-        ivarFactors = tuple(ivarFactors)
-        algorithm = self.dataSourceInfo["scalingCalc"] % ivarFactors
+        ivar_factors = tuple(ivar_factors)
+        algorithm = self.dataSourceInfo["scalingCalc"] % ivar_factors
         # print "Evaluating algorithm: %s"%( algorithm )
         try:
             self.scalingFactor = eval(algorithm)
@@ -249,9 +249,9 @@ class PmacGatherChannel:
 
         return
 
-    def rawToScaled(self):
+    def raw_to_scaled(self):
         if not self.scalingFactor:
-            self.getScalingFactor()
+            self.get_scaling_factor()
         if not self.rawData:
             print("### Error: No raw data available to scale.")
             return None
@@ -260,6 +260,6 @@ class PmacGatherChannel:
             return None
 
         self.scaledData = []
-        for rawVal in self.rawData:
-            self.scaledData.append(rawVal * self.scalingFactor)
+        for raw_val in self.rawData:
+            self.scaledData.append(raw_val * self.scalingFactor)
         return

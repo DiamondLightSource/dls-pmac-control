@@ -7,42 +7,42 @@
 from PyQt6 import QtCore, QtWidgets
 
 
-class Ui_formPpmacAxisSettings:
-    def setupUi(self, formPpmacAxisSettings):
-        formPpmacAxisSettings.setObjectName("formPpmacAxisSettings")
-        formPpmacAxisSettings.resize(580, 688)
-        sizePolicy = QtWidgets.QSizePolicy(
+class UiFormPpmacAxisSettings:
+    def setup_ui(self, form_ppmac_axis_settings):
+        form_ppmac_axis_settings.setObjectName("formPpmacAxisSettings")
+        form_ppmac_axis_settings.resize(580, 688)
+        size_policy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
-            formPpmacAxisSettings.sizePolicy().hasHeightForWidth()
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(
+            form_ppmac_axis_settings.sizePolicy().hasHeightForWidth()
         )
-        formPpmacAxisSettings.setSizePolicy(sizePolicy)
-        formPpmacAxisSettings.setMaximumSize(QtCore.QSize(1024, 768))
-        self.gridLayout_3 = QtWidgets.QGridLayout(formPpmacAxisSettings)
+        form_ppmac_axis_settings.setSizePolicy(size_policy)
+        form_ppmac_axis_settings.setMaximumSize(QtCore.QSize(1024, 768))
+        self.gridLayout_3 = QtWidgets.QGridLayout(form_ppmac_axis_settings)
         self.gridLayout_3.setContentsMargins(11, 11, 11, 11)
         self.gridLayout_3.setSpacing(6)
         self.gridLayout_3.setObjectName("gridLayout_3")
-        self.btnUpdate = QtWidgets.QPushButton(formPpmacAxisSettings)
+        self.btnUpdate = QtWidgets.QPushButton(form_ppmac_axis_settings)
         self.btnUpdate.setObjectName("btnUpdate")
         self.gridLayout_3.addWidget(self.btnUpdate, 2, 0, 1, 1)
-        self.textLabel1 = QtWidgets.QLabel(formPpmacAxisSettings)
+        self.textLabel1 = QtWidgets.QLabel(form_ppmac_axis_settings)
         self.textLabel1.setWordWrap(False)
         self.textLabel1.setObjectName("textLabel1")
         self.gridLayout_3.addWidget(self.textLabel1, 0, 0, 1, 3)
-        spacerItem = QtWidgets.QSpacerItem(
+        spacer_item = QtWidgets.QSpacerItem(
             185,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridLayout_3.addItem(spacerItem, 2, 1, 1, 1)
-        self.btnClose = QtWidgets.QPushButton(formPpmacAxisSettings)
+        self.gridLayout_3.addItem(spacer_item, 2, 1, 1, 1)
+        self.btnClose = QtWidgets.QPushButton(form_ppmac_axis_settings)
         self.btnClose.setObjectName("btnClose")
         self.gridLayout_3.addWidget(self.btnClose, 2, 2, 1, 1)
-        self.tabAxisSetup = QtWidgets.QTabWidget(formPpmacAxisSettings)
+        self.tabAxisSetup = QtWidgets.QTabWidget(form_ppmac_axis_settings)
         self.tabAxisSetup.setEnabled(True)
         self.tabAxisSetup.setObjectName("tabAxisSetup")
         self.tab = QtWidgets.QWidget()
@@ -92,13 +92,13 @@ class Ui_formPpmacAxisSettings:
             10, QtWidgets.QFormLayout.LabelRole, self.textLabel2_7_2
         )
         self.lneIx20 = QtWidgets.QLineEdit(self.groupBox2)
-        sizePolicy = QtWidgets.QSizePolicy(
+        size_policy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lneIx20.sizePolicy().hasHeightForWidth())
-        self.lneIx20.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.lneIx20.sizePolicy().hasHeightForWidth())
+        self.lneIx20.setSizePolicy(size_policy)
         self.lneIx20.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx20.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneIx20.setObjectName("lneIx20")
@@ -227,13 +227,13 @@ class Ui_formPpmacAxisSettings:
         self.tab_2.setObjectName("tab_2")
         self.groupBox1_2 = QtWidgets.QGroupBox(self.tab_2)
         self.groupBox1_2.setGeometry(QtCore.QRect(10, 20, 271, 330))
-        sizePolicy = QtWidgets.QSizePolicy(
+        size_policy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox1_2.sizePolicy().hasHeightForWidth())
-        self.groupBox1_2.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.groupBox1_2.sizePolicy().hasHeightForWidth())
+        self.groupBox1_2.setSizePolicy(size_policy)
         self.groupBox1_2.setObjectName("groupBox1_2")
         self.formLayout_3 = QtWidgets.QFormLayout(self.groupBox1_2)
         self.formLayout_3.setContentsMargins(11, 11, 11, 11)
@@ -320,15 +320,15 @@ class Ui_formPpmacAxisSettings:
         self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.lneIx35)
         self.groupBox1_2_2 = QtWidgets.QGroupBox(self.tab_2)
         self.groupBox1_2_2.setGeometry(QtCore.QRect(290, 20, 260, 81))
-        sizePolicy = QtWidgets.QSizePolicy(
+        size_policy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(
             self.groupBox1_2_2.sizePolicy().hasHeightForWidth()
         )
-        self.groupBox1_2_2.setSizePolicy(sizePolicy)
+        self.groupBox1_2_2.setSizePolicy(size_policy)
         self.groupBox1_2_2.setObjectName("groupBox1_2_2")
         self.formLayout_4 = QtWidgets.QFormLayout(self.groupBox1_2_2)
         self.formLayout_4.setFieldGrowthPolicy(
@@ -348,50 +348,54 @@ class Ui_formPpmacAxisSettings:
         self.lneIx34.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneIx34.setObjectName("lneIx34")
         self.formLayout_4.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lneIx34)
-        spacerItem1 = QtWidgets.QSpacerItem(
+        spacer_item1 = QtWidgets.QSpacerItem(
             30,
             0,
             QtWidgets.QSizePolicy.Policy.Minimum,
             QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        self.formLayout_4.setItem(2, QtWidgets.QFormLayout.SpanningRole, spacerItem1)
+        self.formLayout_4.setItem(2, QtWidgets.QFormLayout.SpanningRole, spacer_item1)
         self.tabAxisSetup.addTab(self.tab_2, "")
         self.gridLayout_3.addWidget(self.tabAxisSetup, 1, 0, 1, 3)
 
-        self.retranslateUi(formPpmacAxisSettings)
+        self.retranslate_ui(form_ppmac_axis_settings)
         self.tabAxisSetup.setCurrentIndex(0)
-        self.btnUpdate.clicked.connect(formPpmacAxisSettings.axisUpdate)
-        self.btnClose.clicked.connect(formPpmacAxisSettings.close)
-        self.lneIx17.returnPressed.connect(formPpmacAxisSettings.sendIx17)
-        self.lneIx16.returnPressed.connect(formPpmacAxisSettings.sendIx16)
-        self.lneIx12.returnPressed.connect(formPpmacAxisSettings.sendIx12)
-        self.lneIx13.returnPressed.connect(formPpmacAxisSettings.sendIx13)
-        self.lneIx19.returnPressed.connect(formPpmacAxisSettings.sendIx19)
-        self.lneIx20.returnPressed.connect(formPpmacAxisSettings.sendIx20)
-        self.lneIx23.returnPressed.connect(formPpmacAxisSettings.sendIx23)
-        self.lneIx21.returnPressed.connect(formPpmacAxisSettings.sendIx21)
-        self.lneIx22.returnPressed.connect(formPpmacAxisSettings.sendIx22)
-        self.lneIx26.returnPressed.connect(formPpmacAxisSettings.sendIx26)
-        self.tabAxisSetup.currentChanged["int"].connect(formPpmacAxisSettings.tabChange)
-        self.lneIx11.returnPressed.connect(formPpmacAxisSettings.sendIx11)
-        self.lneIx14.returnPressed.connect(formPpmacAxisSettings.sendIx14)
-        self.lneIx25.returnPressed.connect(formPpmacAxisSettings.sendIx25)
-        self.lneIx15.returnPressed.connect(formPpmacAxisSettings.sendIx15)
-        self.lneIx30.returnPressed.connect(formPpmacAxisSettings.sendIx30)
-        self.lneIx31.returnPressed.connect(formPpmacAxisSettings.sendIx31)
-        self.lneIx32.returnPressed.connect(formPpmacAxisSettings.sendIx32)
-        self.lneIx33.returnPressed.connect(formPpmacAxisSettings.sendIx33)
-        self.lneIx34.returnPressed.connect(formPpmacAxisSettings.sendIx34)
-        self.lneIx35.returnPressed.connect(formPpmacAxisSettings.sendIx35)
-        self.lneIx11.returnPressed.connect(formPpmacAxisSettings.sendIx11)
-        self.lneDerivative2.returnPressed.connect(formPpmacAxisSettings.sendDerivative2)
-        self.lneVFF2.returnPressed.connect(formPpmacAxisSettings.sendVFF2)
-        QtCore.QMetaObject.connectSlotsByName(formPpmacAxisSettings)
-        formPpmacAxisSettings.setTabOrder(self.btnUpdate, self.btnClose)
+        self.btnUpdate.clicked.connect(form_ppmac_axis_settings.axisUpdate)
+        self.btnClose.clicked.connect(form_ppmac_axis_settings.close)
+        self.lneIx17.returnPressed.connect(form_ppmac_axis_settings.sendIx17)
+        self.lneIx16.returnPressed.connect(form_ppmac_axis_settings.sendIx16)
+        self.lneIx12.returnPressed.connect(form_ppmac_axis_settings.sendIx12)
+        self.lneIx13.returnPressed.connect(form_ppmac_axis_settings.sendIx13)
+        self.lneIx19.returnPressed.connect(form_ppmac_axis_settings.sendIx19)
+        self.lneIx20.returnPressed.connect(form_ppmac_axis_settings.sendIx20)
+        self.lneIx23.returnPressed.connect(form_ppmac_axis_settings.sendIx23)
+        self.lneIx21.returnPressed.connect(form_ppmac_axis_settings.sendIx21)
+        self.lneIx22.returnPressed.connect(form_ppmac_axis_settings.sendIx22)
+        self.lneIx26.returnPressed.connect(form_ppmac_axis_settings.sendIx26)
+        self.tabAxisSetup.currentChanged["int"].connect(
+            form_ppmac_axis_settings.tabChange
+        )
+        self.lneIx11.returnPressed.connect(form_ppmac_axis_settings.sendIx11)
+        self.lneIx14.returnPressed.connect(form_ppmac_axis_settings.sendIx14)
+        self.lneIx25.returnPressed.connect(form_ppmac_axis_settings.sendIx25)
+        self.lneIx15.returnPressed.connect(form_ppmac_axis_settings.sendIx15)
+        self.lneIx30.returnPressed.connect(form_ppmac_axis_settings.sendIx30)
+        self.lneIx31.returnPressed.connect(form_ppmac_axis_settings.sendIx31)
+        self.lneIx32.returnPressed.connect(form_ppmac_axis_settings.sendIx32)
+        self.lneIx33.returnPressed.connect(form_ppmac_axis_settings.sendIx33)
+        self.lneIx34.returnPressed.connect(form_ppmac_axis_settings.sendIx34)
+        self.lneIx35.returnPressed.connect(form_ppmac_axis_settings.sendIx35)
+        self.lneIx11.returnPressed.connect(form_ppmac_axis_settings.sendIx11)
+        self.lneDerivative2.returnPressed.connect(
+            form_ppmac_axis_settings.sendDerivative2
+        )
+        self.lneVFF2.returnPressed.connect(form_ppmac_axis_settings.sendVFF2)
+        QtCore.QMetaObject.connectSlotsByName(form_ppmac_axis_settings)
+        form_ppmac_axis_settings.setTabOrder(self.btnUpdate, self.btnClose)
 
-    def retranslateUi(self, formPpmacAxisSettings):
+    def retranslate_ui(self, form_ppmac_axis_settings):
         _translate = QtCore.QCoreApplication.translate
-        formPpmacAxisSettings.setWindowTitle(
+        form_ppmac_axis_settings.setWindowTitle(
             _translate("formPpmacAxisSettings", "Axis setup")
         )
         self.btnUpdate.setText(_translate("formPpmacAxisSettings", "update"))

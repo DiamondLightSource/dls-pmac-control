@@ -10,16 +10,16 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from qwt import QwtPlot
 
 
-class Ui_formGather:
-    def setupUi(self, formGather):
-        formGather.setObjectName("formGather")
-        formGather.resize(608, 429)
-        formGather.setMinimumSize(QtCore.QSize(600, 400))
-        self.gridlayout = QtWidgets.QGridLayout(formGather)
+class UiFormGather:
+    def setup_ui(self, form_gather):
+        form_gather.setObjectName("formGather")
+        form_gather.resize(608, 429)
+        form_gather.setMinimumSize(QtCore.QSize(600, 400))
+        self.gridlayout = QtWidgets.QGridLayout(form_gather)
         self.gridlayout.setContentsMargins(11, 11, 11, 11)
         self.gridlayout.setSpacing(6)
         self.gridlayout.setObjectName("gridlayout")
-        self.tabWidget2 = QtWidgets.QTabWidget(formGather)
+        self.tabWidget2 = QtWidgets.QTabWidget(form_gather)
         self.tabWidget2.setObjectName("tabWidget2")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
@@ -33,13 +33,13 @@ class Ui_formGather:
         self.qwtPlot.setProperty("yRightAxis", True)
         self.qwtPlot.setObjectName("qwtPlot")
         self.gridlayout1.addWidget(self.qwtPlot, 0, 0, 1, 5)
-        spacerItem = QtWidgets.QSpacerItem(
+        spacer_item = QtWidgets.QSpacerItem(
             200,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridlayout1.addItem(spacerItem, 1, 3, 1, 1)
+        self.gridlayout1.addItem(spacer_item, 1, 3, 1, 1)
         self.btnSetup = QtWidgets.QPushButton(self.tab)
         self.btnSetup.setEnabled(False)
         self.btnSetup.setObjectName("btnSetup")
@@ -75,13 +75,13 @@ class Ui_formGather:
         self.lneNumberSamples.setMaximumSize(QtCore.QSize(100, 32767))
         self.lneNumberSamples.setObjectName("lneNumberSamples")
         self.gridlayout2.addWidget(self.lneNumberSamples, 0, 1, 1, 1)
-        spacerItem1 = QtWidgets.QSpacerItem(
+        spacer_item1 = QtWidgets.QSpacerItem(
             60,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridlayout2.addItem(spacerItem1, 0, 5, 1, 1)
+        self.gridlayout2.addItem(spacer_item1, 0, 5, 1, 1)
         self.lneSampleTime = QtWidgets.QLineEdit(self.tab1)
         self.lneSampleTime.setMinimumSize(QtCore.QSize(60, 0))
         self.lneSampleTime.setMaximumSize(QtCore.QSize(100, 32767))
@@ -91,27 +91,27 @@ class Ui_formGather:
         self.textLabel2_2.setWordWrap(False)
         self.textLabel2_2.setObjectName("textLabel2_2")
         self.gridlayout2.addWidget(self.textLabel2_2, 0, 3, 1, 1)
-        spacerItem2 = QtWidgets.QSpacerItem(
+        spacer_item2 = QtWidgets.QSpacerItem(
             40,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridlayout2.addItem(spacerItem2, 0, 2, 1, 1)
-        spacerItem3 = QtWidgets.QSpacerItem(
+        self.gridlayout2.addItem(spacer_item2, 0, 2, 1, 1)
+        spacer_item3 = QtWidgets.QSpacerItem(
             20,
             50,
             QtWidgets.QSizePolicy.Policy.Minimum,
             QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        self.gridlayout2.addItem(spacerItem3, 4, 2, 1, 1)
-        spacerItem4 = QtWidgets.QSpacerItem(
+        self.gridlayout2.addItem(spacer_item3, 4, 2, 1, 1)
+        spacer_item4 = QtWidgets.QSpacerItem(
             460,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridlayout2.addItem(spacerItem4, 3, 1, 1, 5)
+        self.gridlayout2.addItem(spacer_item4, 3, 1, 1, 5)
         self.btnApplyConf = QtWidgets.QPushButton(self.tab1)
         self.btnApplyConf.setObjectName("btnApplyConf")
         self.gridlayout2.addWidget(self.btnApplyConf, 3, 0, 1, 1)
@@ -176,41 +176,41 @@ class Ui_formGather:
         self.chkPlot5.setText("")
         self.chkPlot5.setObjectName("chkPlot5")
         self.gridlayout3.addWidget(self.chkPlot5, 4, 0, 1, 1)
-        spacerItem5 = QtWidgets.QSpacerItem(
+        spacer_item5 = QtWidgets.QSpacerItem(
             170,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridlayout3.addItem(spacerItem5, 0, 5, 1, 1)
-        spacerItem6 = QtWidgets.QSpacerItem(
+        self.gridlayout3.addItem(spacer_item5, 0, 5, 1, 1)
+        spacer_item6 = QtWidgets.QSpacerItem(
             170,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridlayout3.addItem(spacerItem6, 1, 5, 1, 1)
-        spacerItem7 = QtWidgets.QSpacerItem(
+        self.gridlayout3.addItem(spacer_item6, 1, 5, 1, 1)
+        spacer_item7 = QtWidgets.QSpacerItem(
             170,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridlayout3.addItem(spacerItem7, 2, 5, 1, 1)
-        spacerItem8 = QtWidgets.QSpacerItem(
+        self.gridlayout3.addItem(spacer_item7, 2, 5, 1, 1)
+        spacer_item8 = QtWidgets.QSpacerItem(
             170,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridlayout3.addItem(spacerItem8, 3, 5, 1, 1)
-        spacerItem9 = QtWidgets.QSpacerItem(
+        self.gridlayout3.addItem(spacer_item8, 3, 5, 1, 1)
+        spacer_item9 = QtWidgets.QSpacerItem(
             170,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridlayout3.addItem(spacerItem9, 4, 5, 1, 1)
+        self.gridlayout3.addItem(spacer_item9, 4, 5, 1, 1)
         self.cmbDataSource1 = QtWidgets.QComboBox(self.groupBox3)
         self.cmbDataSource1.setFocusPolicy(QtCore.Qt.NoFocus)
         self.cmbDataSource1.setObjectName("cmbDataSource1")
@@ -307,20 +307,20 @@ class Ui_formGather:
         self.cmbXaxis5.addItem("")
         self.gridlayout3.addWidget(self.cmbXaxis5, 4, 2, 1, 1)
         self.gridlayout2.addWidget(self.groupBox3, 2, 0, 1, 6)
-        spacerItem10 = QtWidgets.QSpacerItem(
+        spacer_item10 = QtWidgets.QSpacerItem(
             40,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridlayout2.addItem(spacerItem10, 1, 5, 1, 1)
-        spacerItem11 = QtWidgets.QSpacerItem(
+        self.gridlayout2.addItem(spacer_item10, 1, 5, 1, 1)
+        spacer_item11 = QtWidgets.QSpacerItem(
             40,
             20,
             QtWidgets.QSizePolicy.Policy.Expanding,
             QtWidgets.QSizePolicy.Policy.Minimum,
         )
-        self.gridlayout2.addItem(spacerItem11, 1, 2, 1, 1)
+        self.gridlayout2.addItem(spacer_item11, 1, 2, 1, 1)
         self.textLabel1 = QtWidgets.QLabel(self.tab1)
         self.textLabel1.setWordWrap(False)
         self.textLabel1.setObjectName("textLabel1")
@@ -340,57 +340,57 @@ class Ui_formGather:
         self.tabWidget2.addTab(self.tab1, "")
         self.gridlayout.addWidget(self.tabWidget2, 0, 0, 1, 1)
 
-        self.retranslateUi(formGather)
+        self.retranslate_ui(form_gather)
         self.tabWidget2.setCurrentIndex(0)
         self.cmbCol2.setCurrentIndex(1)
         self.cmbCol3.setCurrentIndex(2)
         self.cmbCol4.setCurrentIndex(3)
         self.cmbCol5.setCurrentIndex(4)
-        self.btnCollect.clicked.connect(formGather.collectClicked)
-        self.btnSave.clicked.connect(formGather.saveClicked)
-        self.btnTrigger.clicked.connect(formGather.triggerClicked)
-        self.btnApplyConf.clicked.connect(formGather.applyConfigClicked)
-        self.btnSetup.clicked.connect(formGather.setupClicked)
-        self.tabWidget2.currentChanged["int"].connect(formGather.changedTab)
-        self.lneSampleTime.returnPressed.connect(formGather.servoCyclesChanged)
-        self.lneNumberSamples.returnPressed.connect(formGather.changedNoSamples)
-        QtCore.QMetaObject.connectSlotsByName(formGather)
-        formGather.setTabOrder(self.tabWidget2, self.btnSetup)
-        formGather.setTabOrder(self.btnSetup, self.btnTrigger)
-        formGather.setTabOrder(self.btnTrigger, self.btnCollect)
-        formGather.setTabOrder(self.btnCollect, self.btnSave)
-        formGather.setTabOrder(self.btnSave, self.lneNumberSamples)
-        formGather.setTabOrder(self.lneNumberSamples, self.lneSampleTime)
-        formGather.setTabOrder(self.lneSampleTime, self.btnApplyConf)
-        formGather.setTabOrder(self.btnApplyConf, self.chkPlot1)
-        formGather.setTabOrder(self.chkPlot1, self.spbAxis1)
-        formGather.setTabOrder(self.spbAxis1, self.cmbXaxis1)
-        formGather.setTabOrder(self.cmbXaxis1, self.cmbCol1)
-        formGather.setTabOrder(self.cmbCol1, self.cmbDataSource1)
-        formGather.setTabOrder(self.cmbDataSource1, self.chkPlot2)
-        formGather.setTabOrder(self.chkPlot2, self.spbAxis2)
-        formGather.setTabOrder(self.spbAxis2, self.cmbXaxis2)
-        formGather.setTabOrder(self.cmbXaxis2, self.cmbCol2)
-        formGather.setTabOrder(self.cmbCol2, self.cmbDataSource2)
-        formGather.setTabOrder(self.cmbDataSource2, self.chkPlot3)
-        formGather.setTabOrder(self.chkPlot3, self.spbAxis3)
-        formGather.setTabOrder(self.spbAxis3, self.cmbXaxis3)
-        formGather.setTabOrder(self.cmbXaxis3, self.cmbCol3)
-        formGather.setTabOrder(self.cmbCol3, self.cmbDataSource3)
-        formGather.setTabOrder(self.cmbDataSource3, self.chkPlot4)
-        formGather.setTabOrder(self.chkPlot4, self.spbAxis4)
-        formGather.setTabOrder(self.spbAxis4, self.cmbXaxis4)
-        formGather.setTabOrder(self.cmbXaxis4, self.cmbCol4)
-        formGather.setTabOrder(self.cmbCol4, self.cmbDataSource4)
-        formGather.setTabOrder(self.cmbDataSource4, self.chkPlot5)
-        formGather.setTabOrder(self.chkPlot5, self.spbAxis5)
-        formGather.setTabOrder(self.spbAxis5, self.cmbXaxis5)
-        formGather.setTabOrder(self.cmbXaxis5, self.cmbCol5)
-        formGather.setTabOrder(self.cmbCol5, self.cmbDataSource5)
+        self.btnCollect.clicked.connect(form_gather.collectClicked)
+        self.btnSave.clicked.connect(form_gather.saveClicked)
+        self.btnTrigger.clicked.connect(form_gather.triggerClicked)
+        self.btnApplyConf.clicked.connect(form_gather.applyConfigClicked)
+        self.btnSetup.clicked.connect(form_gather.setupClicked)
+        self.tabWidget2.currentChanged["int"].connect(form_gather.changedTab)
+        self.lneSampleTime.returnPressed.connect(form_gather.servoCyclesChanged)
+        self.lneNumberSamples.returnPressed.connect(form_gather.changedNoSamples)
+        QtCore.QMetaObject.connectSlotsByName(form_gather)
+        form_gather.setTabOrder(self.tabWidget2, self.btnSetup)
+        form_gather.setTabOrder(self.btnSetup, self.btnTrigger)
+        form_gather.setTabOrder(self.btnTrigger, self.btnCollect)
+        form_gather.setTabOrder(self.btnCollect, self.btnSave)
+        form_gather.setTabOrder(self.btnSave, self.lneNumberSamples)
+        form_gather.setTabOrder(self.lneNumberSamples, self.lneSampleTime)
+        form_gather.setTabOrder(self.lneSampleTime, self.btnApplyConf)
+        form_gather.setTabOrder(self.btnApplyConf, self.chkPlot1)
+        form_gather.setTabOrder(self.chkPlot1, self.spbAxis1)
+        form_gather.setTabOrder(self.spbAxis1, self.cmbXaxis1)
+        form_gather.setTabOrder(self.cmbXaxis1, self.cmbCol1)
+        form_gather.setTabOrder(self.cmbCol1, self.cmbDataSource1)
+        form_gather.setTabOrder(self.cmbDataSource1, self.chkPlot2)
+        form_gather.setTabOrder(self.chkPlot2, self.spbAxis2)
+        form_gather.setTabOrder(self.spbAxis2, self.cmbXaxis2)
+        form_gather.setTabOrder(self.cmbXaxis2, self.cmbCol2)
+        form_gather.setTabOrder(self.cmbCol2, self.cmbDataSource2)
+        form_gather.setTabOrder(self.cmbDataSource2, self.chkPlot3)
+        form_gather.setTabOrder(self.chkPlot3, self.spbAxis3)
+        form_gather.setTabOrder(self.spbAxis3, self.cmbXaxis3)
+        form_gather.setTabOrder(self.cmbXaxis3, self.cmbCol3)
+        form_gather.setTabOrder(self.cmbCol3, self.cmbDataSource3)
+        form_gather.setTabOrder(self.cmbDataSource3, self.chkPlot4)
+        form_gather.setTabOrder(self.chkPlot4, self.spbAxis4)
+        form_gather.setTabOrder(self.spbAxis4, self.cmbXaxis4)
+        form_gather.setTabOrder(self.cmbXaxis4, self.cmbCol4)
+        form_gather.setTabOrder(self.cmbCol4, self.cmbDataSource4)
+        form_gather.setTabOrder(self.cmbDataSource4, self.chkPlot5)
+        form_gather.setTabOrder(self.chkPlot5, self.spbAxis5)
+        form_gather.setTabOrder(self.spbAxis5, self.cmbXaxis5)
+        form_gather.setTabOrder(self.cmbXaxis5, self.cmbCol5)
+        form_gather.setTabOrder(self.cmbCol5, self.cmbDataSource5)
 
-    def retranslateUi(self, formGather):
+    def retranslate_ui(self, form_gather):
         _translate = QtCore.QCoreApplication.translate
-        formGather.setWindowTitle(_translate("formGather", "Data Gather"))
+        form_gather.setWindowTitle(_translate("formGather", "Data Gather"))
         self.qwtPlot.setProperty("title", _translate("formGather", "data gather"))
         self.btnSetup.setText(_translate("formGather", "setup"))
         self.btnSave.setText(_translate("formGather", "save data..."))

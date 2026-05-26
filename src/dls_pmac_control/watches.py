@@ -2,79 +2,81 @@ import re
 
 from PyQt6.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
 
-from dls_pmac_control.ui_formWatches import Ui_formWatches
+from dls_pmac_control.ui_formWatches import UiFormWatches
 
 # [TODO] Make sure variable types are not changed when writing to the PMAC
 # [TODO] Add warnings when value being edited has changed in
 #       the meantime (could use row colouring just like in dls-dependency-checker)
 # [TODO] Remove invalid variables from watch window
 
-unsafeCommands = ["save", "kill", "$$$", "$$$**", "out", "reset", "reboot", "jog"]
+unsafe_commands = ["save", "kill", "$$$", "$$$**", "out", "reset", "reboot", "jog"]
 
 
-class Watchesform(QDialog, Ui_formWatches):
+class Watchesform(QDialog, UiFormWatches):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.setup_ui(self)
         self.parent = parent
         self._watches = {}
 
-    def addWatch(self):
-        varName = str(self.lneVariableName.text())
+    def add_watch(self):
+        var_name = str(self.lneVariableName.text())
         try:
-            assert isinstance(varName, str)
-            if varName.lower() in unsafeCommands:
-                raise ValueError(f"{varName} is an unsafe command")
-            if re.search(r"[\+\-=\^/]", varName) is not None:
-                raise ValueError(f"{varName} is not a valid variable")
-            if varName in self._watches:
-                raise ValueError(f"There is already a watch for {varName}")
+            assert isinstance(var_name, str)
+            if var_name.lower() in unsafe_commands:
+                raise ValueError(f"{var_name} is an unsafe command")
+            if re.search(r"[\+\-=\^/]", var_name) is not None:
+                raise ValueError(f"{var_name} is not a valid variable")
+            if var_name in self._watches:
+                raise ValueError(f"There is already a watch for {var_name}")
             # create watch object
-            watch = Watch(self.parent.pmac, varName)
+            watch = Watch(self.parent.pmac, var_name)
         except ValueError as e:
             self.panelEditWatch.setEnabled(False)
             QMessageBox.information(self, "Cannot create watch", str(e))
             return
-        noRows = self.table.rowCount()
-        self.table.insertRow(noRows)  # add a new row
-        self.table.setItem(noRows, 0, QTableWidgetItem(varName))  # set variable name
-        self._watches[varName] = watch  # add watch object to dict
-        self.parent.commsThread.add_watch(varName)  # add to polling thread
-        self.updateWatch(noRows)  # update the watch at the new row
+        no_rows = self.table.rowCount()
+        self.table.insertRow(no_rows)  # add a new row
+        self.table.setItem(no_rows, 0, QTableWidgetItem(var_name))  # set variable name
+        self._watches[var_name] = watch  # add watch object to dict
+        self.parent.commsThread.add_watch(var_name)  # add to polling thread
+        self.update_watch(no_rows)  # update the watch at the new row
         self.lneVariableName.setText("")
 
     # return watch object
-    def getWatch(self, varName):
+    def get_watch(self, var_name):
         try:
-            watch = self._watches[varName]
+            watch = self._watches[var_name]
         except KeyError as e:
-            print(f'There is no watch for variable "{varName}"')
+            print(f'There is no watch for variable "{var_name}"')
             raise ValueError() from e
         return watch
 
-    def updateWatch(self, row):
-        varName = self.table.item(row, 0).text()
+    def update_watch(self, row):
+        var_name = self.table.item(row, 0).text()
         try:
-            self.table.setItem(row, 1, QTableWidgetItem(self.getPolledValue(varName)))
+            self.table.setItem(
+                row, 1, QTableWidgetItem(self.get_polled_value(var_name))
+            )
         except ValueError:
             self.table.setItem(row, 1, QTableWidgetItem("Error"))
 
-    def updateCurrentWatch(self):
+    def update_current_watch(self):
         row = self.table.currentRow()
         if row >= 0:
-            self.updateWatch(row)
+            self.update_watch(row)
 
-    def removeWatch(self):
+    def remove_watch(self):
         row = self.table.currentRow()
         if row == -1:
             return None
         assert isinstance(row, int)
-        varName = self.table.item(row, 0).text()
+        var_name = self.table.item(row, 0).text()
         try:
-            del self._watches[varName]
-            self.parent.commsThread.remove_watch(varName)
+            del self._watches[var_name]
+            self.parent.commsThread.remove_watch(var_name)
         except KeyError as e:
-            print(f'There is no watch for variable "{varName}"')
+            print(f'There is no watch for variable "{var_name}"')
             raise ValueError() from e
         try:
             self.table.removeRow(row)
@@ -84,18 +86,18 @@ class Watchesform(QDialog, Ui_formWatches):
         except ValueError as e:
             QMessageBox.information(self, "Cannot remove watch", str(e))
 
-    def clickTable(self, row, column):
-        self.updateEditWatchPanel()
+    def click_table(self, row, column):
+        self.update_edit_watch_panel()
 
-    def selectedVarName(self):
-        currRow = self.table.currentRow()
-        if currRow == -1:
+    def selected_var_name(self):
+        curr_row = self.table.currentRow()
+        if curr_row == -1:
             return None
         else:
-            return self.table.item(currRow, 0).text()
+            return self.table.item(curr_row, 0).text()
 
-    def updateEditWatchPanel(self):
-        if not self.selectedVarName():
+    def update_edit_watch_panel(self):
+        if not self.selected_var_name():
             self.panelEditWatch.setEnabled(False)
         else:
             self.panelEditWatch.setEnabled(True)
@@ -103,14 +105,14 @@ class Watchesform(QDialog, Ui_formWatches):
             self.labelEditValue.setEnabled(True)
             self.lneEditValue.setEnabled(True)
             # set the edit line edit's text
-            self.lneEditValue.setText(self.getPolledValue(self.selectedVarName()))
+            self.lneEditValue.setText(self.get_polled_value(self.selected_var_name()))
 
-    def applyEditWatch(self):
-        watch = self.getWatch(self.selectedVarName())
+    def apply_edit_watch(self):
+        watch = self.get_watch(self.selected_var_name())
         try:
-            newValueStr = str(self.lneEditValue.text())
-            watch.setVariableValue(newValueStr)
-            self.updateCurrentWatch()
+            new_value_str = str(self.lneEditValue.text())
+            watch.setVariableValue(new_value_str)
+            self.update_current_watch()
             self.lneEditValue.setText("")
             self.panelEditWatch.setEnabled(False)
         except (OSError, ValueError) as e:
@@ -118,20 +120,20 @@ class Watchesform(QDialog, Ui_formWatches):
             self.panelEditWatch.setEnabled(False)
             QMessageBox.information(self, "Cannot change value", str(e))
 
-    def clearWatches(self):
+    def clear_watches(self):
         self.table.setRowCount(0)
         self._watches.clear()
         self.parent.commsThread.clear_watch()
         self.lneVariableName.setText("")
         self.lneEditValue.setText("")
 
-    def getPolledValue(self, varName):
-        return self.parent.commsThread.read_watch(varName)
+    def get_polled_value(self, var_name):
+        return self.parent.commsThread.read_watch(var_name)
 
 
 class Watch:
-    def __init__(self, pmac, varName):
-        self.varName = varName
+    def __init__(self, pmac, var_name):
+        self.varName = var_name
         self.pmac = pmac
         self.isInt = None
         self.isFloat = None
@@ -145,24 +147,24 @@ class Watch:
     #           self.isFloat = "." in rawStrValue
     #           self.isInt = not self.isHex and not self.isFloat
 
-    def setVariableValue(self, newValue):
+    def set_variable_value(self, new_value):
         # check type matches before sending command to set variable
-        assert type(newValue) in (str, int, float)
+        assert type(new_value) in (str, int, float)
         if self.varName[-2:] == "->":
-            self._sendPMACCommand(f"{self.varName}{str(newValue)}")
+            self._send_pmac_command(f"{self.varName}{str(new_value)}")
         else:
-            self._sendPMACCommand(f"{self.varName}={str(newValue)}")
+            self._send_pmac_command(f"{self.varName}={str(new_value)}")
 
-    def _sendPMACCommand(self, command):
+    def _send_pmac_command(self, command):
         """Send a command to PMAC.
         On success, returns a string with response from the PMAC.
         On I/O failure, or if PMAC returns an ERRxx, throws an exception."""
         # Get response from PMAC; the 2nd returned boolean indicates absence of timeout
-        (s, wasNoTimeout) = self.pmac.sendCommand(command)
-        if not wasNoTimeout:
+        (s, was_no_timeout) = self.pmac.sendCommand(command)
+        if not was_no_timeout:
             raise OSError("Connection to PMAC timed out")
 
         # Check whether PMAC doesn't reply with an ERRxx type response
-        matchObject = re.match(r"^\x07(ERR\d+)\r$", s)
-        if matchObject or "error" in s:
+        match_object = re.match(r"^\x07(ERR\d+)\r$", s)
+        if match_object or "error" in s:
             raise ValueError(f'Error: cannot set value for "{self.varName}"')

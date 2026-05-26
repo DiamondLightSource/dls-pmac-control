@@ -36,7 +36,7 @@ class GlobalStatusTest(unittest.TestCase):
     def test_update_status_all_off(self, mock_pixmap):
         test_widget = DummyTestWidget()
         obj = GlobalStatusForm(test_widget)
-        obj.updateStatus(0)
+        obj.update_status(0)
         mock_pixmap.assert_called_with(test_widget.greenLedOff)
         assert mock_pixmap.call_count == 2 * len(obj.lstLeds)
         obj.close()
@@ -61,7 +61,7 @@ class PpmacGlobalStatusTest(unittest.TestCase):
     def test_update_status_all_off(self, mock_pixmap):
         test_widget = DummyTestWidget()
         obj = PpmacGlobalStatusForm(test_widget)
-        obj.updateStatus(0)
+        obj.update_status(0)
         mock_pixmap.assert_called_with(test_widget.greenLedOff)
         assert mock_pixmap.call_count == 2 * len(obj.lstLeds)
         obj.close()

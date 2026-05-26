@@ -73,7 +73,7 @@ class WatchesTest(unittest.TestCase):
 
     def test_get_watch(self):
         self.obj._watches = {"test": -1}
-        assert self.obj.getWatch("test") == -1
+        assert self.obj.get_watch("test") == -1
 
     def test_get_watch_does_not_exist(self):
         error_msg = 'There is no watch for variable "test"'
@@ -97,7 +97,7 @@ class WatchesTest(unittest.TestCase):
         mock_get_value.assert_called_with("remove_me")
 
     def test_clear_watches(self):
-        self.obj.clearWatches()
+        self.obj.clear_watches()
         self.assertEqual(self.obj.table.rowCount(), 0)
         assert self.obj._watches == {}
         self.assertEqual(self.obj.lneVariableName.text(), "")

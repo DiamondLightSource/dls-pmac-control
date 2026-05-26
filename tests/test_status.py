@@ -29,13 +29,13 @@ class StatusTest(unittest.TestCase):
         assert self.obj.ledGroup.title() == "Axis 1"
 
     def test_change_axis(self):
-        self.obj.changeAxis(5)
+        self.obj.change_axis(5)
         assert self.obj.currentAxis == 5
         assert self.obj.ledGroup.title() == "Axis 5"
 
     @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
-        self.obj.updateStatus(0)
+        self.obj.update_status(0)
         mock_pixmap.assert_called_with(self.test_widget.greenLedOff)
         assert mock_pixmap.call_count == len(self.obj.lstLeds)
 
@@ -55,13 +55,13 @@ class PpmacStatusTest(unittest.TestCase):
         assert self.obj.ledGroup.title() == "Axis 1"
 
     def test_change_axis(self):
-        self.obj.changeAxis(3)
+        self.obj.change_axis(3)
         assert self.obj.currentAxis == 3
         assert self.obj.ledGroup.title() == "Axis 3"
 
     @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
-        self.obj.updateStatus(0)
+        self.obj.update_status(0)
         mock_pixmap.assert_called_with(self.test_widget.greenLedOff)
         assert mock_pixmap.call_count == len(self.obj.lstLeds)
 

@@ -19,7 +19,7 @@ class DummyTestWidget(QMainWindow):
 
 
 class DummyTestGatherChannel:
-    def __init__(self, pmac, qwtCurve):
+    def __init__(self, pmac, qwt_curve):
         self.axisNo = None
         self.pmac = pmac
         self.strData = []
@@ -32,26 +32,26 @@ class DummyTestGatherChannel:
         self.regOffset = None
         self.dataSourceInfo = None
         self.scalingFactor = None
-        self.qwtCurve = qwtCurve
+        self.qwtCurve = qwt_curve
 
-    def setDataGatherPointer(self, ivar):
+    def set_data_gather_pointer(self, ivar):
         self.pSrcIvar = ivar
         return
 
-    def getDataInfo(self):
+    def get_data_info(self):
         self.dataWidth = 24
         self.dataType = int
         return
 
-    def setStrData(self, x):
+    def set_str_data(self, x):
         self.setStrData_called = True
         return
 
-    def strToRaw(self):
+    def str_to_raw(self):
         self.strToRaw_called = True
         return
 
-    def rawToScaled(self):
+    def raw_to_scaled(self):
         self.rawToScaled_called = True
         return
 
@@ -71,7 +71,7 @@ class PmacGatherTest(unittest.TestCase):
     def test_gather_config(self):
         mid = QPoint(2, int(self.obj.chkPlot1.height() / 2))
         QTest.mouseClick(self.obj.chkPlot1, Qt.LeftButton, pos=mid)
-        assert self.obj.gatherConfig() is True
+        assert self.obj.gather_config() is True
 
     def test_gather_setup(self):
         attrs = {"sendCommand.return_value": ("$010101", True)}
@@ -80,7 +80,7 @@ class PmacGatherTest(unittest.TestCase):
             curve = QwtPlotCurve(f"TestCh{i}")
             test_channel = DummyTestGatherChannel(self.obj.parent.pmac, curve)
             self.obj.lstChannels.append(test_channel)
-        assert self.obj.gatherSetup() is None
+        assert self.obj.gather_setup() is None
         assert self.obj.numberOfChannels == 3
         assert self.obj.lstChannels[0].dataWidth == 24
         assert self.obj.lstChannels[1].dataWidth == 24
@@ -106,7 +106,7 @@ class PmacGatherTest(unittest.TestCase):
     def test_click_apply(self):
         self.obj.nServoCyclesGather = 10
         self.obj.nGatherPoints = 100
-        self.obj.gatherConfig = Mock()
+        self.obj.gather_config = Mock()
         QTest.keyClick(self.obj.btnApplyConf, Qt.Key_Enter)
         self.assertTrue(self.obj.btnSetup.isEnabled())
         self.assertFalse(self.obj.btnTrigger.isEnabled())
@@ -127,7 +127,7 @@ class PmacGatherTest(unittest.TestCase):
         response = "ret1\rret2\rret3\r"
         attrs = {"sendCommand.return_value": (response, True)}
         self.obj.parent.pmac.configure_mock(**attrs)
-        ret = self.obj.collectData()
+        ret = self.obj.collect_data()
         assert ret == ["", "ret1", "", "ret2", "", "ret3"]
 
     def test_parse_data(self):
@@ -136,7 +136,7 @@ class PmacGatherTest(unittest.TestCase):
         test_channel = DummyTestGatherChannel(self.obj.parent.pmac, curve)
         self.obj.lstChannels.append(test_channel)
         datastrings = ["test"]
-        self.obj.parseData(datastrings)
+        self.obj.parse_data(datastrings)
         assert self.obj.lstChannels[0].setStrData_called is True
         assert self.obj.lstChannels[0].strToRaw_called is True
         assert self.obj.lstChannels[0].rawToScaled_called is True
@@ -146,7 +146,7 @@ class PmacGatherTest(unittest.TestCase):
         self.obj.nGatherPoints = 1
         attrs = {"sendCommand.return_value": ("$8388608\x0d", True)}
         self.obj.parent.pmac.configure_mock(**attrs)
-        self.obj.calcSampleTime()
+        self.obj.calc_sample_time()
         assert self.obj.servoCycleTime == 1.0
         assert self.obj.sampleTime == 1.0
 
@@ -165,7 +165,7 @@ class PmacGatherTest(unittest.TestCase):
     @patch("PyQt6.QtWidgets.QMessageBox.information")
     def test_save_clicked_no_data(self, mock_box):
         self.obj.lstChannels = []
-        ret = self.obj.saveClicked()
+        ret = self.obj.save_clicked()
         assert ret is None
 
     @patch("PyQt6.QtWidgets.QFileDialog.getSaveFileName")
@@ -225,12 +225,12 @@ class PpmacGatherTest(unittest.TestCase):
         assert self.obj.nServoCyclesGather == 5
 
     def test_gather_config(self):
-        assert self.obj.gatherConfig() is True
+        assert self.obj.gather_config() is True
         self.test_widget.pmac.sendCommand.assert_called_with("Gather.items=0")
 
     def test_gather_config_chkbox_checked(self):
         self.obj.lstCheckboxes[0].setChecked(True)
-        assert self.obj.gatherConfig() is True
+        assert self.obj.gather_config() is True
         self.test_widget.pmac.sendCommand.assert_called_with("Gather.items=1")
 
     @patch("dls_pmac_control.ppmacgather.PpmacGatherform.gatherConfig")
@@ -246,7 +246,7 @@ class PpmacGatherTest(unittest.TestCase):
         self.assertFalse(self.obj.btnSave.isEnabled())
 
     def test_collect_data(self):
-        assert self.obj.collectData() is None
+        assert self.obj.collect_data() is None
         tmp_file = "../../var/ftp/usrflash/Temp/gather.txt"
         gather_file = "./gather.txt"
         cmd = "gather -u " + tmp_file
@@ -260,7 +260,7 @@ class PpmacGatherTest(unittest.TestCase):
         fh = open(test_file, "w")
         fh.write("test")
         fh.close()
-        assert self.obj.plotData() is None
+        assert self.obj.plot_data() is None
         assert mock_replot.called
         os.remove(test_file)
 
@@ -269,7 +269,7 @@ class PpmacGatherTest(unittest.TestCase):
         self.obj.nGatherPoints = 1
         attrs = {"sendCommand.return_value": ("1", True)}
         self.obj.parent.pmac.configure_mock(**attrs)
-        self.obj.calcSampleTime()
+        self.obj.calc_sample_time()
         assert self.obj.servoCycleTime == 1.0
         assert self.obj.sampleTime == 1.0
 
@@ -279,7 +279,7 @@ class PpmacGatherTest(unittest.TestCase):
         self.obj.parent.pmac.configure_mock(**attrs)
         self.obj.nServoCyclesGather = 1
         self.obj.nGatherPoints = 1
-        self.obj.changedTab()
+        self.obj.changed_tab()
         assert mock_calc.call_count == 2
         assert self.obj.nServoCyclesGather == 10
         assert self.obj.lneSampleTime.text() == "10"

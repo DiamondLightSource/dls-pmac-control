@@ -9,11 +9,11 @@
 from PyQt6 import QtCore, QtWidgets
 
 
-class Ui_Login:
-    def setupUi(self, Login):
-        Login.setObjectName("Login")
-        Login.resize(314, 145)
-        self.layoutWidget = QtWidgets.QWidget(Login)
+class UiLogin:
+    def setup_ui(self, login):
+        login.setObjectName("Login")
+        login.resize(314, 145)
+        self.layoutWidget = QtWidgets.QWidget(login)
         self.layoutWidget.setGeometry(QtCore.QRect(51, 11, 215, 80))
         self.layoutWidget.setObjectName("layoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.layoutWidget)
@@ -33,7 +33,7 @@ class Ui_Login:
         self.lnePassword.setEchoMode(QtWidgets.QLineEdit.Password)
         self.lnePassword.setObjectName("lnePassword")
         self.gridLayout.addWidget(self.lnePassword, 1, 1, 1, 1)
-        self.layoutWidget1 = QtWidgets.QWidget(Login)
+        self.layoutWidget1 = QtWidgets.QWidget(login)
         self.layoutWidget1.setGeometry(QtCore.QRect(65, 100, 184, 38))
         self.layoutWidget1.setObjectName("layoutWidget1")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.layoutWidget1)
@@ -46,17 +46,17 @@ class Ui_Login:
         self.btnOK.setObjectName("btnOK")
         self.horizontalLayout.addWidget(self.btnOK)
 
-        self.retranslateUi(Login)
-        self.btnCancel.clicked.connect(Login.clickedCancel)
-        self.btnOK.clicked.connect(Login.clickedOK)
-        QtCore.QMetaObject.connectSlotsByName(Login)
-        Login.setTabOrder(self.lneUsername, self.lnePassword)
-        Login.setTabOrder(self.lnePassword, self.btnOK)
-        Login.setTabOrder(self.btnOK, self.btnCancel)
+        self.retranslate_ui(login)
+        self.btnCancel.clicked.connect(login.clickedCancel)
+        self.btnOK.clicked.connect(login.clickedOK)
+        QtCore.QMetaObject.connectSlotsByName(login)
+        login.setTabOrder(self.lneUsername, self.lnePassword)
+        login.setTabOrder(self.lnePassword, self.btnOK)
+        login.setTabOrder(self.btnOK, self.btnCancel)
 
-    def retranslateUi(self, Login):
+    def retranslate_ui(self, login):
         _translate = QtCore.QCoreApplication.translate
-        Login.setWindowTitle(_translate("Login", "SSH Login"))
+        login.setWindowTitle(_translate("Login", "SSH Login"))
         self.labelUsername.setText(_translate("Login", "Username:"))
         self.labelPassword.setText(_translate("Login", "Password:"))
         self.btnCancel.setText(_translate("Login", "Cancel"))

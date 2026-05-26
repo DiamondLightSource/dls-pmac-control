@@ -39,7 +39,7 @@ class CSStatusTest(unittest.TestCase):
         assert self.obj.ledGroup.title() == (f"CS {self.obj.csSpin.value()}")
 
     def test_update_feed(self):
-        self.obj.updateFeed(50)
+        self.obj.update_feed(50)
         assert self.obj._feed == 50
         assert self.obj.feedSpin.value() == 50
 
@@ -49,7 +49,7 @@ class CSStatusTest(unittest.TestCase):
 
     @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
-        self.obj.updateStatus(0)
+        self.obj.update_status(0)
         mock_pixmap.assert_called_with(self.test_widget.greenLedOff)
         assert mock_pixmap.call_count == len(self.obj.lstLeds)
 
@@ -74,7 +74,7 @@ class PpmacCSStatusTest(unittest.TestCase):
         assert self.obj.ledGroup.title() == (f"CS {self.obj.csSpin.value()}")
 
     def test_update_feed(self):
-        self.obj.updateFeed(50)
+        self.obj.update_feed(50)
         assert self.obj._feed == 50
         assert self.obj.feedSpin.value() == 50
 
@@ -84,7 +84,7 @@ class PpmacCSStatusTest(unittest.TestCase):
 
     @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
-        self.obj.updateStatus(0)
+        self.obj.update_status(0)
         mock_pixmap.assert_called_with(self.test_widget.greenLedOff)
         assert mock_pixmap.call_count == len(self.obj.lstLeds)
 
