@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 from PyQt6.QtWidgets import QMainWindow
 
-from dls_pmac_control.commsThread import CommsThread
+from dls_pmac_control.comms_thread import CommsThread
 
 
 class DummyTestWidget(QMainWindow):

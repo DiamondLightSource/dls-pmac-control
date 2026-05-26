@@ -4,7 +4,7 @@ import sys
 from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt6.QtWidgets import QApplication, QCheckBox, QDialog, QMessageBox
 
-from dls_pmac_control.ui_formEnergise import UiFormEnergise
+from dls_pmac_control.ui_form_energise import UiFormEnergise
 
 
 class PmacIOError(IOError):

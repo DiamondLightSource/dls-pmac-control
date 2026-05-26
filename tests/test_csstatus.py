@@ -7,7 +7,7 @@ from PyQt6.QtGui import QPixmap
 from PyQt6.QtTest import QTest
 from PyQt6.QtWidgets import QMainWindow
 
-from dls_pmac_control.CSstatus import CSStatusForm, PpmacCSStatusForm
+from dls_pmac_control.cs_status import CSStatusForm, PpmacCSStatusForm
 
 
 class DummyTestWidget(QMainWindow):

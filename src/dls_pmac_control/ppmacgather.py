@@ -9,7 +9,7 @@ from PyQt6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qwt import QwtPlotCurve
 
 from dls_pmac_control.gatherchannel import PpmacGatherChannel, ppmac_data_sources
-from dls_pmac_control.ui_formGather import UiFormGather
+from dls_pmac_control.ui_form_gather import UiFormGather
 
 # TODO - this needs the logic decoupled from the GUI and moved into pmaclib
 #  work has started in pmaclib but currently duplicates code in this module

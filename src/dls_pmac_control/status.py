@@ -3,7 +3,7 @@ import sys
 from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt6.QtWidgets import QApplication, QDialog, QLabel
 
-from dls_pmac_control.ui_formStatus import UiFormStatus
+from dls_pmac_control.ui_form_status import UiFormStatus
 
 
 class Statusform(QDialog, UiFormStatus):

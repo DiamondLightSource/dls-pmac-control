@@ -5,8 +5,8 @@ import sys
 from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt6.QtWidgets import QApplication, QDialog, QLabel
 
-from dls_pmac_control.ui_formCSStatus import UiFormCSStatus
-from dls_pmac_control.ui_formPpmacCSStatus import UiFormPpmacCSStatus
+from dls_pmac_control.ui_form_cs_status import UiFormCSStatus
+from dls_pmac_control.ui_form_ppmac_cs_status import UiFormPpmacCSStatus
 
 
 class CSStatusForm(QDialog, UiFormCSStatus):

@@ -1,6 +1,6 @@
 from PyQt6.QtWidgets import QDialog
 
-from dls_pmac_control.ui_formLogin import UiLogin
+from dls_pmac_control.ui_form_login import UiLogin
 
 
 class Loginform(QDialog, UiLogin):

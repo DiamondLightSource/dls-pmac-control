@@ -26,15 +26,15 @@ from PyQt6.QtWidgets import (
 )
 
 from dls_pmac_control.axissettings import Axissettingsform, PpmacAxissettingsform
-from dls_pmac_control.commsThread import CommsThread
-from dls_pmac_control.CSstatus import CSStatusForm, PpmacCSStatusForm
+from dls_pmac_control.comms_thread import CommsThread
+from dls_pmac_control.cs_status import CSStatusForm, PpmacCSStatusForm
 from dls_pmac_control.energise import Energiseform
 from dls_pmac_control.gather import PmacGatherform
-from dls_pmac_control.GlobalStatus import GlobalStatusForm, PpmacGlobalStatusForm
+from dls_pmac_control.global_status import GlobalStatusForm, PpmacGlobalStatusForm
 from dls_pmac_control.login import Loginform
 from dls_pmac_control.ppmacgather import PpmacGatherform
 from dls_pmac_control.status import PpmacStatusform, Statusform
-from dls_pmac_control.ui_formControl import UiControlForm
+from dls_pmac_control.ui_form_control import UiControlForm
 from dls_pmac_control.watches import Watchesform
 
 from . import __version__

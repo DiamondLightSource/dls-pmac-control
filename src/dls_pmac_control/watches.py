@@ -2,7 +2,7 @@ import re
 
 from PyQt6.QtWidgets import QDialog, QMessageBox, QTableWidgetItem
 
-from dls_pmac_control.ui_formWatches import UiFormWatches
+from dls_pmac_control.ui_form_watches import UiFormWatches
 
 # [TODO] Make sure variable types are not changed when writing to the PMAC
 # [TODO] Add warnings when value being edited has changed in
