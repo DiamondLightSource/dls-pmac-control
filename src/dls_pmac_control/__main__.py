@@ -902,9 +902,9 @@ class Controlform(QMainWindow, UiControlForm):
                     value[n] = round(float(value[n]), 1)
                 self.watchesScreen.table.setItem(n, 1, QTableWidgetItem(str(value[n])))
 
-    import typing
+    from typing_extensions import override
 
-    @typing.override
+    @override
     def customEvent(self, E):
         if E.type() == self.progressEventType:
             (lines, err) = E.data()
