@@ -3,6 +3,7 @@ import sys
 
 from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt6.QtWidgets import QApplication, QCheckBox, QDialog, QMessageBox
+from typing_extensions import override
 
 from dls_pmac_control.ui_form_energise import UiFormEnergise
 
@@ -79,7 +80,9 @@ class Energiseform(QDialog, UiFormEnergise):
     #                read back the two parts (16 axes per read)
     #                set the corresponding checkboxes to reflect the read
     #                back value.
-    def send_command(self):
+
+    @override
+    def sendCommand(self):
         # Make sure that self.val7501 and self.val7503 truly reflect the
         # current values of M7501 and M7503 (on the PMAC)
         if not self.is_screen_up_to_date():
