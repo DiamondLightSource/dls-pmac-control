@@ -15,6 +15,7 @@ dependencies = [
     "numpy",
     "pythonqwt",
     "pyqt6",
+    "typing-extensions>=4.15.0",
 ]
 dynamic = ["version"]
 license.file = "LICENSE"

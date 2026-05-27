@@ -566,6 +566,7 @@ dependencies = [
     { name = "numpy" },
     { name = "pyqt6" },
     { name = "pythonqwt" },
+    { name = "typing-extensions" },
 ]
 
 [package.dev-dependencies]
@@ -590,6 +591,7 @@ requires-dist = [
     { name = "numpy" },
     { name = "pyqt6" },
     { name = "pythonqwt" },
+    { name = "typing-extensions", specifier = ">=4.15.0" },
 ]
 
 [package.metadata.requires-dev]
