@@ -3,7 +3,6 @@ import sys
 
 from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
 from PyQt6.QtWidgets import QApplication, QCheckBox, QDialog, QMessageBox
-from typing_extensions import override
 
 from dls_pmac_control.ui_form_energise import UiFormEnergise
 
@@ -44,7 +43,7 @@ class Energiseform(QDialog, UiFormEnergise):
     # Get values of m7501, m7503 from PMAC. This does *not* update
     # self.val7501, self.val7503.
     def read_m750x(self):
-        (ret_str, ret_status) = self.pmac.sendCommand("m7501 m7503")
+        (ret_str, ret_status) = self.pmac.send_command("m7501 m7503")
         if not ret_status:
             raise PmacIOError("Cannot read m7501, m7503")
         lst_ret_str = re.split(r"\r", ret_str)
@@ -81,8 +80,7 @@ class Energiseform(QDialog, UiFormEnergise):
     #                set the corresponding checkboxes to reflect the read
     #                back value.
 
-    @override
-    def sendCommand(self):
+    def send_command(self):
         # Make sure that self.val7501 and self.val7503 truly reflect the
         # current values of M7501 and M7503 (on the PMAC)
         if not self.is_screen_up_to_date():
@@ -115,7 +113,7 @@ class Energiseform(QDialog, UiFormEnergise):
 
         # Write m7501, m7503 to the PMAC
         cmd = f"m7501=${self.val7501:x} m7503=${self.val7503:x}"
-        (ret_str, ret_status) = self.pmac.sendCommand(cmd)
+        (ret_str, ret_status) = self.pmac.send_command(cmd)
         if not ret_status:
             QMessageBox.information(self, "Error", "Send command error:\n" + ret_str)
             return

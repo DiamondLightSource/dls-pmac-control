@@ -33,7 +33,7 @@ class UiFormEnergise:
 
         self.retranslate_ui(form_energise)
         self.btnClose.clicked.connect(form_energise.close)
-        self.btnSend.clicked.connect(form_energise.sendCommand)
+        self.btnSend.clicked.connect(form_energise.send_command)
         QtCore.QMetaObject.connectSlotsByName(form_energise)
 
     def retranslate_ui(self, form_energise):

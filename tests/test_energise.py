@@ -12,7 +12,7 @@ class DummyTestWidget(QMainWindow):
         self.pmac = Mock()
         self.commsThread = Mock()
         self.chkShowAll = QCheckBox(self)
-        attrs = {"sendCommand.return_value": ("0\r5", True)}
+        attrs = {"send_command.return_value": ("0\r5", True)}
         self.pmac.configure_mock(**attrs)
 
 
@@ -32,7 +32,7 @@ class EnergiseTest(unittest.TestCase):
 
     def test_read_m750x(self):
         (val1, val2) = self.obj.read_m750x()
-        self.obj.parent.pmac.sendCommand.assert_called_with("m7501 m7503")
+        self.obj.parent.pmac.send_command.assert_called_with("m7501 m7503")
         assert val1 == 0
         assert val2 == 5
 
@@ -64,7 +64,7 @@ class EnergiseTest(unittest.TestCase):
     ):
         mock_screen.return_value = False
         mock_read.return_value = (None, None)
-        assert self.obj.sendCommand() is None
+        assert self.obj.send_command() is None
         assert mock_screen.called
         mock_box.assert_called_with(
             self.obj,
@@ -86,10 +86,10 @@ class EnergiseTest(unittest.TestCase):
         self.obj.val7501 = 0xFF0000
         self.obj.val7503 = 0xFF0000
         self.obj.create_check_boxes()
-        assert self.obj.sendCommand() is None
+        assert self.obj.send_command() is None
         assert mock_screen.called
         cmd = "m7501=$ff0000 m7503=$ff0000"
-        self.obj.parent.pmac.sendCommand.assert_called_with(cmd)
+        self.obj.parent.pmac.send_command.assert_called_with(cmd)
 
     def tearDown(self):
         self.obj.close()
