@@ -224,7 +224,7 @@ class PmacGatherform(QDialog, UiFormGather):
         self.oddNumberOfWords = False
         for _, ch in enumerate(self.lstChannels):
             # Get the data info
-            ch.getDataInfo()
+            ch.get_data_info()
 
             # Figure out the data width and odd/even number of data words
             no_bits += ch.dataWidth
@@ -304,9 +304,9 @@ class PmacGatherform(QDialog, UiFormGather):
                 continue
 
         for ch_index, ch in enumerate(self.lstChannels):
-            ch.setStrData(lst_data_arrays[ch_index])
-            ch.strToRaw()
-            ch.rawToScaled()
+            ch.set_str_data(lst_data_arrays[ch_index])
+            ch.str_to_raw()
+            ch.raw_to_scaled()
 
     def plot_data(self):
         # xAxisData = range(self.numberOfSamples)

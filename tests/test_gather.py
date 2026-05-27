@@ -73,21 +73,21 @@ class PmacGatherTest(unittest.TestCase):
         QTest.mouseClick(self.obj.chkPlot1, Qt.LeftButton, pos=mid)
         assert self.obj.gather_config() is True
 
-    # def test_gather_setup(self):
-    #     attrs = {"sendCommand.return_value": ("$010101", True)}
-    #     self.obj.parent.pmac.configure_mock(**attrs)
-    #     for i in range(3):
-    #         curve = QwtPlotCurve(f"TestCh{i}")
-    #         test_channel = DummyTestGatherChannel(self.obj.parent.pmac, curve)
-    #         self.obj.lstChannels.append(test_channel)
-    #     assert self.obj.gather_setup() is None
-    #     assert self.obj.numberOfChannels == 3
-    #     assert self.obj.lstChannels[0].dataWidth == 24
-    #     assert self.obj.lstChannels[1].dataWidth == 24
-    #     assert self.obj.lstChannels[2].dataWidth == 24
-    #     assert self.obj.lstChannels[0].dataType == int
-    #     assert self.obj.lstChannels[1].dataType == int
-    #     assert self.obj.lstChannels[2].dataType == int
+    def test_gather_setup(self):
+        attrs = {"sendCommand.return_value": ("$010101", True)}
+        self.obj.parent.pmac.configure_mock(**attrs)
+        for i in range(3):
+            curve = QwtPlotCurve(f"TestCh{i}")
+            test_channel = DummyTestGatherChannel(self.obj.parent.pmac, curve)
+            self.obj.lstChannels.append(test_channel)
+        assert self.obj.gather_setup() is None
+        assert self.obj.numberOfChannels == 3
+        assert self.obj.lstChannels[0].dataWidth == 24
+        assert self.obj.lstChannels[1].dataWidth == 24
+        assert self.obj.lstChannels[2].dataWidth == 24
+        assert self.obj.lstChannels[0].dataType == int
+        assert self.obj.lstChannels[1].dataType == int
+        assert self.obj.lstChannels[2].dataType == int
 
     @patch("dls_pmac_control.gather.PmacGatherform.calc_sample_time")
     def test_change_no_samples(self, mock_calc):
@@ -130,16 +130,16 @@ class PmacGatherTest(unittest.TestCase):
         ret = self.obj.collect_data()
         assert ret == ["", "ret1", "", "ret2", "", "ret3"]
 
-    # def test_parse_data(self):
-    #     # set up test channel
-    #     curve = QwtPlotCurve("TestCh")
-    #     test_channel = DummyTestGatherChannel(self.obj.parent.pmac, curve)
-    #     self.obj.lstChannels.append(test_channel)
-    #     datastrings = ["test"]
-    #     self.obj.parse_data(datastrings)
-    #     assert self.obj.lstChannels[0].setStrData_called is True
-    #     assert self.obj.lstChannels[0].strToRaw_called is True
-    #     assert self.obj.lstChannels[0].rawToScaled_called is True
+    def test_parse_data(self):
+        # set up test channel
+        curve = QwtPlotCurve("TestCh")
+        test_channel = DummyTestGatherChannel(self.obj.parent.pmac, curve)
+        self.obj.lstChannels.append(test_channel)
+        datastrings = ["test"]
+        self.obj.parse_data(datastrings)
+        assert self.obj.lstChannels[0].setStrData_called is True
+        assert self.obj.lstChannels[0].strToRaw_called is True
+        assert self.obj.lstChannels[0].rawToScaled_called is True
 
     def test_calc_sample_time(self):
         self.obj.nServoCyclesGather = 1
