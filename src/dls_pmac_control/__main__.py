@@ -24,6 +24,7 @@ from PyQt6.QtWidgets import (
     QProgressDialog,
     QTableWidgetItem,
 )
+from typing_extensions import override
 
 from dls_pmac_control.axissettings import Axissettingsform, PpmacAxissettingsform
 from dls_pmac_control.comms_thread import CommsThread
@@ -901,8 +902,6 @@ class Controlform(QMainWindow, UiControlForm):
                 if "." in value[n]:
                     value[n] = round(float(value[n]), 1)
                 self.watchesScreen.table.setItem(n, 1, QTableWidgetItem(str(value[n])))
-
-    from typing_extensions import override
 
     @override
     def customEvent(self, E):
