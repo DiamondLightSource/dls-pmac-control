@@ -47,8 +47,8 @@ class UiLogin:
         self.horizontalLayout.addWidget(self.btnOK)
 
         self.retranslate_ui(login)
-        self.btnCancel.clicked.connect(login.clickedCancel)
-        self.btnOK.clicked.connect(login.clickedOK)
+        self.btnCancel.clicked.connect(login.clicked_cancel)
+        self.btnOK.clicked.connect(login.clicked_ok)
         QtCore.QMetaObject.connectSlotsByName(login)
         login.setTabOrder(self.lneUsername, self.lnePassword)
         login.setTabOrder(self.lnePassword, self.btnOK)

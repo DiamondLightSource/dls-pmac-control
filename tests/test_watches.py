@@ -57,7 +57,7 @@ class WatchesTest(unittest.TestCase):
         self.assertFalse(self.obj.panelEditWatch.isEnabled())
         mock_box.assert_called_with(self.obj, "Cannot create watch", error_msg)
 
-    @patch("dls_pmac_control.watches.Watchesform.getPolledValue")
+    @patch("dls_pmac_control.watches.Watchesform.get_polled_value")
     @patch("dls_pmac_control.watches.Watch")
     def test_add_watch(self, mock_watch, mock_get_value):
         mock_get_value.return_value = "12"
@@ -79,7 +79,7 @@ class WatchesTest(unittest.TestCase):
         error_msg = 'There is no watch for variable "test"'
         self.assertRaises(ValueError, msg=error_msg)
 
-    @patch("dls_pmac_control.watches.Watchesform.getPolledValue")
+    @patch("dls_pmac_control.watches.Watchesform.get_polled_value")
     @patch("dls_pmac_control.watches.Watch")
     def test_remove_watch(self, mock_watch, mock_get_value):
         # add watch to be removed
@@ -103,7 +103,7 @@ class WatchesTest(unittest.TestCase):
         self.assertEqual(self.obj.lneVariableName.text(), "")
         self.assertEqual(self.obj.lneEditValue.text(), "")
 
-    @patch("dls_pmac_control.watches.Watchesform.getPolledValue")
+    @patch("dls_pmac_control.watches.Watchesform.get_polled_value")
     @patch("dls_pmac_control.watches.Watch")
     def test_apply_edit_watch(self, mock_watch, mock_get_value):
         # add watch to be edited

@@ -45,9 +45,9 @@ class AxissettingsTest(unittest.TestCase):
         assert self.obj.currentMotor == 2
 
     @patch(
-        "dls_pmac_control.axissettings.Axissettingsform._updateAxisSignalControlsVars"
+        "dls_pmac_control.axissettings.Axissettingsform._update_axis_signal_controls_vars"
     )
-    @patch("dls_pmac_control.axissettings.Axissettingsform._updateAxisSetupIVars")
+    @patch("dls_pmac_control.axissettings.Axissettingsform._update_axis_setup_i_vars")
     def test_change_axis_visible(self, mock_setup, mock_signal):
         self.obj.show()
         self.obj.change_axis(2)
@@ -57,9 +57,9 @@ class AxissettingsTest(unittest.TestCase):
             self.assertTrue(mock_signal.called)
 
     @patch(
-        "dls_pmac_control.axissettings.Axissettingsform._updateAxisSignalControlsVars"
+        "dls_pmac_control.axissettings.Axissettingsform._update_axis_signal_controls_vars"
     )
-    @patch("dls_pmac_control.axissettings.Axissettingsform._updateAxisSetupIVars")
+    @patch("dls_pmac_control.axissettings.Axissettingsform._update_axis_setup_i_vars")
     def test_change_tab(self, mock_setup, mock_signal):
         QTest.mouseClick(self.obj.tabAxisSetup, Qt.LeftButton)
         assert self.obj.tabAxisSetup.currentIndex() == 1
@@ -100,11 +100,11 @@ class AxissettingsTest(unittest.TestCase):
         self.obj.send_loop_select()
         self.assertTrue(self.test_widget.pmac.setOnboardAxisI7000PlusIVar.called)
 
-    @patch("dls_pmac_control.axissettings.Axissettingsform.axisUpdate")
+    @patch("dls_pmac_control.axissettings.Axissettingsform.axis_update")
     def test_send_ix(self, mock_update):
         ivars = [11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26]
         for i in range(len(ivars)):
-            exec(f"self.obj.sendIx{ivars[i]}()")
+            exec(f"self.obj.send_ix{ivars[i]}()")
             self.assertTrue(self.test_widget.pmac.setAxisSetupIVar.called)
             self.assertTrue(mock_update.called)
 
@@ -121,14 +121,18 @@ class PpmacAxissettingsTest(unittest.TestCase):
         self.obj.change_axis(2)
         assert self.obj.currentMotor == 2
 
-    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform._updateAxisSetupIVars")
+    @patch(
+        "dls_pmac_control.axissettings.PpmacAxissettingsform._update_axis_setup_i_vars"
+    )
     def test_change_axis_visible(self, mock_setup):
         self.obj.show()
         self.obj.change_axis(2)
         assert self.obj.currentMotor == 2
         self.assertTrue(mock_setup.called)
 
-    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform._updateAxisSetupIVars")
+    @patch(
+        "dls_pmac_control.axissettings.PpmacAxissettingsform._update_axis_setup_i_vars"
+    )
     def test_change_tab(self, mock_setup):
         QTest.mouseClick(self.obj.tabAxisSetup, Qt.LeftButton)
         assert self.obj.tabAxisSetup.currentIndex() == 0
@@ -139,17 +143,17 @@ class PpmacAxissettingsTest(unittest.TestCase):
         assert self.obj.lneIx16.text() == "return"
         assert self.obj.lneIx23.text() == "return"
 
-    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform.axisUpdate")
+    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform.axis_update")
     def test_set_axis_setup_i_var(self, mock_update):
         self.obj.set_axis_setup_i_var(12, 1234)
         self.assertTrue(mock_update.called)
 
-    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform.setAxisSetupIVar")
-    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform.axisUpdate")
+    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform.set_axis_setup_i_var")
+    @patch("dls_pmac_control.axissettings.PpmacAxissettingsform.axis_update")
     def test_send_ix(self, mock_update, mock_setup):
         ivars = [11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26]
         for i in range(len(ivars)):
-            exec(f"self.obj.sendIx{ivars[i]}()")
+            exec(f"self.obj.send_ix{ivars[i]}()")
             self.assertTrue(mock_setup.called)
             self.assertTrue(mock_update.called)
 

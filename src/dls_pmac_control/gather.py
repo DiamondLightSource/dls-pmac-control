@@ -210,7 +210,7 @@ class PmacGatherform(QDialog, UiFormGather):
                             "instantiated."
                         )
                         break
-                    self.lstChannels[ch_count - 1].setDataGatherPointer(ivar)
+                    self.lstChannels[ch_count - 1].set_data_gather_pointer(ivar)
 
             bit_offset += WORD
 

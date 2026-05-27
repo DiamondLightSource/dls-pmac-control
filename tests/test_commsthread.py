@@ -60,21 +60,21 @@ class CommsthreadTest(unittest.TestCase):
         assert self.obj.read_watch("test") is None
 
     @patch("PyQt6.QtCore.QCoreApplication.postEvent")
-    @patch("dls_pmac_control.commsThread.CustomEvent")
+    @patch("dls_pmac_control.comms_thread.CustomEvent")
     def test_send_tick(self, mock_custom, mock_event):
         self.obj.send_tick(0, "err")
         assert mock_custom.called
         assert mock_event.called
 
     @patch("PyQt6.QtCore.QCoreApplication.postEvent")
-    @patch("dls_pmac_control.commsThread.CustomEvent")
+    @patch("dls_pmac_control.comms_thread.CustomEvent")
     def test_send_complete(self, mock_custom, mock_event):
         self.obj.send_complete("msg")
         assert self.obj.gen is None
         assert mock_custom.called
         assert mock_event.called
 
-    @patch("dls_pmac_control.commsThread.CommsThread.updateFunc")
+    @patch("dls_pmac_control.comms_thread.CommsThread.update_func")
     def test_update_thread(self, mock_updatefunc):
         mock_updatefunc.return_value = True
         self.obj.update_thread()
@@ -96,7 +96,7 @@ class UpdatefuncTest(unittest.TestCase):
         mock_get.assert_called_with(block=False)
 
     @patch("PyQt6.QtCore.QCoreApplication.postEvent")
-    @patch("dls_pmac_control.commsThread.CustomEvent")
+    @patch("dls_pmac_control.comms_thread.CustomEvent")
     @patch("queue.Queue.put")
     @patch("queue.Queue.get")
     def test_update_func_sendseries(self, mock_get, mock_put, mock_custom, mock_event):
@@ -118,7 +118,7 @@ class UpdatefuncTest(unittest.TestCase):
         mock_get.assert_called_with(block=False)
 
     @patch("PyQt6.QtCore.QCoreApplication.postEvent")
-    @patch("dls_pmac_control.commsThread.CustomEvent")
+    @patch("dls_pmac_control.comms_thread.CustomEvent")
     @patch("queue.Queue.put")
     @patch("queue.Queue.get")
     def test_update_func_cancel(self, mock_get, mock_put, mock_custom, mock_event):
