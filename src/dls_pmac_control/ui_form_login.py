@@ -30,7 +30,7 @@ class UiLogin:
         self.labelPassword.setObjectName("labelPassword")
         self.gridLayout.addWidget(self.labelPassword, 1, 0, 1, 1)
         self.lnePassword = QtWidgets.QLineEdit(self.layoutWidget)
-        self.lnePassword.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.lnePassword.setEchoMode(QtWidgets.QLineEdit.EchoMode.Password)
         self.lnePassword.setObjectName("lnePassword")
         self.gridLayout.addWidget(self.lnePassword, 1, 1, 1, 1)
         self.layoutWidget1 = QtWidgets.QWidget(login)

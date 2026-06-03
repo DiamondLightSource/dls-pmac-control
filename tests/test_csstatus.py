@@ -35,7 +35,7 @@ class CSStatusTest(unittest.TestCase):
         assert self.obj._feed == 100
 
     def test_change_cs(self):
-        QTest.keyClick(self.obj.csSpin, Qt.Key_Up)
+        QTest.keyClick(self.obj.csSpin, Qt.Key.Key_Up)
         assert self.obj.ledGroup.title() == (f"CS {self.obj.csSpin.value()}")
 
     def test_update_feed(self):
@@ -44,7 +44,7 @@ class CSStatusTest(unittest.TestCase):
         assert self.obj.feedSpin.value() == 50
 
     def test_set_feed(self):
-        QTest.keyClick(self.obj.feedSpin, Qt.Key_Down)
+        QTest.keyClick(self.obj.feedSpin, Qt.Key.Key_Down)
         assert self.obj.feedSpin.value() == 99
 
     @patch("PyQt6.QtWidgets.QLabel.setPixmap")
@@ -70,7 +70,7 @@ class PpmacCSStatusTest(unittest.TestCase):
         assert self.obj._feed == 100
 
     def test_change_cs(self):
-        QTest.keyClick(self.obj.csSpin, Qt.Key_Up)
+        QTest.keyClick(self.obj.csSpin, Qt.Key.Key_Up)
         assert self.obj.ledGroup.title() == (f"CS {self.obj.csSpin.value()}")
 
     def test_update_feed(self):
@@ -79,7 +79,7 @@ class PpmacCSStatusTest(unittest.TestCase):
         assert self.obj.feedSpin.value() == 50
 
     def test_set_feed(self):
-        QTest.keyClick(self.obj.feedSpin, Qt.Key_Down)
+        QTest.keyClick(self.obj.feedSpin, Qt.Key.Key_Down)
         assert self.obj.feedSpin.value() == 99
 
     @patch("PyQt6.QtWidgets.QLabel.setPixmap")

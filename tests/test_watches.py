@@ -32,7 +32,7 @@ class WatchesTest(unittest.TestCase):
     @patch("PyQt6.QtWidgets.QMessageBox.information")
     def test_add_unsafe_watch(self, mock_box):
         self.obj.lneVariableName.setText("jog")
-        QTest.mouseClick(self.obj.btnAddWatch, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnAddWatch, Qt.MouseButton.LeftButton)
         error_msg = "jog is an unsafe command"
         self.assertRaises(ValueError, msg=error_msg)
         self.assertFalse(self.obj.panelEditWatch.isEnabled())
@@ -41,7 +41,7 @@ class WatchesTest(unittest.TestCase):
     @patch("PyQt6.QtWidgets.QMessageBox.information")
     def test_add_invalid_watch(self, mock_box):
         self.obj.lneVariableName.setText("#1j+")
-        QTest.mouseClick(self.obj.btnAddWatch, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnAddWatch, Qt.MouseButton.LeftButton)
         error_msg = "#1j+ is not a valid variable"
         self.assertRaises(ValueError, msg=error_msg)
         self.assertFalse(self.obj.panelEditWatch.isEnabled())
@@ -51,7 +51,7 @@ class WatchesTest(unittest.TestCase):
     def test_add_existing_watch(self, mock_box):
         self.obj._watches = {"test": 0}
         self.obj.lneVariableName.setText("test")
-        QTest.mouseClick(self.obj.btnAddWatch, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnAddWatch, Qt.MouseButton.LeftButton)
         error_msg = "There is already a watch for test"
         self.assertRaises(ValueError, msg=error_msg)
         self.assertFalse(self.obj.panelEditWatch.isEnabled())
@@ -62,7 +62,7 @@ class WatchesTest(unittest.TestCase):
     def test_add_watch(self, mock_watch, mock_get_value):
         mock_get_value.return_value = "12"
         self.obj.lneVariableName.setText("watch")
-        QTest.mouseClick(self.obj.btnAddWatch, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnAddWatch, Qt.MouseButton.LeftButton)
         assert self.obj._watches["watch"] is not None
         self.assertEqual(self.obj.table.rowCount(), 1)
         self.assertEqual(self.obj.table.item(0, 0).text(), "watch")
@@ -85,10 +85,10 @@ class WatchesTest(unittest.TestCase):
         # add watch to be removed
         mock_get_value.return_value = "3"
         self.obj.lneVariableName.setText("remove_me")
-        QTest.mouseClick(self.obj.btnAddWatch, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnAddWatch, Qt.MouseButton.LeftButton)
         # click on table item and click remove watch
-        QTest.mouseClick(self.obj.table.viewport(), Qt.LeftButton)
-        QTest.mouseClick(self.obj.btnRemoveWatch, Qt.LeftButton)
+        QTest.mouseClick(self.obj.table.viewport(), Qt.MouseButton.LeftButton)
+        QTest.mouseClick(self.obj.btnRemoveWatch, Qt.MouseButton.LeftButton)
         assert self.obj.table.rowCount() == 0
         assert self.obj._watches == {}
         assert self.obj.lneEditValue.text() == ""
@@ -109,11 +109,11 @@ class WatchesTest(unittest.TestCase):
         # add watch to be edited
         mock_get_value.return_value = "-8"
         self.obj.lneVariableName.setText("edit_me")
-        QTest.mouseClick(self.obj.btnAddWatch, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnAddWatch, Qt.MouseButton.LeftButton)
         # click on table item and edit
-        QTest.mouseClick(self.obj.table.viewport(), Qt.LeftButton)
+        QTest.mouseClick(self.obj.table.viewport(), Qt.MouseButton.LeftButton)
         self.obj.lneEditValue.setText("-8")
-        QTest.mouseClick(self.obj.btnApplyChanges, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnApplyChanges, Qt.MouseButton.LeftButton)
         assert self.obj._watches["edit_me"] is not None
         self.assertEqual(self.obj.table.rowCount(), 1)
         self.assertEqual(self.obj.table.item(0, 0).text(), "edit_me")

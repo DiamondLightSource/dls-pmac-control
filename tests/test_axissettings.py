@@ -61,7 +61,7 @@ class AxissettingsTest(unittest.TestCase):
     )
     @patch("dls_pmac_control.axissettings.Axissettingsform._update_axis_setup_i_vars")
     def test_change_tab(self, mock_setup, mock_signal):
-        QTest.mouseClick(self.obj.tabAxisSetup, Qt.LeftButton)
+        QTest.mouseClick(self.obj.tabAxisSetup, Qt.MouseButton.LeftButton)
         assert self.obj.tabAxisSetup.currentIndex() == 1
 
     def test_update_axis_setup_i_vars(self):
@@ -134,7 +134,7 @@ class PpmacAxissettingsTest(unittest.TestCase):
         "dls_pmac_control.axissettings.PpmacAxissettingsform._update_axis_setup_i_vars"
     )
     def test_change_tab(self, mock_setup):
-        QTest.mouseClick(self.obj.tabAxisSetup, Qt.LeftButton)
+        QTest.mouseClick(self.obj.tabAxisSetup, Qt.MouseButton.LeftButton)
         assert self.obj.tabAxisSetup.currentIndex() == 0
 
     def test_update_axis_setup_i_vars(self):

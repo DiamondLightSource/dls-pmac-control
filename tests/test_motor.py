@@ -131,7 +131,7 @@ class MotorTestTelnet(unittest.TestCase):
         self.obj.commands = []
         self.obj.commands_i = 0
         self.obj.lneSend.setEnabled(True)
-        QTest.keyClick(self.obj.lneSend, Qt.Key_Up)
+        QTest.keyClick(self.obj.lneSend, Qt.Key.Key_Up)
         assert self.obj.commands_i == 0
         assert self.obj.lneSend.text() == ""
         assert mock_event.called
@@ -141,7 +141,7 @@ class MotorTestTelnet(unittest.TestCase):
         self.obj.commands = ["cmd1", "cmd2", "cmd3"]
         self.obj.commands_i = 0
         self.obj.lneSend.setEnabled(True)
-        QTest.keyClick(self.obj.lneSend, Qt.Key_Up)
+        QTest.keyClick(self.obj.lneSend, Qt.Key.Key_Up)
         assert self.obj.commands_i == -1
         assert self.obj.lneSend.text() == "cmd3"
         assert mock_event.called
@@ -151,7 +151,7 @@ class MotorTestTelnet(unittest.TestCase):
         self.obj.commands = ["cmd1", "cmd2", "cmd3"]
         self.obj.commands_i = -1
         self.obj.lneSend.setEnabled(True)
-        QTest.keyClick(self.obj.lneSend, Qt.Key_Down)
+        QTest.keyClick(self.obj.lneSend, Qt.Key.Key_Down)
         assert self.obj.commands_i == 0
         assert self.obj.lneSend.text() == ""
         assert mock_event.called

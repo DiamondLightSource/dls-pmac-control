@@ -46,89 +46,107 @@ class UiFormAxisSettings:
         self.textLabel2 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2.setWordWrap(False)
         self.textLabel2.setObjectName("textLabel2")
-        self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.textLabel2)
+        self.formLayout_2.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2
+        )
         self.lneIx11 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx11.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx11.setMaximumSize(QtCore.QSize(31222, 32767))
         self.lneIx11.setObjectName("lneIx11")
-        self.formLayout_2.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lneIx11)
+        self.formLayout_2.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx11
+        )
         self.textLabel2_2 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_2.setWordWrap(False)
         self.textLabel2_2.setObjectName("textLabel2_2")
         self.formLayout_2.setWidget(
-            1, QtWidgets.QFormLayout.LabelRole, self.textLabel2_2
+            1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_2
         )
         self.lneIx12 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx12.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx12.setMaximumSize(QtCore.QSize(31222, 32767))
         self.lneIx12.setObjectName("lneIx12")
-        self.formLayout_2.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.lneIx12)
+        self.formLayout_2.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx12
+        )
         self.textLabel2_3 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_3.setWordWrap(False)
         self.textLabel2_3.setObjectName("textLabel2_3")
         self.formLayout_2.setWidget(
-            2, QtWidgets.QFormLayout.LabelRole, self.textLabel2_3
+            2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_3
         )
         self.lneIx13 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx13.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx13.setMaximumSize(QtCore.QSize(31222, 32767))
         self.lneIx13.setObjectName("lneIx13")
-        self.formLayout_2.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.lneIx13)
+        self.formLayout_2.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx13
+        )
         self.textLabel2_4 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_4.setWordWrap(False)
         self.textLabel2_4.setObjectName("textLabel2_4")
         self.formLayout_2.setWidget(
-            3, QtWidgets.QFormLayout.LabelRole, self.textLabel2_4
+            3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_4
         )
         self.lneIx14 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx14.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx14.setMaximumSize(QtCore.QSize(31222, 32767))
         self.lneIx14.setObjectName("lneIx14")
-        self.formLayout_2.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.lneIx14)
+        self.formLayout_2.setWidget(
+            3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx14
+        )
         self.textLabel2_5 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_5.setWordWrap(False)
         self.textLabel2_5.setObjectName("textLabel2_5")
         self.formLayout_2.setWidget(
-            4, QtWidgets.QFormLayout.LabelRole, self.textLabel2_5
+            4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_5
         )
         self.lneIx15 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx15.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx15.setMaximumSize(QtCore.QSize(31222, 32767))
         self.lneIx15.setObjectName("lneIx15")
-        self.formLayout_2.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.lneIx15)
+        self.formLayout_2.setWidget(
+            4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx15
+        )
         self.textLabel2_6 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_6.setWordWrap(False)
         self.textLabel2_6.setObjectName("textLabel2_6")
         self.formLayout_2.setWidget(
-            5, QtWidgets.QFormLayout.LabelRole, self.textLabel2_6
+            5, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_6
         )
         self.lneIx16 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx16.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx16.setMaximumSize(QtCore.QSize(31222, 32767))
         self.lneIx16.setObjectName("lneIx16")
-        self.formLayout_2.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.lneIx16)
+        self.formLayout_2.setWidget(
+            5, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx16
+        )
         self.textLabel2_7 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_7.setWordWrap(False)
         self.textLabel2_7.setObjectName("textLabel2_7")
         self.formLayout_2.setWidget(
-            6, QtWidgets.QFormLayout.LabelRole, self.textLabel2_7
+            6, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_7
         )
         self.lneIx17 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx17.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx17.setMaximumSize(QtCore.QSize(31222, 32767))
         self.lneIx17.setObjectName("lneIx17")
-        self.formLayout_2.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.lneIx17)
+        self.formLayout_2.setWidget(
+            6, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx17
+        )
         self.textLabel2_8 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_8.setWordWrap(False)
         self.textLabel2_8.setObjectName("textLabel2_8")
         self.formLayout_2.setWidget(
-            7, QtWidgets.QFormLayout.LabelRole, self.textLabel2_8
+            7, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_8
         )
         self.lneIx19 = QtWidgets.QLineEdit(self.groupBox1)
         self.lneIx19.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx19.setMaximumSize(QtCore.QSize(31222, 32767))
         self.lneIx19.setObjectName("lneIx19")
-        self.formLayout_2.setWidget(7, QtWidgets.QFormLayout.FieldRole, self.lneIx19)
+        self.formLayout_2.setWidget(
+            7, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx19
+        )
         self.gridLayout_2.addWidget(self.groupBox1, 0, 0, 1, 1)
         self.groupBox2 = QtWidgets.QGroupBox(self.tab)
         self.groupBox2.setObjectName("groupBox2")
@@ -139,7 +157,9 @@ class UiFormAxisSettings:
         self.textLabel2_9 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_9.setWordWrap(False)
         self.textLabel2_9.setObjectName("textLabel2_9")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.textLabel2_9)
+        self.formLayout.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_9
+        )
         self.lneIx20 = QtWidgets.QLineEdit(self.groupBox2)
         size_policy = QtWidgets.QSizePolicy(
             QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed
@@ -151,73 +171,87 @@ class UiFormAxisSettings:
         self.lneIx20.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx20.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneIx20.setObjectName("lneIx20")
-        self.formLayout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lneIx20)
+        self.formLayout.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx20
+        )
         self.textLabel2_2_2 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_2_2.setWordWrap(False)
         self.textLabel2_2_2.setObjectName("textLabel2_2_2")
         self.formLayout.setWidget(
-            1, QtWidgets.QFormLayout.LabelRole, self.textLabel2_2_2
+            1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_2_2
         )
         self.lneIx21 = QtWidgets.QLineEdit(self.groupBox2)
         self.lneIx21.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx21.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneIx21.setObjectName("lneIx21")
-        self.formLayout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.lneIx21)
+        self.formLayout.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx21
+        )
         self.textLabel2_3_2 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_3_2.setWordWrap(False)
         self.textLabel2_3_2.setObjectName("textLabel2_3_2")
         self.formLayout.setWidget(
-            2, QtWidgets.QFormLayout.LabelRole, self.textLabel2_3_2
+            2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_3_2
         )
         self.lneIx22 = QtWidgets.QLineEdit(self.groupBox2)
         self.lneIx22.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx22.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneIx22.setObjectName("lneIx22")
-        self.formLayout.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.lneIx22)
+        self.formLayout.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx22
+        )
         self.textLabel2_4_2 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_4_2.setWordWrap(False)
         self.textLabel2_4_2.setObjectName("textLabel2_4_2")
         self.formLayout.setWidget(
-            3, QtWidgets.QFormLayout.LabelRole, self.textLabel2_4_2
+            3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_4_2
         )
         self.lneIx23 = QtWidgets.QLineEdit(self.groupBox2)
         self.lneIx23.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx23.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneIx23.setObjectName("lneIx23")
-        self.formLayout.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.lneIx23)
+        self.formLayout.setWidget(
+            3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx23
+        )
         self.textLabel2_5_2 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_5_2.setWordWrap(False)
         self.textLabel2_5_2.setObjectName("textLabel2_5_2")
         self.formLayout.setWidget(
-            4, QtWidgets.QFormLayout.LabelRole, self.textLabel2_5_2
+            4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_5_2
         )
         self.lneIx24 = QtWidgets.QLineEdit(self.groupBox2)
         self.lneIx24.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx24.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneIx24.setObjectName("lneIx24")
-        self.formLayout.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.lneIx24)
+        self.formLayout.setWidget(
+            4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx24
+        )
         self.textLabel2_6_2 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_6_2.setWordWrap(False)
         self.textLabel2_6_2.setObjectName("textLabel2_6_2")
         self.formLayout.setWidget(
-            5, QtWidgets.QFormLayout.LabelRole, self.textLabel2_6_2
+            5, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_6_2
         )
         self.lneIx25 = QtWidgets.QLineEdit(self.groupBox2)
         self.lneIx25.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx25.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneIx25.setObjectName("lneIx25")
-        self.formLayout.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.lneIx25)
+        self.formLayout.setWidget(
+            5, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx25
+        )
         self.textLabel2_7_2 = QtWidgets.QLabel(self.groupBox2)
         self.textLabel2_7_2.setWordWrap(False)
         self.textLabel2_7_2.setObjectName("textLabel2_7_2")
         self.formLayout.setWidget(
-            6, QtWidgets.QFormLayout.LabelRole, self.textLabel2_7_2
+            6, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_7_2
         )
         self.lneIx26 = QtWidgets.QLineEdit(self.groupBox2)
         self.lneIx26.setMinimumSize(QtCore.QSize(0, 0))
         self.lneIx26.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneIx26.setObjectName("lneIx26")
-        self.formLayout.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.lneIx26)
+        self.formLayout.setWidget(
+            6, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx26
+        )
         self.gridLayout_2.addWidget(self.groupBox2, 0, 1, 1, 1)
         self.tabAxisSetup.addTab(self.tab, "")
         self.tab1 = QtWidgets.QWidget()
@@ -243,79 +277,93 @@ class UiFormAxisSettings:
         self.textLabel2_10.setWordWrap(False)
         self.textLabel2_10.setObjectName("textLabel2_10")
         self.formLayout_3.setWidget(
-            0, QtWidgets.QFormLayout.LabelRole, self.textLabel2_10
+            0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_10
         )
         self.lneIx30 = QtWidgets.QLineEdit(self.groupBox1_2)
         self.lneIx30.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx30.setMaximumSize(QtCore.QSize(32233, 32767))
         self.lneIx30.setObjectName("lneIx30")
-        self.formLayout_3.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.lneIx30)
+        self.formLayout_3.setWidget(
+            0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx30
+        )
         self.textLabel2_2_3 = QtWidgets.QLabel(self.groupBox1_2)
         self.textLabel2_2_3.setWordWrap(False)
         self.textLabel2_2_3.setObjectName("textLabel2_2_3")
         self.formLayout_3.setWidget(
-            1, QtWidgets.QFormLayout.LabelRole, self.textLabel2_2_3
+            1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_2_3
         )
         self.lneIx31 = QtWidgets.QLineEdit(self.groupBox1_2)
         self.lneIx31.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx31.setMaximumSize(QtCore.QSize(32233, 32767))
         self.lneIx31.setObjectName("lneIx31")
-        self.formLayout_3.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.lneIx31)
+        self.formLayout_3.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx31
+        )
         self.textLabel2_3_3 = QtWidgets.QLabel(self.groupBox1_2)
         self.textLabel2_3_3.setWordWrap(False)
         self.textLabel2_3_3.setObjectName("textLabel2_3_3")
         self.formLayout_3.setWidget(
-            2, QtWidgets.QFormLayout.LabelRole, self.textLabel2_3_3
+            2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_3_3
         )
         self.lneIx32 = QtWidgets.QLineEdit(self.groupBox1_2)
         self.lneIx32.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx32.setMaximumSize(QtCore.QSize(32233, 32767))
         self.lneIx32.setObjectName("lneIx32")
-        self.formLayout_3.setWidget(2, QtWidgets.QFormLayout.FieldRole, self.lneIx32)
+        self.formLayout_3.setWidget(
+            2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx32
+        )
         self.textLabel2_4_3 = QtWidgets.QLabel(self.groupBox1_2)
         self.textLabel2_4_3.setWordWrap(False)
         self.textLabel2_4_3.setObjectName("textLabel2_4_3")
         self.formLayout_3.setWidget(
-            3, QtWidgets.QFormLayout.LabelRole, self.textLabel2_4_3
+            3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_4_3
         )
         self.lneIx33 = QtWidgets.QLineEdit(self.groupBox1_2)
         self.lneIx33.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx33.setMaximumSize(QtCore.QSize(32233, 32767))
         self.lneIx33.setObjectName("lneIx33")
-        self.formLayout_3.setWidget(3, QtWidgets.QFormLayout.FieldRole, self.lneIx33)
+        self.formLayout_3.setWidget(
+            3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx33
+        )
         self.textLabel2_5_3 = QtWidgets.QLabel(self.groupBox1_2)
         self.textLabel2_5_3.setWordWrap(False)
         self.textLabel2_5_3.setObjectName("textLabel2_5_3")
         self.formLayout_3.setWidget(
-            4, QtWidgets.QFormLayout.LabelRole, self.textLabel2_5_3
+            4, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_5_3
         )
         self.lneIx34 = QtWidgets.QLineEdit(self.groupBox1_2)
         self.lneIx34.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx34.setMaximumSize(QtCore.QSize(32233, 32767))
         self.lneIx34.setObjectName("lneIx34")
-        self.formLayout_3.setWidget(4, QtWidgets.QFormLayout.FieldRole, self.lneIx34)
+        self.formLayout_3.setWidget(
+            4, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx34
+        )
         self.textLabel2_10_2 = QtWidgets.QLabel(self.groupBox1_2)
         self.textLabel2_10_2.setWordWrap(False)
         self.textLabel2_10_2.setObjectName("textLabel2_10_2")
         self.formLayout_3.setWidget(
-            5, QtWidgets.QFormLayout.LabelRole, self.textLabel2_10_2
+            5, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_10_2
         )
         self.lneIx35 = QtWidgets.QLineEdit(self.groupBox1_2)
         self.lneIx35.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx35.setMaximumSize(QtCore.QSize(32233, 32767))
         self.lneIx35.setObjectName("lneIx35")
-        self.formLayout_3.setWidget(5, QtWidgets.QFormLayout.FieldRole, self.lneIx35)
+        self.formLayout_3.setWidget(
+            5, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx35
+        )
         self.textLabel2_10_2_2 = QtWidgets.QLabel(self.groupBox1_2)
         self.textLabel2_10_2_2.setWordWrap(False)
         self.textLabel2_10_2_2.setObjectName("textLabel2_10_2_2")
         self.formLayout_3.setWidget(
-            6, QtWidgets.QFormLayout.LabelRole, self.textLabel2_10_2_2
+            6, QtWidgets.QFormLayout.ItemRole.LabelRole, self.textLabel2_10_2_2
         )
         self.lneIx65 = QtWidgets.QLineEdit(self.groupBox1_2)
         self.lneIx65.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx65.setMaximumSize(QtCore.QSize(32233, 32767))
         self.lneIx65.setObjectName("lneIx65")
-        self.formLayout_3.setWidget(6, QtWidgets.QFormLayout.FieldRole, self.lneIx65)
+        self.formLayout_3.setWidget(
+            6, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx65
+        )
         self.gridLayout.addWidget(self.groupBox1_2, 0, 0, 2, 1)
         self.groupBox1_2_2 = QtWidgets.QGroupBox(self.tab1)
         size_policy = QtWidgets.QSizePolicy(
@@ -330,7 +378,7 @@ class UiFormAxisSettings:
         self.groupBox1_2_2.setObjectName("groupBox1_2_2")
         self.formLayout_4 = QtWidgets.QFormLayout(self.groupBox1_2_2)
         self.formLayout_4.setFieldGrowthPolicy(
-            QtWidgets.QFormLayout.AllNonFixedFieldsGrow
+            QtWidgets.QFormLayout.FieldGrowthPolicy.AllNonFixedFieldsGrow
         )
         self.formLayout_4.setContentsMargins(11, 11, 11, 11)
         self.formLayout_4.setSpacing(6)
@@ -339,51 +387,53 @@ class UiFormAxisSettings:
         self.lLoopSelect.setWordWrap(False)
         self.lLoopSelect.setObjectName("lLoopSelect")
         self.formLayout_4.setWidget(
-            0, QtWidgets.QFormLayout.LabelRole, self.lLoopSelect
+            0, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lLoopSelect
         )
         self.lneLoopSelect = QtWidgets.QLineEdit(self.groupBox1_2_2)
         self.lneLoopSelect.setMinimumSize(QtCore.QSize(60, 0))
         self.lneLoopSelect.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneLoopSelect.setObjectName("lneLoopSelect")
         self.formLayout_4.setWidget(
-            0, QtWidgets.QFormLayout.FieldRole, self.lneLoopSelect
+            0, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneLoopSelect
         )
         self.lCaptureOn = QtWidgets.QLabel(self.groupBox1_2_2)
         self.lCaptureOn.setWordWrap(False)
         self.lCaptureOn.setObjectName("lCaptureOn")
-        self.formLayout_4.setWidget(1, QtWidgets.QFormLayout.LabelRole, self.lCaptureOn)
+        self.formLayout_4.setWidget(
+            1, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lCaptureOn
+        )
         self.lneCaptureOn = QtWidgets.QLineEdit(self.groupBox1_2_2)
         self.lneCaptureOn.setMinimumSize(QtCore.QSize(60, 0))
         self.lneCaptureOn.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneCaptureOn.setObjectName("lneCaptureOn")
         self.formLayout_4.setWidget(
-            1, QtWidgets.QFormLayout.FieldRole, self.lneCaptureOn
+            1, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneCaptureOn
         )
         self.lCaptureFlag = QtWidgets.QLabel(self.groupBox1_2_2)
         self.lCaptureFlag.setWordWrap(False)
         self.lCaptureFlag.setObjectName("lCaptureFlag")
         self.formLayout_4.setWidget(
-            2, QtWidgets.QFormLayout.LabelRole, self.lCaptureFlag
+            2, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lCaptureFlag
         )
         self.lneCaptureFlag = QtWidgets.QLineEdit(self.groupBox1_2_2)
         self.lneCaptureFlag.setMinimumSize(QtCore.QSize(60, 0))
         self.lneCaptureFlag.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneCaptureFlag.setObjectName("lneCaptureFlag")
         self.formLayout_4.setWidget(
-            2, QtWidgets.QFormLayout.FieldRole, self.lneCaptureFlag
+            2, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneCaptureFlag
         )
         self.lOutputMode = QtWidgets.QLabel(self.groupBox1_2_2)
         self.lOutputMode.setWordWrap(False)
         self.lOutputMode.setObjectName("lOutputMode")
         self.formLayout_4.setWidget(
-            3, QtWidgets.QFormLayout.LabelRole, self.lOutputMode
+            3, QtWidgets.QFormLayout.ItemRole.LabelRole, self.lOutputMode
         )
         self.lneOutputMode = QtWidgets.QLineEdit(self.groupBox1_2_2)
         self.lneOutputMode.setMinimumSize(QtCore.QSize(60, 0))
         self.lneOutputMode.setMaximumSize(QtCore.QSize(32222, 32767))
         self.lneOutputMode.setObjectName("lneOutputMode")
         self.formLayout_4.setWidget(
-            3, QtWidgets.QFormLayout.FieldRole, self.lneOutputMode
+            3, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneOutputMode
         )
         self.gridLayout.addWidget(self.groupBox1_2_2, 0, 1, 1, 1)
         spacer_item = QtWidgets.QSpacerItem(

@@ -70,7 +70,7 @@ class PmacGatherTest(unittest.TestCase):
 
     def test_gather_config(self):
         mid = QPoint(2, int(self.obj.chkPlot1.height() / 2))
-        QTest.mouseClick(self.obj.chkPlot1, Qt.LeftButton, pos=mid)
+        QTest.mouseClick(self.obj.chkPlot1, Qt.MouseButton.LeftButton, pos=mid)
         assert self.obj.gather_config() is True
 
     def test_gather_setup(self):
@@ -92,14 +92,14 @@ class PmacGatherTest(unittest.TestCase):
     @patch("dls_pmac_control.gather.PmacGatherform.calc_sample_time")
     def test_change_no_samples(self, mock_calc):
         self.obj.lneNumberSamples.setText("1000")
-        QTest.keyClick(self.obj.lneNumberSamples, Qt.Key_Enter)
+        QTest.keyClick(self.obj.lneNumberSamples, Qt.Key.Key_Enter)
         assert self.obj.nGatherPoints == 1000
         assert self.obj.nServoCyclesGather == 10
 
     @patch("dls_pmac_control.gather.PmacGatherform.calc_sample_time")
     def test_change_sample_time(self, mock_calc):
         self.obj.lneSampleTime.setText("5")
-        QTest.keyClick(self.obj.lneSampleTime, Qt.Key_Enter)
+        QTest.keyClick(self.obj.lneSampleTime, Qt.Key.Key_Enter)
         assert self.obj.nServoCyclesGather == 5
         assert self.obj.nGatherPoints == 10
 
@@ -107,7 +107,7 @@ class PmacGatherTest(unittest.TestCase):
         self.obj.nServoCyclesGather = 10
         self.obj.nGatherPoints = 100
         self.obj.gather_config = Mock()
-        QTest.keyClick(self.obj.btnApplyConf, Qt.Key_Enter)
+        QTest.keyClick(self.obj.btnApplyConf, Qt.Key.Key_Enter)
         self.assertTrue(self.obj.btnSetup.isEnabled())
         self.assertFalse(self.obj.btnTrigger.isEnabled())
         self.assertFalse(self.obj.btnCollect.isEnabled())
@@ -116,7 +116,7 @@ class PmacGatherTest(unittest.TestCase):
     @patch("dls_pmac_control.gather.PmacGatherform.gather_setup")
     def test_setup_clicked(self, mock_setup):
         self.obj.btnSetup.setEnabled(True)
-        QTest.mouseClick(self.obj.btnSetup, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnSetup, Qt.MouseButton.LeftButton)
         assert mock_setup.called
         self.assertTrue(self.obj.btnSetup.isEnabled())
         self.assertTrue(self.obj.btnTrigger.isEnabled())
@@ -154,7 +154,7 @@ class PmacGatherTest(unittest.TestCase):
     @patch("dls_pmac_control.gather.PmacGatherform.collect_data")
     def test_collect_clicked(self, mock_collect, mock_plot):
         self.obj.btnCollect.setEnabled(True)
-        QTest.mouseClick(self.obj.btnCollect, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnCollect, Qt.MouseButton.LeftButton)
         assert mock_collect.called
         assert mock_plot.called
         self.assertTrue(self.obj.btnSetup.isEnabled())
@@ -186,7 +186,7 @@ class PmacGatherTest(unittest.TestCase):
         self.obj.lstChannels[0].dataSourceInfo = {"desc": "Test desc"}
         # click save
         self.obj.btnSave.setEnabled(True)
-        QTest.mouseClick(self.obj.btnSave, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnSave, Qt.MouseButton.LeftButton)
         assert mock_dialog.called
         # assert file contents are as expected
         with open(test_file) as f:
@@ -213,14 +213,14 @@ class PpmacGatherTest(unittest.TestCase):
     @patch("PyQt6.QtWidgets.QMessageBox.information")
     def test_change_no_samples(self, mock_box):
         self.obj.lneNumberSamples.setText("1000")
-        QTest.keyClick(self.obj.lneNumberSamples, Qt.Key_Enter)
+        QTest.keyClick(self.obj.lneNumberSamples, Qt.Key.Key_Enter)
         assert self.obj.nGatherPoints == 1000
         assert self.obj.nServoCyclesGather == 0
 
     @patch("PyQt6.QtWidgets.QMessageBox.information")
     def test_change_sample_time(self, mock_box):
         self.obj.lneSampleTime.setText("5")
-        QTest.keyClick(self.obj.lneSampleTime, Qt.Key_Enter)
+        QTest.keyClick(self.obj.lneSampleTime, Qt.Key.Key_Enter)
         assert self.obj.nGatherPoints == 0
         assert self.obj.nServoCyclesGather == 5
 
@@ -238,7 +238,7 @@ class PpmacGatherTest(unittest.TestCase):
         mock_config.return_value = True
         self.obj.nServoCyclesGather = 10
         self.obj.nGatherPoints = 100
-        QTest.keyClick(self.obj.btnApplyConf, Qt.Key_Enter)
+        QTest.keyClick(self.obj.btnApplyConf, Qt.Key.Key_Enter)
         assert mock_config.called
         self.assertTrue(self.obj.btnSetup.isEnabled())
         self.assertFalse(self.obj.btnTrigger.isEnabled())
@@ -290,7 +290,7 @@ class PpmacGatherTest(unittest.TestCase):
     @patch("dls_pmac_control.ppmacgather.PpmacGatherform.collect_data")
     def test_collect_clicked(self, mock_collect, mock_plot):
         self.obj.btnCollect.setEnabled(True)
-        QTest.mouseClick(self.obj.btnCollect, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnCollect, Qt.MouseButton.LeftButton)
         assert mock_collect.called
         assert mock_plot.called
         self.assertTrue(self.obj.btnSetup.isEnabled())
@@ -318,7 +318,7 @@ class PpmacGatherTest(unittest.TestCase):
         self.obj.lstChannels[0].dataSourceInfo = {"desc": "Test desc"}
         # click save
         self.obj.btnSave.setEnabled(True)
-        QTest.mouseClick(self.obj.btnSave, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnSave, Qt.MouseButton.LeftButton)
         assert mock_dialog.called
         # assert file contents are as expected
         with open(test_file) as f:
