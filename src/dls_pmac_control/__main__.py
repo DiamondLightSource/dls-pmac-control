@@ -695,13 +695,13 @@ class Controlform(QMainWindow, UiControlForm):
                             continue
                     else:
                         if motor_row == "G":
-                            self.global_status_screen.updateStatus(int(value[0], 16))
+                            self.global_status_screen.update_status(int(value[0], 16))
                             continue
                         if motor_row.startswith("CS"):
-                            self.cs_status_screen.updateStatus(int(value[0], 16))
+                            self.cs_status_screen.update_status(int(value[0], 16))
                             continue
                         if motor_row.startswith("FEED"):
-                            self.cs_status_screen.updateFeed(
+                            self.cs_status_screen.update_feed(
                                 int(round(float(value[0])))
                             )
                             continue
@@ -811,7 +811,7 @@ class Controlform(QMainWindow, UiControlForm):
                             self.pixLoLim.setPixmap(self.amberLedOn)
                         else:
                             self.pixLoLim.setPixmap(self.redLedOff)
-                        self.status_screen.updateStatus(status_word)
+                        self.status_screen.update_status(status_word)
                         self.ppmacstatusScreen.update_status(status_word)
 
                 # set controller status indicators on main window
