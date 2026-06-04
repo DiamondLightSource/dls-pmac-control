@@ -1,9 +1,3 @@
-# Form implementation generated from reading ui file 'src/dls_pmac_control/formCSStatus.ui'
-#
-# Created by: PyQt6 UI code generator 5.12.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt6 import QtCore, QtWidgets
 
 

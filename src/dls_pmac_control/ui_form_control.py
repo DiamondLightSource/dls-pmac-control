@@ -1,9 +1,3 @@
-# Form implementation generated from reading ui file 'dls_pmac_control/formControl.ui'
-#
-# Created by: PyQt6 UI code generator 5.12.2
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt6 import QtCore, QtGui, QtWidgets
 
 
