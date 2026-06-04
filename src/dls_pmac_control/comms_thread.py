@@ -8,7 +8,7 @@ from dls_pmaclib.dls_pmacremote import (
     PmacSerialInterface,
     PPmacSshInterface,
 )
-from PyQt5.QtCore import QCoreApplication, QEvent
+from PyQt6.QtCore import QCoreApplication, QEvent
 
 
 class CustomEvent(QEvent):
@@ -35,7 +35,7 @@ class CommsThread:
         self.updateReadyEvent = None
         # Flags controlling polling of axis position/velocity/following error
         self.disablePollingStatus = False
-        self.updateThreadHandle = threading.Thread(target=self.updateThread)
+        self.updateThreadHandle = threading.Thread(target=self.update_thread)
         self.updateThreadHandle.start()
         self.max_pollrate = None
         self.lineNumber = 0
@@ -59,31 +59,31 @@ class CommsThread:
     def read_watch(self, name):
         return self._watch_window[name]
 
-    def sendTick(self, lineNumber, err):
+    def send_tick(self, line_number, err):
         # Post a Qt event with current progress data
-        ev = CustomEvent(self.parent.progressEventType, (lineNumber, err))
+        ev = CustomEvent(self.parent.progressEventType, (line_number, err))
         QCoreApplication.postEvent(self.parent, ev)
 
-    def sendComplete(self, message):
+    def send_complete(self, message):
         self.gen = None
-        evDone = CustomEvent(self.parent.downloadDoneEventType, message)
-        QCoreApplication.postEvent(self.parent, evDone)
+        ev_done = CustomEvent(self.parent.downloadDoneEventType, message)
+        QCoreApplication.postEvent(self.parent, ev_done)
 
         # Thread that sends the PMAC command to retrieve status, position,
         # velocity and following error for each motor.
 
     # The thread then puts the retrieved data on a queue which is read by the
     # gui.
-    def updateThread(self):
+    def update_thread(self):
         die = False
         while die is not True:
             try:
-                die = self.updateFunc()
+                die = self.update_func()
             except Exception:
                 traceback.print_exc()
                 continue
 
-    def updateFunc(self):
+    def update_func(self):
         try:
             # see if the gui wants us to do anything
             cmd, data = self.inputQueue.get(block=False)
@@ -98,14 +98,14 @@ class CommsThread:
                 try:
                     self.gen = self.parent.pmac.sendSeries(data)
                 except Exception:
-                    self.sendComplete("Couldn't start download")
+                    self.send_complete("Couldn't start download")
                     traceback.print_exc()
             elif cmd == "disablePollingStatus":
                 self.disablePollingStatus = data
             elif cmd == "cancelSendSeries":
                 if self.gen:
                     self.gen.close()
-                    self.sendComplete("Download cancelled by the user")
+                    self.send_complete("Download cancelled by the user")
             else:
                 print(f"WARNING: don't know what to do with cmd {cmd}")
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
@@ -115,24 +115,24 @@ class CommsThread:
             # should be downloading a text file
             try:
                 (
-                    wasSuccessful,
+                    was_successful,
                     self.lineNumber,
                     command,
-                    pmacResponseStr,
+                    pmac_response_str,
                 ) = self.gen.__next__()
             except StopIteration:
-                self.sendComplete(
+                self.send_complete(
                     "Downloaded " + str(self.lineNumber) + " lines from pmc file."
                 )
             else:
                 err = ""
-                if not wasSuccessful:
+                if not was_successful:
                     err = "{}: command '{}' generated '{}'".format(
                         self.lineNumber,
                         command,
-                        pmacResponseStr.replace("\r", " ").replace("\x07", ""),
+                        pmac_response_str.replace("\r", " ").replace("\x07", ""),
                     )
-                self.sendTick(self.lineNumber, err)
+                self.send_tick(self.lineNumber, err)
             return
         if self.disablePollingStatus:
             time.sleep(0.1)
@@ -152,34 +152,34 @@ class CommsThread:
             # Add the 7 segment display status query
             cmd = f"i65???&{self.CSNum}??%"
         axes = self.parent.pmac.getNumberOfAxes() + 1
-        for motorNo in range(1, axes):
-            cmd = cmd + "#" + str(motorNo) + "?PVF "
+        for motor_no in range(1, axes):
+            cmd = cmd + "#" + str(motor_no) + "?PVF "
             # Amplifier status checks only apply to the first 8 axes
-            if motorNo < 9:
+            if motor_no < 9:
                 if isinstance(self.parent.pmac, PPmacSshInterface):
                     # PowerBrick channels are zero-indexed
                     cmd = (
                         cmd
                         + "BrickLV.Chan["
-                        + str(motorNo - 1)
+                        + str(motor_no - 1)
                         + "].I2tFaultStatus BrickLV.Chan["
-                        + str(motorNo - 1)
+                        + str(motor_no - 1)
                         + "].OverCurrent"
                     )
                 else:
                     # Add a dummy request to keep the request chunks
                     # the same length (p99 always returns zero)
-                    cmd = cmd + "m" + str(motorNo) + "90 p99"
+                    cmd = cmd + "m" + str(motor_no) + "90 p99"
             else:
                 # Use two dummy requests to keep the request chunks
                 # the same length (p99 always returns zero)
                 cmd = cmd + "p99 p99"
 
         # send polling command
-        (retStr, wasSuccessful) = self.parent.pmac.sendCommand(cmd)
+        (ret_str, was_successful) = self.parent.pmac.sendCommand(cmd)
         with self.lock:
             # send watch window commands
-            valueListWatch = []
+            value_list_watch = []
             for key in self._watch_window:
                 (ret, success) = self.parent.pmac.sendCommand(key)
                 ret = ret.rstrip("\x06\r")
@@ -187,53 +187,53 @@ class CommsThread:
                     ret = "Error"
                 # update watches dict
                 self._watch_window[key] = ret
-                valueListWatch.append(ret)
-            self.watchesQueue.put(valueListWatch)
+                value_list_watch.append(ret)
+            self.watchesQueue.put(value_list_watch)
 
-        if wasSuccessful:
-            valueList = retStr.rstrip("\x06\r").split("\r")
+        if was_successful:
+            value_list = ret_str.rstrip("\x06\r").split("\r")
             # fourth is the PMAC identity
-            if valueList[0].startswith("\x07"):
+            if value_list[0].startswith("\x07"):
                 # error, probably in buffer
-                print(f"i65 returned {valueList[0].__repr__()}, sending CLOSE command")
+                print(f"i65 returned {value_list[0].__repr__()}, sending CLOSE command")
                 self.parent.pmac.sendCommand("CLOSE")
                 return
 
             # If we got a malformed response, abort now before writing anything
             # to the result queue.
-            if len(valueList) < 4:
+            if len(value_list) < 4:
                 if self.parent.verboseMode:
-                    print("Received malformed response to poll request: ", valueList)
+                    print("Received malformed response to poll request: ", value_list)
                 return
 
             # Identifier i65
-            self.resultQueue.put([valueList[0], 0, 0, 0, 0, 0, "IDENT"])
+            self.resultQueue.put([value_list[0], 0, 0, 0, 0, 0, "IDENT"])
             # Global status
-            self.resultQueue.put([valueList[1], 0, 0, 0, 0, 0, "G"])
+            self.resultQueue.put([value_list[1], 0, 0, 0, 0, 0, "G"])
             # CS status
-            self.resultQueue.put([valueList[2], 0, 0, 0, 0, 0, f"CS{self.CSNum}"])
+            self.resultQueue.put([value_list[2], 0, 0, 0, 0, 0, f"CS{self.CSNum}"])
             # Fedrate
-            self.resultQueue.put([valueList[3], 0, 0, 0, 0, 0, f"FEED{self.CSNum}"])
+            self.resultQueue.put([value_list[3], 0, 0, 0, 0, 0, f"FEED{self.CSNum}"])
 
             if isinstance(self.parent.pmac, PPmacSshInterface):
                 # Brick Under Voltage Status
-                self.resultQueue.put([valueList[4], 0, 0, 0, 0, 0, "UVOL"])
+                self.resultQueue.put([value_list[4], 0, 0, 0, 0, 0, "UVOL"])
                 # Brick Over Voltage Status
-                self.resultQueue.put([valueList[5], 0, 0, 0, 0, 0, "OVOL"])
+                self.resultQueue.put([value_list[5], 0, 0, 0, 0, 0, "OVOL"])
                 # Brick Over Temperature Status
-                self.resultQueue.put([valueList[6], 0, 0, 0, 0, 0, "OTEMP"])
-                valueList = valueList[7:]
+                self.resultQueue.put([value_list[6], 0, 0, 0, 0, 0, "OTEMP"])
+                value_list = value_list[7:]
             else:
-                valueList = valueList[4:]
+                value_list = value_list[4:]
             # All request chunks contain 7 elements
             cols = 6
-            for motorRow, i in enumerate(range(0, len(valueList), cols)):
-                returnList = valueList[i : i + cols]
-                returnList.append(motorRow)
-                self.resultQueue.put(returnList, False)
+            for motor_row, i in enumerate(range(0, len(value_list), cols)):
+                return_list = value_list[i : i + cols]
+                return_list.append(motor_row)
+                self.resultQueue.put(return_list, False)
 
-            evUpdatesReady = CustomEvent(self.parent.updatesReadyEventType, None)
-            QCoreApplication.postEvent(self.parent, evUpdatesReady)
+            ev_updates_ready = CustomEvent(self.parent.updatesReadyEventType, None)
+            QCoreApplication.postEvent(self.parent, ev_updates_ready)
         else:
-            print(f'WARNING: Could not poll PMAC for motor status ("{retStr}")')
+            print(f'WARNING: Could not poll PMAC for motor status ("{ret_str}")')
         time.sleep(0.1)

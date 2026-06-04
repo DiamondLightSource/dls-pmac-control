@@ -2,19 +2,19 @@
 
 import sys
 
-from PyQt5.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
-from PyQt5.QtWidgets import QApplication, QDialog, QLabel
+from PyQt6.QtCore import QObject, Qt, pyqtSignal, pyqtSlot
+from PyQt6.QtWidgets import QApplication, QDialog, QLabel
 
-from dls_pmac_control.ui_formCSStatus import Ui_formCSStatus
-from dls_pmac_control.ui_formPpmacCSStatus import Ui_formPpmacCSStatus
+from dls_pmac_control.ui_form_cs_status import UiFormCSStatus
+from dls_pmac_control.ui_form_ppmac_cs_status import UiFormPpmacCSStatus
 
 
-class CSStatusForm(QDialog, Ui_formCSStatus):
+class CSStatusForm(QDialog, UiFormCSStatus):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
-        self.setupUi(self)
-        self.csSpin.valueChanged.connect(self.changeCS)
-        self.feedSpin.valueChanged.connect(self.setFeed)
+        self.setup_ui(self)
+        self.csSpin.valueChanged.connect(self.change_cs)
+        self.feedSpin.valueChanged.connect(self.set_feed)
 
         self.greenLedOn = parent.greenLedOn
         self.greenLedOff = parent.greenLedOff
@@ -22,8 +22,8 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
         self.redLedOff = parent.redLedOff
         self._feed = 100
 
-        ledGroupLayout = self.ledGroup.layout()
-        ledGroupLayout.setAlignment(Qt.AlignTop)
+        led_group_layout = self.ledGroup.layout()
+        led_group_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.lstLeds = []
         self.lstLabels = []
         self.lstLabelTexts = []
@@ -557,41 +557,41 @@ class CSStatusForm(QDialog, Ui_formCSStatus):
                 i = 24 * (word - 1) + bit
                 self.lstLeds.append(QLabel(self.ledGroup))
                 self.lstLabels.append(QLabel(f"Word{word + 1} Bit{bit}", self.ledGroup))
-                ledGroupLayout.addWidget(self.lstLeds[i], bit, word * 2)
-                ledGroupLayout.addWidget(self.lstLabels[i], bit, word * 2 + 1)
+                led_group_layout.addWidget(self.lstLeds[i], bit, word * 2)
+                led_group_layout.addWidget(self.lstLabels[i], bit, word * 2 + 1)
                 self.lstLeds[i].setPixmap(self.greenLedOff)
                 self.lstLabels[i].setText(self.lstLabelTexts[i])
                 self.lstLabels[i].setToolTip(self.lstTooltips[i])
 
-    def changeCS(self, CS):
-        self.parent().commsThread.CSNum = CS
-        self.ledGroup.setTitle("CS " + str(CS))
+    def change_cs(self, cs):
+        self.parent().commsThread.CSNum = cs
+        self.ledGroup.setTitle("CS " + str(cs))
 
-    def updateFeed(self, feed):
+    def update_feed(self, feed):
         self._feed = feed
         # Check for integer overflow before updating
         if not self.feedSpin.hasFocus() and (abs(feed) < 2**32):
             self.feedSpin.setValue(feed)
 
-    def setFeed(self, feed):
+    def set_feed(self, feed):
         if feed != self._feed:
             self.parent().pmac.sendCommand(f"&{self.parent().commsThread.CSNum}%{feed}")
 
-    def updateStatus(self, CSStatusHexWord):
+    def update_status(self, cs_status_hex_word):
         for bit in range(0, 72):
-            bitMask = 1 << bit
-            if bool(CSStatusHexWord & bitMask):
+            bit_mask = 1 << bit
+            if bool(cs_status_hex_word & bit_mask):
                 self.lstLeds[bit].setPixmap(self.greenLedOn)
             else:
                 self.lstLeds[bit].setPixmap(self.greenLedOff)
 
 
-class PpmacCSStatusForm(QDialog, Ui_formPpmacCSStatus):
+class PpmacCSStatusForm(QDialog, UiFormPpmacCSStatus):
     def __init__(self, parent):
         QDialog.__init__(self, parent)
-        self.setupUi(self)
-        self.csSpin.valueChanged.connect(self.changeCS)
-        self.feedSpin.valueChanged.connect(self.setFeed)
+        self.setup_ui(self)
+        self.csSpin.valueChanged.connect(self.change_cs)
+        self.feedSpin.valueChanged.connect(self.set_feed)
 
         self.greenLedOn = parent.greenLedOn
         self.greenLedOff = parent.greenLedOff
@@ -599,8 +599,8 @@ class PpmacCSStatusForm(QDialog, Ui_formPpmacCSStatus):
         self.redLedOff = parent.redLedOff
         self._feed = 100
 
-        ledGroupLayout = self.ledGroup.layout()
-        ledGroupLayout.setAlignment(Qt.AlignTop)
+        led_group_layout = self.ledGroup.layout()
+        led_group_layout.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.lstLeds = []
         self.lstLabels = []
         self.lstLabelTexts = []
@@ -766,29 +766,29 @@ class PpmacCSStatusForm(QDialog, Ui_formPpmacCSStatus):
                 i = 16 * (word - 1) + bit
                 self.lstLeds.append(QLabel(self.ledGroup))
                 self.lstLabels.append(QLabel(f"Word{word + 1} Bit{bit}", self.ledGroup))
-                ledGroupLayout.addWidget(self.lstLeds[i], bit, word * 2)
-                ledGroupLayout.addWidget(self.lstLabels[i], bit, word * 2 + 1)
+                led_group_layout.addWidget(self.lstLeds[i], bit, word * 2)
+                led_group_layout.addWidget(self.lstLabels[i], bit, word * 2 + 1)
                 self.lstLeds[i].setPixmap(self.greenLedOff)
                 self.lstLabels[i].setText(self.lstLabelTexts[i])
                 self.lstLabels[i].setToolTip(self.lstTooltips[i])
 
-    def changeCS(self, CS):
-        self.parent().commsThread.CSNum = CS
-        self.ledGroup.setTitle("CS " + str(CS))
+    def change_cs(self, cs):
+        self.parent().commsThread.CSNum = cs
+        self.ledGroup.setTitle("CS " + str(cs))
 
-    def updateFeed(self, feed):
+    def update_feed(self, feed):
         self._feed = feed
         if not self.feedSpin.hasFocus():
             self.feedSpin.setValue(feed)
 
-    def setFeed(self, feed):
+    def set_feed(self, feed):
         if feed != self._feed:
             self.parent().pmac.sendCommand(f"&{self.parent().commsThread.CSNum}%{feed}")
 
-    def updateStatus(self, CSStatusHexWord):
+    def update_status(self, cs_status_hex_word):
         for bit in range(0, 64):
-            bitMask = 1 << bit
-            if bool(CSStatusHexWord & bitMask):
+            bit_mask = 1 << bit
+            if bool(cs_status_hex_word & bit_mask):
                 self.lstLeds[bit].setPixmap(self.greenLedOn)
             else:
                 self.lstLeds[bit].setPixmap(self.greenLedOff)

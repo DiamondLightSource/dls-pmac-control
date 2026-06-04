@@ -1,32 +1,32 @@
 # Form implementation generated from reading ui file 'dls_pmac_control/formControl.ui'
 #
-# Created by: PyQt5 UI code generator 5.12.2
+# Created by: PyQt6 UI code generator 5.12.2
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt6 import QtCore, QtGui, QtWidgets
 
 
-class Ui_ControlForm:
-    def setupUi(self, ControlForm):
-        ControlForm.setObjectName("ControlForm")
-        ControlForm.resize(675, 805)
+class UiControlForm:
+    def setup_ui(self, control_form):
+        control_form.setObjectName("ControlForm")
+        control_form.resize(675, 805)
         font = QtGui.QFont()
-        ControlForm.setFont(font)
-        self.widget = QtWidgets.QWidget(ControlForm)
+        control_form.setFont(font)
+        self.widget = QtWidgets.QWidget(control_form)
         self.widget.setObjectName("widget")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.widget)
         self.gridLayout_2.setContentsMargins(11, 11, 11, 11)
         self.gridLayout_2.setSpacing(6)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.grpJog = QtWidgets.QGroupBox(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.grpJog.sizePolicy().hasHeightForWidth())
-        self.grpJog.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.grpJog.sizePolicy().hasHeightForWidth())
+        self.grpJog.setSizePolicy(size_policy)
         self.grpJog.setObjectName("grpJog")
         self.gridLayout = QtWidgets.QGridLayout(self.grpJog)
         self.gridLayout.setContentsMargins(11, 11, 11, 11)
@@ -36,13 +36,13 @@ class Ui_ControlForm:
         self.horizontalLayout.setSpacing(6)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.spnJogMotor = QtWidgets.QSpinBox(self.grpJog)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.spnJogMotor.sizePolicy().hasHeightForWidth())
-        self.spnJogMotor.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.spnJogMotor.sizePolicy().hasHeightForWidth())
+        self.spnJogMotor.setSizePolicy(size_policy)
         font = QtGui.QFont()
         font.setPointSize(16)
         self.spnJogMotor.setFont(font)
@@ -75,14 +75,24 @@ class Ui_ControlForm:
         self.btnJogTo.setEnabled(False)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(29, 95, 19))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.ButtonText, brush
+        )
         brush = QtGui.QBrush(QtGui.QColor(29, 95, 19))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Inactive,
+            QtGui.QPalette.ColorRole.ButtonText,
+            brush,
+        )
         brush = QtGui.QBrush(QtGui.QColor(115, 115, 115))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Disabled,
+            QtGui.QPalette.ColorRole.ButtonText,
+            brush,
+        )
         self.btnJogTo.setPalette(palette)
         self.btnJogTo.setObjectName("btnJogTo")
         self.gridLayout.addWidget(self.btnJogTo, 2, 3, 1, 1)
@@ -92,10 +102,12 @@ class Ui_ControlForm:
         self.gridLayout.addWidget(self.textLabel6, 3, 0, 1, 1)
         self.lblPosition = QtWidgets.QLabel(self.grpJog)
         self.lblPosition.setMinimumSize(QtCore.QSize(0, 28))
-        self.lblPosition.setFrameShape(QtWidgets.QFrame.Box)
-        self.lblPosition.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.lblPosition.setFrameShape(QtWidgets.QFrame.Shape.Box)
+        self.lblPosition.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.lblPosition.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
         )
         self.lblPosition.setWordWrap(False)
         self.lblPosition.setObjectName("lblPosition")
@@ -124,10 +136,12 @@ class Ui_ControlForm:
         self.gridLayout.addWidget(self.textLabel7, 4, 0, 1, 1)
         self.lblVelo = QtWidgets.QLabel(self.grpJog)
         self.lblVelo.setMinimumSize(QtCore.QSize(0, 28))
-        self.lblVelo.setFrameShape(QtWidgets.QFrame.Box)
-        self.lblVelo.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.lblVelo.setFrameShape(QtWidgets.QFrame.Shape.Box)
+        self.lblVelo.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.lblVelo.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
         )
         self.lblVelo.setWordWrap(False)
         self.lblVelo.setObjectName("lblVelo")
@@ -156,10 +170,12 @@ class Ui_ControlForm:
         self.gridLayout.addWidget(self.textLabel8, 5, 0, 1, 1)
         self.lblFolErr = QtWidgets.QLabel(self.grpJog)
         self.lblFolErr.setMinimumSize(QtCore.QSize(0, 28))
-        self.lblFolErr.setFrameShape(QtWidgets.QFrame.Box)
-        self.lblFolErr.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.lblFolErr.setFrameShape(QtWidgets.QFrame.Shape.Box)
+        self.lblFolErr.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.lblFolErr.setAlignment(
-            QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter
+            QtCore.Qt.AlignmentFlag.AlignRight
+            | QtCore.Qt.AlignmentFlag.AlignTrailing
+            | QtCore.Qt.AlignmentFlag.AlignVCenter
         )
         self.lblFolErr.setWordWrap(False)
         self.lblFolErr.setObjectName("lblFolErr")
@@ -180,28 +196,39 @@ class Ui_ControlForm:
         self.btnJogStop.setEnabled(False)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(232, 0, 3))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.ButtonText, brush
+        )
         brush = QtGui.QBrush(QtGui.QColor(232, 0, 3))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Inactive,
+            QtGui.QPalette.ColorRole.ButtonText,
+            brush,
+        )
         brush = QtGui.QBrush(QtGui.QColor(115, 115, 115))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Disabled,
+            QtGui.QPalette.ColorRole.ButtonText,
+            brush,
+        )
         self.btnJogStop.setPalette(palette)
         self.btnJogStop.setObjectName("btnJogStop")
         self.gridLayout.addWidget(self.btnJogStop, 5, 3, 1, 1)
         self.lneJogDist = QtWidgets.QLineEdit(self.grpJog)
         self.lneJogDist.setEnabled(False)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.MinimumExpanding,
+            QtWidgets.QSizePolicy.Policy.Fixed,
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lneJogDist.sizePolicy().hasHeightForWidth())
-        self.lneJogDist.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.lneJogDist.sizePolicy().hasHeightForWidth())
+        self.lneJogDist.setSizePolicy(size_policy)
         self.lneJogDist.setMinimumSize(QtCore.QSize(0, 28))
-        self.lneJogDist.setAlignment(QtCore.Qt.AlignRight)
+        self.lneJogDist.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
         self.lneJogDist.setObjectName("lneJogDist")
         self.gridLayout.addWidget(self.lneJogDist, 1, 1, 1, 1)
         self.textLabel4 = QtWidgets.QLabel(self.grpJog)
@@ -219,43 +246,56 @@ class Ui_ControlForm:
         self.gridLayout.addWidget(self.textLabel3, 2, 0, 1, 1)
         self.lneJogTo = QtWidgets.QLineEdit(self.grpJog)
         self.lneJogTo.setEnabled(False)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Fixed
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.MinimumExpanding,
+            QtWidgets.QSizePolicy.Policy.Fixed,
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lneJogTo.sizePolicy().hasHeightForWidth())
-        self.lneJogTo.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.lneJogTo.sizePolicy().hasHeightForWidth())
+        self.lneJogTo.setSizePolicy(size_policy)
         self.lneJogTo.setMinimumSize(QtCore.QSize(0, 28))
-        self.lneJogTo.setAlignment(QtCore.Qt.AlignRight)
+        self.lneJogTo.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
         self.lneJogTo.setObjectName("lneJogTo")
         self.gridLayout.addWidget(self.lneJogTo, 2, 1, 1, 1)
         self.btnKillMotor = QtWidgets.QPushButton(self.grpJog)
         self.btnKillMotor.setEnabled(False)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(232, 0, 3))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.ButtonText, brush
+        )
         brush = QtGui.QBrush(QtGui.QColor(232, 0, 3))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Inactive,
+            QtGui.QPalette.ColorRole.ButtonText,
+            brush,
+        )
         brush = QtGui.QBrush(QtGui.QColor(115, 115, 115))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Disabled,
+            QtGui.QPalette.ColorRole.ButtonText,
+            brush,
+        )
         self.btnKillMotor.setPalette(palette)
         self.btnKillMotor.setObjectName("btnKillMotor")
         self.gridLayout.addWidget(self.btnKillMotor, 6, 3, 1, 1)
         self.gridLayout_2.addWidget(self.grpJog, 0, 1, 1, 1)
         self.groupBox1 = QtWidgets.QGroupBox(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Maximum, QtWidgets.QSizePolicy.Fixed
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.groupBox1.sizePolicy().hasHeightForWidth())
-        self.groupBox1.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.groupBox1.sizePolicy().hasHeightForWidth())
+        self.groupBox1.setSizePolicy(size_policy)
         self.groupBox1.setAlignment(
-            QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop
+            QtCore.Qt.AlignmentFlag.AlignLeading
+            | QtCore.Qt.AlignmentFlag.AlignLeft
+            | QtCore.Qt.AlignmentFlag.AlignTop
         )
         self.groupBox1.setObjectName("groupBox1")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.groupBox1)
@@ -270,49 +310,51 @@ class Ui_ControlForm:
         self.gridLayout_3.setSpacing(6)
         self.gridLayout_3.setObjectName("gridLayout_3")
         self.rbUseTerminalServer = QtWidgets.QRadioButton(self.btnGroupProtocol)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(
             self.rbUseTerminalServer.sizePolicy().hasHeightForWidth()
         )
-        self.rbUseTerminalServer.setSizePolicy(sizePolicy)
+        self.rbUseTerminalServer.setSizePolicy(size_policy)
         self.rbUseTerminalServer.setChecked(False)
         self.rbUseTerminalServer.setObjectName("rbUseTerminalServer")
         self.gridLayout_3.addWidget(self.rbUseTerminalServer, 0, 0, 1, 1)
         self.rbUseSocket = QtWidgets.QRadioButton(self.btnGroupProtocol)
         self.rbUseSocket.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.rbUseSocket.sizePolicy().hasHeightForWidth())
-        self.rbUseSocket.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.rbUseSocket.sizePolicy().hasHeightForWidth())
+        self.rbUseSocket.setSizePolicy(size_policy)
         self.rbUseSocket.setObjectName("rbUseSocket")
         self.gridLayout_3.addWidget(self.rbUseSocket, 1, 0, 1, 1)
         self.rbUseSerial = QtWidgets.QRadioButton(self.btnGroupProtocol)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.rbUseSerial.sizePolicy().hasHeightForWidth())
-        self.rbUseSerial.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.rbUseSerial.sizePolicy().hasHeightForWidth())
+        self.rbUseSerial.setSizePolicy(size_policy)
         self.rbUseSerial.setChecked(True)
         self.rbUseSerial.setObjectName("rbUseSerial")
         self.gridLayout_3.addWidget(self.rbUseSerial, 2, 0, 1, 1)
         self.rbUseSsh = QtWidgets.QRadioButton(self.btnGroupProtocol)
         self.rbUseSsh.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.rbUseSsh.sizePolicy().hasHeightForWidth())
-        self.rbUseSsh.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.rbUseSsh.sizePolicy().hasHeightForWidth())
+        self.rbUseSsh.setSizePolicy(size_policy)
         self.rbUseSsh.setObjectName("rbUseSsh")
         self.gridLayout_3.addWidget(self.rbUseSsh, 3, 0, 1, 1)
         self.verticalLayout.addWidget(self.btnGroupProtocol)
@@ -366,15 +408,15 @@ class Ui_ControlForm:
         self.hboxlayout1.addWidget(self.chkShowAll)
         self.gridLayout_2.addLayout(self.hboxlayout1, 7, 0, 1, 2)
         self.frame3 = QtWidgets.QFrame(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Fixed
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.frame3.sizePolicy().hasHeightForWidth())
-        self.frame3.setSizePolicy(sizePolicy)
-        self.frame3.setFrameShape(QtWidgets.QFrame.Box)
-        self.frame3.setFrameShadow(QtWidgets.QFrame.Sunken)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.frame3.sizePolicy().hasHeightForWidth())
+        self.frame3.setSizePolicy(size_policy)
+        self.frame3.setFrameShape(QtWidgets.QFrame.Shape.Box)
+        self.frame3.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.frame3.setObjectName("frame3")
         self.gridLayout_4 = QtWidgets.QGridLayout(self.frame3)
         self.gridLayout_4.setContentsMargins(11, 11, 11, 11)
@@ -414,23 +456,33 @@ class Ui_ControlForm:
         self.gridLayout_4.addWidget(self.btnGlobalStatus, 2, 6, 1, 1)
         self.btnKillAll = QtWidgets.QPushButton(self.frame3)
         self.btnKillAll.setEnabled(False)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Minimum
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btnKillAll.sizePolicy().hasHeightForWidth())
-        self.btnKillAll.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.btnKillAll.sizePolicy().hasHeightForWidth())
+        self.btnKillAll.setSizePolicy(size_policy)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(232, 0, 3))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Active, QtGui.QPalette.ColorRole.ButtonText, brush
+        )
         brush = QtGui.QBrush(QtGui.QColor(232, 0, 3))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Inactive,
+            QtGui.QPalette.ColorRole.ButtonText,
+            brush,
+        )
         brush = QtGui.QBrush(QtGui.QColor(115, 115, 115))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ButtonText, brush)
+        brush.setStyle(QtCore.Qt.BrushStyle.SolidPattern)
+        palette.setBrush(
+            QtGui.QPalette.ColorGroup.Disabled,
+            QtGui.QPalette.ColorRole.ButtonText,
+            brush,
+        )
         self.btnKillAll.setPalette(palette)
         self.btnKillAll.setObjectName("btnKillAll")
         self.gridLayout_4.addWidget(self.btnKillAll, 2, 7, 1, 1)
@@ -453,29 +505,35 @@ class Ui_ControlForm:
         self.gridLayout_4.addWidget(self.btnWatches, 2, 4, 1, 1)
         self.gridLayout_2.addWidget(self.frame3, 5, 0, 1, 2)
         self.splitter = QtWidgets.QSplitter(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Preferred,
+            QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.splitter.sizePolicy().hasHeightForWidth())
-        self.splitter.setSizePolicy(sizePolicy)
-        self.splitter.setOrientation(QtCore.Qt.Vertical)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.splitter.sizePolicy().hasHeightForWidth())
+        self.splitter.setSizePolicy(size_policy)
+        self.splitter.setOrientation(QtCore.Qt.Orientation.Vertical)
         self.splitter.setObjectName("splitter")
         self.table = QtWidgets.QTableWidget(self.splitter)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        sizePolicy.setHorizontalStretch(1)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.table.sizePolicy().hasHeightForWidth())
-        self.table.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(1)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.table.sizePolicy().hasHeightForWidth())
+        self.table.setSizePolicy(size_policy)
         self.table.setMinimumSize(QtCore.QSize(0, 0))
         font = QtGui.QFont()
         font.setPointSize(8)
         self.table.setFont(font)
-        self.table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
-        self.table.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
+        self.table.setSizeAdjustPolicy(
+            QtWidgets.QAbstractScrollArea.SizeAdjustPolicy.AdjustToContents
+        )
+        self.table.setSelectionMode(
+            QtWidgets.QAbstractItemView.SelectionMode.NoSelection
+        )
         self.table.setProperty("dragAutoScroll", False)
         self.table.setProperty("numRows", 32)
         self.table.setProperty("numCols", 5)
@@ -505,13 +563,14 @@ class Ui_ControlForm:
         self.table.verticalHeader().setDefaultSectionSize(20)
         self.txtShell = QtWidgets.QTextEdit(self.splitter)
         self.txtShell.setEnabled(True)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.Expanding,
+            QtWidgets.QSizePolicy.Policy.Expanding,
         )
-        sizePolicy.setHorizontalStretch(1)
-        sizePolicy.setVerticalStretch(1)
-        sizePolicy.setHeightForWidth(self.txtShell.sizePolicy().hasHeightForWidth())
-        self.txtShell.setSizePolicy(sizePolicy)
+        size_policy.setHorizontalStretch(1)
+        size_policy.setVerticalStretch(1)
+        size_policy.setHeightForWidth(self.txtShell.sizePolicy().hasHeightForWidth())
+        self.txtShell.setSizePolicy(size_policy)
         font = QtGui.QFont()
         font.setFamily("Courier")
         font.setPointSize(9)
@@ -524,15 +583,16 @@ class Ui_ControlForm:
         self.horizontalLayout_6.setSpacing(6)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.lblIdentity = QtWidgets.QLabel(self.widget)
-        sizePolicy = QtWidgets.QSizePolicy(
-            QtWidgets.QSizePolicy.MinimumExpanding, QtWidgets.QSizePolicy.Preferred
+        size_policy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Policy.MinimumExpanding,
+            QtWidgets.QSizePolicy.Policy.Preferred,
         )
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lblIdentity.sizePolicy().hasHeightForWidth())
-        self.lblIdentity.setSizePolicy(sizePolicy)
-        self.lblIdentity.setFrameShape(QtWidgets.QFrame.Box)
-        self.lblIdentity.setFrameShadow(QtWidgets.QFrame.Sunken)
+        size_policy.setHorizontalStretch(0)
+        size_policy.setVerticalStretch(0)
+        size_policy.setHeightForWidth(self.lblIdentity.sizePolicy().hasHeightForWidth())
+        self.lblIdentity.setSizePolicy(size_policy)
+        self.lblIdentity.setFrameShape(QtWidgets.QFrame.Shape.Box)
+        self.lblIdentity.setFrameShadow(QtWidgets.QFrame.Shadow.Sunken)
         self.lblIdentity.setWordWrap(False)
         self.lblIdentity.setObjectName("lblIdentity")
         self.horizontalLayout_6.addWidget(self.lblIdentity)
@@ -565,77 +625,77 @@ class Ui_ControlForm:
         self.lblOverTemperature.setObjectName("lblOverTemperature")
         self.horizontalLayout_6.addWidget(self.lblOverTemperature)
         self.gridLayout_2.addLayout(self.horizontalLayout_6, 3, 0, 1, 2)
-        ControlForm.setCentralWidget(self.widget)
+        control_form.setCentralWidget(self.widget)
 
-        self.retranslateUi(ControlForm)
-        self.spnJogMotor.valueChanged["int"].connect(ControlForm.jogChangeMotor)
-        self.btnJogPos.clicked.connect(ControlForm.jogPos)
-        self.btnSend.clicked.connect(ControlForm.sendSingleCommand)
-        self.lneSend.returnPressed.connect(ControlForm.sendSingleCommand)
-        self.lneJogTo.returnPressed.connect(ControlForm.jogGoToPosition)
+        self.retranslate_ui(control_form)
+        self.spnJogMotor.valueChanged["int"].connect(control_form.jog_change_motor)
+        self.btnJogPos.clicked.connect(control_form.jog_pos)
+        self.btnSend.clicked.connect(control_form.send_single_command)
+        self.lneSend.returnPressed.connect(control_form.send_single_command)
+        self.lneJogTo.returnPressed.connect(control_form.jog_go_to_position)
         self.lneServer.returnPressed.connect(self.lnePort.selectAll)
         self.lneServer.returnPressed.connect(self.lnePort.setFocus)
         self.lnePort.returnPressed.connect(self.rbUseTerminalServer.setFocus)
         self.rbUseTerminalServer.clicked.connect(
-            ControlForm.useTerminalServerConnection
+            control_form.use_terminal_server_connection
         )
-        self.rbUseSocket.clicked.connect(ControlForm.useSocketConnection)
-        self.rbUseSsh.clicked.connect(ControlForm.useSshConnection)
-        self.btnDisconnect.clicked.connect(ControlForm.remoteDisconnect)
-        self.btnConnect.clicked.connect(ControlForm.remoteConnect)
-        self.lnePort.returnPressed.connect(ControlForm.remoteConnect)
-        self.btnKillMotor.clicked.connect(ControlForm.killMotor)
-        self.chkJogInc.toggled["bool"].connect(ControlForm.jogIncrementally)
-        self.btnJogStop.clicked.connect(ControlForm.jogStop)
-        self.btnJogTo.clicked.connect(ControlForm.jogGoToPosition)
-        self.btnSettings.clicked.connect(ControlForm.jogParameters)
-        self.btnStatus.clicked.connect(ControlForm.statusScreen)
-        self.btnJogNeg.clicked.connect(ControlForm.jogNeg)
+        self.rbUseSocket.clicked.connect(control_form.use_socket_connection)
+        self.rbUseSsh.clicked.connect(control_form.use_ssh_connection)
+        self.btnDisconnect.clicked.connect(control_form.remote_disconnect)
+        self.btnConnect.clicked.connect(control_form.remote_connect)
+        self.lnePort.returnPressed.connect(control_form.remote_connect)
+        self.btnKillMotor.clicked.connect(control_form.kill_motor)
+        self.chkJogInc.toggled["bool"].connect(control_form.jog_incrementally)
+        self.btnJogStop.clicked.connect(control_form.jog_stop)
+        self.btnJogTo.clicked.connect(control_form.jog_go_to_position)
+        self.btnSettings.clicked.connect(control_form.jog_parameters)
+        self.btnStatus.clicked.connect(control_form.status_screen)
+        self.btnJogNeg.clicked.connect(control_form.jog_neg)
         self.table.cellDoubleClicked["int", "int"].connect(
-            ControlForm.chooseMotorFromTable
+            control_form.chooseMotorFromTable
         )
-        self.btnGather.clicked.connect(ControlForm.dataGather)
-        self.btnWatches.clicked.connect(ControlForm.watches)
-        self.btnPollingStatus.clicked.connect(ControlForm.pmacPollingStatus)
-        self.btnLoadFile.clicked.connect(ControlForm.pmacLoadConfig)
-        self.btnKillAll.clicked.connect(ControlForm.killAllMotors)
-        self.btnEnergise.clicked.connect(ControlForm.pmacEnergiseAxis)
-        self.btnCSStatus.clicked.connect(ControlForm.CSStatusScreen)
-        self.btnGlobalStatus.clicked.connect(ControlForm.GlobalStatusScreen)
-        self.btnHome.clicked.connect(ControlForm.jogHome)
-        self.rbUseSerial.clicked.connect(ControlForm.useSerial)
-        QtCore.QMetaObject.connectSlotsByName(ControlForm)
-        ControlForm.setTabOrder(self.rbUseTerminalServer, self.rbUseSocket)
-        ControlForm.setTabOrder(self.rbUseSocket, self.lneServer)
-        ControlForm.setTabOrder(self.lneServer, self.lnePort)
-        ControlForm.setTabOrder(self.lnePort, self.btnDisconnect)
-        ControlForm.setTabOrder(self.btnDisconnect, self.lneSend)
-        ControlForm.setTabOrder(self.lneSend, self.lneJogDist)
-        ControlForm.setTabOrder(self.lneJogDist, self.btnJogNeg)
-        ControlForm.setTabOrder(self.btnJogNeg, self.btnJogPos)
-        ControlForm.setTabOrder(self.btnJogPos, self.lneJogTo)
-        ControlForm.setTabOrder(self.lneJogTo, self.btnJogTo)
-        ControlForm.setTabOrder(self.btnJogTo, self.btnLoadFile)
-        ControlForm.setTabOrder(self.btnLoadFile, self.btnPollingStatus)
-        ControlForm.setTabOrder(self.btnPollingStatus, self.btnGather)
-        ControlForm.setTabOrder(self.btnGather, self.chkJogInc)
-        ControlForm.setTabOrder(self.chkJogInc, self.btnSend)
-        ControlForm.setTabOrder(self.btnSend, self.txtShell)
-        ControlForm.setTabOrder(self.txtShell, self.btnStatus)
-        ControlForm.setTabOrder(self.btnStatus, self.btnSettings)
-        ControlForm.setTabOrder(self.btnSettings, self.btnHome)
-        ControlForm.setTabOrder(self.btnHome, self.btnGlobalStatus)
-        ControlForm.setTabOrder(self.btnGlobalStatus, self.btnCSStatus)
-        ControlForm.setTabOrder(self.btnCSStatus, self.btnEnergise)
-        ControlForm.setTabOrder(self.btnEnergise, self.spnJogMotor)
-        ControlForm.setTabOrder(self.spnJogMotor, self.btnKillMotor)
-        ControlForm.setTabOrder(self.btnKillMotor, self.btnJogStop)
-        ControlForm.setTabOrder(self.btnJogStop, self.table)
-        ControlForm.setTabOrder(self.table, self.chkShowAll)
+        self.btnGather.clicked.connect(control_form.data_gather)
+        self.btnWatches.clicked.connect(control_form.watches)
+        self.btnPollingStatus.clicked.connect(control_form.pmac_polling_status)
+        self.btnLoadFile.clicked.connect(control_form.pmac_load_config)
+        self.btnKillAll.clicked.connect(control_form.kill_all_motors)
+        self.btnEnergise.clicked.connect(control_form.pmac_energise_axis)
+        self.btnCSStatus.clicked.connect(control_form.cs_status_screen)
+        self.btnGlobalStatus.clicked.connect(control_form.global_status_screen)
+        self.btnHome.clicked.connect(control_form.jog_home)
+        self.rbUseSerial.clicked.connect(control_form.use_serial)
+        QtCore.QMetaObject.connectSlotsByName(control_form)
+        control_form.setTabOrder(self.rbUseTerminalServer, self.rbUseSocket)
+        control_form.setTabOrder(self.rbUseSocket, self.lneServer)
+        control_form.setTabOrder(self.lneServer, self.lnePort)
+        control_form.setTabOrder(self.lnePort, self.btnDisconnect)
+        control_form.setTabOrder(self.btnDisconnect, self.lneSend)
+        control_form.setTabOrder(self.lneSend, self.lneJogDist)
+        control_form.setTabOrder(self.lneJogDist, self.btnJogNeg)
+        control_form.setTabOrder(self.btnJogNeg, self.btnJogPos)
+        control_form.setTabOrder(self.btnJogPos, self.lneJogTo)
+        control_form.setTabOrder(self.lneJogTo, self.btnJogTo)
+        control_form.setTabOrder(self.btnJogTo, self.btnLoadFile)
+        control_form.setTabOrder(self.btnLoadFile, self.btnPollingStatus)
+        control_form.setTabOrder(self.btnPollingStatus, self.btnGather)
+        control_form.setTabOrder(self.btnGather, self.chkJogInc)
+        control_form.setTabOrder(self.chkJogInc, self.btnSend)
+        control_form.setTabOrder(self.btnSend, self.txtShell)
+        control_form.setTabOrder(self.txtShell, self.btnStatus)
+        control_form.setTabOrder(self.btnStatus, self.btnSettings)
+        control_form.setTabOrder(self.btnSettings, self.btnHome)
+        control_form.setTabOrder(self.btnHome, self.btnGlobalStatus)
+        control_form.setTabOrder(self.btnGlobalStatus, self.btnCSStatus)
+        control_form.setTabOrder(self.btnCSStatus, self.btnEnergise)
+        control_form.setTabOrder(self.btnEnergise, self.spnJogMotor)
+        control_form.setTabOrder(self.spnJogMotor, self.btnKillMotor)
+        control_form.setTabOrder(self.btnKillMotor, self.btnJogStop)
+        control_form.setTabOrder(self.btnJogStop, self.table)
+        control_form.setTabOrder(self.table, self.chkShowAll)
 
-    def retranslateUi(self, ControlForm):
+    def retranslate_ui(self, control_form):
         _translate = QtCore.QCoreApplication.translate
-        ControlForm.setWindowTitle(
+        control_form.setWindowTitle(
             _translate("ControlForm", "Delta Tau motor controller")
         )
         self.grpJog.setTitle(_translate("ControlForm", "Jog ribbon"))

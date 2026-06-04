@@ -2,10 +2,10 @@ import unittest
 from os import path
 from unittest.mock import patch
 
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMainWindow
+from PyQt6.QtGui import QPixmap
+from PyQt6.QtWidgets import QMainWindow
 
-from dls_pmac_control.GlobalStatus import GlobalStatusForm, PpmacGlobalStatusForm
+from dls_pmac_control.global_status import GlobalStatusForm, PpmacGlobalStatusForm
 
 
 class DummyTestWidget(QMainWindow):
@@ -18,9 +18,9 @@ class DummyTestWidget(QMainWindow):
 
 
 class GlobalStatusTest(unittest.TestCase):
-    @patch("PyQt5.QtWidgets.QLabel.setToolTip")
-    @patch("PyQt5.QtWidgets.QLabel.setText")
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setToolTip")
+    @patch("PyQt6.QtWidgets.QLabel.setText")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_inital_form(self, mock_pixmap, mock_text, mock_tooltip):
         test_widget = DummyTestWidget()
         obj = GlobalStatusForm(test_widget)
@@ -32,20 +32,20 @@ class GlobalStatusTest(unittest.TestCase):
         assert mock_tooltip.call_count == len(obj.lstLabels)
         obj.close()
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
         test_widget = DummyTestWidget()
         obj = GlobalStatusForm(test_widget)
-        obj.updateStatus(0)
+        obj.update_status(0)
         mock_pixmap.assert_called_with(test_widget.greenLedOff)
         assert mock_pixmap.call_count == 2 * len(obj.lstLeds)
         obj.close()
 
 
 class PpmacGlobalStatusTest(unittest.TestCase):
-    @patch("PyQt5.QtWidgets.QLabel.setToolTip")
-    @patch("PyQt5.QtWidgets.QLabel.setText")
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setToolTip")
+    @patch("PyQt6.QtWidgets.QLabel.setText")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_inital_form(self, mock_pixmap, mock_text, mock_tooltip):
         test_widget = DummyTestWidget()
         obj = PpmacGlobalStatusForm(test_widget)
@@ -57,11 +57,11 @@ class PpmacGlobalStatusTest(unittest.TestCase):
         assert mock_tooltip.call_count == len(obj.lstLabels)
         obj.close()
 
-    @patch("PyQt5.QtWidgets.QLabel.setPixmap")
+    @patch("PyQt6.QtWidgets.QLabel.setPixmap")
     def test_update_status_all_off(self, mock_pixmap):
         test_widget = DummyTestWidget()
         obj = PpmacGlobalStatusForm(test_widget)
-        obj.updateStatus(0)
+        obj.update_status(0)
         mock_pixmap.assert_called_with(test_widget.greenLedOff)
         assert mock_pixmap.call_count == 2 * len(obj.lstLeds)
         obj.close()

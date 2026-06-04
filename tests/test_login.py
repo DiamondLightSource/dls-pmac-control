@@ -2,9 +2,9 @@ import sys
 import unittest
 from unittest.mock import patch
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtTest import QTest
-from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt6.QtCore import Qt
+from PyQt6.QtTest import QTest
+from PyQt6.QtWidgets import QApplication, QWidget
 
 from dls_pmac_control.login import Loginform
 
@@ -26,7 +26,7 @@ class LoginTest(unittest.TestCase):
     def test_ok_clicked(self, mock_accept):
         self.obj.lneUsername.setText("username")
         self.obj.lnePassword.setText("password")
-        QTest.mouseClick(self.obj.btnOK, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnOK, Qt.MouseButton.LeftButton)
         self.assertEqual(self.obj.username, "username")
         self.assertEqual(self.obj.password, "password")
         self.assertEqual(self.obj.lneUsername.text(), "username")
@@ -37,7 +37,7 @@ class LoginTest(unittest.TestCase):
     def test_cancel_clicked(self, mock_reject):
         self.obj.lneUsername.setText("username")
         self.obj.lnePassword.setText("password")
-        QTest.mouseClick(self.obj.btnCancel, Qt.LeftButton)
+        QTest.mouseClick(self.obj.btnCancel, Qt.MouseButton.LeftButton)
         self.assertEqual(self.obj.username, "")
         self.assertEqual(self.obj.password, "")
         self.assertEqual(self.obj.lneUsername.text(), "username")

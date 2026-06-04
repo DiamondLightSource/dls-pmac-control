@@ -3,32 +3,32 @@ import threading
 import time
 
 from numpy import arange
-from PyQt5.Qt import QPen
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QDialog, QFileDialog, QMessageBox
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPen
+from PyQt6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qwt import QwtPlotCurve
 
-from dls_pmac_control.gatherchannel import PpmacGatherChannel, ppmacDataSources
-from dls_pmac_control.ui_formGather import Ui_formGather
+from dls_pmac_control.gatherchannel import PpmacGatherChannel, ppmac_data_sources
+from dls_pmac_control.ui_form_gather import UiFormGather
 
 # TODO - this needs the logic decoupled from the GUI and moved into pmaclib
 #  work has started in pmaclib but currently duplicates code in this module
 
 
-class myThread(threading.Thread):
+class MyThread(threading.Thread):
     def __init__(self, instance, waittime):
         threading.Thread.__init__(self)
         self.waittime = waittime
         self.instance = instance
 
     def run(self):
-        PpmacGatherform.triggerWait(self.instance, self.waittime)
+        PpmacGatherform.trigger_wait(self.instance, self.waittime)
 
 
-class PpmacGatherform(QDialog, Ui_formGather):
-    def __init__(self, parent, currentMotor=1):
+class PpmacGatherform(QDialog, UiFormGather):
+    def __init__(self, parent, current_motor=1):
         QDialog.__init__(self, parent)
-        self.setupUi(self)
+        self.setup_ui(self)
 
         self.parent = parent
         if not self.parent:
@@ -91,38 +91,38 @@ class PpmacGatherform(QDialog, Ui_formGather):
 
         # initialise the combo-boxes with all the possible data points
         # that can be gathered.
-        for cmBox in self.lstComboboxes:
-            cmBox.clear()
-        for dataPoint in ppmacDataSources:
-            for cmBox in self.lstComboboxes:
-                cmBox.addItem(dataPoint["desc"])
+        for cm_box in self.lstComboboxes:
+            cm_box.clear()
+        for data_point in ppmac_data_sources:
+            for cm_box in self.lstComboboxes:
+                cm_box.addItem(data_point["desc"])
 
-    def gatherConfig(self):
+    def gather_config(self):
         # Clear the plot by setting empty plotitems
-        for _chIndex, ch in enumerate(self.lstChannels):
+        for _ch_index, ch in enumerate(self.lstChannels):
             ch.qwtCurve.setData([], [])
 
         # Reset the data channels from class PpmacGatherChannel
         self.lstChannels = []
 
         # Left or right Y axis
-        enableRight = False
-        enableLeft = False
+        enable_right = False
+        enable_left = False
 
         # use counter to find number of items to gather
         items = 0
 
         # Specify data to sample
-        for index, axisSpinBox in enumerate(self.lstSpinboxes):
-            cmBox = self.lstComboboxes[index]
-            chkBox = self.lstCheckboxes[index]
+        for index, axis_spin_box in enumerate(self.lstSpinboxes):
+            cm_box = self.lstComboboxes[index]
+            chk_box = self.lstCheckboxes[index]
 
-            addr_str = ppmacDataSources[cmBox.currentIndex()]["addr"]
+            addr_str = ppmac_data_sources[cm_box.currentIndex()]["addr"]
             gather_addr = f"Gather.Addr[{items}]"
-            addr = f"Motor[{axisSpinBox.value()}].{addr_str}"
+            addr = f"Motor[{axis_spin_box.value()}].{addr_str}"
             cmd = f"{gather_addr}={addr}"
 
-            if chkBox.isChecked():
+            if chk_box.isChecked():
                 items += 1
                 self.parent.pmac.sendCommand(cmd)
 
@@ -133,8 +133,8 @@ class PpmacGatherform(QDialog, Ui_formGather):
                 channel = PpmacGatherChannel(self.parent.pmac, curve)
                 self.lstChannels.append(channel)
 
-                channel.axisNo = axisSpinBox.value()
-                channel.descNo = cmBox.currentIndex()
+                channel.axisNo = axis_spin_box.value()
+                channel.descNo = cm_box.currentIndex()
 
                 # Set the colour of the graph
                 colour = self.lstColours[self.lstColourBoxes[index].currentIndex()]
@@ -142,18 +142,18 @@ class PpmacGatherform(QDialog, Ui_formGather):
                 # set the left or right Y axis
                 if self.lstCmbYaxis[index].currentIndex() == 0:
                     channel.qwtCurve.setYAxis(self.qwtPlot.yLeft)
-                    enableLeft = True
+                    enable_left = True
                 elif self.lstCmbYaxis[index].currentIndex() == 1:
-                    enableRight = True
+                    enable_right = True
                     channel.qwtCurve.setYAxis(self.qwtPlot.yRight)
 
-        if enableLeft and enableRight:
+        if enable_left and enable_right:
             self.qwtPlot.enableAxis(self.qwtPlot.yLeft, True)
             self.qwtPlot.enableAxis(self.qwtPlot.yRight, True)
-        elif enableLeft:
+        elif enable_left:
             self.qwtPlot.enableAxis(self.qwtPlot.yLeft, True)
             self.qwtPlot.enableAxis(self.qwtPlot.yRight, False)
-        elif enableRight:
+        elif enable_right:
             self.qwtPlot.enableAxis(self.qwtPlot.yLeft, False)
             self.qwtPlot.enableAxis(self.qwtPlot.yRight, True)
         else:
@@ -164,7 +164,7 @@ class PpmacGatherform(QDialog, Ui_formGather):
         self.parent.pmac.sendCommand(f"Gather.items={items}")
         return True
 
-    def gatherSetup(self, numberOfSamples=1):
+    def gather_setup(self, number_of_samples=1):
         # set the sampling time (in servo cycles)
         self.parent.pmac.sendCommand(
             f"Gather.Period={int(str(self.lneSampleTime.text()))}"
@@ -175,18 +175,18 @@ class PpmacGatherform(QDialog, Ui_formGather):
         )
         return
 
-    def triggerWait(self, waittime):
+    def trigger_wait(self, waittime):
         time.sleep(waittime)
         self.btnCollect.setEnabled(True)
 
-    def gatherTrigger(self):
+    def gather_trigger(self):
         self.parent.pmac.sendCommand("Gather.enable=2")
         # gather time in secs
         gather_time = self.sampleTime * self.nGatherPoints / 1000.0
-        t = myThread(self, gather_time)
+        t = MyThread(self, gather_time)
         t.start()
 
-    def collectData(self):
+    def collect_data(self):
         # send gathered data to file on ppmac
         tmp_file = "../../var/ftp/usrflash/Temp/gather.txt"
         self.parent.pmac.sendSshCommand("gather -u " + tmp_file)
@@ -201,10 +201,10 @@ class PpmacGatherform(QDialog, Ui_formGather):
             )
             return
 
-    def parseData(self, lstDataStrings):
+    def parse_data(self, lst_data_strings):
         pass  # need to write code here
 
-    def plotData(self):
+    def plot_data(self):
         gather_file = "./gather.txt"
         # if gather file does not exist
         if not os.path.isfile(gather_file):
@@ -214,48 +214,48 @@ class PpmacGatherform(QDialog, Ui_formGather):
         if os.path.getsize(gather_file) == 0:
             QMessageBox.information(self, "Error", "No data has been collected yet.")
             return
-        for chIndex, ch in enumerate(self.lstChannels):
-            data = [line.split(" ")[chIndex] for line in open(gather_file).readlines()]
+        for ch_index, ch in enumerate(self.lstChannels):
+            data = [line.split(" ")[ch_index] for line in open(gather_file).readlines()]
             data = [float(s.strip("/n")) for s in data]
             ch.qwtCurve.setData(arange(len(data)), data)
             ch.Data = data
         self.qwtPlot.replot()
 
-    def calcSampleTime(self):
+    def calc_sample_time(self):
         cmd = "Sys.ServoPeriod"
-        (retStr, status) = self.parent.pmac.sendCommand(cmd)
-        self.servoCycleTime = float(retStr)
+        (ret_str, status) = self.parent.pmac.sendCommand(cmd)
+        self.servoCycleTime = float(ret_str)
         # calculate the actual sample time and frequency of the data
         # gathering function
         self.sampleTime = self.nServoCyclesGather * self.servoCycleTime
-        realSampleFreq = 1.0 / self.sampleTime
-        self.txtLblFreq.setText(f"{realSampleFreq:.3f} kHz")
+        real_sample_freq = 1.0 / self.sampleTime
+        self.txtLblFreq.setText(f"{real_sample_freq:.3f} kHz")
         self.txtLblSignalLen.setText("%.2f ms" % (self.sampleTime * self.nGatherPoints))
 
     # ############## button clicked slots from here
     # #######################################
 
-    def changedTab(self):
+    def changed_tab(self):
         # Get the sample time (in servo cycles unit)
         cmd = "Gather.Period"
-        (retStr, status) = self.parent.pmac.sendCommand(cmd)
-        newNGatherPoints = int(retStr)
-        if not (newNGatherPoints == self.nServoCyclesGather):
-            self.nServoCyclesGather = newNGatherPoints
-            self.calcSampleTime()
-        self.nServoCyclesGather = newNGatherPoints
+        (ret_str, status) = self.parent.pmac.sendCommand(cmd)
+        new_n_gather_points = int(ret_str)
+        if not (new_n_gather_points == self.nServoCyclesGather):
+            self.nServoCyclesGather = new_n_gather_points
+            self.calc_sample_time()
+        self.nServoCyclesGather = new_n_gather_points
         self.lneSampleTime.setText(str(self.nServoCyclesGather))
         # Get the number of samples
         cmd = "Gather.MaxSamples"
-        (retStr, status) = self.parent.pmac.sendCommand(cmd)
-        newNSamples = int(retStr)
-        if not (newNSamples == self.nGatherPoints):
-            self.nGatherPoints = newNSamples
-            self.calcSampleTime()
-        self.nGatherPoints = newNSamples
+        (ret_str, status) = self.parent.pmac.sendCommand(cmd)
+        new_n_samples = int(ret_str)
+        if not (new_n_samples == self.nGatherPoints):
+            self.nGatherPoints = new_n_samples
+            self.calc_sample_time()
+        self.nGatherPoints = new_n_samples
         self.lneNumberSamples.setText(str(self.nGatherPoints))
 
-    def servoCyclesChanged(self):
+    def servo_cycles_changed(self):
         # Get the # of servo cycles per gather sampling
         self.nServoCyclesGather = int(str(self.lneSampleTime.text()))
         # self.nGatherPoints = int(str(self.lneNumberSamples.text()))
@@ -266,13 +266,13 @@ class PpmacGatherform(QDialog, Ui_formGather):
             QMessageBox.information(self, "Error", "# of samples cannot be zero.")
             return
         cmd = "Gather.Period=" + str(self.lneSampleTime.text())
-        (retStr, success) = self.parent.pmac.sendCommand(cmd)
+        (ret_str, success) = self.parent.pmac.sendCommand(cmd)
         if success:
-            self.calcSampleTime()
+            self.calc_sample_time()
         else:
             QMessageBox.information(self, "Error", "Could not set sample time.")
 
-    def changedNoSamples(self):
+    def changed_no_samples(self):
         # Get the # of data points to gather
         self.nGatherPoints = int(str(self.lneNumberSamples.text()))
         # self.nServoCyclesGather = int(str(self.lneSampleTime.text()))
@@ -283,81 +283,81 @@ class PpmacGatherform(QDialog, Ui_formGather):
             QMessageBox.information(self, "Error", "Sample time cannot be zero.")
             return
         cmd = "Gather.MaxSamples=" + str(self.lneNumberSamples.text())
-        (retStr, success) = self.parent.pmac.sendCommand(cmd)
+        (ret_str, success) = self.parent.pmac.sendCommand(cmd)
         if success:
-            self.calcSampleTime()
+            self.calc_sample_time()
         else:
             QMessageBox.information(self, "Error", "Could not # of samples.")
 
-    def collectClicked(self):
+    def collect_clicked(self):
         self.btnSetup.setEnabled(False)
         self.btnTrigger.setEnabled(False)
         self.btnCollect.setEnabled(False)
         self.btnSave.setEnabled(False)
-        self.collectData()
+        self.collect_data()
         # self.parseData(self.collectData())
-        self.plotData()
+        self.plot_data()
 
         self.btnSetup.setEnabled(True)
         self.btnTrigger.setEnabled(False)
         self.btnCollect.setEnabled(False)
         self.btnSave.setEnabled(True)
 
-    def setupClicked(self):
+    def setup_clicked(self):
         self.numberOfSamples = int(str(self.lneNumberSamples.text()))
-        self.gatherSetup(self.numberOfSamples)
+        self.gather_setup(self.numberOfSamples)
         self.btnSetup.setEnabled(True)
         self.btnTrigger.setEnabled(True)
         self.btnCollect.setEnabled(False)
         self.btnSave.setEnabled(False)
 
-    def triggerClicked(self):
+    def trigger_clicked(self):
         self.btnTrigger.setEnabled(False)
-        self.gatherTrigger()
+        self.gather_trigger()
         self.btnSetup.setEnabled(True)
         # self.btnCollect.setEnabled(True)
         self.btnSave.setEnabled(False)
 
-    def applyConfigClicked(self):
+    def apply_config_clicked(self):
         if self.nServoCyclesGather == 0:
             QMessageBox.information(self, "Error", "Sample time cannot be zero.")
             return
         if self.nGatherPoints == 0:
             QMessageBox.information(self, "Error", "# of samples cannot be zero.")
             return
-        if not self.gatherConfig():
+        if not self.gather_config():
             return
         self.btnSetup.setEnabled(True)
         self.btnTrigger.setEnabled(False)
         self.btnCollect.setEnabled(False)
         self.btnSave.setEnabled(False)
 
-    def saveClicked(self):
-        myDialog = QFileDialog(self)
-        fileName = myDialog.getSaveFileName(
+    def save_clicked(self):
+        my_dialog = QFileDialog(self)
+        file_name = my_dialog.getSaveFileName(
             caption="Comma seperated data file (*.csv *.CSV)",
             directory=os.path.expanduser("~"),
             # options=None,
         )
-        if not fileName:
-            QMessageBox.information(self, "Error.", fileName[0] + " does not exist")
+        if not file_name:
+            QMessageBox.information(self, "Error.", file_name[0] + " does not exist")
             return
         try:
-            fptr = open(str(fileName[0]), "w")
+            fptr = open(str(file_name[0]), "w")
         except Exception:
             QMessageBox.information(self, "Error.", "Could not open file for writing.")
             return
 
-        dataLists = []
+        data_lists = []
         line = "point,"
         for i, channel in enumerate(self.lstChannels):
-            line += f"CH{i}, Axis {channel.axisNo}, {ppmacDataSources[channel.descNo]['desc']}, "
-            dataLists.append(channel.Data)
+            line += f"CH{i}, Axis {channel.axisNo}, {ppmac_data_sources[channel.descNo]['desc']}, "
+            data_lists.append(channel.Data)
         fptr.write(line + "\n")
 
-        for lineNo, lineData in enumerate(zip(*dataLists, strict=False)):
-            line = f"{lineNo},"
-            for data_point in lineData:
+        for line_no, line_data in enumerate(zip(*data_lists, strict=False)):
+            line = f"{line_no},"
+            for data_point in line_data:
                 line += f"{data_point:f},"
             fptr.write(line + "\n")
         fptr.close()

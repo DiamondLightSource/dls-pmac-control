@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock
 
-from PyQt5.QtWidgets import QMainWindow
+from PyQt6.QtWidgets import QMainWindow
 from qwt import QwtPlotCurve
 
 from dls_pmac_control.gatherchannel import PmacGatherChannel, PpmacGatherChannel
@@ -55,49 +55,49 @@ class GatherChannelTest(unittest.TestCase):
         assert self.obj.dataSourceInfo is None
         assert self.obj.scalingFactor is None
 
-    def test_setDataGatherPointer(self):
-        self.obj.setDataGatherPointer("test_ivar")
+    def test_set_data_gather_pointer(self):
+        self.obj.set_data_gather_pointer("test_ivar")
         assert self.obj.pSrcIvar == "test_ivar"
 
-    def test_setStrData(self):
-        self.obj.setStrData("test_strData")
+    def test_set_str_data(self):
+        self.obj.set_str_data("test_strData")
         assert self.obj.strData == "test_strData"
 
-    def test_strToRaw_no_data(self):
+    def test_str_to_raw_no_data(self):
         self.obj.strData = []
-        assert self.obj.strToRaw() is False
+        assert self.obj.str_to_raw() is False
 
-    def test_strToRaw_longword(self):
+    def test_str_to_raw_longword(self):
         self.obj.strData = ["0x000000000000"]
         self.obj.dataWidth = 48
-        assert self.obj.strToRaw() is None
+        assert self.obj.str_to_raw() is None
         assert self.obj.rawData == [0]
 
-    def test_strToRaw_word(self):
+    def test_str_to_raw_word(self):
         self.obj.strData = ["0x000000"]
         self.obj.dataWidth = 24
-        assert self.obj.strToRaw() is None
+        assert self.obj.str_to_raw() is None
         assert self.obj.rawData == [0]
 
-    def test_getScalingFactor_no_scalingCalc(self):
+    def test_get_scaling_factor_no_scaling_calc(self):
         self.obj.dataSourceInfo = {}
-        assert self.obj.getScalingFactor() is None
+        assert self.obj.get_scaling_factor() is None
         assert self.obj.scalingFactor == 1.0
 
-    def test_getScalingFactor(self):
+    def test_get_scaling_factor(self):
         self.obj.pmac.return_value = "100\r"
         self.obj.axisNo = 1
         self.obj.dataSourceInfo = {
             "scalingCalc": "1.0/(%d*32.0)",
             "scalingIvars": ("i%d08",),
         }
-        assert self.obj.getScalingFactor() is None
+        assert self.obj.get_scaling_factor() is None
         self.assertEqual(self.obj.scalingFactor, 1 / 3200)
 
-    def test_rawToScaled(self):
+    def test_raw_to_scaled(self):
         self.obj.scalingFactor = 5
         self.obj.rawData = [10]
-        assert self.obj.rawToScaled() is None
+        assert self.obj.raw_to_scaled() is None
         assert self.obj.scaledData == [50]
 
 
@@ -107,8 +107,8 @@ class GatherChannelTestDataInfo(unittest.TestCase):
         self.test_widget = DummyTestWidget2()
         self.obj = PmacGatherChannel(self.test_widget.pmac, self.curve)
 
-    def test_getDataInfo(self):
-        ret = self.obj.getDataInfo()
+    def test_get_data_info(self):
+        ret = self.obj.get_data_info()
         assert ret is None
         assert self.obj.dataWidth == 24
         assert self.obj.dataType == int

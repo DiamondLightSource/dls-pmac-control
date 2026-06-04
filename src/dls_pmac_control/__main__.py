@@ -13,9 +13,9 @@ from dls_pmaclib.dls_pmacremote import (
     PPmacSshInterface,
 )
 from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
-from PyQt5.QtCore import QEvent, Qt, pyqtSlot
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import (
+from PyQt6.QtCore import QEvent, Qt, pyqtSlot
+from PyQt6.QtGui import QIcon, QPixmap
+from PyQt6.QtWidgets import (
     QApplication,
     QFileDialog,
     QLineEdit,
@@ -24,29 +24,30 @@ from PyQt5.QtWidgets import (
     QProgressDialog,
     QTableWidgetItem,
 )
+from typing_extensions import override
 
 from dls_pmac_control.axissettings import Axissettingsform, PpmacAxissettingsform
-from dls_pmac_control.commsThread import CommsThread
-from dls_pmac_control.CSstatus import CSStatusForm, PpmacCSStatusForm
+from dls_pmac_control.comms_thread import CommsThread
+from dls_pmac_control.cs_status import CSStatusForm, PpmacCSStatusForm
 from dls_pmac_control.energise import Energiseform
 from dls_pmac_control.gather import PmacGatherform
-from dls_pmac_control.GlobalStatus import GlobalStatusForm, PpmacGlobalStatusForm
+from dls_pmac_control.global_status import GlobalStatusForm, PpmacGlobalStatusForm
 from dls_pmac_control.login import Loginform
 from dls_pmac_control.ppmacgather import PpmacGatherform
 from dls_pmac_control.status import PpmacStatusform, Statusform
-from dls_pmac_control.ui_formControl import Ui_ControlForm
+from dls_pmac_control.ui_form_control import UiControlForm
 from dls_pmac_control.watches import Watchesform
 
 from . import __version__
 
 
-class Controlform(QMainWindow, Ui_ControlForm):
+class Controlform(QMainWindow, UiControlForm):
     def __init__(self, options, parent=None):
-        signal.signal(2, self.signalHandler)
+        signal.signal(2, self.signal_handler)
         # setup signals
 
         QMainWindow.__init__(self, parent)
-        self.setupUi(self)
+        self.setup_ui(self)
         # self.parent = parent
 
         self.greenLedOn = QPixmap(path.join(path.dirname(__file__), "greenLedOn.png"))
@@ -102,11 +103,11 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.pmac = None
         self.powerpmac = None
 
-        self.statusScreen = Statusform(self, self.currentMotor)
+        self.status_screen = Statusform(self, self.currentMotor)
         self.ppmacstatusScreen = PpmacStatusform(self, self.currentMotor)
-        self.CSStatusScreen = CSStatusForm(self)
+        self.cs_status_screen = CSStatusForm(self)
         self.PpmacCSStatusScreen = PpmacCSStatusForm(self)
-        self.GlobalStatusScreen = GlobalStatusForm(self)
+        self.global_status_screen = GlobalStatusForm(self)
         self.PpmacGlobalStatusScreen = PpmacGlobalStatusForm(self)
         self.axisSettingsScreen = Axissettingsform(
             self, self.currentMotor, self.macroAxisStartIndex
@@ -130,30 +131,30 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
         self.table.setColumnWidth(3, 40)
         self.table.setColumnWidth(4, 40)
-        self.table.cellDoubleClicked.connect(self.chooseMotorFromTable)
+        self.table.cellDoubleClicked.connect(self.choose_motor_from_table)
 
         self.commands = []
         self.commands_i = 0
-        self.lneSend.keyPressEvent = types.MethodType(self.checkHistory, self.lneSend)
+        self.lneSend.keyPressEvent = types.MethodType(self.check_history, self.lneSend)
         self.dirname = "."
 
         self.lblIdentity.setText("")
         self.txtShell.clear()
 
     # Calculate servo cycle time in kHz
-    def calculateServoCycleTime(self):
+    def calculate_servo_cycle_time(self):
         if isinstance(self.pmac, PPmacSshInterface):
             cmd = "Sys.ServoPeriod"  # in msec
         else:
             cmd = "I10"  # in 1 / 2^23 msec
-        (retStr, status) = self.pmac.sendCommand(cmd)
-        ivarI10 = float(retStr.strip("$")[:-1])
+        (ret_str, status) = self.pmac.sendCommand(cmd)
+        ivar_i10 = float(ret_str.strip("$")[:-1])
         if isinstance(self.pmac, PPmacSshInterface):
-            self.servoCycleTime = 1.0 / ivarI10
+            self.servoCycleTime = 1.0 / ivar_i10
         else:
-            self.servoCycleTime = 8388608.0 / ivarI10
+            self.servoCycleTime = 8388608.0 / ivar_i10
 
-    def useTerminalServerConnection(self):
+    def use_terminal_server_connection(self):
         if self.ConnectionType != 0:
             self.ConnectionType = 0
             # set the server and port fields to defaults for this connection
@@ -166,7 +167,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.lnePollRate.setEnabled(False)
             self.lblPollRate.setEnabled(False)
 
-    def useSocketConnection(self):
+    def use_socket_connection(self):
         if self.ConnectionType != 1:
             self.ConnectionType = 1
             # set the server and port fields to defaults for this connection
@@ -179,7 +180,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.lnePollRate.setEnabled(False)
             self.lblPollRate.setEnabled(False)
 
-    def useSerial(self):
+    def use_serial(self):
         if self.ConnectionType != 2:
             self.ConnectionType = 2
             self.isUsingSerial = False
@@ -194,7 +195,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.lnePollRate.setText("0")
             self.lblPollRate.setEnabled(True)
 
-    def useSshConnection(self):
+    def use_ssh_connection(self):
         if self.ConnectionType != 3:
             self.ConnectionType = 3
             # set the server and port fields to defaults for this connection
@@ -209,7 +210,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.lnePollRate.setEnabled(False)
             self.lblPollRate.setEnabled(False)
 
-    def checkHistory(self, edit, event):
+    def check_history(self, edit, event):
         if event.key() == Qt.Key_Up:
             if len(self.commands) == 0:
                 self.commands_i = 0
@@ -228,7 +229,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 self.lneSend.setText(self.commands[self.commands_i])
         QLineEdit.keyPressEvent(edit, event)
 
-    def remoteConnect(self):
+    def remote_connect(self):
         # Create a remote PMAC interface, of the correct type, depending on
         # radio-box selection in the "Connection to PMAC" section
         if self.ConnectionType == 0:
@@ -275,8 +276,8 @@ class Controlform(QMainWindow, Ui_ControlForm):
         # Show login window if ssh connection
         if self.ConnectionType == 3:
             # use exec instead of show to wait until login is done
-            is_clickedOK = self.login.exec()
-            if not is_clickedOK:
+            is_clicked_ok = self.login.exec()
+            if not is_clicked_ok:
                 return
             else:
                 # try to connect again
@@ -301,7 +302,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             QMessageBox.information(self, "Error", "Could not determine PMAC model")
             return
 
-        self.calculateServoCycleTime()
+        self.calculate_servo_cycle_time()
 
         self.table.setRowCount(self.pmac.getNumberOfAxes())
         self.spnJogMotor.setMaximum(self.pmac.getNumberOfAxes())
@@ -322,10 +323,10 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.btnJogTo.setEnabled(True)
         self.btnEnergise.setEnabled(False)
         # disable energise button for geobrick and power pmac
-        enableEnergise = (
+        enable_energise = (
             not self.pmac.isModelGeobrick() and not self.ConnectionType == 3
         )
-        self.btnEnergise.setEnabled(enableEnergise)
+        self.btnEnergise.setEnabled(enable_energise)
         self.btnKillAll.setEnabled(True)
         self.btnStatus.setEnabled(True)
         self.btnCSStatus.setEnabled(True)
@@ -342,7 +343,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         self.lblPollRate.setEnabled(False)
         self.pixPolling.setPixmap(self.greenLedOn)
 
-    def remoteDisconnect(self):
+    def remote_disconnect(self):
         # If the PMAC interface has been already defined, make it disconnect
         # (this will do nothing if the interface is not connected)
         if self.pmac:
@@ -382,78 +383,78 @@ class Controlform(QMainWindow, Ui_ControlForm):
 
         self.axisSettingsScreen.close()
         self.ppmacaxisSettingsScreen.close()
-        self.statusScreen.close()
+        self.status_screen.close()
         self.ppmacstatusScreen.close()
-        self.CSStatusScreen.close()
+        self.cs_status_screen.close()
         self.PpmacCSStatusScreen.close()
-        self.GlobalStatusScreen.close()
+        self.global_status_screen.close()
         self.PpmacGlobalStatusScreen.close()
         self.pmacgatherScreen.close()
         self.ppmacgatherScreen.close()
-        self.watchesScreen.clearWatches()
+        self.watchesScreen.clear_watches()
         self.watchesScreen.close()
         try:
             self.energiseScreen.close()
         except Exception:
             pass
 
-    def jogNeg(self):
-        (command, retStr, retStatus) = self.pmac.jogInc(
+    def jog_neg(self):
+        (command, ret_str, ret_status) = self.pmac.jogInc(
             self.currentMotor, "neg", str(self.lneJogDist.text())
         )
-        self.addToTxtShell(command, retStr)
+        self.add_to_txt_shell(command, ret_str)
 
     # public slot
-    def jogPos(self):
-        (command, retStr, retStatus) = self.pmac.jogInc(
+    def jog_pos(self):
+        (command, ret_str, ret_status) = self.pmac.jogInc(
             self.currentMotor, "pos", str(self.lneJogDist.text())
         )
-        self.addToTxtShell(command, retStr)
+        self.add_to_txt_shell(command, ret_str)
 
     # public slot
 
-    def jogStop(self):
-        (command, retStr, retStatus) = self.pmac.jogStop(self.currentMotor)
-        self.addToTxtShell(command, retStr)
+    def jog_stop(self):
+        (command, ret_str, ret_status) = self.pmac.jogStop(self.currentMotor)
+        self.add_to_txt_shell(command, ret_str)
 
     # public slot
 
-    def jogHome(self):
-        (command, retStr, retStatus) = self.pmac.homeCommand(self.currentMotor)
-        self.addToTxtShell(command, retStr)
+    def jog_home(self):
+        (command, ret_str, ret_status) = self.pmac.homeCommand(self.currentMotor)
+        self.add_to_txt_shell(command, ret_str)
 
     # public slot
 
-    def jogGoToPosition(self):
-        (command, retStr, retStatus) = self.pmac.jogTo(
+    def jog_go_to_position(self):
+        (command, ret_str, ret_status) = self.pmac.jogTo(
             self.currentMotor, self.lneJogTo.text()
         )
-        self.addToTxtShell(command, retStr)
+        self.add_to_txt_shell(command, ret_str)
 
     # public slot
-    def jogChangeMotor(self, newMotor):
-        self.currentMotor = newMotor
-        self.statusScreen.changeAxis(self.currentMotor)
-        self.ppmacstatusScreen.changeAxis(self.currentMotor)
-        self.axisSettingsScreen.changeAxis(self.currentMotor)
-        self.ppmacaxisSettingsScreen.changeAxis(self.currentMotor)
+    def jog_change_motor(self, new_motor):
+        self.currentMotor = new_motor
+        self.status_screen.changeAxis(self.currentMotor)
+        self.ppmacstatusScreen.change_axis(self.currentMotor)
+        self.axisSettingsScreen.change_axis(self.currentMotor)
+        self.ppmacaxisSettingsScreen.change_axis(self.currentMotor)
 
     # Send a #Xk command to kill the current motor.
-    def killMotor(self):
+    def kill_motor(self):
         command = f"#{self.currentMotor}k"
-        (returnString, status) = self.pmac.sendCommand(command)
-        self.addToTxtShell(command)
+        (return_string, status) = self.pmac.sendCommand(command)
+        self.add_to_txt_shell(command)
 
     # Send a <CTRL-K> (ASCII 0x0B) command to the PMAC to kill all motion
     # all servo loops will be opened and amplifier enable set false.
     # see TURBO SRM page 289
-    def killAllMotors(self):
+    def kill_all_motors(self):
         # print "killing all motors!"
         command = "\x0b"
-        (returnString, status) = self.pmac.sendCommand(command)
-        self.addToTxtShell("CTRL-K")
+        (return_string, status) = self.pmac.sendCommand(command)
+        self.add_to_txt_shell("CTRL-K")
 
-    def dataGather(self):
+    def data_gather(self):
         # if power pmac
         # if self.ConnectionType == 3:
         if isinstance(self.pmac, PPmacSshInterface):
@@ -465,65 +466,65 @@ class Controlform(QMainWindow, Ui_ControlForm):
     def watches(self):
         self.watchesScreen.show()
 
-    def pmacEnergiseAxis(self):
+    def pmac_energise_axis(self):
         self.energiseScreen = Energiseform(self.pmac, self)
         self.energiseScreen.show()
 
-    def statusScreen(self):
+    def status_screen(self):
         # if power pmac
         if isinstance(self.pmac, PPmacSshInterface):
             self.ppmacstatusScreen.show()
         else:
-            self.statusScreen.show()
+            self.status_screen.show()
 
-    def CSStatusScreen(self):
+    def cs_status_screen(self):
         # if power pmac
         if isinstance(self.pmac, PPmacSshInterface):
             self.PpmacCSStatusScreen.show()
         else:
-            self.CSStatusScreen.show()
+            self.cs_status_screen.show()
 
-    def GlobalStatusScreen(self):
+    def global_status_screen(self):
         # if power pmac
         if isinstance(self.pmac, PPmacSshInterface):
             self.PpmacGlobalStatusScreen.show()
         else:
-            self.GlobalStatusScreen.show()
+            self.global_status_screen.show()
 
     # public slot
-    def jogParameters(self):
+    def jog_parameters(self):
         if isinstance(self.pmac, PPmacSshInterface):
             self.ppmacaxisSettingsScreen.show()
-            self.ppmacaxisSettingsScreen.axisUpdate()
+            self.ppmacaxisSettingsScreen.axis_update()
         else:
             self.axisSettingsScreen.show()
-            self.axisSettingsScreen.axisUpdate()
+            self.axisSettingsScreen.axis_update()
 
     # Download a pmc configuration file to the PMAC
-    def pmacLoadConfig(self):
+    def pmac_load_config(self):
         # First get the file from a file dialog
-        myDialog = QFileDialog(self)
-        q_file = myDialog.getOpenFileName(
+        my_dialog = QFileDialog(self)
+        q_file = my_dialog.getOpenFileName(
             self, "Load PMC file", self.dirname, "PMAC configuration (*.pmc *.PMC)"
         )
-        fileName, _ = q_file
-        if not fileName:
+        file_name, _ = q_file
+        if not file_name:
             return
-        self.dirname = path.dirname(str(fileName))
+        self.dirname = path.dirname(str(file_name))
 
         # A couple of regular expressions for use in parsing the pmc file
-        blankLine = re.compile(r"^\s*$")  # match blank lines
+        blank_line = re.compile(r"^\s*$")  # match blank lines
 
         # parsing through the file
         pmc = ClsPmacParser()
-        pmcLines = pmc.parse(fileName)
+        pmc_lines = pmc.parse(file_name)
 
-        if pmcLines:
+        if pmc_lines:
             # Get rid of all the empty lines, but keep line numbers
             commands = []
-            for i, pmcLine in enumerate(pmcLines):
-                if not blankLine.match(pmcLine):
-                    commands.append((i + 1, pmcLine))
+            for i, pmc_line in enumerate(pmc_lines):
+                if not blank_line.match(pmc_line):
+                    commands.append((i + 1, pmc_line))
 
             # Prepend two close commands and a delete gather to the front of
             # any pmc file uploaded. This ensures that any open PLC buffers
@@ -533,24 +534,24 @@ class Controlform(QMainWindow, Ui_ControlForm):
             # (first close) before then closing the buffer (second close).
             # Dummy line numbers of zero are paired with each command to
             # match the formatting and to not disrupt the real line numbering
-            closeCommands = [(0, "CLOSE"), (0, "CLOSE"), (0, "DELETE GATHER")]
-            commands = closeCommands + commands
+            close_commands = [(0, "CLOSE"), (0, "CLOSE"), (0, "DELETE GATHER")]
+            commands = close_commands + commands
 
             # Open up progress dialog and start sending the commands.
             self.canceledDownload = False
             self.progressDialog = QProgressDialog(
-                "Downloading PMAC configuration", "cancel", 0, len(pmcLines), self
+                "Downloading PMAC configuration", "cancel", 0, len(pmc_lines), self
             )
             self.progressDialog.setWindowModality(Qt.ApplicationModal)
             self.progressDialog.canceled.connect(self.cancel)
-            self.txtShell.append("Beginning download of pmc file: " + fileName)
+            self.txtShell.append("Beginning download of pmc file: " + file_name)
             self.commsThread.inputQueue.put(("sendSeries", commands))
 
     def cancel(self):
         self.canceledDownload = True
         self.commsThread.inputQueue.put(("cancelSendSeries", ""))
 
-    def pmacPollingStatus(self):
+    def pmac_polling_status(self):
         # If we are already polling, disable it
         if self.pollingStatus:
             self.pollingStatus = False
@@ -579,49 +580,53 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.lblFolErr.setEnabled(True)
             self.pixPolling.setPixmap(self.greenLedOn)
 
-    def jogNegContinousStart(self):
+    def jog_neg_continous_start(self):
         # print "controlform.jogNegContinousStart(): Not implemented yet"
-        (command, retStr, retStatus) = self.pmac.jogContinous(self.currentMotor, "neg")
-        self.addToTxtShell(command, retStr)
+        (command, ret_str, ret_status) = self.pmac.jogContinous(
+            self.currentMotor, "neg"
+        )
+        self.add_to_txt_shell(command, ret_str)
 
     # public slot
-    def jogPosContinousStart(self):
+    def jog_pos_continous_start(self):
         # print "controlform.jogPosContinousStart(): Not implemented yet"
-        (command, retStr, retStatus) = self.pmac.jogContinous(self.currentMotor, "pos")
-        self.addToTxtShell(command, retStr)
+        (command, ret_str, ret_status) = self.pmac.jogContinous(
+            self.currentMotor, "pos"
+        )
+        self.add_to_txt_shell(command, ret_str)
 
     # public slot
-    def sendSingleCommand(self):
+    def send_single_command(self):
         # print "controlform.sendSingleCommand(): Not implemented yet"
         command = self.lneSend.text()
         if len(self.commands) == 0 or self.commands[-1] != command:
             self.commands.append(command)
-        (retStr, status) = self.pmac.sendCommand(command)
-        self.addToTxtShell(command, retStr, False)
+        (ret_str, status) = self.pmac.sendCommand(command)
+        self.add_to_txt_shell(command, ret_str, False)
         self.commands_i = 0
         self.lneSend.setText("")
 
     @pyqtSlot(int, int, name="chooseMotorFromTable")
-    def chooseMotorFromTable(self, a0):
+    def choose_motor_from_table(self, a0):
         self.spnJogMotor.setValue(a0 + 1)
 
     # public slot
-    def jogIncrementally(self, a0):  # a0 is True if 'jog inc' box checked
+    def jog_incrementally(self, a0):  # a0 is True if 'jog inc' box checked
         self.lneJogDist.setEnabled(a0)
         if a0:
-            self.btnJogPos.pressed.disconnect(self.jogPosContinousStart)
-            self.btnJogPos.released.disconnect(self.jogStop)
-            self.btnJogNeg.pressed.disconnect(self.jogNegContinousStart)
-            self.btnJogNeg.released.disconnect(self.jogStop)
-            self.btnJogNeg.clicked.connect(self.jogNeg)
-            self.btnJogPos.clicked.connect(self.jogPos)
+            self.btnJogPos.pressed.disconnect(self.jog_pos_continous_start)
+            self.btnJogPos.released.disconnect(self.jog_stop)
+            self.btnJogNeg.pressed.disconnect(self.jog_neg_continous_start)
+            self.btnJogNeg.released.disconnect(self.jog_stop)
+            self.btnJogNeg.clicked.connect(self.jog_neg)
+            self.btnJogPos.clicked.connect(self.jog_pos)
         else:
-            self.btnJogPos.pressed.connect(self.jogPosContinousStart)
-            self.btnJogPos.released.connect(self.jogStop)
-            self.btnJogNeg.pressed.connect(self.jogNegContinousStart)
-            self.btnJogNeg.released.connect(self.jogStop)
-            self.btnJogNeg.clicked.disconnect(self.jogNeg)
-            self.btnJogPos.clicked.disconnect(self.jogPos)
+            self.btnJogPos.pressed.connect(self.jog_pos_continous_start)
+            self.btnJogPos.released.connect(self.jog_stop)
+            self.btnJogNeg.pressed.connect(self.jog_neg_continous_start)
+            self.btnJogNeg.released.connect(self.jog_stop)
+            self.btnJogNeg.clicked.disconnect(self.jog_neg)
+            self.btnJogPos.clicked.disconnect(self.jog_pos)
 
     def __item(self, row, col):
         item = self.table.item(row, col)
@@ -631,75 +636,77 @@ class Controlform(QMainWindow, Ui_ControlForm):
             item.setFlags(Qt.ItemIsEnabled)
         return item
 
-    def addToTxtShell(self, command, retStr=None, chkShowAll=True):
-        if chkShowAll is False or self.chkShowAll.isChecked():
+    def add_to_txt_shell(self, command, ret_str=None, chk_show_all=True):
+        if chk_show_all is False or self.chkShowAll.isChecked():
             self.txtShell.append(command)
-            if retStr is not None:
+            if ret_str is not None:
                 self.txtShell.append(
-                    retStr.rstrip("\x06").lstrip("\x07").replace("\r", " ")
+                    ret_str.rstrip("\x06").lstrip("\x07").replace("\r", " ")
                 )
 
     # Called when an event comes out of the polling thread
     # and the jog ribbon.
-    def updateMotors(self):
+    def update_motors(self):
         under_voltage = False
         over_voltage = False
         over_temperature = False
 
         self.commsThread.resultQueue.qsize()
-        for _queItem in range(0, self.commsThread.resultQueue.qsize()):
+        for _que_item in range(0, self.commsThread.resultQueue.qsize()):
             try:
                 value = self.commsThread.resultQueue.get(False)
             except Empty:
                 return
 
             try:
-                motorRow = value[6]
+                motor_row = value[6]
                 # check for special cases
-                if isinstance(motorRow, str):
+                if isinstance(motor_row, str):
                     if isinstance(self.pmac, PPmacSshInterface):
-                        if motorRow == "G":
-                            self.PpmacGlobalStatusScreen.updateStatus(
+                        if motor_row == "G":
+                            self.PpmacGlobalStatusScreen.update_status(
                                 int(value[0].strip("$"), 16)
                             )
                             continue
-                        if motorRow.startswith("CS"):
-                            self.PpmacCSStatusScreen.updateStatus(
+                        if motor_row.startswith("CS"):
+                            self.PpmacCSStatusScreen.update_status(
                                 int(value[0].strip("$"), 16)
                             )
                             continue
-                        if motorRow.startswith("FEED"):
-                            self.PpmacCSStatusScreen.updateFeed(
+                        if motor_row.startswith("FEED"):
+                            self.PpmacCSStatusScreen.update_feed(
                                 int(round(float(value[0])))
                             )
                             continue
-                        if motorRow == "IDENT":
-                            self.updateIdentity(int(value[0]))
+                        if motor_row == "IDENT":
+                            self.update_identity(int(value[0]))
                             continue
-                        if motorRow == "UVOL":
+                        if motor_row == "UVOL":
                             if int(value[0]) != 0:
                                 under_voltage = True
                             continue
-                        if motorRow == "OVOL":
+                        if motor_row == "OVOL":
                             if int(value[0]) != 0:
                                 over_voltage = True
                             continue
-                        if motorRow == "OTEMP":
+                        if motor_row == "OTEMP":
                             if int(value[0]) != 0:
                                 over_temperature = True
                             continue
                     else:
-                        if motorRow == "G":
-                            self.GlobalStatusScreen.updateStatus(int(value[0], 16))
+                        if motor_row == "G":
+                            self.global_status_screen.update_status(int(value[0], 16))
                             continue
-                        if motorRow.startswith("CS"):
-                            self.CSStatusScreen.updateStatus(int(value[0], 16))
+                        if motor_row.startswith("CS"):
+                            self.cs_status_screen.update_status(int(value[0], 16))
                             continue
-                        if motorRow.startswith("FEED"):
-                            self.CSStatusScreen.updateFeed(int(round(float(value[0]))))
+                        if motor_row.startswith("FEED"):
+                            self.cs_status_screen.update_feed(
+                                int(round(float(value[0])))
+                            )
                             continue
-                        if motorRow == "IDENT":
-                            self.updateIdentity(int(value[0]))
+                        if motor_row == "IDENT":
+                            self.update_identity(int(value[0]))
                             continue
 
                 else:
@@ -715,7 +722,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                     i2t_fault = False
                     over_current = False
 
-                    if motorRow < 8:
+                    if motor_row < 8:
                         if isinstance(self.pmac, PPmacSshInterface):
                             if int(value[4]) > 0:
                                 i2t_fault = True
@@ -727,7 +734,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                                 i2t_fault = True
                             elif amp_status == 6:
                                 over_current = True
-                            if motorRow < 4:
+                            if motor_row < 4:
                                 if amp_status == 2:
                                     under_voltage = True
                                 elif amp_status == 3:
@@ -735,77 +742,77 @@ class Controlform(QMainWindow, Ui_ControlForm):
                                 elif amp_status == 4:
                                     over_voltage = True
 
-                    self.__item(motorRow, 0).setText(position)
-                    self.__item(motorRow, 1).setText(velocity)
-                    self.__item(motorRow, 2).setText(folerr)
+                    self.__item(motor_row, 0).setText(position)
+                    self.__item(motor_row, 1).setText(velocity)
+                    self.__item(motor_row, 2).setText(folerr)
 
-                    statusWord = int(value[0].strip("$"), 16)
+                    status_word = int(value[0].strip("$"), 16)
 
                     # define high and low limits for power pmac
                     if isinstance(self.pmac, PPmacSshInterface):
-                        loLim = bool(statusWord & 0x2000000000000000)  # MinusLimit
-                        hiLim = bool(statusWord & 0x1000000000000000)  # PlusLimit
-                        loLimSoft = bool(
-                            statusWord & 0x0080000000000000
+                        lo_lim = bool(status_word & 0x2000000000000000)  # MinusLimit
+                        hi_lim = bool(status_word & 0x1000000000000000)  # PlusLimit
+                        lo_lim_soft = bool(
+                            status_word & 0x0080000000000000
                         )  # SoftMinusLimit
-                        hiLimSoft = bool(
-                            statusWord & 0x0040000000000000
+                        hi_lim_soft = bool(
+                            status_word & 0x0040000000000000
                         )  # SoftPlusLimit
 
                     # define high and low limits for pmac
                     else:
-                        loLim = bool(
-                            statusWord & 0x400000000000
+                        lo_lim = bool(
+                            status_word & 0x400000000000
                         )  # negative end limit set
-                        hiLim = bool(
-                            statusWord & 0x200000000000
+                        hi_lim = bool(
+                            status_word & 0x200000000000
                         )  # positive end limit set
-                        loLimSoft = False
-                        hiLimSoft = False
+                        lo_lim_soft = False
+                        hi_lim_soft = False
 
                     # set limit indicators in polling table
-                    if hiLim:
-                        self.__item(motorRow, 3).setIcon(QIcon(self.redLedOn))
-                    elif hiLimSoft:
-                        self.__item(motorRow, 3).setIcon(QIcon(self.amberLedOn))
+                    if hi_lim:
+                        self.__item(motor_row, 3).setIcon(QIcon(self.redLedOn))
+                    elif hi_lim_soft:
+                        self.__item(motor_row, 3).setIcon(QIcon(self.amberLedOn))
                     else:
-                        self.__item(motorRow, 3).setIcon(QIcon(self.redLedOff))
-                    if loLim:
-                        self.__item(motorRow, 4).setIcon(QIcon(self.redLedOn))
-                    elif loLimSoft:
-                        self.__item(motorRow, 4).setIcon(QIcon(self.amberLedOn))
+                        self.__item(motor_row, 3).setIcon(QIcon(self.redLedOff))
+                    if lo_lim:
+                        self.__item(motor_row, 4).setIcon(QIcon(self.redLedOn))
+                    elif lo_lim_soft:
+                        self.__item(motor_row, 4).setIcon(QIcon(self.amberLedOn))
                     else:
-                        self.__item(motorRow, 4).setIcon(QIcon(self.redLedOff))
+                        self.__item(motor_row, 4).setIcon(QIcon(self.redLedOff))
 
                     # set amplifier status indicators in polling table
                     if i2t_fault:
-                        self.__item(motorRow, 5).setIcon(QIcon(self.redLedOn))
+                        self.__item(motor_row, 5).setIcon(QIcon(self.redLedOn))
                     else:
-                        self.__item(motorRow, 5).setIcon(QIcon(self.redLedOff))
+                        self.__item(motor_row, 5).setIcon(QIcon(self.redLedOff))
                     if over_current:
-                        self.__item(motorRow, 6).setIcon(QIcon(self.redLedOn))
+                        self.__item(motor_row, 6).setIcon(QIcon(self.redLedOn))
                     else:
-                        self.__item(motorRow, 6).setIcon(QIcon(self.redLedOff))
+                        self.__item(motor_row, 6).setIcon(QIcon(self.redLedOff))
 
                     # Update also the jog ribbon
-                    if motorRow + 1 == self.currentMotor:
+                    if motor_row + 1 == self.currentMotor:
                         self.lblPosition.setText(position)
                         self.lblVelo.setText(velocity)
                         self.lblFolErr.setText(folerr)
-                        if hiLim:
+                        if hi_lim:
                             self.pixHiLim.setPixmap(self.redLedOn)
-                        elif hiLimSoft:
+                        elif hi_lim_soft:
                             self.pixHiLim.setPixmap(self.amberLedOn)
                         else:
                             self.pixHiLim.setPixmap(self.redLedOff)
-                        if loLim:
+                        if lo_lim:
                             self.pixLoLim.setPixmap(self.redLedOn)
-                        elif loLimSoft:
+                        elif lo_lim_soft:
                             self.pixLoLim.setPixmap(self.amberLedOn)
                         else:
                             self.pixLoLim.setPixmap(self.redLedOff)
-                        self.statusScreen.updateStatus(statusWord)
-                        self.ppmacstatusScreen.updateStatus(statusWord)
+                        self.status_screen.update_status(status_word)
+                        self.ppmacstatusScreen.update_status(status_word)
 
                 # set controller status indicators on main window
                 if under_voltage:
@@ -827,7 +834,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                 if self.verboseMode:
                     print("Update request received invalid response: ", value)
 
-    domainNames = [
+    domain_names = [
         "BL",
         "BR",
         "BS",
@@ -845,7 +852,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
         "TBD",
         "RSV",
     ]
-    subdomainLetters = [
+    subdomain_letters = [
         ["I", "B", "J", "C", "K", "D", "L", "E"],
         ["C", "S", "", "", "", "", "", ""],
         ["", "", "", "", "", "", "", ""],
@@ -864,29 +871,29 @@ class Controlform(QMainWindow, Ui_ControlForm):
         ["", "", "", "", "", "", "", ""],
     ]
 
-    def updateIdentity(self, id):
+    def update_identity(self, id):
         if not self.btnConnect.isEnabled():
             if id == 0:
                 text = "Identity not set"
             else:
                 domain = (id >> 20) & 0x0F
                 # swVersion = (id >> 13) & 0x7F
-                subdomainNum = (id >> 7) & 0x1F
-                pmacNum = id & 0x1F
-                subdomainLetter = (
+                subdomain_num = (id >> 7) & 0x1F
+                pmac_num = id & 0x1F
+                subdomain_letter = (
                     ((id >> 6) & 0x01) | ((id >> 4) & 0x02) | ((id >> 10) & 0x04)
                 )
-                text = self.domainNames[domain]
-                if subdomainNum != 0:
-                    text += f"{subdomainNum:02d}"
-                    text += self.subdomainLetters[domain][subdomainLetter]
+                text = self.domain_names[domain]
+                if subdomain_num != 0:
+                    text += f"{subdomain_num:02d}"
+                    text += self.subdomain_letters[domain][subdomain_letter]
                 text += f" {self.pmac.getShortModelName()} "
-                text += f"{pmacNum:d}"
+                text += f"{pmac_num:d}"
             self.lblIdentity.setText(text)
 
-    def updateWatches(self):
+    def update_watches(self):
         self.commsThread.watchesQueue.qsize()
-        for _queItem in range(0, self.commsThread.watchesQueue.qsize()):
+        for _que_item in range(0, self.commsThread.watchesQueue.qsize()):
             try:
                 value = self.commsThread.watchesQueue.get(False)
             except Empty:
@@ -896,6 +903,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
                     value[n] = round(float(value[n]), 1)
                 self.watchesScreen.table.setItem(n, 1, QTableWidgetItem(str(value[n])))
 
+    @override
     def customEvent(self, E):
         if E.type() == self.progressEventType:
             (lines, err) = E.data()
@@ -906,10 +914,10 @@ class Controlform(QMainWindow, Ui_ControlForm):
             self.progressDialog.setValue(self.progressDialog.maximum())
             self.txtShell.append(str(E.data()))
         elif E.type() == self.updatesReadyEventType:
-            self.updateMotors()
-            self.updateWatches()
+            self.update_motors()
+            self.update_watches()
 
-    def signalHandler(self, signum, frame):
+    def signal_handler(self, signum, frame):
         if signum == 2:  # SIGINT
             print("Closing connection...")
             self.pmac.disconnect()
@@ -917,7 +925,7 @@ class Controlform(QMainWindow, Ui_ControlForm):
             QApplication.exit(0)
 
     def die(self):
-        self.remoteDisconnect()
+        self.remote_disconnect()
         self.commsThread.inputQueue.put(("die", ""))
 
 
