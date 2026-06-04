@@ -542,7 +542,7 @@ class Controlform(QMainWindow, UiControlForm):
             self.progressDialog = QProgressDialog(
                 "Downloading PMAC configuration", "cancel", 0, len(pmc_lines), self
             )
-            self.progressDialog.setWindowModality(Qt.ApplicationModal)
+            self.progressDialog.setWindowModality(Qt.WindowModality.ApplicationModal)
             self.progressDialog.canceled.connect(self.cancel)
             self.txtShell.append("Beginning download of pmc file: " + file_name)
             self.commsThread.inputQueue.put(("sendSeries", commands))
@@ -633,7 +633,7 @@ class Controlform(QMainWindow, UiControlForm):
         if not item:
             item = QTableWidgetItem()
             self.table.setItem(row, col, item)
-            item.setFlags(Qt.ItemIsEnabled)
+            item.setFlags(Qt.ItemFlag.ItemIsEnabled)
         return item
 
     def add_to_txt_shell(self, command, ret_str=None, chk_show_all=True):
