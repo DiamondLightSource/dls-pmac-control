@@ -434,7 +434,7 @@ class Controlform(QMainWindow, UiControlForm):
     # public slot
     def jog_change_motor(self, new_motor):
         self.currentMotor = new_motor
-        self.status_screen.changeAxis(self.currentMotor)
+        self.status_screen.change_axis(self.currentMotor)
         self.ppmacstatusScreen.change_axis(self.currentMotor)
         self.axisSettingsScreen.change_axis(self.currentMotor)
         self.ppmacaxisSettingsScreen.change_axis(self.currentMotor)
