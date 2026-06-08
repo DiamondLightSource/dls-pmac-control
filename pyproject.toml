@@ -14,7 +14,7 @@ dependencies = [
     "dls-pmaclib >= 3.1.2",
     "numpy",
     "pythonqwt",
-    "pyqt6",
+    "pyqt6 <= 6.10",
     "typing-extensions>=4.15.0",
 ]
 dynamic = ["version"]
