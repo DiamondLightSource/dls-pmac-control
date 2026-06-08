@@ -26,6 +26,7 @@ from PyQt6.QtWidgets import (
 )
 from typing_extensions import override
 
+from dls_pmac_control import __version__
 from dls_pmac_control.axissettings import Axissettingsform, PpmacAxissettingsform
 from dls_pmac_control.comms_thread import CommsThread
 from dls_pmac_control.cs_status import CSStatusForm, PpmacCSStatusForm
@@ -37,8 +38,6 @@ from dls_pmac_control.ppmacgather import PpmacGatherform
 from dls_pmac_control.status import PpmacStatusform, Statusform
 from dls_pmac_control.ui_form_control import UiControlForm
 from dls_pmac_control.watches import Watchesform
-
-from . import __version__
 
 
 class Controlform(QMainWindow, UiControlForm):
