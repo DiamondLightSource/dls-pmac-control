@@ -1,9 +1,8 @@
 import os
-import threading
 import time
 
 from numpy import arange
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QThread
 from PyQt6.QtGui import QPen
 from PyQt6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qwt import QwtPlotCurve
@@ -15,9 +14,8 @@ from dls_pmac_control.ui_form_gather import UiFormGather
 #  work has started in pmaclib but currently duplicates code in this module
 
 
-class MyThread(threading.Thread):
+class MyThread(QThread):
     def __init__(self, instance, waittime):
-        threading.Thread.__init__(self)
         self.waittime = waittime
         self.instance = instance
 
