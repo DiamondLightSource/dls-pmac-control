@@ -567,6 +567,7 @@ dependencies = [
     { name = "dls-pmaclib" },
     { name = "numpy" },
     { name = "pyqt6" },
+    { name = "pyqt6-qt6" },
     { name = "pythonqwt" },
     { name = "typing-extensions" },
 ]
@@ -591,7 +592,8 @@ dev = [
 requires-dist = [
     { name = "dls-pmaclib", specifier = ">=3.1.2" },
     { name = "numpy" },
-    { name = "pyqt6", specifier = "<=6.10" },
+    { name = "pyqt6" },
+    { name = "pyqt6-qt6", specifier = "<=6.9.2" },
     { name = "pythonqwt" },
     { name = "typing-extensions", specifier = ">=4.15.0" },
 ]
