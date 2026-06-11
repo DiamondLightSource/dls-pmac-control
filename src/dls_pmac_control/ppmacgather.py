@@ -1,9 +1,8 @@
 import os
-import threading
 import time
 
 from numpy import arange
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, QThread
 from PyQt6.QtGui import QPen
 from PyQt6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from qwt import QwtPlotCurve
@@ -15,9 +14,8 @@ from dls_pmac_control.ui_form_gather import UiFormGather
 #  work has started in pmaclib but currently duplicates code in this module
 
 
-class MyThread(threading.Thread):
+class MyThread(QThread):
     def __init__(self, instance, waittime):
-        threading.Thread.__init__(self)
         self.waittime = waittime
         self.instance = instance
 
@@ -48,7 +46,13 @@ class PpmacGatherform(QDialog, UiFormGather):
         self.servoCycleTime = 0.0  # the time of one servo cycle (ms)
         self.nGatherPoints = 0  # the # of data points to sample
 
-        self.lstColours = [Qt.red, Qt.blue, Qt.magenta, Qt.green, Qt.cyan]
+        self.lstColours = [
+            Qt.GlobalColor.red,
+            Qt.GlobalColor.blue,
+            Qt.GlobalColor.magenta,
+            Qt.GlobalColor.green,
+            Qt.GlobalColor.cyan,
+        ]
 
         self.lstCheckboxes = [
             self.chkPlot1,

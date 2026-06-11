@@ -26,6 +26,7 @@ from PyQt6.QtWidgets import (
 )
 from typing_extensions import override
 
+from dls_pmac_control import __version__
 from dls_pmac_control.axissettings import Axissettingsform, PpmacAxissettingsform
 from dls_pmac_control.comms_thread import CommsThread
 from dls_pmac_control.cs_status import CSStatusForm, PpmacCSStatusForm
@@ -37,8 +38,6 @@ from dls_pmac_control.ppmacgather import PpmacGatherform
 from dls_pmac_control.status import PpmacStatusform, Statusform
 from dls_pmac_control.ui_form_control import UiControlForm
 from dls_pmac_control.watches import Watchesform
-
-from . import __version__
 
 
 class Controlform(QMainWindow, UiControlForm):
@@ -123,9 +122,9 @@ class Controlform(QMainWindow, UiControlForm):
         self.spnJogMotor.setValue(self.currentMotor)
 
         # a few details for use when downloading pmc file
-        self.progressEventType = QEvent.User + 1
-        self.downloadDoneEventType = QEvent.User + 2
-        self.updatesReadyEventType = QEvent.User + 3
+        self.progressEventType = QEvent.Type.User + 1
+        self.downloadDoneEventType = QEvent.Type.User + 2
+        self.updatesReadyEventType = QEvent.Type.User + 3
         self.progressDialog = None
         self.canceledDownload = False
 
@@ -211,7 +210,7 @@ class Controlform(QMainWindow, UiControlForm):
             self.lblPollRate.setEnabled(False)
 
     def check_history(self, edit, event):
-        if event.key() == Qt.Key_Up:
+        if event.key() == Qt.Key.Key_Up:
             if len(self.commands) == 0:
                 self.commands_i = 0
                 self.lneSend.setText("")
@@ -220,7 +219,7 @@ class Controlform(QMainWindow, UiControlForm):
                 self.lneSend.setText(self.commands[self.commands_i])
             else:
                 self.lneSend.setText(self.commands[self.commands_i])
-        elif event.key() == Qt.Key_Down:
+        elif event.key() == Qt.Key.Key_Down:
             if self.commands_i >= -1:
                 self.commands_i = 0
                 self.lneSend.setText("")
@@ -434,7 +433,7 @@ class Controlform(QMainWindow, UiControlForm):
     # public slot
     def jog_change_motor(self, new_motor):
         self.currentMotor = new_motor
-        self.status_screen.changeAxis(self.currentMotor)
+        self.status_screen.change_axis(self.currentMotor)
         self.ppmacstatusScreen.change_axis(self.currentMotor)
         self.axisSettingsScreen.change_axis(self.currentMotor)
         self.ppmacaxisSettingsScreen.change_axis(self.currentMotor)
@@ -542,7 +541,7 @@ class Controlform(QMainWindow, UiControlForm):
             self.progressDialog = QProgressDialog(
                 "Downloading PMAC configuration", "cancel", 0, len(pmc_lines), self
             )
-            self.progressDialog.setWindowModality(Qt.ApplicationModal)
+            self.progressDialog.setWindowModality(Qt.WindowModality.ApplicationModal)
             self.progressDialog.canceled.connect(self.cancel)
             self.txtShell.append("Beginning download of pmc file: " + file_name)
             self.commsThread.inputQueue.put(("sendSeries", commands))
@@ -633,7 +632,7 @@ class Controlform(QMainWindow, UiControlForm):
         if not item:
             item = QTableWidgetItem()
             self.table.setItem(row, col, item)
-            item.setFlags(Qt.ItemIsEnabled)
+            item.setFlags(Qt.ItemFlag.ItemIsEnabled)
         return item
 
     def add_to_txt_shell(self, command, ret_str=None, chk_show_all=True):
@@ -1034,7 +1033,7 @@ def main():
     win.splitter.moveSplitter(180, 1)
     # catch CTRL-C
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    app.exec_()
+    app.exec()
 
 
 if __name__ == "__main__":

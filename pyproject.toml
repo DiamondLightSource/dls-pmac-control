@@ -15,6 +15,7 @@ dependencies = [
     "numpy",
     "pythonqwt",
     "pyqt6",
+    "pyqt6-qt6 <= 6.9.2",
     "typing-extensions>=4.15.0",
 ]
 dynamic = ["version"]
