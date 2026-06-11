@@ -46,7 +46,13 @@ class PpmacGatherform(QDialog, UiFormGather):
         self.servoCycleTime = 0.0  # the time of one servo cycle (ms)
         self.nGatherPoints = 0  # the # of data points to sample
 
-        self.lstColours = [Qt.red, Qt.blue, Qt.magenta, Qt.green, Qt.cyan]
+        self.lstColours = [
+            Qt.GlobalColor.red,
+            Qt.GlobalColor.blue,
+            Qt.GlobalColor.magenta,
+            Qt.GlobalColor.green,
+            Qt.GlobalColor.cyan,
+        ]
 
         self.lstCheckboxes = [
             self.chkPlot1,

@@ -218,7 +218,9 @@ class UiFormPpmacAxisSettings:
         self.lneIx16.setMinimumSize(QtCore.QSize(60, 0))
         self.lneIx16.setMaximumSize(QtCore.QSize(31222, 32767))
         self.lneIx16.setObjectName("lneIx16")
-        self.formLayout_2.setWidget(8, QtWidgets.QFormLayout.FieldRole, self.lneIx16)
+        self.formLayout_2.setWidget(
+            8, QtWidgets.QFormLayout.ItemRole.FieldRole, self.lneIx16
+        )
         self.textLabel2_7 = QtWidgets.QLabel(self.groupBox1)
         self.textLabel2_7.setWordWrap(False)
         self.textLabel2_7.setObjectName("textLabel2_7")

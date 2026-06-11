@@ -122,9 +122,9 @@ class Controlform(QMainWindow, UiControlForm):
         self.spnJogMotor.setValue(self.currentMotor)
 
         # a few details for use when downloading pmc file
-        self.progressEventType = QEvent.User + 1
-        self.downloadDoneEventType = QEvent.User + 2
-        self.updatesReadyEventType = QEvent.User + 3
+        self.progressEventType = QEvent.Type.User + 1
+        self.downloadDoneEventType = QEvent.Type.User + 2
+        self.updatesReadyEventType = QEvent.Type.User + 3
         self.progressDialog = None
         self.canceledDownload = False
 
@@ -210,7 +210,7 @@ class Controlform(QMainWindow, UiControlForm):
             self.lblPollRate.setEnabled(False)
 
     def check_history(self, edit, event):
-        if event.key() == Qt.Key_Up:
+        if event.key() == Qt.Key.Key_Up:
             if len(self.commands) == 0:
                 self.commands_i = 0
                 self.lneSend.setText("")
@@ -219,7 +219,7 @@ class Controlform(QMainWindow, UiControlForm):
                 self.lneSend.setText(self.commands[self.commands_i])
             else:
                 self.lneSend.setText(self.commands[self.commands_i])
-        elif event.key() == Qt.Key_Down:
+        elif event.key() == Qt.Key.Key_Down:
             if self.commands_i >= -1:
                 self.commands_i = 0
                 self.lneSend.setText("")
@@ -1033,7 +1033,7 @@ def main():
     win.splitter.moveSplitter(180, 1)
     # catch CTRL-C
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    app.exec_()
+    app.exec()
 
 
 if __name__ == "__main__":
