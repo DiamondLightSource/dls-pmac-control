@@ -13,7 +13,7 @@ from dls_pmaclib.dls_pmacremote import (
     PPmacSshInterface,
 )
 from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
-from PyQt6.QtCore import QEvent, Qt, pyqtSlot
+from PyQt6.QtCore import QEvent, Qt, pyqtSlot, QThread, pyqtSignal, QObject, QTimer
 from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
@@ -28,7 +28,7 @@ from typing_extensions import override
 
 from dls_pmac_control import __version__
 from dls_pmac_control.axissettings import Axissettingsform, PpmacAxissettingsform
-from dls_pmac_control.comms_thread import CommsThread
+# from dls_pmac_control.comms_thread import CommsThread
 from dls_pmac_control.cs_status import CSStatusForm, PpmacCSStatusForm
 from dls_pmac_control.energise import Energiseform
 from dls_pmac_control.gather import PmacGatherform
@@ -38,10 +38,13 @@ from dls_pmac_control.ppmacgather import PpmacGatherform
 from dls_pmac_control.status import PpmacStatusform, Statusform
 from dls_pmac_control.ui_form_control import UiControlForm
 from dls_pmac_control.watches import Watchesform
+from dls_pmac_control import comms_qtthread
 
 
 class Controlform(QMainWindow, UiControlForm):
     def __init__(self, options, parent=None):
+        super().__init__()
+
         signal.signal(2, self.signal_handler)
         # setup signals
 
@@ -117,7 +120,22 @@ class Controlform(QMainWindow, UiControlForm):
         self.watchesScreen = Watchesform(self)
         self.login = Loginform(self, self.username, self.password)
         # self.energiseScreen = Energiseform(self.pmac,self)
-        self.commsThread = CommsThread(self)
+        
+        # self.commsThread = CommsThread(self)
+        # set up threading
+        self.main_thread = QThread()
+        self.worker = comms_qtthread.CommsWorker(self)
+        self.worker.moveToThread(self.main_thread)
+
+        self.main_thread.started.connect(self.worker.start)
+        self.main_thread.finished.connect(self.worker.deleteLater)
+
+        # self.worker.finished.connect(self.main_thread.quit)
+        # self.main_thread.finished.connect(self.main_thread.deleteLater)
+        # self.worker.update_received.connect(self.update_ui)
+
+        self.main_thread.start()
+
 
         self.spnJogMotor.setValue(self.currentMotor)
 
