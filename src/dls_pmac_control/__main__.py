@@ -268,7 +268,7 @@ class Controlform(QMainWindow, UiControlForm):
                 pollrate = float(self.lnePollRate.text())
             except ValueError:
                 pollrate = False
-            self.commsThread.max_pollrate = pollrate
+            self.worker.max_pollrate = pollrate
             self.pmac = PmacSerialInterface(
                 self,
                 verbose=self.verboseMode,
@@ -562,17 +562,17 @@ class Controlform(QMainWindow, UiControlForm):
             self.progressDialog.setWindowModality(Qt.WindowModality.ApplicationModal)
             self.progressDialog.canceled.connect(self.cancel)
             self.txtShell.append("Beginning download of pmc file: " + file_name)
-            self.commsThread.inputQueue.put(("sendSeries", commands))
+            self.worker.inputQueue.put(("sendSeries", commands))
 
     def cancel(self):
         self.canceledDownload = True
-        self.commsThread.inputQueue.put(("cancelSendSeries", ""))
+        self.worker.inputQueue.put(("cancelSendSeries", ""))
 
     def pmac_polling_status(self):
         # If we are already polling, disable it
         if self.pollingStatus:
             self.pollingStatus = False
-            self.commsThread.inputQueue.put(("disablePollingStatus", True))
+            self.worker.inputQueue.put(("disablePollingStatus", True))
 
             self.btnPollingStatus.setText("enable polling")
 
@@ -587,7 +587,7 @@ class Controlform(QMainWindow, UiControlForm):
         # else, if we are not polling: start polling!
         else:
             self.pollingStatus = True
-            self.commsThread.inputQueue.put(("disablePollingStatus", False))
+            self.worker.inputQueue.put(("disablePollingStatus", False))
             self.btnPollingStatus.setText("disable polling")
 
             # Re-enable all the disabled labels and controls
@@ -668,10 +668,10 @@ class Controlform(QMainWindow, UiControlForm):
         over_voltage = False
         over_temperature = False
 
-        self.commsThread.resultQueue.qsize()
-        for _que_item in range(0, self.commsThread.resultQueue.qsize()):
+        self.worker.resultQueue.qsize()
+        for _que_item in range(0, self.worker.resultQueue.qsize()):
             try:
-                value = self.commsThread.resultQueue.get(False)
+                value = self.worker.resultQueue.get(False)
             except Empty:
                 return
 
@@ -909,10 +909,10 @@ class Controlform(QMainWindow, UiControlForm):
             self.lblIdentity.setText(text)
 
     def update_watches(self):
-        self.commsThread.watchesQueue.qsize()
-        for _que_item in range(0, self.commsThread.watchesQueue.qsize()):
+        self.worker.watchesQueue.qsize()
+        for _que_item in range(0, self.worker.watchesQueue.qsize()):
             try:
-                value = self.commsThread.watchesQueue.get(False)
+                value = self.worker.watchesQueue.get(False)
             except Empty:
                 return
             for n in range(len(value)):
@@ -943,7 +943,7 @@ class Controlform(QMainWindow, UiControlForm):
 
     def die(self):
         self.remote_disconnect()
-        self.commsThread.inputQueue.put(("die", ""))
+        self.worker.inputQueue.put(("die", ""))
 
 
 # Main function in the pmaccontrol application.
