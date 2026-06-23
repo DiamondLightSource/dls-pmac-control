@@ -561,17 +561,17 @@ class Controlform(QMainWindow, UiControlForm):
             self.progressDialog.setWindowModality(Qt.WindowModality.ApplicationModal)
             self.progressDialog.canceled.connect(self.cancel)
             self.txtShell.append("Beginning download of pmc file: " + file_name)
-            self.worker.sendSeries(commands)
+            self.worker.send_series(commands)
 
     def cancel(self):
         self.canceledDownload = True
-        self.worker.cancelSendSeries()
+        self.worker.cancel_send_series()
 
     def pmac_polling_status(self):
         # If we are already polling, disable it
         if self.pollingStatus:
             self.pollingStatus = False
-            self.worker.disablePollingStatus(True)
+            self.worker.disable_polling_status(True)
 
             self.btnPollingStatus.setText("enable polling")
 
@@ -586,7 +586,7 @@ class Controlform(QMainWindow, UiControlForm):
         # else, if we are not polling: start polling!
         else:
             self.pollingStatus = True
-            self.worker.disablePollingStatus(False)
+            self.worker.disable_polling_status(False)
             self.btnPollingStatus.setText("disable polling")
 
             # Re-enable all the disabled labels and controls

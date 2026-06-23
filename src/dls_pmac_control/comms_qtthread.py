@@ -58,7 +58,7 @@ class CommsWorker(QObject):
         self.finished.emit()
 
     @pyqtSlot()
-    def sendSeries(self, data):
+    def send_series(self, data):
         try:
             self.gen = self.parent.pmac.sendSeries(data)
         except Exception:
@@ -66,11 +66,11 @@ class CommsWorker(QObject):
             traceback.print_exc()
 
     @pyqtSlot()
-    def disablePollingStatus(self, data):
+    def disable_polling_status(self, data):
         self.disablePollingStatusValue = data
 
     @pyqtSlot()
-    def cancelSendSeries(self):
+    def cancel_send_series(self):
         if self.gen:
             self.gen.close()
             self.send_complete("Download cancelled by the user")
