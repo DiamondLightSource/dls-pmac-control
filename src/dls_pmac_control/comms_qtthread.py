@@ -1,15 +1,22 @@
 import threading
 import time
 import traceback
-from queue import Empty, Queue
+from queue import Queue
 
 from dls_pmaclib.dls_pmacremote import (
     PmacEthernetInterface,
     PmacSerialInterface,
     PPmacSshInterface,
 )
-from PyQt6.QtCore import QCoreApplication, QEvent, QThread, pyqtSignal, QObject, QTimer, pyqtSlot
-from PyQt6.QtWidgets import QMainWindow
+from PyQt6.QtCore import (
+    QCoreApplication,
+    QEvent,
+    QObject,
+    QTimer,
+    pyqtSignal,
+    pyqtSlot,
+)
+
 
 class CustomEvent(QEvent):
     _data = None
@@ -20,6 +27,7 @@ class CustomEvent(QEvent):
 
     def data(self):
         return self._data
+
 
 class CommsWorker(QObject):
     update_received = pyqtSignal(object)
@@ -39,7 +47,7 @@ class CommsWorker(QObject):
         # self.updateReadyEvent = None -->> Come back to
 
         self.disablePollingStatus = False
-        
+
         self.max_pollrate = None
         self.lineNumber = 0
         self._watch_window = {}
@@ -63,7 +71,7 @@ class CommsWorker(QObject):
         except Exception:
             self.send_complete("Couldn't start download")
             traceback.print_exc()
-    
+
     @pyqtSlot()
     def disablePollingStatus(self, data):
         self.disablePollingStatus = data
@@ -99,7 +107,6 @@ class CommsWorker(QObject):
         self.gen = None
         ev_done = CustomEvent(self.parent.downloadDoneEventType, message)
         QCoreApplication.postEvent(self.parent, ev_done)
-
 
     ### OLD CODE BELOW - CHANGE? ###
 
@@ -228,4 +235,8 @@ class CommsWorker(QObject):
 #         self.main_thread.start()
 
 
-    
+#         # self.worker.finished.connect(self.main_thread.quit)
+#         # self.main_thread.finished.connect(self.main_thread.deleteLater)
+#         # self.worker.update_received.connect(self.update_ui)
+
+#         self.main_thread.start()
