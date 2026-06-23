@@ -571,7 +571,7 @@ class Controlform(QMainWindow, UiControlForm):
         # If we are already polling, disable it
         if self.pollingStatus:
             self.pollingStatus = False
-            self.worker.inputQueue.put(("disablePollingStatus", True))
+            self.worker.disablePollingStatus(True)
 
             self.btnPollingStatus.setText("enable polling")
 
@@ -586,7 +586,7 @@ class Controlform(QMainWindow, UiControlForm):
         # else, if we are not polling: start polling!
         else:
             self.pollingStatus = True
-            self.worker.inputQueue.put(("disablePollingStatus", False))
+            self.worker.disablePollingStatus(False)
             self.btnPollingStatus.setText("disable polling")
 
             # Re-enable all the disabled labels and controls

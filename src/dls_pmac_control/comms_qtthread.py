@@ -8,14 +8,7 @@ from dls_pmaclib.dls_pmacremote import (
     PmacSerialInterface,
     PPmacSshInterface,
 )
-from PyQt6.QtCore import (
-    QCoreApplication,
-    QEvent,
-    QObject,
-    QTimer,
-    pyqtSignal,
-    pyqtSlot,
-)
+from PyQt6.QtCore import QCoreApplication, QEvent, QObject, QTimer, pyqtSignal, pyqtSlot
 
 
 class CustomEvent(QEvent):
@@ -46,7 +39,7 @@ class CommsWorker(QObject):
 
         # self.updateReadyEvent = None -->> Come back to
 
-        self.disablePollingStatus = False
+        self.disablePollingStatusValue = False
 
         self.max_pollrate = None
         self.lineNumber = 0
@@ -74,7 +67,7 @@ class CommsWorker(QObject):
 
     @pyqtSlot()
     def disablePollingStatus(self, data):
-        self.disablePollingStatus = data
+        self.disablePollingStatusValue = data
 
     @pyqtSlot()
     def cancelSendSeries(self):
@@ -136,7 +129,7 @@ class CommsWorker(QObject):
                     )
                 self.send_tick(self.lineNumber, err)
             return
-        if self.disablePollingStatus:
+        if self.disablePollingStatusValue:
             time.sleep(0.1)
             return
 
