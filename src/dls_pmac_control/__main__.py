@@ -561,11 +561,11 @@ class Controlform(QMainWindow, UiControlForm):
             self.progressDialog.setWindowModality(Qt.WindowModality.ApplicationModal)
             self.progressDialog.canceled.connect(self.cancel)
             self.txtShell.append("Beginning download of pmc file: " + file_name)
-            self.worker.inputQueue.put(("sendSeries", commands))
+            self.worker.sendSeries(commands)
 
     def cancel(self):
         self.canceledDownload = True
-        self.worker.inputQueue.put(("cancelSendSeries", ""))
+        self.worker.cancelSendSeries()
 
     def pmac_polling_status(self):
         # If we are already polling, disable it
