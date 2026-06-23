@@ -564,7 +564,7 @@ class CSStatusForm(QDialog, UiFormCSStatus):
                 self.lstLabels[i].setToolTip(self.lstTooltips[i])
 
     def change_cs(self, cs):
-        self.parent().commsThread.CSNum = cs
+        self.parent().worker.CSNum = cs
         self.ledGroup.setTitle("CS " + str(cs))
 
     def update_feed(self, feed):
@@ -575,7 +575,7 @@ class CSStatusForm(QDialog, UiFormCSStatus):
 
     def set_feed(self, feed):
         if feed != self._feed:
-            self.parent().pmac.sendCommand(f"&{self.parent().commsThread.CSNum}%{feed}")
+            self.parent().pmac.sendCommand(f"&{self.parent().worker.CSNum}%{feed}")
 
     def update_status(self, cs_status_hex_word):
         for bit in range(0, 72):
@@ -773,7 +773,7 @@ class PpmacCSStatusForm(QDialog, UiFormPpmacCSStatus):
                 self.lstLabels[i].setToolTip(self.lstTooltips[i])
 
     def change_cs(self, cs):
-        self.parent().commsThread.CSNum = cs
+        self.parent().worker.CSNum = cs
         self.ledGroup.setTitle("CS " + str(cs))
 
     def update_feed(self, feed):
@@ -783,7 +783,7 @@ class PpmacCSStatusForm(QDialog, UiFormPpmacCSStatus):
 
     def set_feed(self, feed):
         if feed != self._feed:
-            self.parent().pmac.sendCommand(f"&{self.parent().commsThread.CSNum}%{feed}")
+            self.parent().pmac.sendCommand(f"&{self.parent().worker.CSNum}%{feed}")
 
     def update_status(self, cs_status_hex_word):
         for bit in range(0, 64):
