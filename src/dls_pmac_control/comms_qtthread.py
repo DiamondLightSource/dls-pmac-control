@@ -206,30 +206,3 @@ class CommsWorker(QObject):
         else:
             print(f'WARNING: Could not poll PMAC for motor status ("{ret_str}")')
         time.sleep(0.1)
-
-
-### Moved to __main.py ###
-# class CommsThread(QMainWindow):
-#     def __init__(self):
-#         super().__init__()
-
-#         # set up threading
-#         self.main_thread = QThread()
-#         self.worker = CommsWorker()
-#         self.worker.moveToThread(self.main_thread)
-
-#         self.main_thread.started.connect(self.worker.start)
-#         self.main_thread.finished.connect(self.worker.deleteLater)
-
-#         # self.worker.finished.connect(self.main_thread.quit)
-#         # self.main_thread.finished.connect(self.main_thread.deleteLater)
-#         # self.worker.update_received.connect(self.update_ui)
-
-#         self.main_thread.start()
-
-
-#         # self.worker.finished.connect(self.main_thread.quit)
-#         # self.main_thread.finished.connect(self.main_thread.deleteLater)
-#         # self.worker.update_received.connect(self.update_ui)
-
-#         self.main_thread.start()
