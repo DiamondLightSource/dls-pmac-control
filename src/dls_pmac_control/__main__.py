@@ -128,10 +128,10 @@ class Controlform(QMainWindow, UiControlForm):
         self.worker.moveToThread(self.main_thread)
 
         self.main_thread.started.connect(self.worker.start)
+        self.worker.finished.connect(self.main_thread.quit)
         self.main_thread.finished.connect(self.worker.deleteLater)
+        self.main_thread.finished.connect(self.main_thread.deleteLater)
 
-        # self.worker.finished.connect(self.main_thread.quit)
-        # self.main_thread.finished.connect(self.main_thread.deleteLater)
         # self.worker.update_received.connect(self.update_ui)
 
         self.main_thread.start()
@@ -941,8 +941,11 @@ class Controlform(QMainWindow, UiControlForm):
             QApplication.exit(0)
 
     def die(self):
+        self.worker.stop()
+        self.main_thread.quit()
+        self.main_thread.wait()
+
         self.remote_disconnect()
-        self.worker.inputQueue.put(("die", ""))
 
 
 # Main function in the pmaccontrol application.
