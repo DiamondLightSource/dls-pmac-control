@@ -12,7 +12,7 @@ class DummyTestWidget(QMainWindow):
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.pmac = Mock()
-        self.commsThread = Mock()
+        self.worker = Mock()
 
 
 class WatchesTest(unittest.TestCase):
