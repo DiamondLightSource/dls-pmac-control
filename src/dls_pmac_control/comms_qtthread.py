@@ -49,12 +49,13 @@ class CommsWorker(QObject):
     # Give thread own Qt event loop
     # polling every 100ms and slots excute when signals come
     def start(self):
-        self.timer = QTimer()
+        self.timer = QTimer(self)
         self.timer.timeout.connect(self.update_func)
         self.timer.start(100)
 
     def stop(self):
-        self.timer.stop()
+        if hasattr(self, "timer"):
+            self.timer.stop()
         self.finished.emit()
 
     @pyqtSlot()

@@ -13,7 +13,7 @@ from dls_pmaclib.dls_pmacremote import (
     PPmacSshInterface,
 )
 from dls_pmaclib.dls_pmcpreprocessor import ClsPmacParser
-from PyQt6.QtCore import QEvent, Qt, QThread, pyqtSlot
+from PyQt6.QtCore import QEvent, Qt, QThread, pyqtSignal, pyqtSlot
 from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtWidgets import (
     QApplication,
@@ -42,6 +42,8 @@ from dls_pmac_control.watches import Watchesform
 
 
 class Controlform(QMainWindow, UiControlForm):
+    stop_worker_signal = pyqtSignal()
+
     def __init__(self, options, parent=None):
         super().__init__()
 
@@ -128,12 +130,14 @@ class Controlform(QMainWindow, UiControlForm):
         self.worker.moveToThread(self.main_thread)
 
         self.main_thread.started.connect(self.worker.start)
+
         self.worker.finished.connect(self.main_thread.quit)
         self.main_thread.finished.connect(self.worker.deleteLater)
         self.main_thread.finished.connect(self.main_thread.deleteLater)
 
         # self.worker.update_received.connect(self.update_ui)
 
+        self.stop_worker_signal.connect(self.worker.stop)
         self.main_thread.start()
 
         self.spnJogMotor.setValue(self.currentMotor)
@@ -940,9 +944,13 @@ class Controlform(QMainWindow, UiControlForm):
             print("Closing application.")
             QApplication.exit(0)
 
+        # def die(self):
+        #     self.worker.stop()
+        #     self.main_thread.quit()
+        #     self.main_thread.wait()
+
     def die(self):
-        self.worker.stop()
-        self.main_thread.quit()
+        self.stop_worker_signal.emit()
         self.main_thread.wait()
 
         self.remote_disconnect()
