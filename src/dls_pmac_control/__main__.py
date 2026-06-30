@@ -123,7 +123,6 @@ class Controlform(QMainWindow, UiControlForm):
         self.login = Loginform(self, self.username, self.password)
         # self.energiseScreen = Energiseform(self.pmac,self)
 
-        # self.commsThread = CommsThread(self)
         # set up threading
         self.main_thread = QThread()
         self.worker = comms_qtthread.CommsWorker(self)
@@ -134,8 +133,6 @@ class Controlform(QMainWindow, UiControlForm):
         self.worker.finished.connect(self.main_thread.quit)
         self.main_thread.finished.connect(self.worker.deleteLater)
         self.main_thread.finished.connect(self.main_thread.deleteLater)
-
-        # self.worker.update_received.connect(self.update_ui)
 
         self.stop_worker_signal.connect(self.worker.stop)
         self.main_thread.start()
@@ -944,13 +941,9 @@ class Controlform(QMainWindow, UiControlForm):
             print("Closing application.")
             QApplication.exit(0)
 
-        # def die(self):
-        #     self.worker.stop()
-        #     self.main_thread.quit()
-        #     self.main_thread.wait()
-
     def die(self):
         self.stop_worker_signal.emit()
+        self.main_thread.quit()
         self.main_thread.wait()
 
         self.remote_disconnect()
