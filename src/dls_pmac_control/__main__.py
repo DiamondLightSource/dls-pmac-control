@@ -26,7 +26,8 @@ from PyQt6.QtWidgets import (
 )
 from typing_extensions import override
 
-from dls_pmac_control import __version__, comms_qtthread
+from dls_pmac_control import __version__  # , comms_qtthread
+from dls_pmac_control import comms_qtthread_2 as comms_qtthread
 from dls_pmac_control.axissettings import Axissettingsform, PpmacAxissettingsform
 
 # from dls_pmac_control.comms_thread import CommsThread
