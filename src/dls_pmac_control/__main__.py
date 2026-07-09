@@ -28,9 +28,7 @@ from typing_extensions import override
 
 from dls_pmac_control import __version__
 from dls_pmac_control.axissettings import Axissettingsform, PpmacAxissettingsform
-
-# from dls_pmac_control.comms_thread import CommsThread
-from dls_pmac_control.comms_qtthread_2 import CommsWorker
+from dls_pmac_control.comms_thread import CommsWorker
 from dls_pmac_control.cs_status import CSStatusForm, PpmacCSStatusForm
 from dls_pmac_control.energise import Energiseform
 from dls_pmac_control.gather import PmacGatherform

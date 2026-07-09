@@ -10,6 +10,8 @@ from dls_pmaclib.dls_pmacremote import (
 )
 from PyQt6.QtCore import QCoreApplication, QEvent, QObject, QTimer, pyqtSignal, pyqtSlot
 
+from dls_pmac_control.status_dataclass import ControllerStatus, MotorStatus
+
 
 class CustomEvent(QEvent):
     _data = None
@@ -110,10 +112,112 @@ class CommsWorker(QObject):
         ev_done = CustomEvent(self.parent.downloadDoneEventType, message)
         QCoreApplication.postEvent(self.parent, ev_done)
 
+    ### NEW CODE - POLLING AS DATACLASSES
+
+    def parsed_poll_response(self, response):
+        print("parsed_poll_response \n")
+        # print(f"response: {response} \n")
+        response_str = response[0]
+        # print("response_str: " + repr(response_str))
+
+        response_success = response[1]
+        print(f"response_success: {response_success} \n")
+
+        response_str_list = str(response_str).rstrip("\x06\r").split("\r")
+        print("response_str_list: " + repr(response_str_list))
+
+        response_motors_list = response_str_list[4:]
+        response_motors_list = [
+            response_motors_list[i : i + 6]
+            for i in range(0, len(response_motors_list), 6)
+        ]
+        print(f"response_motors_list: {response_motors_list}")
+        status = ControllerStatus()
+
+        motor_no = 1
+        for motor_response in response_motors_list:
+            print(f"Motor_response: {motor_response}")
+            status.motors.append(
+                MotorStatus(
+                    number=motor_no,
+                    position=float(motor_response[1]),
+                    velocity=float(motor_response[2]),
+                    following_error=float(motor_response[3]),
+                    amplifier_status=float(motor_response[4]),
+                )
+            )
+            motor_no += 1
+
+        print(f"status: {status}")
+        return status
+
+    def generate_cmd(self):
+        print("generate_cmd \n")
+        cmd = f"i65???&{self.CSNum}??%"
+        # Send a different command for the Power PMAC
+        if isinstance(self.parent.pmac, PPmacSshInterface):
+            # There has to be a space before the first BrickLV string to avoid its B being interpreted as a 'begin' command
+            cmd = f"i65?&{self.CSNum}?% BrickLV.BusUnderVoltage BrickLV.BusOverVoltage BrickLV.OverTemp"
+        elif isinstance(self.parent.pmac, PmacEthernetInterface):
+            # Add the 7 segment display status query
+            cmd = f"i65???&{self.CSNum}??%"
+        axes = self.parent.pmac.getNumberOfAxes() + 1
+
+        for motor_no in range(1, axes):
+            cmd = cmd + "#" + str(motor_no) + "?PVF "
+            # Amplifier status checks only apply to the first 8 axes
+            if motor_no < 9:
+                if isinstance(self.parent.pmac, PPmacSshInterface):
+                    # PowerBrick channels are zero-indexed
+                    cmd = (
+                        cmd
+                        + "BrickLV.Chan["
+                        + str(motor_no - 1)
+                        + "].I2tFaultStatus BrickLV.Chan["
+                        + str(motor_no - 1)
+                        + "].OverCurrent"
+                    )
+                else:
+                    # Add a dummy request to keep the request chunks the same length (p99 always returns zero)
+                    cmd = cmd + "m" + str(motor_no) + "90 p99"
+            else:
+                # Use two dummy requests to keep the request chunks the same length (p99 always returns zero)
+                cmd = cmd + "p99 p99"
+
+        # print(f"cmd: {cmd}")
+        return cmd
+
+    def poll_status(self) -> ControllerStatus | None:
+        print("poll_status \n")
+        if self.parent.pmac is None:
+            return None
+
+        if not self.parent.pmac.isConnectionOpen:
+            return None
+
+        ###
+        cmd = self.generate_cmd()
+        return_thing = self.parsed_poll_response(self.parent.pmac.sendCommand(cmd))
+        # return self.parsed_poll_response(self.parent.pmac.sendCommand(cmd))
+        print(f"parsed poll response: {return_thing}\n")
+        return return_thing
+        ###
+
+    ### OLD CODE BELOW - CHANGE? ###
+
     def update_func(self):
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
             time.sleep(0.1)
             return
+
+        status = self.poll_status()
+        print(f"status: {status}")
+
+        # print("parent: ", dir(self.parent))
+
+        # if hasattr(self.parent, "pmac"):
+        #     print("\n pmac: ", dir(self.parent.pmac))
+
         if self.gen:
             # should be downloading a text file
             try:
@@ -146,40 +250,14 @@ class CommsWorker(QObject):
         if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
             if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
                 return
-        cmd = f"i65???&{self.CSNum}??%"
-        # Send a different command for the Power PMAC
-        if isinstance(self.parent.pmac, PPmacSshInterface):
-            # There has to be a space before the first BrickLV string to avoid its B being interpreted as a 'begin' command
-            cmd = f"i65?&{self.CSNum}?% BrickLV.BusUnderVoltage BrickLV.BusOverVoltage BrickLV.OverTemp"
-        elif isinstance(self.parent.pmac, PmacEthernetInterface):
-            # Add the 7 segment display status query
-            cmd = f"i65???&{self.CSNum}??%"
-        axes = self.parent.pmac.getNumberOfAxes() + 1
-        for motor_no in range(1, axes):
-            cmd = cmd + "#" + str(motor_no) + "?PVF "
-            # Amplifier status checks only apply to the first 8 axes
-            if motor_no < 9:
-                if isinstance(self.parent.pmac, PPmacSshInterface):
-                    # PowerBrick channels are zero-indexed
-                    cmd = (
-                        cmd
-                        + "BrickLV.Chan["
-                        + str(motor_no - 1)
-                        + "].I2tFaultStatus BrickLV.Chan["
-                        + str(motor_no - 1)
-                        + "].OverCurrent"
-                    )
-                else:
-                    # Add a dummy request to keep the request chunks
-                    # the same length (p99 always returns zero)
-                    cmd = cmd + "m" + str(motor_no) + "90 p99"
-            else:
-                # Use two dummy requests to keep the request chunks
-                # the same length (p99 always returns zero)
-                cmd = cmd + "p99 p99"
 
-        # send polling command
-        (ret_str, was_successful) = self.parent.pmac.sendCommand(cmd)
+        ### GENERATE CMD BELOW ###
+
+        cmd = self.generate_cmd()
+        (ret_str, was_successful) = self.parent.pmac.sendCommand(
+            cmd
+        )  ### THIS IS THE RETURNED RESPONSE
+
         with self.lock:
             # send watch window commands
             value_list_watch = []
@@ -237,6 +315,7 @@ class CommsWorker(QObject):
 
             ev_updates_ready = CustomEvent(self.parent.updatesReadyEventType, None)
             QCoreApplication.postEvent(self.parent, ev_updates_ready)
+            print(f"resultQueue: {list(self.resultQueue.queue)}")
         else:
             print(f'WARNING: Could not poll PMAC for motor status ("{ret_str}")')
         time.sleep(0.1)
