@@ -10,7 +10,11 @@ from dls_pmaclib.dls_pmacremote import (
 )
 from PyQt6.QtCore import QCoreApplication, QEvent, QObject, QTimer, pyqtSignal, pyqtSlot
 
-from dls_pmac_control.status_dataclass import ControllerStatus, MotorStatus
+from dls_pmac_control.status_dataclass import (
+    ControllerStatus,
+    CoordinateSystemStatus,
+    MotorStatus,
+)
 
 
 class CustomEvent(QEvent):
@@ -126,13 +130,23 @@ class CommsWorker(QObject):
         response_str_list = str(response_str).rstrip("\x06\r").split("\r")
         print("response_str_list: " + repr(response_str_list))
 
+        status = ControllerStatus()
+
+        status.coordinate_systems.append(
+            CoordinateSystemStatus(
+                identifier_i65=int(response_str_list[0]),
+                global_status=int(response_str_list[1]),
+                cs_status=response_str_list[2],
+                feedrate=float(response_str_list[3]),
+            )
+        )
+
         response_motors_list = response_str_list[4:]
         response_motors_list = [
             response_motors_list[i : i + 6]
             for i in range(0, len(response_motors_list), 6)
         ]
         print(f"response_motors_list: {response_motors_list}")
-        status = ControllerStatus()
 
         motor_no = 1
         for motor_response in response_motors_list:

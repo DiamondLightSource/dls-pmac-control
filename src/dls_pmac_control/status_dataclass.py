@@ -12,9 +12,12 @@ class MotorStatus:
 
 @dataclass
 class CoordinateSystemStatus:
-    number: int
-    running: bool
-    in_position: bool
+    # number: int
+    # running: bool
+    # in_position: bool
+    identifier_i65: int
+    global_status: int
+    cs_status: str
     feedrate: float
 
 
