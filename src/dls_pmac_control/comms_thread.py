@@ -1,14 +1,14 @@
 import threading
 import time
 import traceback
-from queue import Empty, Queue
+from queue import Queue
 
 from dls_pmaclib.dls_pmacremote import (
     PmacEthernetInterface,
     PmacSerialInterface,
     PPmacSshInterface,
 )
-from PyQt6.QtCore import QCoreApplication, QEvent
+from PyQt6.QtCore import QCoreApplication, QEvent, QObject, QTimer, pyqtSignal, pyqtSlot
 
 
 class CustomEvent(QEvent):
@@ -22,27 +22,68 @@ class CustomEvent(QEvent):
         return self._data
 
 
-class CommsThread:
+class CommsWorker(QObject):
+    update_received = pyqtSignal(object)
+    finished = pyqtSignal()
+
     def __init__(self, parent):
+        super().__init__()
+
         self.parent = parent
         self.CSNum = 1
         self.gen = None
-        self.resultQueue = Queue()  # a queue object that stores the results
+        self.resultQueue = (
+            Queue()
+        )  # a queue object that stores the results of each polling update
         # of each polling update
-        self.watchesQueue = Queue()  # a queue object that stores the results
-        # of each watches update
-        self.inputQueue = Queue()  # a queue object that stores things to do
-        self.updateReadyEvent = None
-        # Flags controlling polling of axis position/velocity/following error
-        self.disablePollingStatus = False
-        self.updateThreadHandle = threading.Thread(target=self.update_thread)
-        self.updateThreadHandle.start()
+        self.watchesQueue = (
+            Queue()
+        )  # a queue object that stores the results of each watches update
+
+        # self.inputQueue = Queue() -->> Using slots instead
+
+        # self.updateReadyEvent = None -->> Come back to
+
+        self.disablePollingStatusValue = False
+
         self.max_pollrate = None
         self.lineNumber = 0
         # Dict containing names and values of watch window variables
         self._watch_window = {}
         # Use lock to prevent race condition for watch window
         self.lock = threading.Lock()
+
+    # Give thread own Qt event loop
+    # polling every 100ms and slots excute when signals come
+    def start(self):
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_func)
+        self.timer.start(100)
+
+    def stop(self):
+        if hasattr(self, "timer"):
+            self.timer.stop()
+        self.finished.emit()
+
+    @pyqtSlot()
+    def send_series(self, data):
+        try:
+            self.gen = self.parent.pmac.sendSeries(data)
+        except Exception:
+            self.send_complete("Couldn't start download")
+            traceback.print_exc()
+
+    @pyqtSlot()
+    def disable_polling_status(self, data):
+        self.disablePollingStatusValue = data
+
+    @pyqtSlot()
+    def cancel_send_series(self):
+        if self.gen:
+            self.gen.close()
+            self.send_complete("Download cancelled by the user")
+
+    ### UNCHANGED CODE BELOW - KEEP ###
 
     def add_watch(self, name):
         with self.lock:
@@ -69,45 +110,7 @@ class CommsThread:
         ev_done = CustomEvent(self.parent.downloadDoneEventType, message)
         QCoreApplication.postEvent(self.parent, ev_done)
 
-        # Thread that sends the PMAC command to retrieve status, position,
-        # velocity and following error for each motor.
-
-    # The thread then puts the retrieved data on a queue which is read by the
-    # gui.
-    def update_thread(self):
-        die = False
-        while die is not True:
-            try:
-                die = self.update_func()
-            except Exception:
-                traceback.print_exc()
-                continue
-
     def update_func(self):
-        try:
-            # see if the gui wants us to do anything
-            cmd, data = self.inputQueue.get(block=False)
-        except Empty:
-            # nope, nothing to do
-            pass
-        else:
-            # work out what it wants us to do
-            if cmd == "die":
-                return True
-            elif cmd == "sendSeries":
-                try:
-                    self.gen = self.parent.pmac.sendSeries(data)
-                except Exception:
-                    self.send_complete("Couldn't start download")
-                    traceback.print_exc()
-            elif cmd == "disablePollingStatus":
-                self.disablePollingStatus = data
-            elif cmd == "cancelSendSeries":
-                if self.gen:
-                    self.gen.close()
-                    self.send_complete("Download cancelled by the user")
-            else:
-                print(f"WARNING: don't know what to do with cmd {cmd}")
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
             time.sleep(0.1)
             return
@@ -134,7 +137,7 @@ class CommsThread:
                     )
                 self.send_tick(self.lineNumber, err)
             return
-        if self.disablePollingStatus:
+        if self.disablePollingStatusValue:
             time.sleep(0.1)
             return
 
