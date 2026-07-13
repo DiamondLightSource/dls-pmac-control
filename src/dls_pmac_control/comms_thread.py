@@ -225,7 +225,8 @@ class CommsWorker(QObject):
             return
 
         status = self.poll_status()
-        print(f"status: {status}")
+        print(f"status: {status} \n")
+        self.update_received.emit(status)
 
         # print("parent: ", dir(self.parent))
 
