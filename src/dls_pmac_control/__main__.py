@@ -664,197 +664,153 @@ class Controlform(QMainWindow, UiControlForm):
 
     def start_updating_motors(self, status: ControllerStatus):
         print("start_updating_motors")
-        print(f"The data that's been passed is {status}")
+        print(f"The data that's been passed is {status} \n")
+        print(f"The cs is {status.coordinate_systems} \n")
+        print(f"The motors are {status.motors} \n")
 
-    # Called when an event comes out of the polling thread
-    # and the jog ribbon.
-    def update_motors(self):
         under_voltage = False
         over_voltage = False
         over_temperature = False
 
-        self.worker.resultQueue.qsize()
-        for _que_item in range(0, self.worker.resultQueue.qsize()):
-            try:
-                value = self.worker.resultQueue.get(False)
-            except Empty:
-                return
+        try:
+            # if isinstance(self.pmac, PPmacSshInterface):
+            self.update_identity(status.coordinate_systems[0].identifier_i65)
+            self.PpmacGlobalStatusScreen.update_status(
+                status.coordinate_systems[0].global_status
+            )
+            self.PpmacCSStatusScreen.update_status(
+                int(status.coordinate_systems[0].cs_status, 16)
+            )
+            self.PpmacCSStatusScreen.update_feed(
+                int(round(float(status.coordinate_systems[0].feedrate)))
+            )
 
-            try:
-                motor_row = value[6]
-                # check for special cases
-                if isinstance(motor_row, str):
+            i2t_fault = False
+            over_current = False
+
+            for motor_row in status.motors:
+                print(f"motor_row: {motor_row}\n")
+                self.__item(motor_row.number - 1, 0).setText(str(motor_row.position))
+                if isinstance(self.pmac, PPmacSshInterface):
+                    self.__item(motor_row.number - 1, 1).setText(
+                        str(motor_row.velocity)
+                    )
+                else:
+                    self.__item(motor_row.number - 1, 1).setText(
+                        str(round(float(motor_row.velocity) * self.servoCycleTime, 1))
+                    )
+                self.__item(motor_row.number - 1, 2).setText(
+                    str(motor_row.following_error)
+                )
+
+                if motor_row.number - 1 < 8:
                     if isinstance(self.pmac, PPmacSshInterface):
-                        if motor_row == "G":
-                            self.PpmacGlobalStatusScreen.update_status(
-                                int(value[0].strip("$"), 16)
-                            )
-                            continue
-                        if motor_row.startswith("CS"):
-                            self.PpmacCSStatusScreen.update_status(
-                                int(value[0].strip("$"), 16)
-                            )
-                            continue
-                        if motor_row.startswith("FEED"):
-                            self.PpmacCSStatusScreen.update_feed(
-                                int(round(float(value[0])))
-                            )
-                            continue
-                        if motor_row == "IDENT":
-                            self.update_identity(int(value[0]))
-                            continue
-                        if motor_row == "UVOL":
-                            if int(value[0]) != 0:
+                        if int(motor_row.amplifier_status) > 0:
+                            i2t_fault = True
+                        # if int(value[5]) > 0:
+                        #     over_current = True
+                    elif isinstance(self.pmac, PmacEthernetInterface):
+                        amp_status = (int(motor_row.amplifier_status) & 448) >> 6
+                        if amp_status == 5:
+                            i2t_fault = True
+                        elif amp_status == 6:
+                            over_current = True
+                        if motor_row.number - 1 < 4:
+                            if amp_status == 2:
                                 under_voltage = True
-                            continue
-                        if motor_row == "OVOL":
-                            if int(value[0]) != 0:
-                                over_voltage = True
-                            continue
-                        if motor_row == "OTEMP":
-                            if int(value[0]) != 0:
+                            elif amp_status == 3:
                                 over_temperature = True
-                            continue
-                    else:
-                        if motor_row == "G":
-                            self.global_status_screen.update_status(int(value[0], 16))
-                            continue
-                        if motor_row.startswith("CS"):
-                            self.cs_status_screen.update_status(int(value[0], 16))
-                            continue
-                        if motor_row.startswith("FEED"):
-                            self.cs_status_screen.update_feed(
-                                int(round(float(value[0])))
-                            )
-                            continue
-                        if motor_row == "IDENT":
-                            self.update_identity(int(value[0]))
-                            continue
+                            elif amp_status == 4:
+                                over_voltage = True
 
+                status_word = int(motor_row.motor_status.strip("$"), 16)
+
+                # define high and low limits for power pmac
+                if isinstance(self.pmac, PPmacSshInterface):
+                    lo_lim = bool(status_word & 0x2000000000000000)  # MinusLimit
+                    hi_lim = bool(status_word & 0x1000000000000000)  # PlusLimit
+                    lo_lim_soft = bool(
+                        status_word & 0x0080000000000000
+                    )  # SoftMinusLimit
+                    hi_lim_soft = bool(
+                        status_word & 0x0040000000000000
+                    )  # SoftPlusLimit
+
+                # define high and low limits for pmac
                 else:
-                    position = str(round(float(value[1]), 1))
-                    if isinstance(self.pmac, PPmacSshInterface):
-                        velocity = str(round(float(value[2]), 1))
-                    else:
-                        # On Turbo PMAC velocity is returned in counts per servo cycle
-                        # so you have to use the servo cycle time to convert it to cts/msec
-                        velocity = str(round(float(value[2]) * self.servoCycleTime, 1))
-                    folerr = str(round(float(value[3]), 1))
+                    lo_lim = bool(
+                        status_word & 0x400000000000
+                    )  # negative end limit set
+                    hi_lim = bool(
+                        status_word & 0x200000000000
+                    )  # positive end limit set
+                    lo_lim_soft = False
+                    hi_lim_soft = False
 
-                    i2t_fault = False
-                    over_current = False
+                # set limit indicators in polling table
+                if hi_lim:
+                    self.__item(motor_row.number - 1, 3).setIcon(QIcon(self.redLedOn))
+                elif hi_lim_soft:
+                    self.__item(motor_row.number - 1, 3).setIcon(QIcon(self.amberLedOn))
+                else:
+                    self.__item(motor_row.number - 1, 3).setIcon(QIcon(self.redLedOff))
+                if lo_lim:
+                    self.__item(motor_row.number - 1, 4).setIcon(QIcon(self.redLedOn))
+                elif lo_lim_soft:
+                    self.__item(motor_row.number - 1, 4).setIcon(QIcon(self.amberLedOn))
+                else:
+                    self.__item(motor_row.number - 1, 4).setIcon(QIcon(self.redLedOff))
 
-                    if motor_row < 8:
-                        if isinstance(self.pmac, PPmacSshInterface):
-                            if int(value[4]) > 0:
-                                i2t_fault = True
-                            if int(value[5]) > 0:
-                                over_current = True
-                        elif isinstance(self.pmac, PmacEthernetInterface):
-                            amp_status = (int(value[4]) & 448) >> 6
-                            if amp_status == 5:
-                                i2t_fault = True
-                            elif amp_status == 6:
-                                over_current = True
-                            if motor_row < 4:
-                                if amp_status == 2:
-                                    under_voltage = True
-                                elif amp_status == 3:
-                                    over_temperature = True
-                                elif amp_status == 4:
-                                    over_voltage = True
+                # set amplifier status indicators in polling table
+                if i2t_fault:
+                    self.__item(motor_row.number - 1, 5).setIcon(QIcon(self.redLedOn))
+                else:
+                    self.__item(motor_row.number - 1, 5).setIcon(QIcon(self.redLedOff))
+                if over_current:
+                    self.__item(motor_row.number - 1, 6).setIcon(QIcon(self.redLedOn))
+                else:
+                    self.__item(motor_row.number - 1, 6).setIcon(QIcon(self.redLedOff))
 
-                    self.__item(motor_row, 0).setText(position)
-                    self.__item(motor_row, 1).setText(velocity)
-                    self.__item(motor_row, 2).setText(folerr)
-
-                    status_word = int(value[0].strip("$"), 16)
-
-                    # define high and low limits for power pmac
-                    if isinstance(self.pmac, PPmacSshInterface):
-                        lo_lim = bool(status_word & 0x2000000000000000)  # MinusLimit
-                        hi_lim = bool(status_word & 0x1000000000000000)  # PlusLimit
-                        lo_lim_soft = bool(
-                            status_word & 0x0080000000000000
-                        )  # SoftMinusLimit
-                        hi_lim_soft = bool(
-                            status_word & 0x0040000000000000
-                        )  # SoftPlusLimit
-
-                    # define high and low limits for pmac
-                    else:
-                        lo_lim = bool(
-                            status_word & 0x400000000000
-                        )  # negative end limit set
-                        hi_lim = bool(
-                            status_word & 0x200000000000
-                        )  # positive end limit set
-                        lo_lim_soft = False
-                        hi_lim_soft = False
-
-                    # set limit indicators in polling table
+                # Update also the jog ribbon
+                if motor_row.number == self.currentMotor:
+                    self.lblPosition.setText(str(motor_row.position))
+                    self.lblVelo.setText(str(motor_row.velocity))
+                    self.lblFolErr.setText(str(motor_row.following_error))
                     if hi_lim:
-                        self.__item(motor_row, 3).setIcon(QIcon(self.redLedOn))
+                        self.pixHiLim.setPixmap(self.redLedOn)
                     elif hi_lim_soft:
-                        self.__item(motor_row, 3).setIcon(QIcon(self.amberLedOn))
+                        self.pixHiLim.setPixmap(self.amberLedOn)
                     else:
-                        self.__item(motor_row, 3).setIcon(QIcon(self.redLedOff))
+                        self.pixHiLim.setPixmap(self.redLedOff)
                     if lo_lim:
-                        self.__item(motor_row, 4).setIcon(QIcon(self.redLedOn))
+                        self.pixLoLim.setPixmap(self.redLedOn)
                     elif lo_lim_soft:
-                        self.__item(motor_row, 4).setIcon(QIcon(self.amberLedOn))
+                        self.pixLoLim.setPixmap(self.amberLedOn)
                     else:
-                        self.__item(motor_row, 4).setIcon(QIcon(self.redLedOff))
+                        self.pixLoLim.setPixmap(self.redLedOff)
+                    self.status_screen.update_status(status_word)
+                    self.ppmacstatusScreen.update_status(status_word)
 
-                    # set amplifier status indicators in polling table
-                    if i2t_fault:
-                        self.__item(motor_row, 5).setIcon(QIcon(self.redLedOn))
-                    else:
-                        self.__item(motor_row, 5).setIcon(QIcon(self.redLedOff))
-                    if over_current:
-                        self.__item(motor_row, 6).setIcon(QIcon(self.redLedOn))
-                    else:
-                        self.__item(motor_row, 6).setIcon(QIcon(self.redLedOff))
+            # set controller status indicators on main window
+            if under_voltage:
+                self.pixUnderVoltage.setPixmap(self.redLedOn)
+            else:
+                self.pixUnderVoltage.setPixmap(self.redLedOff)
+            if over_voltage:
+                self.pixOverVoltage.setPixmap(self.redLedOn)
+            else:
+                self.pixOverVoltage.setPixmap(self.redLedOff)
+            if over_temperature:
+                self.pixOverTemperature.setPixmap(self.redLedOn)
+            else:
+                self.pixOverTemperature.setPixmap(self.redLedOff)
 
-                    # Update also the jog ribbon
-                    if motor_row + 1 == self.currentMotor:
-                        self.lblPosition.setText(position)
-                        self.lblVelo.setText(velocity)
-                        self.lblFolErr.setText(folerr)
-                        if hi_lim:
-                            self.pixHiLim.setPixmap(self.redLedOn)
-                        elif hi_lim_soft:
-                            self.pixHiLim.setPixmap(self.amberLedOn)
-                        else:
-                            self.pixHiLim.setPixmap(self.redLedOff)
-                        if lo_lim:
-                            self.pixLoLim.setPixmap(self.redLedOn)
-                        elif lo_lim_soft:
-                            self.pixLoLim.setPixmap(self.amberLedOn)
-                        else:
-                            self.pixLoLim.setPixmap(self.redLedOff)
-                        self.status_screen.update_status(status_word)
-                        self.ppmacstatusScreen.update_status(status_word)
-
-                # set controller status indicators on main window
-                if under_voltage:
-                    self.pixUnderVoltage.setPixmap(self.redLedOn)
-                else:
-                    self.pixUnderVoltage.setPixmap(self.redLedOff)
-                if over_voltage:
-                    self.pixOverVoltage.setPixmap(self.redLedOn)
-                else:
-                    self.pixOverVoltage.setPixmap(self.redLedOff)
-                if over_temperature:
-                    self.pixOverTemperature.setPixmap(self.redLedOn)
-                else:
-                    self.pixOverTemperature.setPixmap(self.redLedOff)
-
-            except (ValueError, IndexError):
-                # Catch the exception and continue, since there may be other
-                # updates waiting in the queue.
-                if self.verboseMode:
-                    print("Update request received invalid response: ", value)
+        except (ValueError, IndexError):
+            # Catch the exception and continue, since there may be other
+            # updates waiting in the queue.
+            if self.verboseMode:
+                print(f"Update request received invalid response: {status}")
+                print(f"Update request received invalid response: {status}")
 
     domain_names = [
         "BL",
