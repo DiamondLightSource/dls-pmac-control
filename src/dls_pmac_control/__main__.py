@@ -26,10 +26,9 @@ from PyQt6.QtWidgets import (
 )
 from typing_extensions import override
 
-from dls_pmac_control import __version__, comms_qtthread
+from dls_pmac_control import __version__
 from dls_pmac_control.axissettings import Axissettingsform, PpmacAxissettingsform
-
-# from dls_pmac_control.comms_thread import CommsThread
+from dls_pmac_control.comms_thread import CommsWorker
 from dls_pmac_control.cs_status import CSStatusForm, PpmacCSStatusForm
 from dls_pmac_control.energise import Energiseform
 from dls_pmac_control.gather import PmacGatherform
@@ -125,7 +124,7 @@ class Controlform(QMainWindow, UiControlForm):
 
         # set up threading
         self.main_thread = QThread()
-        self.worker = comms_qtthread.CommsWorker(self)
+        self.worker = CommsWorker(self)
         self.worker.moveToThread(self.main_thread)
 
         self.main_thread.started.connect(self.worker.start)

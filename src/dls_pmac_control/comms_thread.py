@@ -1,14 +1,14 @@
 import threading
 import time
 import traceback
-from queue import Empty, Queue
+from queue import Queue
 
 from dls_pmaclib.dls_pmacremote import (
     PmacEthernetInterface,
     PmacSerialInterface,
     PPmacSshInterface,
 )
-from PyQt6.QtCore import QCoreApplication, QEvent
+from PyQt6.QtCore import QCoreApplication, QEvent, QObject, QTimer, pyqtSignal, pyqtSlot
 
 
 class CustomEvent(QEvent):
@@ -22,27 +22,61 @@ class CustomEvent(QEvent):
         return self._data
 
 
-class CommsThread:
+class CommsWorker(QObject):
+    update_received = pyqtSignal(object)
+    finished = pyqtSignal()
+
     def __init__(self, parent):
+        super().__init__()
+
         self.parent = parent
         self.CSNum = 1
         self.gen = None
-        self.resultQueue = Queue()  # a queue object that stores the results
-        # of each polling update
-        self.watchesQueue = Queue()  # a queue object that stores the results
-        # of each watches update
-        self.inputQueue = Queue()  # a queue object that stores things to do
-        self.updateReadyEvent = None
-        # Flags controlling polling of axis position/velocity/following error
-        self.disablePollingStatus = False
-        self.updateThreadHandle = threading.Thread(target=self.update_thread)
-        self.updateThreadHandle.start()
+        self.resultQueue = Queue()
+        self.watchesQueue = Queue()
+
+        # self.inputQueue = Queue() -->> Using slots instead
+
+        # self.updateReadyEvent = None -->> Come back to
+
+        self.disablePollingStatusValue = False
+
         self.max_pollrate = None
         self.lineNumber = 0
-        # Dict containing names and values of watch window variables
         self._watch_window = {}
-        # Use lock to prevent race condition for watch window
         self.lock = threading.Lock()
+
+    # Give thread own Qt event loop
+    # polling every 100ms and slots excute when signals come
+    def start(self):
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_func)
+        self.timer.start(100)
+
+    def stop(self):
+        if hasattr(self, "timer"):
+            self.timer.stop()
+        self.finished.emit()
+
+    @pyqtSlot()
+    def send_series(self, data):
+        try:
+            self.gen = self.parent.pmac.sendSeries(data)
+        except Exception:
+            self.send_complete("Couldn't start download")
+            traceback.print_exc()
+
+    @pyqtSlot()
+    def disable_polling_status(self, data):
+        self.disablePollingStatusValue = data
+
+    @pyqtSlot()
+    def cancel_send_series(self):
+        if self.gen:
+            self.gen.close()
+            self.send_complete("Download cancelled by the user")
+
+    ### UNCHANGED CODE BELOW - KEEP ###
 
     def add_watch(self, name):
         with self.lock:
@@ -60,7 +94,6 @@ class CommsThread:
         return self._watch_window[name]
 
     def send_tick(self, line_number, err):
-        # Post a Qt event with current progress data
         ev = CustomEvent(self.parent.progressEventType, (line_number, err))
         QCoreApplication.postEvent(self.parent, ev)
 
@@ -69,50 +102,13 @@ class CommsThread:
         ev_done = CustomEvent(self.parent.downloadDoneEventType, message)
         QCoreApplication.postEvent(self.parent, ev_done)
 
-        # Thread that sends the PMAC command to retrieve status, position,
-        # velocity and following error for each motor.
-
-    # The thread then puts the retrieved data on a queue which is read by the
-    # gui.
-    def update_thread(self):
-        die = False
-        while die is not True:
-            try:
-                die = self.update_func()
-            except Exception:
-                traceback.print_exc()
-                continue
+    ### OLD CODE BELOW - CHANGE? ###
 
     def update_func(self):
-        try:
-            # see if the gui wants us to do anything
-            cmd, data = self.inputQueue.get(block=False)
-        except Empty:
-            # nope, nothing to do
-            pass
-        else:
-            # work out what it wants us to do
-            if cmd == "die":
-                return True
-            elif cmd == "sendSeries":
-                try:
-                    self.gen = self.parent.pmac.sendSeries(data)
-                except Exception:
-                    self.send_complete("Couldn't start download")
-                    traceback.print_exc()
-            elif cmd == "disablePollingStatus":
-                self.disablePollingStatus = data
-            elif cmd == "cancelSendSeries":
-                if self.gen:
-                    self.gen.close()
-                    self.send_complete("Download cancelled by the user")
-            else:
-                print(f"WARNING: don't know what to do with cmd {cmd}")
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
             time.sleep(0.1)
             return
         if self.gen:
-            # should be downloading a text file
             try:
                 (
                     was_successful,
@@ -134,30 +130,23 @@ class CommsThread:
                     )
                 self.send_tick(self.lineNumber, err)
             return
-        if self.disablePollingStatus:
+        if self.disablePollingStatusValue:
             time.sleep(0.1)
             return
 
-        # Reduce poll rate for serial interface (ignores if poll rate set to
-        # zero)
         if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
             if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
                 return
         cmd = f"i65???&{self.CSNum}??%"
-        # Send a different command for the Power PMAC
         if isinstance(self.parent.pmac, PPmacSshInterface):
-            # There has to be a space before the first BrickLV string to avoid its B being interpreted as a 'begin' command
             cmd = f"i65?&{self.CSNum}?% BrickLV.BusUnderVoltage BrickLV.BusOverVoltage BrickLV.OverTemp"
         elif isinstance(self.parent.pmac, PmacEthernetInterface):
-            # Add the 7 segment display status query
             cmd = f"i65???&{self.CSNum}??%"
         axes = self.parent.pmac.getNumberOfAxes() + 1
         for motor_no in range(1, axes):
             cmd = cmd + "#" + str(motor_no) + "?PVF "
-            # Amplifier status checks only apply to the first 8 axes
             if motor_no < 9:
                 if isinstance(self.parent.pmac, PPmacSshInterface):
-                    # PowerBrick channels are zero-indexed
                     cmd = (
                         cmd
                         + "BrickLV.Chan["
@@ -167,65 +156,46 @@ class CommsThread:
                         + "].OverCurrent"
                     )
                 else:
-                    # Add a dummy request to keep the request chunks
-                    # the same length (p99 always returns zero)
                     cmd = cmd + "m" + str(motor_no) + "90 p99"
             else:
-                # Use two dummy requests to keep the request chunks
-                # the same length (p99 always returns zero)
                 cmd = cmd + "p99 p99"
 
-        # send polling command
         (ret_str, was_successful) = self.parent.pmac.sendCommand(cmd)
         with self.lock:
-            # send watch window commands
             value_list_watch = []
             for key in self._watch_window:
                 (ret, success) = self.parent.pmac.sendCommand(key)
                 ret = ret.rstrip("\x06\r")
                 if "error" in ret or "ERR" in ret:
                     ret = "Error"
-                # update watches dict
                 self._watch_window[key] = ret
                 value_list_watch.append(ret)
             self.watchesQueue.put(value_list_watch)
 
         if was_successful:
             value_list = ret_str.rstrip("\x06\r").split("\r")
-            # fourth is the PMAC identity
             if value_list[0].startswith("\x07"):
-                # error, probably in buffer
                 print(f"i65 returned {value_list[0].__repr__()}, sending CLOSE command")
                 self.parent.pmac.sendCommand("CLOSE")
                 return
 
-            # If we got a malformed response, abort now before writing anything
-            # to the result queue.
             if len(value_list) < 4:
                 if self.parent.verboseMode:
                     print("Received malformed response to poll request: ", value_list)
                 return
 
-            # Identifier i65
             self.resultQueue.put([value_list[0], 0, 0, 0, 0, 0, "IDENT"])
-            # Global status
             self.resultQueue.put([value_list[1], 0, 0, 0, 0, 0, "G"])
-            # CS status
             self.resultQueue.put([value_list[2], 0, 0, 0, 0, 0, f"CS{self.CSNum}"])
-            # Fedrate
             self.resultQueue.put([value_list[3], 0, 0, 0, 0, 0, f"FEED{self.CSNum}"])
 
             if isinstance(self.parent.pmac, PPmacSshInterface):
-                # Brick Under Voltage Status
                 self.resultQueue.put([value_list[4], 0, 0, 0, 0, 0, "UVOL"])
-                # Brick Over Voltage Status
                 self.resultQueue.put([value_list[5], 0, 0, 0, 0, 0, "OVOL"])
-                # Brick Over Temperature Status
                 self.resultQueue.put([value_list[6], 0, 0, 0, 0, 0, "OTEMP"])
                 value_list = value_list[7:]
             else:
                 value_list = value_list[4:]
-            # All request chunks contain 7 elements
             cols = 6
             for motor_row, i in enumerate(range(0, len(value_list), cols)):
                 return_list = value_list[i : i + cols]
