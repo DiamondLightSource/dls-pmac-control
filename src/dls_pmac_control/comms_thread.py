@@ -234,104 +234,104 @@ class CommsWorker(QObject):
         # if hasattr(self.parent, "pmac"):
         #     print("\n pmac: ", dir(self.parent.pmac))
 
-        if self.gen:
-            # should be downloading a text file
-            try:
-                (
-                    was_successful,
-                    self.lineNumber,
-                    command,
-                    pmac_response_str,
-                ) = self.gen.__next__()
-            except StopIteration:
-                self.send_complete(
-                    "Downloaded " + str(self.lineNumber) + " lines from pmc file."
-                )
-            else:
-                err = ""
-                if not was_successful:
-                    err = "{}: command '{}' generated '{}'".format(
-                        self.lineNumber,
-                        command,
-                        pmac_response_str.replace("\r", " ").replace("\x07", ""),
-                    )
-                self.send_tick(self.lineNumber, err)
-            return
-        if self.disablePollingStatusValue:
-            time.sleep(0.1)
-            return
+        # if self.gen:
+        #     # should be downloading a text file
+        #     try:
+        #         (
+        #             was_successful,
+        #             self.lineNumber,
+        #             command,
+        #             pmac_response_str,
+        #         ) = self.gen.__next__()
+        #     except StopIteration:
+        #         self.send_complete(
+        #             "Downloaded " + str(self.lineNumber) + " lines from pmc file."
+        #         )
+        #     else:
+        #         err = ""
+        #         if not was_successful:
+        #             err = "{}: command '{}' generated '{}'".format(
+        #                 self.lineNumber,
+        #                 command,
+        #                 pmac_response_str.replace("\r", " ").replace("\x07", ""),
+        #             )
+        #         self.send_tick(self.lineNumber, err)
+        #     return
+        # if self.disablePollingStatusValue:
+        #     time.sleep(0.1)
+        #     return
 
-        # Reduce poll rate for serial interface (ignores if poll rate set to
-        # zero)
-        if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
-            if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
-                return
+        # # Reduce poll rate for serial interface (ignores if poll rate set to
+        # # zero)
+        # if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
+        #     if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
+        #         return
 
-        ### GENERATE CMD BELOW ###
+        # ### GENERATE CMD BELOW ###
 
-        cmd = self.generate_cmd()
-        (ret_str, was_successful) = self.parent.pmac.sendCommand(
-            cmd
-        )  ### THIS IS THE RETURNED RESPONSE
+        # cmd = self.generate_cmd()
+        # (ret_str, was_successful) = self.parent.pmac.sendCommand(
+        #     cmd
+        # )  ### THIS IS THE RETURNED RESPONSE
 
-        with self.lock:
-            # send watch window commands
-            value_list_watch = []
-            for key in self._watch_window:
-                (ret, success) = self.parent.pmac.sendCommand(key)
-                ret = ret.rstrip("\x06\r")
-                if "error" in ret or "ERR" in ret:
-                    ret = "Error"
-                # update watches dict
-                self._watch_window[key] = ret
-                value_list_watch.append(ret)
-            self.watchesQueue.put(value_list_watch)
+        # with self.lock:
+        #     # send watch window commands
+        #     value_list_watch = []
+        #     for key in self._watch_window:
+        #         (ret, success) = self.parent.pmac.sendCommand(key)
+        #         ret = ret.rstrip("\x06\r")
+        #         if "error" in ret or "ERR" in ret:
+        #             ret = "Error"
+        #         # update watches dict
+        #         self._watch_window[key] = ret
+        #         value_list_watch.append(ret)
+        #     self.watchesQueue.put(value_list_watch)
 
-        if was_successful:
-            value_list = ret_str.rstrip("\x06\r").split("\r")
-            # fourth is the PMAC identity
-            if value_list[0].startswith("\x07"):
-                # error, probably in buffer
-                print(f"i65 returned {value_list[0].__repr__()}, sending CLOSE command")
-                self.parent.pmac.sendCommand("CLOSE")
-                return
+        # if was_successful:
+        #     value_list = ret_str.rstrip("\x06\r").split("\r")
+        #     # fourth is the PMAC identity
+        #     if value_list[0].startswith("\x07"):
+        #         # error, probably in buffer
+        #         print(f"i65 returned {value_list[0].__repr__()}, sending CLOSE command")
+        #         self.parent.pmac.sendCommand("CLOSE")
+        #         return
 
-            # If we got a malformed response, abort now before writing anything
-            # to the result queue.
-            if len(value_list) < 4:
-                if self.parent.verboseMode:
-                    print("Received malformed response to poll request: ", value_list)
-                return
+        #     # If we got a malformed response, abort now before writing anything
+        #     # to the result queue.
+        #     if len(value_list) < 4:
+        #         if self.parent.verboseMode:
+        #             print("Received malformed response to poll request: ", value_list)
+        #         return
 
-            # Identifier i65
-            self.resultQueue.put([value_list[0], 0, 0, 0, 0, 0, "IDENT"])
-            # Global status
-            self.resultQueue.put([value_list[1], 0, 0, 0, 0, 0, "G"])
-            # CS status
-            self.resultQueue.put([value_list[2], 0, 0, 0, 0, 0, f"CS{self.CSNum}"])
-            # Fedrate
-            self.resultQueue.put([value_list[3], 0, 0, 0, 0, 0, f"FEED{self.CSNum}"])
+        #     # Identifier i65
+        #     self.resultQueue.put([value_list[0], 0, 0, 0, 0, 0, "IDENT"])
+        #     # Global status
+        #     self.resultQueue.put([value_list[1], 0, 0, 0, 0, 0, "G"])
+        #     # CS status
+        #     self.resultQueue.put([value_list[2], 0, 0, 0, 0, 0, f"CS{self.CSNum}"])
+        #     # Fedrate
+        #     self.resultQueue.put([value_list[3], 0, 0, 0, 0, 0, f"FEED{self.CSNum}"])
 
-            if isinstance(self.parent.pmac, PPmacSshInterface):
-                # Brick Under Voltage Status
-                self.resultQueue.put([value_list[4], 0, 0, 0, 0, 0, "UVOL"])
-                # Brick Over Voltage Status
-                self.resultQueue.put([value_list[5], 0, 0, 0, 0, 0, "OVOL"])
-                # Brick Over Temperature Status
-                self.resultQueue.put([value_list[6], 0, 0, 0, 0, 0, "OTEMP"])
-                value_list = value_list[7:]
-            else:
-                value_list = value_list[4:]
-            # All request chunks contain 7 elements
-            cols = 6
-            for motor_row, i in enumerate(range(0, len(value_list), cols)):
-                return_list = value_list[i : i + cols]
-                return_list.append(motor_row)
-                self.resultQueue.put(return_list, False)
+        #     if isinstance(self.parent.pmac, PPmacSshInterface):
+        #         # Brick Under Voltage Status
+        #         self.resultQueue.put([value_list[4], 0, 0, 0, 0, 0, "UVOL"])
+        #         # Brick Over Voltage Status
+        #         self.resultQueue.put([value_list[5], 0, 0, 0, 0, 0, "OVOL"])
+        #         # Brick Over Temperature Status
+        #         self.resultQueue.put([value_list[6], 0, 0, 0, 0, 0, "OTEMP"])
+        #         value_list = value_list[7:]
+        #     else:
+        #         value_list = value_list[4:]
+        #     # All request chunks contain 7 elements
+        #     cols = 6
+        #     for motor_row, i in enumerate(range(0, len(value_list), cols)):
+        #         return_list = value_list[i : i + cols]
+        #         return_list.append(motor_row)
+        #         self.resultQueue.put(return_list, False)
 
-            ev_updates_ready = CustomEvent(self.parent.updatesReadyEventType, None)
-            QCoreApplication.postEvent(self.parent, ev_updates_ready)
-            print(f"resultQueue: {list(self.resultQueue.queue)}")
-        else:
-            print(f'WARNING: Could not poll PMAC for motor status ("{ret_str}")')
+        #     ev_updates_ready = CustomEvent(self.parent.updatesReadyEventType, None)
+        #     QCoreApplication.postEvent(self.parent, ev_updates_ready)
+        #     print(f"resultQueue: {list(self.resultQueue.queue)}")
+        # else:
+        #     print(f'WARNING: Could not poll PMAC for motor status ("{ret_str}")')
         time.sleep(0.1)
