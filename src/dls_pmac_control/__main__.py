@@ -36,6 +36,7 @@ from dls_pmac_control.global_status import GlobalStatusForm, PpmacGlobalStatusFo
 from dls_pmac_control.login import Loginform
 from dls_pmac_control.ppmacgather import PpmacGatherform
 from dls_pmac_control.status import PpmacStatusform, Statusform
+from dls_pmac_control.status_dataclass import ControllerStatus
 from dls_pmac_control.ui_form_control import UiControlForm
 from dls_pmac_control.watches import Watchesform
 
@@ -128,6 +129,7 @@ class Controlform(QMainWindow, UiControlForm):
         self.worker.moveToThread(self.main_thread)
 
         self.main_thread.started.connect(self.worker.start)
+        self.worker.update_received.connect(self.start_updating_motors)
 
         self.worker.finished.connect(self.main_thread.quit)
         self.main_thread.finished.connect(self.worker.deleteLater)
@@ -659,6 +661,10 @@ class Controlform(QMainWindow, UiControlForm):
                 self.txtShell.append(
                     ret_str.rstrip("\x06").lstrip("\x07").replace("\r", " ")
                 )
+
+    def start_updating_motors(self, status: ControllerStatus):
+        print("start_updating_motors")
+        print(f"The data that's been passed is {status}")
 
     # Called when an event comes out of the polling thread
     # and the jog ribbon.
