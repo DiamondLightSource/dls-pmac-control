@@ -154,6 +154,7 @@ class CommsWorker(QObject):
             status.motors.append(
                 MotorStatus(
                     number=motor_no,
+                    motor_status=str(motor_response[0]),
                     position=float(motor_response[1]),
                     velocity=float(motor_response[2]),
                     following_error=float(motor_response[3]),

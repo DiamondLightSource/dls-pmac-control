@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 @dataclass
 class MotorStatus:
     number: int
+    motor_status: str
     position: float
     velocity: float
     following_error: float
