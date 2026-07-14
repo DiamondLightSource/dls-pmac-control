@@ -30,6 +30,7 @@ class CustomEvent(QEvent):
 
 class CommsWorker(QObject):
     update_received = pyqtSignal(object)
+    watches_ready = pyqtSignal()
     finished = pyqtSignal()
 
     def __init__(self, parent):
@@ -274,18 +275,22 @@ class CommsWorker(QObject):
         #     cmd
         # )  ### THIS IS THE RETURNED RESPONSE
 
-        # with self.lock:
-        #     # send watch window commands
-        #     value_list_watch = []
-        #     for key in self._watch_window:
-        #         (ret, success) = self.parent.pmac.sendCommand(key)
-        #         ret = ret.rstrip("\x06\r")
-        #         if "error" in ret or "ERR" in ret:
-        #             ret = "Error"
-        #         # update watches dict
-        #         self._watch_window[key] = ret
-        #         value_list_watch.append(ret)
-        #     self.watchesQueue.put(value_list_watch)
+        with self.lock:
+            # send watch window commands
+            value_list_watch = []
+            for key in self._watch_window:
+                print(f"watch window key: {key}")
+                (ret, success) = self.parent.pmac.sendCommand(key)
+                ret = ret.rstrip("\x06\r")
+                if "error" in ret or "ERR" in ret:
+                    ret = "Error"
+                # update watches dict
+                self._watch_window[key] = ret
+                value_list_watch.append(ret)
+                print(f"value_list_watch: {value_list_watch}")
+            self.watchesQueue.put(value_list_watch)
+
+        self.watches_ready.emit()
 
         # if was_successful:
         #     value_list = ret_str.rstrip("\x06\r").split("\r")

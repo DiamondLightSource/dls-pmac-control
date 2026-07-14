@@ -130,6 +130,8 @@ class Controlform(QMainWindow, UiControlForm):
 
         self.main_thread.started.connect(self.worker.start)
         self.worker.update_received.connect(self.start_updating_motors)
+        # self.worker.update_received.connect(self.update_watches)
+        self.worker.watches_ready.connect(self.update_watches)
 
         self.worker.finished.connect(self.main_thread.quit)
         self.main_thread.finished.connect(self.worker.deleteLater)
