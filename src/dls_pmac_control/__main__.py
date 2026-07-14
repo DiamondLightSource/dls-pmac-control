@@ -893,9 +893,6 @@ class Controlform(QMainWindow, UiControlForm):
         elif E.type() == self.downloadDoneEventType:
             self.progressDialog.setValue(self.progressDialog.maximum())
             self.txtShell.append(str(E.data()))
-        elif E.type() == self.updatesReadyEventType:
-            self.update_motors()
-            self.update_watches()
 
     def signal_handler(self, signum, frame):
         if signum == 2:  # SIGINT
