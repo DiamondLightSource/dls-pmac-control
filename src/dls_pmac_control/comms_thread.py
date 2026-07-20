@@ -78,8 +78,6 @@ class CommsWorker(QObject):
             self.gen.close()
             self.send_complete("Download cancelled by the user")
 
-    ### UNCHANGED CODE BELOW - KEEP ###
-
     def add_watch(self, name):
         with self.lock:
             self._watch_window[name] = None
@@ -107,8 +105,6 @@ class CommsWorker(QObject):
 
         # Thread that sends the PMAC command to retrieve status, position,
         # velocity and following error for each motor.
-
-    ### OLD CODE BELOW - CHANGE? ###
 
     def update_func(self):
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
