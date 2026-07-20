@@ -123,18 +123,18 @@ class Controlform(QMainWindow, UiControlForm):
         # self.energiseScreen = Energiseform(self.pmac,self)
 
         # set up threading
-        self.main_thread = QThread()
+        self.comms_thread = QThread()
         self.worker = CommsWorker(self)
-        self.worker.moveToThread(self.main_thread)
+        self.worker.moveToThread(self.comms_thread)
 
-        self.main_thread.started.connect(self.worker.start)
+        self.comms_thread.started.connect(self.worker.start)
 
-        self.worker.finished.connect(self.main_thread.quit)
-        self.main_thread.finished.connect(self.worker.deleteLater)
-        self.main_thread.finished.connect(self.main_thread.deleteLater)
+        self.worker.finished.connect(self.comms_thread.quit)
+        self.comms_thread.finished.connect(self.worker.deleteLater)
+        self.comms_thread.finished.connect(self.comms_thread.deleteLater)
 
         self.stop_worker_signal.connect(self.worker.stop)
-        self.main_thread.start()
+        self.comms_thread.start()
 
         self.spnJogMotor.setValue(self.currentMotor)
 
@@ -942,8 +942,8 @@ class Controlform(QMainWindow, UiControlForm):
 
     def die(self):
         self.stop_worker_signal.emit()
-        self.main_thread.quit()
-        self.main_thread.wait()
+        self.comms_thread.quit()
+        self.comms_thread.wait()
 
         self.remote_disconnect()
 
