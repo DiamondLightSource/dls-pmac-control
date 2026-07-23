@@ -48,6 +48,8 @@ class CommsWorker(QObject):
             threading.Lock()
         )  # Use lock to prevent race condition for watch window
 
+        self.timer = None
+
     # Give thread own Qt event loop
     # polling every 100ms and slots excute when signals come
     def start(self):
@@ -55,8 +57,11 @@ class CommsWorker(QObject):
         self.timer.timeout.connect(self.update_func)
         self.timer.start(100)
 
+    @pyqtSlot()
     def stop(self):
+        # if self.timer is not None:
         if hasattr(self, "timer"):
+            print(f"timer: {self.timer}")
             self.timer.stop()
         self.finished.emit()
 
