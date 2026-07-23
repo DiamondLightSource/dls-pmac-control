@@ -42,6 +42,9 @@ from dls_pmac_control.watches import Watchesform
 
 class Controlform(QMainWindow, UiControlForm):
     stop_worker_signal = pyqtSignal()
+    send_series_signal = pyqtSignal(list)
+    cancel_send_series_signal = pyqtSignal()
+    disable_polling_status_signal = pyqtSignal(bool)
 
     def __init__(self, options, parent=None):
         super().__init__()
@@ -126,6 +129,10 @@ class Controlform(QMainWindow, UiControlForm):
         self.comms_thread = QThread()
         self.worker = CommsWorker(self)
         self.worker.moveToThread(self.comms_thread)
+
+        self.send_series_signal.connect(self.worker.send_series)
+        self.cancel_send_series_signal.connect(self.worker.cancel_send_series)
+        self.disable_polling_status_signal.connect(self.worker.disable_polling_status)
 
         self.comms_thread.started.connect(self.worker.start)
 
@@ -561,17 +568,18 @@ class Controlform(QMainWindow, UiControlForm):
             self.progressDialog.setWindowModality(Qt.WindowModality.ApplicationModal)
             self.progressDialog.canceled.connect(self.cancel)
             self.txtShell.append("Beginning download of pmc file: " + file_name)
-            self.worker.send_series(commands)
+            self.send_series_signal.emit(commands)
+            # self.worker.send_series(commands)
 
     def cancel(self):
         self.canceledDownload = True
-        self.worker.cancel_send_series()
+        self.cancel_send_series_signal.emit()
 
     def pmac_polling_status(self):
         # If we are already polling, disable it
         if self.pollingStatus:
             self.pollingStatus = False
-            self.worker.disable_polling_status(True)
+            self.disable_polling_status_signal.emit(True)
 
             self.btnPollingStatus.setText("enable polling")
 
@@ -586,7 +594,7 @@ class Controlform(QMainWindow, UiControlForm):
         # else, if we are not polling: start polling!
         else:
             self.pollingStatus = True
-            self.worker.disable_polling_status(False)
+            self.disable_polling_status_signal.emit(False)
             self.btnPollingStatus.setText("disable polling")
 
             # Re-enable all the disabled labels and controls

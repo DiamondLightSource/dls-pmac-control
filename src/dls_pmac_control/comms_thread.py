@@ -65,7 +65,7 @@ class CommsWorker(QObject):
             self.timer.stop()
         self.finished.emit()
 
-    @pyqtSlot()
+    @pyqtSlot(list)
     def send_series(self, data):
         try:
             self.gen = self.parent.pmac.sendSeries(data)
@@ -73,7 +73,7 @@ class CommsWorker(QObject):
             self.send_complete("Couldn't start download")
             traceback.print_exc()
 
-    @pyqtSlot()
+    @pyqtSlot(bool)
     def disable_polling_status(self, data):
         self.disablePollingStatusValue = data
 
