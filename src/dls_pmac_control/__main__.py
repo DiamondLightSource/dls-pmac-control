@@ -127,20 +127,22 @@ class Controlform(QMainWindow, UiControlForm):
 
         # set up threading
         self.comms_thread = QThread()
-        self.worker = CommsWorker(self)
-        self.worker.moveToThread(self.comms_thread)
+        self.comms_worker = CommsWorker(self)
+        self.comms_worker.moveToThread(self.comms_thread)
 
-        self.send_series_signal.connect(self.worker.send_series)
-        self.cancel_send_series_signal.connect(self.worker.cancel_send_series)
-        self.disable_polling_status_signal.connect(self.worker.disable_polling_status)
+        self.send_series_signal.connect(self.comms_worker.send_series)
+        self.cancel_send_series_signal.connect(self.comms_worker.cancel_send_series)
+        self.disable_polling_status_signal.connect(
+            self.comms_worker.disable_polling_status
+        )
 
-        self.comms_thread.started.connect(self.worker.start)
+        self.comms_thread.started.connect(self.comms_worker.start)
 
-        self.worker.finished.connect(self.comms_thread.quit)
-        self.comms_thread.finished.connect(self.worker.deleteLater)
+        self.comms_worker.finished.connect(self.comms_thread.quit)
+        self.comms_thread.finished.connect(self.comms_worker.deleteLater)
         self.comms_thread.finished.connect(self.comms_thread.deleteLater)
 
-        self.stop_worker_signal.connect(self.worker.stop)
+        self.stop_worker_signal.connect(self.comms_worker.stop)
         self.comms_thread.start()
 
         self.spnJogMotor.setValue(self.currentMotor)
@@ -274,7 +276,7 @@ class Controlform(QMainWindow, UiControlForm):
                 pollrate = float(self.lnePollRate.text())
             except ValueError:
                 pollrate = False
-            self.worker.max_pollrate = pollrate
+            self.comms_worker.max_pollrate = pollrate
             self.pmac = PmacSerialInterface(
                 self,
                 verbose=self.verboseMode,
@@ -675,10 +677,10 @@ class Controlform(QMainWindow, UiControlForm):
         over_voltage = False
         over_temperature = False
 
-        self.worker.resultQueue.qsize()
-        for _que_item in range(0, self.worker.resultQueue.qsize()):
+        self.comms_worker.resultQueue.qsize()
+        for _que_item in range(0, self.comms_worker.resultQueue.qsize()):
             try:
-                value = self.worker.resultQueue.get(False)
+                value = self.comms_worker.resultQueue.get(False)
             except Empty:
                 return
 
@@ -916,10 +918,10 @@ class Controlform(QMainWindow, UiControlForm):
             self.lblIdentity.setText(text)
 
     def update_watches(self):
-        self.worker.watchesQueue.qsize()
-        for _que_item in range(0, self.worker.watchesQueue.qsize()):
+        self.comms_worker.watchesQueue.qsize()
+        for _que_item in range(0, self.comms_worker.watchesQueue.qsize()):
             try:
-                value = self.worker.watchesQueue.get(False)
+                value = self.comms_worker.watchesQueue.get(False)
             except Empty:
                 return
             for n in range(len(value)):
