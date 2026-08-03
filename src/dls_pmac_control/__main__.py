@@ -571,7 +571,6 @@ class Controlform(QMainWindow, UiControlForm):
             self.progressDialog.canceled.connect(self.cancel)
             self.txtShell.append("Beginning download of pmc file: " + file_name)
             self.send_series_signal.emit(commands)
-            # self.worker.send_series(commands)
 
     def cancel(self):
         self.canceledDownload = True

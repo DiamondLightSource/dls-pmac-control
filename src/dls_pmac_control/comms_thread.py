@@ -32,12 +32,12 @@ class CommsWorker(QObject):
         self.parent = parent
         self.CSNum = 1
         self.gen = None
-        self.resultQueue = Queue()
-        self.watchesQueue = Queue()
-
-        # self.inputQueue = Queue() -->> Using slots instead
-
-        # self.updateReadyEvent = None -->> Come back to
+        self.resultQueue = (
+            Queue()
+        )  # a queue object that stores the results of each polling update
+        self.watchesQueue = (
+            Queue()
+        )  # a queue object that stores the results of each watches update
 
         self.disablePollingStatusValue = False
 
