@@ -1,9 +1,10 @@
 import unittest
 from unittest.mock import Mock, patch
 
+from PyQt6.QtTest import QTest
 from PyQt6.QtWidgets import QMainWindow
 
-from dls_pmac_control.comms_thread import CommsThread
+from dls_pmac_control.comms_thread import CommsWorker
 
 
 class DummyTestWidget(QMainWindow):
@@ -25,11 +26,10 @@ class DummyTestWidget(QMainWindow):
 
 class CommsthreadTest(unittest.TestCase):
     @patch("threading.Lock")
-    @patch("threading.Thread")
     @patch("queue.Queue")
-    def setUp(self, mock_queue, mock_thread, mock_lock):
+    def setUp(self, mock_queue, mock_lock):
         self.test_widget = DummyTestWidget()
-        self.obj = CommsThread(self.test_widget)
+        self.obj = CommsWorker(self.test_widget)
 
     def test_init(self):
         assert self.obj.parent == self.test_widget
@@ -74,20 +74,19 @@ class CommsthreadTest(unittest.TestCase):
         assert mock_custom.called
         assert mock_event.called
 
-    @patch("dls_pmac_control.comms_thread.CommsThread.update_func")
-    def test_update_thread(self, mock_updatefunc):
-        mock_updatefunc.return_value = True
-        self.obj.update_thread()
+    @patch("dls_pmac_control.comms_thread.CommsWorker.update_func")
+    def test_update_func_called(self, mock_updatefunc):
+        self.obj.start()
+        QTest.qWait(150)
         assert mock_updatefunc.called
 
 
 class UpdatefuncTest(unittest.TestCase):
     @patch("threading.Lock")
-    @patch("threading.Thread")
     @patch("queue.Queue")
-    def setUp(self, mock_queue, mock_thread, mock_lock):
+    def setUp(self, mock_queue, mock_lock):
         self.test_widget = DummyTestWidget()
-        self.obj = CommsThread(self.test_widget)
+        self.obj = CommsWorker(self.test_widget)
 
     @patch("queue.Queue.get")
     def test_update_func_die(self, mock_get):
