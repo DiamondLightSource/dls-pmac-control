@@ -264,6 +264,7 @@ class MotorTestTelnet(unittest.TestCase):
 
     def tearDown(self):
         self.obj.close()
+        self.obj.worker.stop()
 
 
 class MotorTestTelnetConnectionRequired(unittest.TestCase):
