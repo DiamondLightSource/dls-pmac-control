@@ -39,7 +39,7 @@ class Watchesform(QDialog, UiFormWatches):
         self.table.insertRow(no_rows)  # add a new row
         self.table.setItem(no_rows, 0, QTableWidgetItem(var_name))  # set variable name
         self._watches[var_name] = watch  # add watch object to dict
-        self.parent.worker.add_watch(var_name)  # add to polling thread
+        self.parent.comms_worker.add_watch(var_name)  # add to polling thread
         self.update_watch(no_rows)  # update the watch at the new row
         self.lneVariableName.setText("")
 
@@ -74,7 +74,7 @@ class Watchesform(QDialog, UiFormWatches):
         var_name = self.table.item(row, 0).text()
         try:
             del self._watches[var_name]
-            self.parent.worker.remove_watch(var_name)
+            self.parent.comms_worker.remove_watch(var_name)
         except KeyError as e:
             print(f'There is no watch for variable "{var_name}"')
             raise ValueError() from e
@@ -123,12 +123,12 @@ class Watchesform(QDialog, UiFormWatches):
     def clear_watches(self):
         self.table.setRowCount(0)
         self._watches.clear()
-        self.parent.worker.clear_watch()
+        self.parent.comms_worker.clear_watch()
         self.lneVariableName.setText("")
         self.lneEditValue.setText("")
 
     def get_polled_value(self, var_name):
-        return self.parent.worker.read_watch(var_name)
+        return self.parent.comms_worker.read_watch(var_name)
 
 
 class Watch:
