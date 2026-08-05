@@ -264,7 +264,7 @@ class MotorTestTelnet(unittest.TestCase):
 
     def tearDown(self):
         self.obj.close()
-        self.obj.worker.stop()
+        self.obj.comms_worker.stop()
 
 
 class MotorTestTelnetConnectionRequired(unittest.TestCase):
@@ -776,7 +776,7 @@ class MotorTestSsh(unittest.TestCase):
     ):
         self.options = DummyTestOptionsSsh()
         self.obj = Controlform(self.options)
-        self.obj.worker = mock_comms.return_value
+        self.obj.comms_worker = mock_comms.return_value
 
     # def test_initial_state(self):
     #     assert self.obj.ConnectionType == 3
@@ -881,7 +881,7 @@ class MotorTestSsh(unittest.TestCase):
 
     # def test_update_motors(self):
     #     attrs = {"resultQueue.return_value": Mock()}
-    #     self.obj.worker.configure_mock(**attrs)
+    #     self.obj.comms_worker.configure_mock(**attrs)
     #     attrs = {"qsize.return_value": 5, "get.return_value": ["0", "0", "0", "0", 0]}
     #     # self.obj.commsThread.resultQueue.configure_mock(**attrs)
     #     ret = self.obj.update_motors()  # start_updating_motors
