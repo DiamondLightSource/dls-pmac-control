@@ -88,36 +88,6 @@ class CommsWorker(QObject):
             self.gen.close()
             self.send_complete("Download cancelled by the user")
 
-    # Give thread own Qt event loop
-    # polling every 100ms and slots excute when signals come
-    def start(self):
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update_func)
-        self.timer.start(100)
-
-    def stop(self):
-        if hasattr(self, "timer"):
-            self.timer.stop()
-        self.finished.emit()
-
-    @pyqtSlot()
-    def send_series(self, data):
-        try:
-            self.gen = self.parent.pmac.sendSeries(data)
-        except Exception:
-            self.send_complete("Couldn't start download")
-            traceback.print_exc()
-
-    @pyqtSlot()
-    def disable_polling_status(self, data):
-        self.disablePollingStatusValue = data
-
-    @pyqtSlot()
-    def cancel_send_series(self):
-        if self.gen:
-            self.gen.close()
-            self.send_complete("Download cancelled by the user")
-
     def add_watch(self, name):
         with self.lock:
             self._watch_window[name] = None
