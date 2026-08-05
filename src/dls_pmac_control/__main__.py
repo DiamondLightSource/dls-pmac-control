@@ -136,11 +136,10 @@ class Controlform(QMainWindow, UiControlForm):
         self.disable_polling_status_signal.connect(
             self.comms_worker.disable_polling_status
         )
-      
+
         self.comms_thread.started.connect(self.comms_worker.start)
-        self.worker.update_received.connect(self.start_updating_motors)
-        # self.worker.update_received.connect(self.update_watches)
-        self.worker.watches_ready.connect(self.update_watches)
+        self.comms_worker.update_received.connect(self.start_updating_motors)
+        self.comms_worker.watches_ready.connect(self.update_watches)
 
         self.comms_worker.finished.connect(self.comms_thread.quit)
         self.comms_thread.finished.connect(self.comms_worker.deleteLater)
