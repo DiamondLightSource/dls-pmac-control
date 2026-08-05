@@ -42,23 +42,51 @@ class CommsWorker(QObject):
         self.resultQueue = (
             Queue()
         )  # a queue object that stores the results of each polling update
-        # of each polling update
         self.watchesQueue = (
             Queue()
         )  # a queue object that stores the results of each watches update
-
-        # self.inputQueue = Queue() -->> Using slots instead
-
-        # self.updateReadyEvent = None -->> Come back to
 
         self.disablePollingStatusValue = False
 
         self.max_pollrate = None
         self.lineNumber = 0
-        # Dict containing names and values of watch window variables
-        self._watch_window = {}
-        # Use lock to prevent race condition for watch window
-        self.lock = threading.Lock()
+        self._watch_window = {}  # Dict containing names and values of watch window variables
+        self.lock = (
+            threading.Lock()
+        )  # Use lock to prevent race condition for watch window
+
+        self.timer = None
+
+    # Give thread own Qt event loop
+    # polling every 100ms and slots excute when signals come
+    def start(self):
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.update_func)
+        self.timer.start(100)
+
+    @pyqtSlot()
+    def stop(self):
+        if self.timer:
+            self.timer.stop()
+        self.finished.emit()
+
+    @pyqtSlot(list)
+    def send_series(self, data):
+        try:
+            self.gen = self.parent.pmac.sendSeries(data)
+        except Exception:
+            self.send_complete("Couldn't start download")
+            traceback.print_exc()
+
+    @pyqtSlot(bool)
+    def disable_polling_status(self, data):
+        self.disablePollingStatusValue = data
+
+    @pyqtSlot()
+    def cancel_send_series(self):
+        if self.gen:
+            self.gen.close()
+            self.send_complete("Download cancelled by the user")
 
     # Give thread own Qt event loop
     # polling every 100ms and slots excute when signals come
@@ -168,6 +196,7 @@ class CommsWorker(QObject):
     def generate_cmd(self):
         print("generate_cmd \n")
         cmd = f"i65???&{self.CSNum}??%"
+
         # Send a different command for the Power PMAC
         if isinstance(self.parent.pmac, PPmacSshInterface):
             # There has to be a space before the first BrickLV string to avoid its B being interpreted as a 'begin' command
