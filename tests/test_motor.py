@@ -395,6 +395,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
 
     def tearDown(self):
         self.obj.close()
+        self.obj.comms_worker.stop()
 
 
 class MotorTestEthernet(unittest.TestCase):
@@ -557,6 +558,7 @@ class MotorTestEthernet(unittest.TestCase):
 
     def tearDown(self):
         self.obj.close()
+        self.obj.comms_worker.stop()
 
 
 class MotorTestSerial(unittest.TestCase):
@@ -738,6 +740,7 @@ class MotorTestSerial(unittest.TestCase):
 
     def tearDown(self):
         self.obj.close()
+        self.obj.comms_worker.stop()
 
 
 class MotorTestSsh(unittest.TestCase):
@@ -922,3 +925,4 @@ class MotorTestSsh(unittest.TestCase):
 
     def tearDown(self):
         self.obj.close()
+        self.obj.comms_worker.stop()
