@@ -43,6 +43,9 @@ from dls_pmac_control.watches import Watchesform
 
 class Controlform(QMainWindow, UiControlForm):
     stop_worker_signal = pyqtSignal()
+    send_series_signal = pyqtSignal(list)
+    cancel_send_series_signal = pyqtSignal()
+    disable_polling_status_signal = pyqtSignal(bool)
 
     def __init__(self, options, parent=None):
         super().__init__()
@@ -124,21 +127,27 @@ class Controlform(QMainWindow, UiControlForm):
         # self.energiseScreen = Energiseform(self.pmac,self)
 
         # set up threading
-        self.main_thread = QThread()
-        self.worker = CommsWorker(self)
-        self.worker.moveToThread(self.main_thread)
+        self.comms_thread = QThread()
+        self.comms_worker = CommsWorker(self)
+        self.comms_worker.moveToThread(self.comms_thread)
 
-        self.main_thread.started.connect(self.worker.start)
+        self.send_series_signal.connect(self.comms_worker.send_series)
+        self.cancel_send_series_signal.connect(self.comms_worker.cancel_send_series)
+        self.disable_polling_status_signal.connect(
+            self.comms_worker.disable_polling_status
+        )
+      
+        self.comms_thread.started.connect(self.comms_worker.start)
         self.worker.update_received.connect(self.start_updating_motors)
         # self.worker.update_received.connect(self.update_watches)
         self.worker.watches_ready.connect(self.update_watches)
 
-        self.worker.finished.connect(self.main_thread.quit)
-        self.main_thread.finished.connect(self.worker.deleteLater)
-        self.main_thread.finished.connect(self.main_thread.deleteLater)
+        self.comms_worker.finished.connect(self.comms_thread.quit)
+        self.comms_thread.finished.connect(self.comms_worker.deleteLater)
+        self.comms_thread.finished.connect(self.comms_thread.deleteLater)
 
-        self.stop_worker_signal.connect(self.worker.stop)
-        self.main_thread.start()
+        self.stop_worker_signal.connect(self.comms_worker.stop)
+        self.comms_thread.start()
 
         self.spnJogMotor.setValue(self.currentMotor)
 
@@ -271,7 +280,7 @@ class Controlform(QMainWindow, UiControlForm):
                 pollrate = float(self.lnePollRate.text())
             except ValueError:
                 pollrate = False
-            self.worker.max_pollrate = pollrate
+            self.comms_worker.max_pollrate = pollrate
             self.pmac = PmacSerialInterface(
                 self,
                 verbose=self.verboseMode,
@@ -565,17 +574,17 @@ class Controlform(QMainWindow, UiControlForm):
             self.progressDialog.setWindowModality(Qt.WindowModality.ApplicationModal)
             self.progressDialog.canceled.connect(self.cancel)
             self.txtShell.append("Beginning download of pmc file: " + file_name)
-            self.worker.send_series(commands)
+            self.send_series_signal.emit(commands)
 
     def cancel(self):
         self.canceledDownload = True
-        self.worker.cancel_send_series()
+        self.cancel_send_series_signal.emit()
 
     def pmac_polling_status(self):
         # If we are already polling, disable it
         if self.pollingStatus:
             self.pollingStatus = False
-            self.worker.disable_polling_status(True)
+            self.disable_polling_status_signal.emit(True)
 
             self.btnPollingStatus.setText("enable polling")
 
@@ -590,7 +599,7 @@ class Controlform(QMainWindow, UiControlForm):
         # else, if we are not polling: start polling!
         else:
             self.pollingStatus = True
-            self.worker.disable_polling_status(False)
+            self.disable_polling_status_signal.emit(False)
             self.btnPollingStatus.setText("disable polling")
 
             # Re-enable all the disabled labels and controls
@@ -872,10 +881,10 @@ class Controlform(QMainWindow, UiControlForm):
             self.lblIdentity.setText(text)
 
     def update_watches(self):
-        self.worker.watchesQueue.qsize()
-        for _que_item in range(0, self.worker.watchesQueue.qsize()):
+        self.comms_worker.watchesQueue.qsize()
+        for _que_item in range(0, self.comms_worker.watchesQueue.qsize()):
             try:
-                value = self.worker.watchesQueue.get(False)
+                value = self.comms_worker.watchesQueue.get(False)
             except Empty:
                 return
             for n in range(len(value)):
@@ -903,8 +912,8 @@ class Controlform(QMainWindow, UiControlForm):
 
     def die(self):
         self.stop_worker_signal.emit()
-        self.main_thread.quit()
-        self.main_thread.wait()
+        self.comms_thread.quit()
+        self.comms_thread.wait()
 
         self.remote_disconnect()
 
