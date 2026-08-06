@@ -444,17 +444,19 @@ class MotorTestEthernet(unittest.TestCase):
         assert self.obj.currentMotor == 1
         assert self.obj.nAxes == 8
 
-    # def test_use_socket_connection(self):
-    #     self.obj.ConnectionType = None
-    #     self.obj.use_socket_connection()
-    #     assert self.obj.ConnectionType == 1
-    #     assert self.obj.lneServer.text() == "172.23.240.97"
-    #     assert self.obj.lnePort.text() == "1025"
-    #     assert self.obj.textLabel1.text() == "IP address:"
-    #     assert self.obj.textLabel2.text() == "Port:"
-    #     assert self.obj.lblPolling.text() == "Polling"
-    #     self.assertFalse(self.obj.lnePollRate.isEnabled())
-    #     self.assertFalse(self.obj.lblPollRate.isEnabled())
+    def test_use_socket_connection(self):
+        self.obj.ConnectionType = None
+        self.obj.use_socket_connection()
+        assert self.obj.ConnectionType == 1
+        assert (
+            self.obj.lneServer.text() == "172.23.171.103"
+        )  ### CHANGE BACK TO "172.23.240.97"
+        assert self.obj.lnePort.text() == "1025"
+        assert self.obj.textLabel1.text() == "IP address:"
+        assert self.obj.textLabel2.text() == "Port:"
+        assert self.obj.lblPolling.text() == "Polling"
+        self.assertFalse(self.obj.lnePollRate.isEnabled())
+        self.assertFalse(self.obj.lblPollRate.isEnabled())
 
     @patch("PyQt6.QtWidgets.QMessageBox.information")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.connect")
