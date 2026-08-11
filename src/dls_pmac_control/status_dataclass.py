@@ -17,7 +17,7 @@ class CoordinateSystemStatus:
     # running: bool
     # in_position: bool
     identifier_i65: int
-    global_status: int
+    global_status: str
     cs_status: str
     feedrate: float
 

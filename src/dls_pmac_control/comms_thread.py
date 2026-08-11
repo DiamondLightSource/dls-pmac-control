@@ -132,7 +132,7 @@ class CommsWorker(QObject):
         status.coordinate_systems.append(
             CoordinateSystemStatus(
                 identifier_i65=int(response_str_list[0]),
-                global_status=int(response_str_list[1]),
+                global_status=response_str_list[1],
                 cs_status=response_str_list[2],
                 feedrate=float(response_str_list[3]),
             )

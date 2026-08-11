@@ -686,10 +686,10 @@ class Controlform(QMainWindow, UiControlForm):
             # if isinstance(self.pmac, PPmacSshInterface):
             self.update_identity(status.coordinate_systems[0].identifier_i65)
             self.PpmacGlobalStatusScreen.update_status(
-                status.coordinate_systems[0].global_status
+                int(status.coordinate_systems[0].global_status.strip("$"), 16)
             )
             self.PpmacCSStatusScreen.update_status(
-                int(status.coordinate_systems[0].cs_status, 16)
+                int(status.coordinate_systems[0].cs_status.strip("$"), 16)
             )
             self.PpmacCSStatusScreen.update_feed(
                 int(round(float(status.coordinate_systems[0].feedrate)))
