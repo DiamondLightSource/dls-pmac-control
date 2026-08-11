@@ -8,7 +8,15 @@
             "name": "DLS PMAC Control",
             "type": "debugpy",
             "request": "launch",
-            "module": "dls_pmac_control"
+            "module": "dls_pmac_control",
+            "args": [
+                "-o",
+                "tcpip",
+                "-s",
+                "172.23.171.103",
+                "-p",
+                "1025"
+            ],
         },
         {
             "name": "Debug Unit Test",
