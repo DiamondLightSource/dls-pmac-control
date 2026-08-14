@@ -209,10 +209,10 @@ class CommsWorker(QObject):
             return None
 
         cmd = self.generate_cmd()
-        return_thing = self.parsed_poll_response(self.parent.pmac.sendCommand(cmd))
-        # return self.parsed_poll_response(self.parent.pmac.sendCommand(cmd))
-        print(f"parsed poll response: {return_thing}\n")
-        return return_thing
+        send_command_response = self.parent.pmac.sendCommand(cmd)
+        parsed_poll_response_status = self.parsed_poll_response(send_command_response)
+        print(f"parsed poll response: {parsed_poll_response_status}\n")
+        return parse_poll_response_status
 
     def update_func(self):
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
