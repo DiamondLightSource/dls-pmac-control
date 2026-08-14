@@ -225,9 +225,9 @@ class CommsWorker(QObject):
 
         # # Reduce poll rate for serial interface (ignores if poll rate set to
         # # zero)
-        # if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
-        #     if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
-        #         return
+        if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
+            if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
+                return
 
         with self.lock:
             # send watch window commands
