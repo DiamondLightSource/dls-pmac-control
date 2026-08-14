@@ -66,8 +66,10 @@ class CommsWorker(QObject):
 
     @pyqtSlot()
     def stop(self):
-        if self.timer:
+        if self.timer is not None:
             self.timer.stop()
+            self.timer.deleteLater()
+            self.timer = None
         self.finished.emit()
 
     @pyqtSlot(list)
@@ -216,7 +218,7 @@ class CommsWorker(QObject):
 
     def update_func(self):
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
-            time.sleep(0.1)
+            # time.sleep(0.1)
             return
 
         status = self.poll_status()
@@ -250,7 +252,7 @@ class CommsWorker(QObject):
 
         # else:
         #     print(f'WARNING: Could not poll PMAC for motor status ("{ret_str}")')
-        time.sleep(0.1)
+        # time.sleep(0.1)
 
     ### OLD update_func BELOW FOR REFERENCE ###
 
