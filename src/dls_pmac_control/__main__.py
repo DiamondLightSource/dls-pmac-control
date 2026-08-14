@@ -698,9 +698,9 @@ class Controlform(QMainWindow, UiControlForm):
             i2t_fault = False
             over_current = False
 
-            for motor_row in status.motors:
-                print(f"motor_row: {motor_row}\n")
-                self.__item(motor_row.number - 1, 0).setText(str(motor_row.position))
+            for motor in status.motors:
+                print(f"motor: {motor}\n")
+                self.__item(motor.number - 1, 0).setText(str(motor.position))
                 if isinstance(self.pmac, PPmacSshInterface):
                     velocity = str(motor.velocity)
                 else:
@@ -710,19 +710,19 @@ class Controlform(QMainWindow, UiControlForm):
                     str(motor.following_error)
                 )
 
-                if motor_row.number - 1 < 8:
+                if motor.number - 1 < 8:
                     if isinstance(self.pmac, PPmacSshInterface):
-                        if int(motor_row.amplifier_status) > 0:
+                        if int(motor.i2t_fault_status) > 0:
                             i2t_fault = True
                         # if int(value[5]) > 0:
                         #     over_current = True
                     elif isinstance(self.pmac, PmacEthernetInterface):
-                        amp_status = (int(motor_row.amplifier_status) & 448) >> 6
+                        amp_status = (int(motor.i2t_fault_status) & 448) >> 6
                         if amp_status == 5:
                             i2t_fault = True
                         elif amp_status == 6:
                             over_current = True
-                        if motor_row.number - 1 < 4:
+                        if motor.number - 1 < 4:
                             if amp_status == 2:
                                 under_voltage = True
                             elif amp_status == 3:
@@ -730,7 +730,7 @@ class Controlform(QMainWindow, UiControlForm):
                             elif amp_status == 4:
                                 over_voltage = True
 
-                status_word = int(motor_row.motor_status.strip("$"), 16)
+                status_word = int(motor.motor_status.strip("$"), 16)
 
                 # define high and low limits for power pmac
                 if isinstance(self.pmac, PPmacSshInterface):
@@ -756,33 +756,33 @@ class Controlform(QMainWindow, UiControlForm):
 
                 # set limit indicators in polling table
                 if hi_lim:
-                    self.__item(motor_row.number - 1, 3).setIcon(QIcon(self.redLedOn))
+                    self.__item(motor.number - 1, 3).setIcon(QIcon(self.redLedOn))
                 elif hi_lim_soft:
-                    self.__item(motor_row.number - 1, 3).setIcon(QIcon(self.amberLedOn))
+                    self.__item(motor.number - 1, 3).setIcon(QIcon(self.amberLedOn))
                 else:
-                    self.__item(motor_row.number - 1, 3).setIcon(QIcon(self.redLedOff))
+                    self.__item(motor.number - 1, 3).setIcon(QIcon(self.redLedOff))
                 if lo_lim:
-                    self.__item(motor_row.number - 1, 4).setIcon(QIcon(self.redLedOn))
+                    self.__item(motor.number - 1, 4).setIcon(QIcon(self.redLedOn))
                 elif lo_lim_soft:
-                    self.__item(motor_row.number - 1, 4).setIcon(QIcon(self.amberLedOn))
+                    self.__item(motor.number - 1, 4).setIcon(QIcon(self.amberLedOn))
                 else:
-                    self.__item(motor_row.number - 1, 4).setIcon(QIcon(self.redLedOff))
+                    self.__item(motor.number - 1, 4).setIcon(QIcon(self.redLedOff))
 
                 # set amplifier status indicators in polling table
                 if i2t_fault:
-                    self.__item(motor_row.number - 1, 5).setIcon(QIcon(self.redLedOn))
+                    self.__item(motor.number - 1, 5).setIcon(QIcon(self.redLedOn))
                 else:
-                    self.__item(motor_row.number - 1, 5).setIcon(QIcon(self.redLedOff))
+                    self.__item(motor.number - 1, 5).setIcon(QIcon(self.redLedOff))
                 if over_current:
-                    self.__item(motor_row.number - 1, 6).setIcon(QIcon(self.redLedOn))
+                    self.__item(motor.number - 1, 6).setIcon(QIcon(self.redLedOn))
                 else:
-                    self.__item(motor_row.number - 1, 6).setIcon(QIcon(self.redLedOff))
+                    self.__item(motor.number - 1, 6).setIcon(QIcon(self.redLedOff))
 
                 # Update also the jog ribbon
-                if motor_row.number == self.currentMotor:
-                    self.lblPosition.setText(str(motor_row.position))
-                    self.lblVelo.setText(str(motor_row.velocity))
-                    self.lblFolErr.setText(str(motor_row.following_error))
+                if motor.number == self.currentMotor:
+                    self.lblPosition.setText(str(motor.position))
+                    self.lblVelo.setText(str(motor.velocity))
+                    self.lblFolErr.setText(str(motor.following_error))
                     if hi_lim:
                         self.pixHiLim.setPixmap(self.redLedOn)
                     elif hi_lim_soft:
@@ -816,7 +816,6 @@ class Controlform(QMainWindow, UiControlForm):
             # Catch the exception and continue, since there may be other
             # updates waiting in the queue.
             if self.verboseMode:
-                print(f"Update request received invalid response: {status}")
                 print(f"Update request received invalid response: {status}")
 
     domain_names = [
