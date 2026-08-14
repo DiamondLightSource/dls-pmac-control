@@ -36,7 +36,7 @@ from dls_pmac_control.global_status import GlobalStatusForm, PpmacGlobalStatusFo
 from dls_pmac_control.login import Loginform
 from dls_pmac_control.ppmacgather import PpmacGatherform
 from dls_pmac_control.status import PpmacStatusform, Statusform
-from dls_pmac_control.status_dataclass import ControllerStatus
+from dls_pmac_control.status_dataclasses import ControllerStatus
 from dls_pmac_control.ui_form_control import UiControlForm
 from dls_pmac_control.watches import Watchesform
 

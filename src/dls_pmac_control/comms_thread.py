@@ -10,9 +10,9 @@ from dls_pmaclib.dls_pmacremote import (
 )
 from PyQt6.QtCore import QCoreApplication, QEvent, QObject, QTimer, pyqtSignal, pyqtSlot
 
-from dls_pmac_control.status_dataclass import (
+from dls_pmac_control.status_dataclasses import (
     ControllerStatus,
-    CoordinateSystemStatus,
+    CurrentCoordinateSystemStatus,
     MotorStatus,
 )
 
@@ -130,7 +130,7 @@ class CommsWorker(QObject):
         status = ControllerStatus()
 
         status.coordinate_systems.append(
-            CoordinateSystemStatus(
+            CurrentCoordinateSystemStatus(
                 identifier_i65=int(response_str_list[0]),
                 global_status=response_str_list[1],
                 cs_status=response_str_list[2],
@@ -155,7 +155,7 @@ class CommsWorker(QObject):
                     position=float(motor_response[1]),
                     velocity=float(motor_response[2]),
                     following_error=float(motor_response[3]),
-                    amplifier_status=float(motor_response[4]),
+                    i2t_fault_status=float(motor_response[4]),
                 )
             )
             motor_no += 1
