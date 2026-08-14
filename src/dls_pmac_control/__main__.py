@@ -702,15 +702,12 @@ class Controlform(QMainWindow, UiControlForm):
                 print(f"motor_row: {motor_row}\n")
                 self.__item(motor_row.number - 1, 0).setText(str(motor_row.position))
                 if isinstance(self.pmac, PPmacSshInterface):
-                    self.__item(motor_row.number - 1, 1).setText(
-                        str(motor_row.velocity)
-                    )
+                    velocity = str(motor.velocity)
                 else:
-                    self.__item(motor_row.number - 1, 1).setText(
-                        str(round(float(motor_row.velocity) * self.servoCycleTime, 1))
-                    )
-                self.__item(motor_row.number - 1, 2).setText(
-                    str(motor_row.following_error)
+                    velocity = str(round(float(motor.velocity) * self.servoCycleTime, 1))
+                self.__item(motor.number - 1, 1).setText(velocity)
+                self.__item(motor.number - 1, 2).setText(
+                    str(motor.following_error)
                 )
 
                 if motor_row.number - 1 < 8:
