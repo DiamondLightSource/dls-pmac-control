@@ -18,8 +18,8 @@ class DummyTestWidget(QMainWindow):
         self.redLedOn = QPixmap(path.join(path.dirname(__file__), "redLedOn.png"))
         self.redLedOff = QPixmap(path.join(path.dirname(__file__), "redLedOff.png"))
         self.pmac = Mock()
-        self.comms_worker = Mock()
-        self.comms_worker.CSNum = 1
+        self.commsThread = Mock()
+        self.commsThread.CSNum = 1
 
 
 class CSStatusTest(unittest.TestCase):
