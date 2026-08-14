@@ -10,9 +10,9 @@ from dls_pmaclib.dls_pmacremote import (
 )
 from PyQt6.QtCore import QCoreApplication, QEvent, QObject, QTimer, pyqtSignal, pyqtSlot
 
-from dls_pmac_control.status_dataclass import (
+from dls_pmac_control.status_dataclasses import (
     ControllerStatus,
-    CoordinateSystemStatus,
+    CurrentCoordinateSystemStatus,
     MotorStatus,
 )
 
@@ -132,9 +132,9 @@ class CommsWorker(QObject):
         status = ControllerStatus()
 
         status.coordinate_systems.append(
-            CoordinateSystemStatus(
+            CurrentCoordinateSystemStatus(
                 identifier_i65=int(response_str_list[0]),
-                global_status=int(response_str_list[1]),
+                global_status=response_str_list[1],
                 cs_status=response_str_list[2],
                 feedrate=float(response_str_list[3]),
             )
@@ -157,7 +157,7 @@ class CommsWorker(QObject):
                     position=float(motor_response[1]),
                     velocity=float(motor_response[2]),
                     following_error=float(motor_response[3]),
-                    amplifier_status=float(motor_response[4]),
+                    i2t_fault_status=float(motor_response[4]),
                 )
             )
             motor_no += 1
@@ -211,10 +211,10 @@ class CommsWorker(QObject):
             return None
 
         cmd = self.generate_cmd()
-        return_thing = self.parsed_poll_response(self.parent.pmac.sendCommand(cmd))
-        # return self.parsed_poll_response(self.parent.pmac.sendCommand(cmd))
-        print(f"parsed poll response: {return_thing}\n")
-        return return_thing
+        send_command_response = self.parent.pmac.sendCommand(cmd)
+        parsed_poll_response_status = self.parsed_poll_response(send_command_response)
+        print(f"parsed poll response: {parsed_poll_response_status}\n")
+        return parse_poll_response_status
 
     def update_func(self):
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
@@ -227,9 +227,9 @@ class CommsWorker(QObject):
 
         # # Reduce poll rate for serial interface (ignores if poll rate set to
         # # zero)
-        # if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
-        #     if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
-        #         return
+        if isinstance(self.parent.pmac, PmacSerialInterface) and self.max_pollrate:
+            if time.time() - self.parent.pmac.last_comm_time < 1.0 / self.max_pollrate:
+                return
 
         with self.lock:
             # send watch window commands
