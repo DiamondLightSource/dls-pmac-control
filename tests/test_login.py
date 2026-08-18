@@ -8,12 +8,10 @@ from PyQt6.QtWidgets import QApplication, QWidget
 
 from dls_pmac_control.login import Loginform
 
-app = QApplication(sys.argv)
-test_widget = QWidget()
-
 
 class LoginTest(unittest.TestCase):
     def setUp(self):
+        self.test_widget = QWidget()
         self.obj = Loginform(test_widget, "", "")
 
     def test_inital_form(self):
@@ -45,4 +43,5 @@ class LoginTest(unittest.TestCase):
         assert mock_reject.called
 
     def tearDown(self):
+        self.obj.close()
         self.obj.close()
