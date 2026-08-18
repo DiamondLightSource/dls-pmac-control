@@ -48,12 +48,11 @@ class Controlform(QMainWindow, UiControlForm):
     disable_polling_status_signal = pyqtSignal(bool)
 
     def __init__(self, options, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
         signal.signal(2, self.signal_handler)
         # setup signals
 
-        QMainWindow.__init__(self, parent)
         self.setup_ui(self)
         # self.parent = parent
 
