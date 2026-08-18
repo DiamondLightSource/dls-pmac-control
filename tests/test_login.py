@@ -12,7 +12,7 @@ from dls_pmac_control.login import Loginform
 class LoginTest(unittest.TestCase):
     def setUp(self):
         self.test_widget = QWidget()
-        self.obj = Loginform(test_widget, "", "")
+        self.obj = Loginform(self.test_widget, "", "")
 
     def test_inital_form(self):
         self.assertEqual(self.obj.lneUsername.text(), "")
