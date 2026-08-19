@@ -700,14 +700,14 @@ class Controlform(QMainWindow, UiControlForm):
 
             for motor in status.motors:
                 print(f"motor: {motor}\n")
-                self.__item(motor.number - 1, 0).setText(str(motor.position))
+
                 if isinstance(self.pmac, PPmacSshInterface):
-                    velocity = str(motor.velocity)
+                    velocity = motor.velocity
                 else:
-                    velocity = str(
-                        round(float(motor.velocity) * self.servoCycleTime, 1)
-                    )
-                self.__item(motor.number - 1, 1).setText(velocity)
+                    velocity = round(float(motor.velocity) * self.servoCycleTime, 1)
+
+                self.__item(motor.number - 1, 0).setText(str(motor.position))
+                self.__item(motor.number - 1, 1).setText(str(velocity))
                 self.__item(motor.number - 1, 2).setText(str(motor.following_error))
 
                 if motor.number - 1 < 8:
