@@ -117,14 +117,8 @@ class CommsWorker(QObject):
 
     def parsed_poll_response(self, response):
         print("parsed_poll_response \n")
-        # print(f"response: {response} \n")
-        response_str = response[0]
-        # print("response_str: " + repr(response_str))
 
-        response_success = response[1]
-        print(f"response_success: {response_success} \n")
-
-        response_str_list = str(response_str).rstrip("\x06\r").split("\r")
+        response_str_list = str(response).rstrip("\x06\r").split("\r")
         print("response_str_list: " + repr(response_str_list))
 
         status = ControllerStatus(identifier_i65=int(response_str_list[0]))
@@ -208,7 +202,7 @@ class CommsWorker(QObject):
             return None
 
         cmd = self.generate_cmd()
-        send_command_response = self.parent.pmac.sendCommand(cmd)
+        (send_command_response, success) = self.parent.pmac.sendCommand(cmd)
         parsed_poll_response_status = self.parsed_poll_response(send_command_response)
         print(f"parsed poll response: {parsed_poll_response_status}\n")
         return parsed_poll_response_status
