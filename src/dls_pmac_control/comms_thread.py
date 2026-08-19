@@ -127,11 +127,10 @@ class CommsWorker(QObject):
         response_str_list = str(response_str).rstrip("\x06\r").split("\r")
         print("response_str_list: " + repr(response_str_list))
 
-        status = ControllerStatus()
+        status = ControllerStatus(identifier_i65=int(response_str_list[0]))
 
         status.coordinate_systems.append(
             CurrentCoordinateSystemStatus(
-                identifier_i65=int(response_str_list[0]),
                 global_status=response_str_list[1],
                 cs_status=response_str_list[2],
                 feedrate=float(response_str_list[3]),

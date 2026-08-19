@@ -684,7 +684,7 @@ class Controlform(QMainWindow, UiControlForm):
 
         try:
             # if isinstance(self.pmac, PPmacSshInterface):
-            self.update_identity(status.coordinate_systems[0].identifier_i65)
+            self.update_identity(status.identifier_i65)
             self.PpmacGlobalStatusScreen.update_status(
                 int(status.coordinate_systems[0].global_status.strip("$"), 16)
             )
@@ -704,11 +704,11 @@ class Controlform(QMainWindow, UiControlForm):
                 if isinstance(self.pmac, PPmacSshInterface):
                     velocity = str(motor.velocity)
                 else:
-                    velocity = str(round(float(motor.velocity) * self.servoCycleTime, 1))
+                    velocity = str(
+                        round(float(motor.velocity) * self.servoCycleTime, 1)
+                    )
                 self.__item(motor.number - 1, 1).setText(velocity)
-                self.__item(motor.number - 1, 2).setText(
-                    str(motor.following_error)
-                )
+                self.__item(motor.number - 1, 2).setText(str(motor.following_error))
 
                 if motor.number - 1 < 8:
                     if isinstance(self.pmac, PPmacSshInterface):
