@@ -43,4 +43,3 @@ class LoginTest(unittest.TestCase):
 
     def tearDown(self):
         self.obj.close()
-        self.obj.close()
