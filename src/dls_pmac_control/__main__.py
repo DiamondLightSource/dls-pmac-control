@@ -54,7 +54,6 @@ class Controlform(QMainWindow, UiControlForm):
         # setup signals
 
         self.setup_ui(self)
-        # self.parent = parent
 
         self.greenLedOn = QPixmap(path.join(path.dirname(__file__), "greenLedOn.png"))
         self.greenLedOff = QPixmap(path.join(path.dirname(__file__), "greenLedOff.png"))

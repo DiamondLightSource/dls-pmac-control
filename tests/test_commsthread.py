@@ -35,7 +35,6 @@ class CommsthreadTest(unittest.TestCase):
         assert self.obj.parent == self.test_widget
         assert self.obj.CSNum == 1
         assert self.obj.gen is None
-        # assert self.obj.updateReadyEvent is None
         # assert self.obj.disablePollingStatus is False
         assert self.obj.max_pollrate is None
         assert self.obj.lineNumber == 0

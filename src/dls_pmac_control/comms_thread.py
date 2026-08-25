@@ -217,7 +217,6 @@ class CommsWorker(QObject):
 
     def update_func(self):
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
-            # time.sleep(0.1)
             return
 
         status = self.poll_status()
