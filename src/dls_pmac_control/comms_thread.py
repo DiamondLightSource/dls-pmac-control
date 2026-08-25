@@ -116,10 +116,8 @@ class CommsWorker(QObject):
     ### NEW CODE - POLLING AS DATACLASSES
 
     def parsed_poll_response(self, response):
-        print("parsed_poll_response \n")
 
         response_str_list = str(response).rstrip("\x06\r").split("\r")
-        print("response_str_list: " + repr(response_str_list))
 
         status = ControllerStatus(identifier_i65=int(response_str_list[0]))
 
@@ -136,11 +134,9 @@ class CommsWorker(QObject):
             response_motors_list[i : i + 6]
             for i in range(0, len(response_motors_list), 6)
         ]
-        print(f"response_motors_list: {response_motors_list}")
 
         motor_no = 1
         for motor_response in response_motors_list:
-            print(f"Motor_response: {motor_response}")
             status.motors.append(
                 MotorStatus(
                     number=motor_no,
@@ -153,11 +149,9 @@ class CommsWorker(QObject):
             )
             motor_no += 1
 
-        print(f"status: {status}")
         return status
 
     def generate_cmd(self):
-        print("generate_cmd \n")
         cmd = f"i65???&{self.CSNum}??%"
 
         # Send a different command for the Power PMAC
@@ -190,11 +184,9 @@ class CommsWorker(QObject):
                 # Use two dummy requests to keep the request chunks the same length (p99 always returns zero)
                 cmd = cmd + "p99 p99"
 
-        # print(f"cmd: {cmd}")
         return cmd
 
     def poll_status(self) -> ControllerStatus | None:
-        print("poll_status \n")
         if self.parent.pmac is None:
             return None
 
@@ -204,7 +196,6 @@ class CommsWorker(QObject):
         cmd = self.generate_cmd()
         (send_command_response, success) = self.parent.pmac.sendCommand(cmd)
         parsed_poll_response_status = self.parsed_poll_response(send_command_response)
-        print(f"parsed poll response: {parsed_poll_response_status}\n")
         return parsed_poll_response_status
 
     def update_func(self):
@@ -213,7 +204,6 @@ class CommsWorker(QObject):
             return
 
         status = self.poll_status()
-        print(f"status: {status} \n")
         self.update_received.emit(status)
 
         # # Reduce poll rate for serial interface (ignores if poll rate set to
@@ -226,7 +216,6 @@ class CommsWorker(QObject):
             # send watch window commands
             value_list_watch = []
             for key in self._watch_window:
-                print(f"watch window key: {key}")
                 (ret, success) = self.parent.pmac.sendCommand(key)
                 ret = ret.rstrip("\x06\r")
                 if "error" in ret or "ERR" in ret:
@@ -234,7 +223,6 @@ class CommsWorker(QObject):
                 # update watches dict
                 self._watch_window[key] = ret
                 value_list_watch.append(ret)
-                print(f"value_list_watch: {value_list_watch}")
             self.watchesQueue.put(value_list_watch)
 
         self.watches_ready.emit()

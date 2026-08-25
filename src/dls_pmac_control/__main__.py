@@ -673,10 +673,6 @@ class Controlform(QMainWindow, UiControlForm):
                 )
 
     def start_updating_motors(self, status: ControllerStatus):
-        print("start_updating_motors")
-        print(f"The data that's been passed is {status} \n")
-        print(f"The cs is {status.coordinate_systems} \n")
-        print(f"The motors are {status.motors} \n")
 
         under_voltage = False
         over_voltage = False
@@ -699,8 +695,6 @@ class Controlform(QMainWindow, UiControlForm):
             over_current = False
 
             for motor in status.motors:
-                print(f"motor: {motor}\n")
-
                 if isinstance(self.pmac, PPmacSshInterface):
                     velocity = motor.velocity
                 else:
