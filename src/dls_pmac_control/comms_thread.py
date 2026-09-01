@@ -195,16 +195,24 @@ class CommsWorker(QObject):
 
         cmd = self.generate_cmd()
         (send_command_response, success) = self.parent.pmac.sendCommand(cmd)
-        parsed_poll_response_status = self.parsed_poll_response(send_command_response)
-        return parsed_poll_response_status
+
+        if success:
+            parsed_poll_response_status = self.parsed_poll_response(
+                send_command_response
+            )
+            self.update_received.emit(parsed_poll_response_status)
+
+        else:
+            print(
+                f'WARNING: Could not poll PMAC for motor status ("{send_command_response}")'
+            )
 
     def update_func(self):
         if self.parent.pmac is None or not self.parent.pmac.isConnectionOpen:
             time.sleep(0.1)
             return
 
-        status = self.poll_status()
-        self.update_received.emit(status)
+        self.poll_status()
 
         # # Reduce poll rate for serial interface (ignores if poll rate set to
         # # zero)
@@ -226,12 +234,6 @@ class CommsWorker(QObject):
             self.watchesQueue.put(value_list_watch)
 
         self.watches_ready.emit()
-
-        # if was_successful:
-
-        # else:
-        #     print(f'WARNING: Could not poll PMAC for motor status ("{ret_str}")')
-        time.sleep(0.1)
 
     ### OLD update_func BELOW FOR REFERENCE ###
 
