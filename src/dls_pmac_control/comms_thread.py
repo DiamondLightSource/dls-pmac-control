@@ -186,7 +186,7 @@ class CommsWorker(QObject):
 
         return cmd
 
-    def poll_status(self) -> ControllerStatus | None:
+    def poll_status(self) -> None:
         if self.parent.pmac is None:
             return None
 
