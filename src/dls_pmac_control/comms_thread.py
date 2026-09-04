@@ -141,8 +141,6 @@ class CommsWorker(QObject):
         )
 
         motor_status_sectioning = len(MotorStatus.__annotations__) - 1
-        if not isinstance(self.parent.pmac, PPmacSshInterface):
-            motor_status_sectioning = motor_status_sectioning - 1
 
         if isinstance(self.parent.pmac, PPmacSshInterface):
             response_motors_list = response_str_list[7:]
@@ -155,10 +153,6 @@ class CommsWorker(QObject):
 
         motor_no = 1
         for motor_response in response_motors_list:
-            if isinstance(self.parent.pmac, PPmacSshInterface):
-                overcurrent = float(motor_response[5])
-            else:
-                overcurrent = None
             status.motors.append(
                 MotorStatus(
                     number=motor_no,
@@ -167,7 +161,7 @@ class CommsWorker(QObject):
                     velocity=float(motor_response[2]),
                     following_error=float(motor_response[3]),
                     i2t_fault_status=float(motor_response[4]),
-                    overcurrent=overcurrent,
+                    overcurrent=float(motor_response[5]),
                 )
             )
             motor_no += 1
