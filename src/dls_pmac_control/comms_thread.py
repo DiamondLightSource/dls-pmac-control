@@ -134,10 +134,10 @@ class CommsWorker(QObject):
             coordinate_systems=CurrentCoordinateSystemStatus(
                 cs_status=response_str_list[2],
                 feedrate=float(response_str_list[3]),
-                bus_under_voltage=bus_under_voltage,
-                bus_over_voltage=bus_over_voltage,
-                over_temp=over_temp,
             ),
+            bus_under_voltage=bus_under_voltage,
+            bus_over_voltage=bus_over_voltage,
+            over_temp=over_temp,
         )
 
         motor_status_sectioning = len(MotorStatus.__annotations__) - 1
