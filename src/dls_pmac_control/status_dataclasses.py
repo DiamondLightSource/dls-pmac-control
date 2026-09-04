@@ -16,6 +16,9 @@ class MotorStatus:
 class CurrentCoordinateSystemStatus:
     cs_status: str
     feedrate: float
+    bus_under_voltage: bool | None = None
+    bus_over_voltage: bool | None = None
+    over_temp: bool | None = None
 
 
 @dataclass

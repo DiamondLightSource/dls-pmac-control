@@ -119,12 +119,24 @@ class CommsWorker(QObject):
 
         response_str_list = str(response).rstrip("\x06\r").split("\r")
 
+        if isinstance(self.parent.pmac, PPmacSshInterface):
+            bus_under_voltage = bool(response_str_list[4])
+            bus_over_voltage = bool(response_str_list[5])
+            over_temp = bool(response_str_list[6])
+        else:
+            bus_under_voltage = None
+            bus_over_voltage = None
+            over_temp = None
+
         status = ControllerStatus(
             identifier_i65=int(response_str_list[0]),
             global_status=response_str_list[1],
             coordinate_systems=CurrentCoordinateSystemStatus(
                 cs_status=response_str_list[2],
                 feedrate=float(response_str_list[3]),
+                bus_under_voltage=bus_under_voltage,
+                bus_over_voltage=bus_over_voltage,
+                over_temp=over_temp,
             ),
         )
 
