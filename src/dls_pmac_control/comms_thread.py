@@ -124,9 +124,9 @@ class CommsWorker(QObject):
             bus_over_voltage = bool(response_str_list[5])
             over_temp = bool(response_str_list[6])
         else:
-            bus_under_voltage = None
-            bus_over_voltage = None
-            over_temp = None
+            bus_under_voltage = False
+            bus_over_voltage = False
+            over_temp = False
 
         status = ControllerStatus(
             identifier_i65=int(response_str_list[0]),
