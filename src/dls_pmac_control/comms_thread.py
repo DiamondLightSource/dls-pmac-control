@@ -144,7 +144,10 @@ class CommsWorker(QObject):
         if not isinstance(self.parent.pmac, PPmacSshInterface):
             motor_status_sectioning = motor_status_sectioning - 1
 
-        response_motors_list = response_str_list[4:]
+        if isinstance(self.parent.pmac, PPmacSshInterface):
+            response_motors_list = response_str_list[7:]
+        else:
+            response_motors_list = response_str_list[4:]
         response_motors_list = [
             response_motors_list[i : i + motor_status_sectioning]
             for i in range(0, len(response_motors_list), motor_status_sectioning)
