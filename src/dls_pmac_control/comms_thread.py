@@ -151,7 +151,7 @@ class CommsWorker(QObject):
         motor_no = 1
         for motor_response in response_motors_list:
             if isinstance(self.parent.pmac, PPmacSshInterface):
-                overcurrent = float(motor_response[4])
+                overcurrent = float(motor_response[5])
             else:
                 overcurrent = None
             status.motors.append(
