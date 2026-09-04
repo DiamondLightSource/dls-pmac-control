@@ -150,6 +150,10 @@ class CommsWorker(QObject):
 
         motor_no = 1
         for motor_response in response_motors_list:
+            if isinstance(self.parent.pmac, PPmacSshInterface):
+                overcurrent = float(motor_response[4])
+            else:
+                overcurrent = None
             status.motors.append(
                 MotorStatus(
                     number=motor_no,
@@ -158,6 +162,7 @@ class CommsWorker(QObject):
                     velocity=float(motor_response[2]),
                     following_error=float(motor_response[3]),
                     i2t_fault_status=float(motor_response[4]),
+                    overcurrent=overcurrent,
                 )
             )
             motor_no += 1
