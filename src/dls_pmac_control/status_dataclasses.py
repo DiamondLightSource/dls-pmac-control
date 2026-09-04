@@ -14,10 +14,6 @@ class MotorStatus:
 
 @dataclass
 class CurrentCoordinateSystemStatus:
-    # number: int
-    # running: bool
-    # in_position: bool
-    global_status: str
     cs_status: str
     feedrate: float
 
@@ -25,7 +21,6 @@ class CurrentCoordinateSystemStatus:
 @dataclass
 class ControllerStatus:
     identifier_i65: int
-    coordinate_systems: list[CurrentCoordinateSystemStatus] = field(
-        default_factory=list
-    )
+    global_status: str
+    coordinate_systems: CurrentCoordinateSystemStatus
     motors: list[MotorStatus] = field(default_factory=list)
