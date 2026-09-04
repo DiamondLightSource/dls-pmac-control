@@ -140,10 +140,12 @@ class CommsWorker(QObject):
             ),
         )
 
+        motor_status_sectioning = len(MotorStatus.__annotations__) - 1
+
         response_motors_list = response_str_list[4:]
         response_motors_list = [
-            response_motors_list[i : i + 6]
-            for i in range(0, len(response_motors_list), 6)
+            response_motors_list[i : i + motor_status_sectioning]
+            for i in range(0, len(response_motors_list), motor_status_sectioning)
         ]
 
         motor_no = 1
