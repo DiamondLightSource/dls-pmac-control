@@ -128,18 +128,6 @@ class CommsWorker(QObject):
             bus_over_voltage = False
             over_temp = False
 
-        status = ControllerStatus(
-            identifier_i65=int(response_str_list[0]),
-            global_status=response_str_list[1],
-            coordinate_systems=CurrentCoordinateSystemStatus(
-                cs_status=response_str_list[2],
-                feedrate=float(response_str_list[3]),
-            ),
-            bus_under_voltage=bus_under_voltage,
-            bus_over_voltage=bus_over_voltage,
-            over_temp=over_temp,
-        )
-
         motor_status_sectioning = len(MotorStatus.__annotations__) - 1
 
         if isinstance(self.parent.pmac, PPmacSshInterface):
@@ -151,20 +139,50 @@ class CommsWorker(QObject):
             for i in range(0, len(response_motors_list), motor_status_sectioning)
         ]
 
+        i2t_fault_status = False
+        overcurrent = False
         motor_no = 1
+        motors = []
         for motor_response in response_motors_list:
-            status.motors.append(
+            if isinstance(self.parent.pmac, PmacEthernetInterface):
+                amp_status = (int(motor_response[4]) & 448) >> 6
+                if amp_status == 5:
+                    i2t_fault_status = True
+                elif amp_status == 6:
+                    overcurrent = True
+                if motor_no - 1 < 4:
+                    if amp_status == 2:
+                        bus_under_voltage = True
+                    elif amp_status == 3:
+                        over_temp = True
+                    elif amp_status == 4:
+                        bus_over_voltage = True
+
+            motors.append(
                 MotorStatus(
                     number=motor_no,
                     motor_status=str(motor_response[0]),
                     position=float(motor_response[1]),
                     velocity=float(motor_response[2]),
                     following_error=float(motor_response[3]),
-                    i2t_fault_status=float(motor_response[4]),
-                    overcurrent=float(motor_response[5]),
+                    i2t_fault_status=i2t_fault_status,
+                    overcurrent=overcurrent,
                 )
             )
             motor_no += 1
+
+        status = ControllerStatus(
+            identifier_i65=int(response_str_list[0]),
+            global_status=response_str_list[1],
+            coordinate_systems=CurrentCoordinateSystemStatus(
+                cs_status=response_str_list[2],
+                feedrate=float(response_str_list[3]),
+            ),
+            bus_under_voltage=bus_under_voltage,
+            bus_over_voltage=bus_over_voltage,
+            over_temp=over_temp,
+            motors=motors,
+        )
 
         return status
 

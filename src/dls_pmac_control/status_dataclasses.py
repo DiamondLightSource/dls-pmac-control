@@ -8,8 +8,8 @@ class MotorStatus:
     position: float
     velocity: float
     following_error: float
-    i2t_fault_status: float
-    overcurrent: float | None = None
+    i2t_fault_status: bool
+    overcurrent: bool
 
 
 @dataclass
