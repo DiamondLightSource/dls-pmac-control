@@ -687,9 +687,6 @@ class Controlform(QMainWindow, UiControlForm):
                 int(round(float(status.coordinate_systems.feedrate)))
             )
 
-            i2t_fault = False
-            over_current = False
-
             for motor in status.motors:
                 if isinstance(self.pmac, PPmacSshInterface):
                     velocity = motor.velocity
@@ -699,19 +696,6 @@ class Controlform(QMainWindow, UiControlForm):
                 self.__item(motor.number - 1, 0).setText(str(motor.position))
                 self.__item(motor.number - 1, 1).setText(str(velocity))
                 self.__item(motor.number - 1, 2).setText(str(motor.following_error))
-
-                if motor.number - 1 < 8:
-                    if isinstance(self.pmac, PPmacSshInterface):
-                        if int(motor.i2t_fault_status) > 0:
-                            i2t_fault = True
-                        # if int(value[5]) > 0:
-                        #     over_current = True
-                    elif isinstance(self.pmac, PmacEthernetInterface):
-                        amp_status = (int(motor.i2t_fault_status) & 448) >> 6
-                        if amp_status == 5:
-                            i2t_fault = True
-                        elif amp_status == 6:
-                            over_current = True
 
                 status_word = int(motor.motor_status.strip("$"), 16)
 
@@ -752,11 +736,11 @@ class Controlform(QMainWindow, UiControlForm):
                     self.__item(motor.number - 1, 4).setIcon(QIcon(self.redLedOff))
 
                 # set amplifier status indicators in polling table
-                if i2t_fault:
+                if motor.i2t_fault_status:
                     self.__item(motor.number - 1, 5).setIcon(QIcon(self.redLedOn))
                 else:
                     self.__item(motor.number - 1, 5).setIcon(QIcon(self.redLedOff))
-                if over_current:
+                if motor.overcurrent:
                     self.__item(motor.number - 1, 6).setIcon(QIcon(self.redLedOn))
                 else:
                     self.__item(motor.number - 1, 6).setIcon(QIcon(self.redLedOff))
