@@ -141,9 +141,8 @@ class CommsWorker(QObject):
 
         i2t_fault_status = False
         overcurrent = False
-        motor_no = 1
-        motors = []
-        for motor_response in response_motors_list:
+        motors: list[MotorStatus] = []
+        for motor_no, motor_response in enumerate(response_motors_list, start=1):
             if isinstance(self.parent.pmac, PmacEthernetInterface):
                 amp_status = (int(motor_response[4]) & 448) >> 6
                 if amp_status == 5:
@@ -169,7 +168,6 @@ class CommsWorker(QObject):
                     overcurrent=overcurrent,
                 )
             )
-            motor_no += 1
 
         status = ControllerStatus(
             identifier_i65=int(response_str_list[0]),
