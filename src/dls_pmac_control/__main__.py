@@ -674,10 +674,6 @@ class Controlform(QMainWindow, UiControlForm):
 
     def start_updating_motors(self, status: ControllerStatus):
 
-        under_voltage = False
-        over_voltage = False
-        over_temperature = False
-
         try:
             # if isinstance(self.pmac, PPmacSshInterface):
             self.update_identity(status.identifier_i65)
@@ -716,13 +712,6 @@ class Controlform(QMainWindow, UiControlForm):
                             i2t_fault = True
                         elif amp_status == 6:
                             over_current = True
-                        if motor.number - 1 < 4:
-                            if amp_status == 2:
-                                under_voltage = True
-                            elif amp_status == 3:
-                                over_temperature = True
-                            elif amp_status == 4:
-                                over_voltage = True
 
                 status_word = int(motor.motor_status.strip("$"), 16)
 
@@ -793,15 +782,15 @@ class Controlform(QMainWindow, UiControlForm):
                     self.ppmacstatusScreen.update_status(status_word)
 
             # set controller status indicators on main window
-            if under_voltage:
+            if status.bus_under_voltage:
                 self.pixUnderVoltage.setPixmap(self.redLedOn)
             else:
                 self.pixUnderVoltage.setPixmap(self.redLedOff)
-            if over_voltage:
+            if status.bus_over_voltage:
                 self.pixOverVoltage.setPixmap(self.redLedOn)
             else:
                 self.pixOverVoltage.setPixmap(self.redLedOff)
-            if over_temperature:
+            if status.over_temp:
                 self.pixOverTemperature.setPixmap(self.redLedOn)
             else:
                 self.pixOverTemperature.setPixmap(self.redLedOff)
