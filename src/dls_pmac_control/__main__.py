@@ -675,7 +675,6 @@ class Controlform(QMainWindow, UiControlForm):
     def start_updating_motors(self, status: ControllerStatus):
 
         try:
-            # if isinstance(self.pmac, PPmacSshInterface):
             self.update_identity(status.identifier_i65)
             self.PpmacGlobalStatusScreen.update_status(
                 int(status.global_status.strip("$"), 16)
