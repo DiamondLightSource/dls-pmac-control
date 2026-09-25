@@ -65,8 +65,10 @@ class CommsWorker(QObject):
 
     @pyqtSlot()
     def stop(self):
-        if self.timer:
+        if self.timer is not None:
             self.timer.stop()
+            self.timer.deleteLater()
+            self.timer = None
         self.finished.emit()
 
     @pyqtSlot(list)
