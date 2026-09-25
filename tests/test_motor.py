@@ -453,7 +453,6 @@ class MotorTestEthernet(unittest.TestCase):
         assert self.obj.textLabel2.text() == "Port:"
         assert self.obj.lblPolling.text() == "Polling"
         self.assertFalse(self.obj.lnePollRate.isEnabled())
-        self.assertFalse(self.obj.lblPollRate.isEnabled())
 
     @patch("PyQt6.QtWidgets.QMessageBox.information")
     @patch("dls_pmaclib.dls_pmacremote.PmacEthernetInterface.connect")
