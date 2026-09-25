@@ -21,7 +21,7 @@ if os.getenv("PYTEST_RAISE", "0") == "1":
     def pytest_internalerror(excinfo: pytest.ExceptionInfo[Any]):
         raise excinfo.value
 
-    @pytest.fixture(scope=session, autouse=True)
+    @pytest.fixture(scope="session", autouse=True)
     def qapp():
         app = QApplication.instance()
         if app is None:
