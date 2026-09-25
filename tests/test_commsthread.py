@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 from PyQt6.QtWidgets import QMainWindow
 
-from dls_pmac_control.comms_thread import CommsThread
+from dls_pmac_control.comms_thread import CommsWorker
 
 
 class DummyTestWidget(QMainWindow):
@@ -29,7 +29,7 @@ class CommsthreadTest(unittest.TestCase):
     @patch("queue.Queue")
     def setUp(self, mock_queue, mock_thread, mock_lock):
         self.test_widget = DummyTestWidget()
-        self.obj = CommsThread(self.test_widget)
+        self.obj = CommsWorker(self.test_widget)
 
     def test_init(self):
         assert self.obj.parent == self.test_widget
@@ -74,7 +74,7 @@ class CommsthreadTest(unittest.TestCase):
         assert mock_custom.called
         assert mock_event.called
 
-    @patch("dls_pmac_control.comms_thread.CommsThread.update_func")
+    @patch("dls_pmac_control.comms_thread.CommsWorker.update_func")
     def test_update_thread(self, mock_updatefunc):
         mock_updatefunc.return_value = True
         self.obj.update_thread()
@@ -87,7 +87,7 @@ class UpdatefuncTest(unittest.TestCase):
     @patch("queue.Queue")
     def setUp(self, mock_queue, mock_thread, mock_lock):
         self.test_widget = DummyTestWidget()
-        self.obj = CommsThread(self.test_widget)
+        self.obj = CommsWorker(self.test_widget)
 
     @patch("queue.Queue.get")
     def test_update_func_die(self, mock_get):
@@ -102,7 +102,7 @@ class UpdatefuncTest(unittest.TestCase):
     def test_update_func_sendseries(self, mock_get, mock_put, mock_custom, mock_event):
         mock_get.return_value = ("sendSeries", "data")
         self.obj.parent.pmac.isConnectionOpen = True
-        self.obj.disablePollingStatus = None
+        self.obj.disable_polling_status(None)
         assert self.obj.update_func() is None
         self.test_widget.pmac.sendSeries.assert_called_with("data")
         mock_get.assert_called_with(block=False)
@@ -113,7 +113,7 @@ class UpdatefuncTest(unittest.TestCase):
         self.obj.gen = False
         self.obj.parent.pmac.isConnectionOpen = True
         ret = self.obj.update_func()
-        assert self.obj.disablePollingStatus is True
+        assert self.obj.disable_polling_status(True)
         assert ret is None
         mock_get.assert_called_with(block=False)
 
@@ -124,7 +124,7 @@ class UpdatefuncTest(unittest.TestCase):
     def test_update_func_cancel(self, mock_get, mock_put, mock_custom, mock_event):
         mock_get.return_value = ("cancelSendSeries", "data")
         self.obj.parent.pmac.isConnectionOpen = True
-        self.obj.disablePollingStatus = False
+        self.obj.disable_polling_status(False)
         self.obj.gen = False
         ret = self.obj.update_func()
         assert ret is None

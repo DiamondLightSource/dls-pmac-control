@@ -77,7 +77,7 @@ class MotorTestTelnet(unittest.TestCase):
     @patch("dls_pmac_control.ppmacgather.PpmacGatherform")
     @patch("dls_pmac_control.watches.Watchesform")
     @patch("dls_pmac_control.login.Loginform")
-    @patch("dls_pmac_control.comms_thread.CommsThread")
+    @patch("dls_pmac_control.comms_thread.CommsWorker")
     @patch("PyQt6.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
@@ -287,7 +287,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("dls_pmac_control.ppmacgather.PpmacGatherform")
     @patch("dls_pmac_control.watches.Watchesform")
     @patch("dls_pmac_control.login.Loginform")
-    @patch("dls_pmac_control.comms_thread.CommsThread")
+    @patch("dls_pmac_control.comms_thread.CommsWorker")
     @patch("PyQt6.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
@@ -412,7 +412,7 @@ class MotorTestEthernet(unittest.TestCase):
     @patch("dls_pmac_control.ppmacgather.PpmacGatherform")
     @patch("dls_pmac_control.watches.Watchesform")
     @patch("dls_pmac_control.login.Loginform")
-    @patch("dls_pmac_control.comms_thread.CommsThread")
+    @patch("dls_pmac_control.comms_thread.CommsWorker")
     @patch("PyQt6.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
@@ -576,7 +576,7 @@ class MotorTestSerial(unittest.TestCase):
     @patch("dls_pmac_control.ppmacgather.PpmacGatherform")
     @patch("dls_pmac_control.watches.Watchesform")
     @patch("dls_pmac_control.login.Loginform")
-    @patch("dls_pmac_control.comms_thread.CommsThread")
+    @patch("dls_pmac_control.comms_thread.CommsWorker")
     @patch("PyQt6.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
@@ -759,7 +759,7 @@ class MotorTestSsh(unittest.TestCase):
     @patch("dls_pmac_control.ppmacgather.PpmacGatherform")
     @patch("dls_pmac_control.watches.Watchesform")
     @patch("dls_pmac_control.login.Loginform")
-    @patch("dls_pmac_control.comms_thread.CommsThread")
+    @patch("dls_pmac_control.comms_thread.CommsWorker")
     @patch("PyQt6.QtCore.QEvent")
     @patch("threading.Thread")
     @patch("signal.signal")
@@ -784,7 +784,7 @@ class MotorTestSsh(unittest.TestCase):
     ):
         self.options = DummyTestOptionsSsh()
         self.obj = Controlform(self.options)
-        self.obj.commsThread = mock_comms.return_value
+        self.obj.comms_worker = mock_comms.return_value
 
     def test_initial_state(self):
         assert self.obj.ConnectionType == 3
@@ -889,9 +889,9 @@ class MotorTestSsh(unittest.TestCase):
 
     def test_update_motors(self):
         attrs = {"resultQueue.return_value": Mock()}
-        self.obj.commsThread.configure_mock(**attrs)
+        self.obj.comms_worker.configure_mock(**attrs)
         attrs = {"qsize.return_value": 5, "get.return_value": ["0", "0", "0", "0", 0]}
-        self.obj.commsThread.resultQueue.configure_mock(**attrs)
+        self.obj.comms_worker.resultQueue.configure_mock(**attrs)
         ret = self.obj.update_motors()
         assert ret is None
         assert float(self.obj.lblPosition.text()) == 0.0
