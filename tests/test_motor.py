@@ -79,12 +79,10 @@ class MotorTestTelnet(unittest.TestCase):
     @patch("dls_pmac_control.login.Loginform")
     @patch("dls_pmac_control.comms_thread.CommsWorker")
     @patch("PyQt6.QtCore.QEvent")
-    @patch("threading.Thread")
     @patch("signal.signal")
     def setUp(
         self,
         mock_signal,
-        mock_thread,
         mock_event,
         mock_comms,
         mock_login,
@@ -289,12 +287,10 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
     @patch("dls_pmac_control.login.Loginform")
     @patch("dls_pmac_control.comms_thread.CommsWorker")
     @patch("PyQt6.QtCore.QEvent")
-    @patch("threading.Thread")
     @patch("signal.signal")
     def setUp(
         self,
         mock_signal,
-        mock_thread,
         mock_event,
         mock_comms,
         mock_login,
@@ -414,12 +410,10 @@ class MotorTestEthernet(unittest.TestCase):
     @patch("dls_pmac_control.login.Loginform")
     @patch("dls_pmac_control.comms_thread.CommsWorker")
     @patch("PyQt6.QtCore.QEvent")
-    @patch("threading.Thread")
     @patch("signal.signal")
     def setUp(
         self,
         mock_signal,
-        mock_thread,
         mock_event,
         mock_comms,
         mock_login,
@@ -578,12 +572,10 @@ class MotorTestSerial(unittest.TestCase):
     @patch("dls_pmac_control.login.Loginform")
     @patch("dls_pmac_control.comms_thread.CommsWorker")
     @patch("PyQt6.QtCore.QEvent")
-    @patch("threading.Thread")
     @patch("signal.signal")
     def setUp(
         self,
         mock_signal,
-        mock_thread,
         mock_event,
         mock_comms,
         mock_login,
@@ -761,12 +753,10 @@ class MotorTestSsh(unittest.TestCase):
     @patch("dls_pmac_control.login.Loginform")
     @patch("dls_pmac_control.comms_thread.CommsWorker")
     @patch("PyQt6.QtCore.QEvent")
-    @patch("threading.Thread")
     @patch("signal.signal")
     def setUp(
         self,
         mock_signal,
-        mock_thread,
         mock_event,
         mock_comms,
         mock_login,

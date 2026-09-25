@@ -25,9 +25,8 @@ class DummyTestWidget(QMainWindow):
 
 class CommsthreadTest(unittest.TestCase):
     @patch("threading.Lock")
-    @patch("threading.Thread")
     @patch("queue.Queue")
-    def setUp(self, mock_queue, mock_thread, mock_lock):
+    def setUp(self, mock_queue, mock_lock):
         self.test_widget = DummyTestWidget()
         self.obj = CommsWorker(self.test_widget)
 
@@ -83,9 +82,8 @@ class CommsthreadTest(unittest.TestCase):
 
 class UpdatefuncTest(unittest.TestCase):
     @patch("threading.Lock")
-    @patch("threading.Thread")
     @patch("queue.Queue")
-    def setUp(self, mock_queue, mock_thread, mock_lock):
+    def setUp(self, mock_queue, mock_lock):
         self.test_widget = DummyTestWidget()
         self.obj = CommsWorker(self.test_widget)
 
