@@ -1,6 +1,7 @@
 import unittest
 from unittest.mock import Mock, patch
 
+from PyQt6.QtTest import QTest
 from PyQt6.QtWidgets import QMainWindow
 
 from dls_pmac_control.comms_thread import CommsWorker
@@ -74,9 +75,9 @@ class CommsthreadTest(unittest.TestCase):
         assert mock_event.called
 
     @patch("dls_pmac_control.comms_thread.CommsWorker.update_func")
-    def test_update_thread(self, mock_updatefunc):
-        mock_updatefunc.return_value = True
-        self.obj.update_thread()
+    def test_update__func_called(self, mock_updatefunc):
+        self.obj.start()
+        QTest.qWait(150)
         assert mock_updatefunc.called
 
 
