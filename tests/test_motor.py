@@ -262,7 +262,7 @@ class MotorTestTelnet(unittest.TestCase):
         self.assertEqual(self.obj.lblIdentity.text(), "")
 
     def tearDown(self):
-        self.obj.close()
+        self.obj.die()
 
 
 class MotorTestTelnetConnectionRequired(unittest.TestCase):
@@ -392,7 +392,7 @@ class MotorTestTelnetConnectionRequired(unittest.TestCase):
         mock_addtxt.assert_called_with("cmd", "response")
 
     def tearDown(self):
-        self.obj.close()
+        self.obj.die()
 
 
 class MotorTestEthernet(unittest.TestCase):
@@ -554,7 +554,7 @@ class MotorTestEthernet(unittest.TestCase):
         mock_clicked.connect.assert_called_with(self.obj.jog_pos)
 
     def tearDown(self):
-        self.obj.close()
+        self.obj.die()
 
 
 class MotorTestSerial(unittest.TestCase):
@@ -735,7 +735,7 @@ class MotorTestSerial(unittest.TestCase):
         os.remove(test_file)
 
     def tearDown(self):
-        self.obj.close()
+        self.obj.die()
 
 
 class MotorTestSsh(unittest.TestCase):
@@ -919,4 +919,4 @@ class MotorTestSsh(unittest.TestCase):
         assert self.obj.lblIdentity.text() == "BL name 1"
 
     def tearDown(self):
-        self.obj.close()
+        self.obj.die()
