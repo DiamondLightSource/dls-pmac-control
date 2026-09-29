@@ -74,7 +74,7 @@ class CommsthreadTest(unittest.TestCase):
         assert mock_event.called
 
     @patch("dls_pmac_control.comms_thread.CommsWorker.update_func")
-    def test_update__func_called(self, mock_updatefunc):
+    def test_update_func_called(self, mock_updatefunc):
         self.obj.start()
         QTest.qWait(150)
         assert mock_updatefunc.called
