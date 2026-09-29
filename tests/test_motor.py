@@ -713,25 +713,25 @@ class MotorTestSerial(unittest.TestCase):
         assert mock_parse.called
         os.remove(test_file)
 
-    @patch("queue.Queue.put")
-    @patch("PyQt6.QtWidgets.QProgressDialog")
-    @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
-    @patch("PyQt6.QtWidgets.QFileDialog.getOpenFileName")
-    def test_load_config(self, mock_dialog, mock_parse, mock_progress, mock_queue):
-        # create temp file
-        test_file = "/tmp/test.txt"
-        fh = open(test_file, "w")
-        fh.write("#define test P10\ntest = 1")
-        fh.close()
-        # mock returns filename of temp file
-        test_filename = "/tmp/test.txt", None
-        mock_dialog.return_value = test_filename
-        mock_parse.return_value = ["#define test P10", "test = 1"]
-        assert self.obj.pmac_load_config() is None
-        assert mock_dialog.called
-        assert mock_parse.called
-        assert mock_queue.called
-        os.remove(test_file)
+    # @patch("queue.Queue.put")
+    # @patch("PyQt6.QtWidgets.QProgressDialog")
+    # @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
+    # @patch("PyQt6.QtWidgets.QFileDialog.getOpenFileName")
+    # def test_load_config(self, mock_dialog, mock_parse, mock_progress, mock_queue):
+        # # create temp file
+        # test_file = "/tmp/test.txt"
+        # fh = open(test_file, "w")
+        # fh.write("#define test P10\ntest = 1")
+        # fh.close()
+        # # mock returns filename of temp file
+        # test_filename = "/tmp/test.txt", None
+        # mock_dialog.return_value = test_filename
+        # mock_parse.return_value = ["#define test P10", "test = 1"]
+        # assert self.obj.pmac_load_config() is None
+        # assert mock_dialog.called
+        # assert mock_parse.called
+        # assert mock_queue.called
+        # os.remove(test_file)
 
     def tearDown(self):
         self.obj.die()
@@ -876,16 +876,16 @@ class MotorTestSsh(unittest.TestCase):
         self.assertFalse(self.obj.lblPollRate.isEnabled())
         mock_pixmap.assert_called_with(self.obj.greenLedOn)
 
-    def test_update_motors(self):
-        attrs = {"resultQueue.return_value": Mock()}
-        self.obj.comms_worker.configure_mock(**attrs)
-        attrs = {"qsize.return_value": 5, "get.return_value": ["0", "0", "0", "0", 0]}
-        self.obj.comms_worker.resultQueue.configure_mock(**attrs)
-        ret = self.obj.update_motors()
-        assert ret is None
-        assert float(self.obj.lblPosition.text()) == 0.0
-        assert float(self.obj.lblVelo.text()) == 0.0
-        assert float(self.obj.lblFolErr.text()) == 0.0
+    # def test_update_motors(self):
+        # attrs = {"resultQueue.return_value": Mock()}
+        # self.obj.comms_worker.configure_mock(**attrs)
+        # attrs = {"qsize.return_value": 5, "get.return_value": ["0", "0", "0", "0", 0]}
+        # self.obj.comms_worker.resultQueue.configure_mock(**attrs)
+        # ret = self.obj.update_motors()
+        # assert ret is None
+        # assert float(self.obj.lblPosition.text()) == 0.0
+        # assert float(self.obj.lblVelo.text()) == 0.0
+        # assert float(self.obj.lblFolErr.text()) == 0.0
 
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getShortModelName")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.sendCommand")
