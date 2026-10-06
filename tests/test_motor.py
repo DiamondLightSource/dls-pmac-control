@@ -713,25 +713,22 @@ class MotorTestSerial(unittest.TestCase):
         assert mock_parse.called
         os.remove(test_file)
 
-    # @patch("queue.Queue.put")
-    # @patch("PyQt6.QtWidgets.QProgressDialog")
-    # @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
-    # @patch("PyQt6.QtWidgets.QFileDialog.getOpenFileName")
-    # def test_load_config(self, mock_dialog, mock_parse, mock_progress, mock_queue):
-    # # create temp file
-    # test_file = "/tmp/test.txt"
-    # fh = open(test_file, "w")
-    # fh.write("#define test P10\ntest = 1")
-    # fh.close()
-    # # mock returns filename of temp file
-    # test_filename = "/tmp/test.txt", None
-    # mock_dialog.return_value = test_filename
-    # mock_parse.return_value = ["#define test P10", "test = 1"]
-    # assert self.obj.pmac_load_config() is None
-    # assert mock_dialog.called
-    # assert mock_parse.called
-    # assert mock_queue.called
-    # os.remove(test_file)
+    @patch("dls_pmaclib.dls_pmcpreprocessor.ClsPmacParser.parse")
+    @patch("PyQt6.QtWidgets.QFileDialog.getOpenFileName")
+    def test_load_config(self, mock_dialog, mock_parse):
+        # create temp file
+        test_file = "/tmp/test.txt"
+        fh = open(test_file, "w")
+        fh.write("#define test P10\ntest = 1")
+        fh.close()
+        # mock returns filename of temp file
+        test_filename = "/tmp/test.txt", None
+        mock_dialog.return_value = test_filename
+        mock_parse.return_value = ["#define test P10", "test = 1"]
+        assert self.obj.pmac_load_config() is None
+        assert mock_dialog.called
+        assert mock_parse.called
+        os.remove(test_file)
 
     def tearDown(self):
         self.obj.die()
