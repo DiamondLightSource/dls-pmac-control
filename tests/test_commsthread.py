@@ -81,9 +81,7 @@ class CommsthreadTest(unittest.TestCase):
 
 
 class UpdatefuncTest(unittest.TestCase):
-    @patch("threading.Lock")
-    @patch("queue.Queue")
-    def setUp(self, mock_queue, mock_lock):
+    def setUp(self):
         self.test_widget = DummyTestWidget()
         self.obj = CommsWorker(self.test_widget)
 
