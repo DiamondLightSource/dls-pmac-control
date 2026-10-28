@@ -106,18 +106,19 @@ class UpdatefuncTest(unittest.TestCase):
         self.obj.disable_polling_status(False)
         self.assertFalse(self.obj.disablePollingStatusValue)
 
-    # @patch("PyQt6.QtCore.QCoreApplication.postEvent")
-    # @patch("dls_pmac_control.comms_thread.CustomEvent")
-    # @patch("queue.Queue.put")
-    # @patch("queue.Queue.get")
-    # def test_update_func_cancel(self, mock_get, mock_put, mock_custom, mock_event):
-    # mock_get.return_value = ("cancelSendSeries", "data")
-    # self.obj.parent.pmac.isConnectionOpen = True
-    # self.obj.disable_polling_status(False)
-    # self.obj.gen = False
-    # ret = self.obj.update_func()
-    # assert ret is None
-    # assert mock_put.call_count == 5
-    # assert mock_custom.called
-    # assert mock_event.called
-    # mock_get.assert_called_with(block=False)
+    def test_update_func_cancel(self):
+        self.obj.gen = Mock()
+
+        with patch.object(self.obj, "send_complete") as mock_complete:
+            self.obj.cancel_send_series()
+
+        # self.obj.gen.close.assert_called_once_with("Download cancelled by the user")
+        self.obj.gen.close.assert_called_once_with()
+
+    def test_update_func_cancel_no_mock(self):
+        self.obj.gen = None
+
+        with patch.object(self.obj, "send_complete") as mock_complete:
+            self.obj.cancel_send_series()
+
+        mock_complete.assert_not_called()
