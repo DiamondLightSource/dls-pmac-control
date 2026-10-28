@@ -87,12 +87,6 @@ class UpdatefuncTest(unittest.TestCase):
         self.test_widget = DummyTestWidget()
         self.obj = CommsWorker(self.test_widget)
 
-    # @patch("queue.Queue.get")
-    # def test_update_func_die(self, mock_get):
-    # mock_get.return_value = ("die", "data")
-    # assert self.obj.update_func() is True
-    # mock_get.assert_called_with(block=False)
-
     # @patch("PyQt6.QtCore.QCoreApplication.postEvent")
     # @patch("dls_pmac_control.comms_thread.CustomEvent")
     # @patch("queue.Queue.put")
