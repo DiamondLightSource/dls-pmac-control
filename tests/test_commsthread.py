@@ -97,15 +97,14 @@ class UpdatefuncTest(unittest.TestCase):
     # self.test_widget.pmac.sendSeries.assert_called_with("data")
     # mock_get.assert_called_with(block=False)
 
-    # @patch("queue.Queue.get")
-    # def test_update_func_disable(self, mock_get):
-    # mock_get.return_value = ("disablePollingStatus", True)
-    # self.obj.gen = False
-    # self.obj.parent.pmac.isConnectionOpen = True
-    # ret = self.obj.update_func()
-    # assert self.obj.disable_polling_status(True)
-    # assert ret is None
-    # mock_get.assert_called_with(block=False)
+    def test_update_func_disable_polling_status(self):
+        self.assertFalse(self.obj.disablePollingStatusValue)
+
+        self.obj.disable_polling_status(True)
+        self.assertTrue(self.obj.disablePollingStatusValue)
+
+        self.obj.disable_polling_status(False)
+        self.assertFalse(self.obj.disablePollingStatusValue)
 
     # @patch("PyQt6.QtCore.QCoreApplication.postEvent")
     # @patch("dls_pmac_control.comms_thread.CustomEvent")
