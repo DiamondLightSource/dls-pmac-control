@@ -122,3 +122,11 @@ class UpdatefuncTest(unittest.TestCase):
             self.obj.cancel_send_series()
 
         mock_complete.assert_not_called()
+
+    def test_update_func_poll_status(self):
+        self.test_widget.pmac.isConnectionOpen = True
+
+        with patch.object(self.obj, "poll_status") as mock_poll:
+            self.obj.update_func()
+
+        mock_poll.assert_called_once_with()
