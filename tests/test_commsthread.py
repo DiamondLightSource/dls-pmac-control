@@ -130,3 +130,11 @@ class UpdatefuncTest(unittest.TestCase):
             self.obj.update_func()
 
         mock_poll.assert_called_once_with()
+
+    def test_update_func_poll_status_exited(self):
+        self.test_widget.pmac.isConnectionOpen = False
+
+        with patch.object(self.obj, "poll_status") as mock_poll:
+            self.obj.update_func()
+
+        mock_poll.assert_not_called()
