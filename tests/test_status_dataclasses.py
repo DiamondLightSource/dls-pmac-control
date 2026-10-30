@@ -52,3 +52,14 @@ class TestMotorStatus:
         assert motor.following_error == 0.0
         assert motor.i2t_fault_status is False
         assert motor.overcurrent is False
+
+
+class TestCurrentCoordinateSystemStatus:
+    def test_ccs_values(self):
+        css_status = CurrentCoordinateSystemStatus(
+            cs_status="A80020000000000000",
+            feedrate=100.0,
+        )
+
+        assert css_status.cs_status == "A80020000000000000"
+        assert css_status.feedrate == 100.0
