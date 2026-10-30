@@ -34,7 +34,7 @@ def dummy_brick(motors=None, **overrides):
             cs_status="A80020000000000000",
             feedrate=100.0,
         ),
-        "motors": [],
+        "motors": [] if motors is None else motors,
     }
 
     values.update(overrides)
@@ -63,3 +63,19 @@ class TestCurrentCoordinateSystemStatus:
 
         assert css_status.cs_status == "A80020000000000000"
         assert css_status.feedrate == 100.0
+
+
+class TestControllerStatus:
+    def test_controller_values(self):
+        motor = dummy_motor()
+
+        status = dummy_brick(motors=[motor])
+
+        assert status.identifier_i65 == 0
+        assert status.global_status == "202001210800"
+        assert status.bus_under_voltage is True
+        assert status.bus_over_voltage is False
+        assert status.over_temp is False
+
+        assert status.motors == [motor]
+        assert status.motors[0].position == 0.0
