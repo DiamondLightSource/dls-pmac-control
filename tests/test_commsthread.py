@@ -86,14 +86,14 @@ class UpdatefuncTest(unittest.TestCase):
         self.obj = CommsWorker(self.test_widget)
 
     def test_update_func_sendseries(self):
-        data = []
+        data = ["item1", "item2", "item3"]
 
         self.obj.send_series(data)
 
         self.test_widget.pmac.sendSeries.assert_called_once_with(data)
 
     def test_update_func_sendseries_exception(self):
-        data = []
+        data = ["item1", "item2", "item3"]
 
         self.test_widget.pmac.sendSeries.side_effect = Exception("Error")
 
