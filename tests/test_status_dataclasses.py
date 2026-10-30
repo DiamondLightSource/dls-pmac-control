@@ -39,3 +39,16 @@ def dummy_brick(motors=None, **overrides):
 
     values.update(overrides)
     return ControllerStatus(**values)
+
+
+class TestMotorStatus:
+    def test_motor_values(self):
+        motor = dummy_motor()
+
+        assert motor.number == 1
+        assert motor.motor_status == "E40040070401"
+        assert motor.position == 0.0
+        assert motor.velocity == 0.0
+        assert motor.following_error == 0.0
+        assert motor.i2t_fault_status is False
+        assert motor.overcurrent is False
