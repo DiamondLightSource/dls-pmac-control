@@ -2,6 +2,7 @@ import threading
 import time
 import traceback
 from queue import Queue
+from typing import Any, cast
 
 from dls_pmaclib.dls_pmacremote import (
     PmacEthernetInterface,
@@ -222,14 +223,14 @@ class CommsWorker(QObject):
         return cmd
 
     def poll_status(self) -> None:
-        if self.parent.pmac is None:
+        if cast(Any, self.parent).pmac is None:
             return None
 
-        if not self.parent.pmac.isConnectionOpen:
+        if not cast(Any, self.parent).pmac.isConnectionOpen:
             return None
 
         cmd = self.generate_cmd()
-        (send_command_response, success) = self.parent.pmac.sendCommand(cmd)
+        (send_command_response, success) = cast(Any, self.parent).pmac.sendCommand(cmd)
 
         if success:
             parsed_poll_response_status = self.parsed_poll_response(
