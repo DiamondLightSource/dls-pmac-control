@@ -21,3 +21,21 @@ def dummy_motor(number=1, **overrides):
     }
     values.update(overrides)
     return MotorStatus(**values)
+
+
+def dummy_brick(motors=None, **overrides):
+    values = {
+        "identifier_i65": 0,
+        "global_status": "202001210800",
+        "bus_under_voltage": True,
+        "bus_over_voltage": False,
+        "over_temp": False,
+        "coordinate_systems": CurrentCoordinateSystemStatus(
+            cs_status="A80020000000000000",
+            feedrate=100.0,
+        ),
+        "motors": [],
+    }
+
+    values.update(overrides)
+    return ControllerStatus(**values)
