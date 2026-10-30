@@ -1,9 +1,10 @@
 import unittest
 from unittest.mock import Mock, patch
 
+from PyQt6.QtTest import QTest
 from PyQt6.QtWidgets import QMainWindow
 
-from dls_pmac_control.comms_thread import CommsThread
+from dls_pmac_control.comms_thread import CommsWorker
 
 
 class DummyTestWidget(QMainWindow):
@@ -25,18 +26,16 @@ class DummyTestWidget(QMainWindow):
 
 class CommsthreadTest(unittest.TestCase):
     @patch("threading.Lock")
-    @patch("threading.Thread")
     @patch("queue.Queue")
-    def setUp(self, mock_queue, mock_thread, mock_lock):
+    def setUp(self, mock_queue, mock_lock):
         self.test_widget = DummyTestWidget()
-        self.obj = CommsThread(self.test_widget)
+        self.obj = CommsWorker(self.test_widget)
 
     def test_init(self):
         assert self.obj.parent == self.test_widget
         assert self.obj.CSNum == 1
         assert self.obj.gen is None
-        assert self.obj.updateReadyEvent is None
-        assert self.obj.disablePollingStatus is False
+        # assert self.obj.disablePollingStatus is False
         assert self.obj.max_pollrate is None
         assert self.obj.lineNumber == 0
         assert self.obj._watch_window == {}
@@ -74,61 +73,77 @@ class CommsthreadTest(unittest.TestCase):
         assert mock_custom.called
         assert mock_event.called
 
-    @patch("dls_pmac_control.comms_thread.CommsThread.update_func")
-    def test_update_thread(self, mock_updatefunc):
-        mock_updatefunc.return_value = True
-        self.obj.update_thread()
+    @patch("dls_pmac_control.comms_thread.CommsWorker.update_func")
+    def test_update_func_called(self, mock_updatefunc):
+        self.obj.start()
+        QTest.qWait(150)
         assert mock_updatefunc.called
 
 
 class UpdatefuncTest(unittest.TestCase):
-    @patch("threading.Lock")
-    @patch("threading.Thread")
-    @patch("queue.Queue")
-    def setUp(self, mock_queue, mock_thread, mock_lock):
+    def setUp(self):
         self.test_widget = DummyTestWidget()
-        self.obj = CommsThread(self.test_widget)
+        self.obj = CommsWorker(self.test_widget)
 
-    @patch("queue.Queue.get")
-    def test_update_func_die(self, mock_get):
-        mock_get.return_value = ("die", "data")
-        assert self.obj.update_func() is True
-        mock_get.assert_called_with(block=False)
+    def test_update_func_sendseries(self):
+        data = ["item1", "item2", "item3"]
 
-    @patch("PyQt6.QtCore.QCoreApplication.postEvent")
-    @patch("dls_pmac_control.comms_thread.CustomEvent")
-    @patch("queue.Queue.put")
-    @patch("queue.Queue.get")
-    def test_update_func_sendseries(self, mock_get, mock_put, mock_custom, mock_event):
-        mock_get.return_value = ("sendSeries", "data")
-        self.obj.parent.pmac.isConnectionOpen = True
-        self.obj.disablePollingStatus = None
-        assert self.obj.update_func() is None
-        self.test_widget.pmac.sendSeries.assert_called_with("data")
-        mock_get.assert_called_with(block=False)
+        self.obj.send_series(data)
 
-    @patch("queue.Queue.get")
-    def test_update_func_disable(self, mock_get):
-        mock_get.return_value = ("disablePollingStatus", True)
-        self.obj.gen = False
-        self.obj.parent.pmac.isConnectionOpen = True
-        ret = self.obj.update_func()
-        assert self.obj.disablePollingStatus is True
-        assert ret is None
-        mock_get.assert_called_with(block=False)
+        self.test_widget.pmac.sendSeries.assert_called_once_with(data)
 
-    @patch("PyQt6.QtCore.QCoreApplication.postEvent")
-    @patch("dls_pmac_control.comms_thread.CustomEvent")
-    @patch("queue.Queue.put")
-    @patch("queue.Queue.get")
-    def test_update_func_cancel(self, mock_get, mock_put, mock_custom, mock_event):
-        mock_get.return_value = ("cancelSendSeries", "data")
-        self.obj.parent.pmac.isConnectionOpen = True
-        self.obj.disablePollingStatus = False
-        self.obj.gen = False
-        ret = self.obj.update_func()
-        assert ret is None
-        assert mock_put.call_count == 5
-        assert mock_custom.called
-        assert mock_event.called
-        mock_get.assert_called_with(block=False)
+        self.assertIs(self.obj.gen, self.test_widget.pmac.sendSeries.return_value)
+
+    def test_update_func_sendseries_exception(self):
+        data = ["item1", "item2", "item3"]
+
+        self.test_widget.pmac.sendSeries.side_effect = Exception("Error")
+
+        with patch("dls_pmac_control.comms_thread.traceback.print_exc") as mock_print:
+            with patch.object(self.obj, "send_complete") as mock_complete:
+                self.obj.send_series(data)
+
+        mock_complete.assert_called_once_with("Couldn't start download")
+        mock_print.assert_called_once()
+
+    def test_update_func_disable_polling_status(self):
+        self.assertFalse(self.obj.disablePollingStatusValue)
+
+        self.obj.disable_polling_status(True)
+        self.assertTrue(self.obj.disablePollingStatusValue)
+
+        self.obj.disable_polling_status(False)
+        self.assertFalse(self.obj.disablePollingStatusValue)
+
+    def test_update_func_cancel(self):
+        self.obj.gen = Mock()
+
+        with patch.object(self.obj, "send_complete") as mock_complete:
+            self.obj.cancel_send_series()
+
+        self.obj.gen.close.assert_called_once_with()
+        mock_complete.assert_called_once_with("Download cancelled by the user")
+
+    def test_update_func_cancel_no_mock(self):
+        self.obj.gen = None
+
+        with patch.object(self.obj, "send_complete") as mock_complete:
+            self.obj.cancel_send_series()
+
+        mock_complete.assert_not_called()
+
+    def test_update_func_poll_status(self):
+        self.test_widget.pmac.isConnectionOpen = True
+
+        with patch.object(self.obj, "poll_status") as mock_poll:
+            self.obj.update_func()
+
+        mock_poll.assert_called_once_with()
+
+    def test_update_func_poll_status_exited(self):
+        self.test_widget.pmac.isConnectionOpen = False
+
+        with patch.object(self.obj, "poll_status") as mock_poll:
+            self.obj.update_func()
+
+        mock_poll.assert_not_called()

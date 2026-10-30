@@ -1,20 +1,17 @@
-import sys
 import unittest
 from unittest.mock import patch
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtTest import QTest
-from PyQt6.QtWidgets import QApplication, QWidget
+from PyQt6.QtWidgets import QWidget
 
 from dls_pmac_control.login import Loginform
-
-app = QApplication(sys.argv)
-test_widget = QWidget()
 
 
 class LoginTest(unittest.TestCase):
     def setUp(self):
-        self.obj = Loginform(test_widget, "", "")
+        self.test_widget = QWidget()
+        self.obj = Loginform(self.test_widget, "", "")
 
     def test_inital_form(self):
         self.assertEqual(self.obj.lneUsername.text(), "")

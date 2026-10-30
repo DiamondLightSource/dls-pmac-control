@@ -48,14 +48,12 @@ class Controlform(QMainWindow, UiControlForm):
     disable_polling_status_signal = pyqtSignal(bool)
 
     def __init__(self, options, parent=None):
-        super().__init__()
+        super().__init__(parent)
 
         signal.signal(2, self.signal_handler)
         # setup signals
 
-        QMainWindow.__init__(self, parent)
         self.setup_ui(self)
-        # self.parent = parent
 
         self.greenLedOn = QPixmap(path.join(path.dirname(__file__), "greenLedOn.png"))
         self.greenLedOff = QPixmap(path.join(path.dirname(__file__), "greenLedOff.png"))
@@ -498,21 +496,21 @@ class Controlform(QMainWindow, UiControlForm):
         self.energiseScreen = Energiseform(self.pmac, self)
         self.energiseScreen.show()
 
-    def status_screen(self):
+    def show_status_screen(self):
         # if power pmac
         if isinstance(self.pmac, PPmacSshInterface):
             self.ppmacstatusScreen.show()
         else:
             self.status_screen.show()
 
-    def cs_status_screen(self):
+    def show_cs_status_screen(self):
         # if power pmac
         if isinstance(self.pmac, PPmacSshInterface):
             self.PpmacCSStatusScreen.show()
         else:
             self.cs_status_screen.show()
 
-    def global_status_screen(self):
+    def show_global_status_screen(self):
         # if power pmac
         if isinstance(self.pmac, PPmacSshInterface):
             self.PpmacGlobalStatusScreen.show()
