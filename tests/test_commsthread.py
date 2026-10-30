@@ -121,8 +121,8 @@ class UpdatefuncTest(unittest.TestCase):
         with patch.object(self.obj, "send_complete") as mock_complete:
             self.obj.cancel_send_series()
 
-        # self.obj.gen.close.assert_called_once_with("Download cancelled by the user")
         self.obj.gen.close.assert_called_once_with()
+        mock_complete.assert_called_once_with("Download cancelled by the user")
 
     def test_update_func_cancel_no_mock(self):
         self.obj.gen = None
