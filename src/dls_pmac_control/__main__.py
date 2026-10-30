@@ -496,21 +496,21 @@ class Controlform(QMainWindow, UiControlForm):
         self.energiseScreen = Energiseform(self.pmac, self)
         self.energiseScreen.show()
 
-    def status_screen(self):
+    def show_status_screen(self):
         # if power pmac
         if isinstance(self.pmac, PPmacSshInterface):
             self.ppmacstatusScreen.show()
         else:
             self.status_screen.show()
 
-    def cs_status_screen(self):
+    def show_cs_status_screen(self):
         # if power pmac
         if isinstance(self.pmac, PPmacSshInterface):
             self.PpmacCSStatusScreen.show()
         else:
             self.cs_status_screen.show()
 
-    def global_status_screen(self):
+    def show_global_status_screen(self):
         # if power pmac
         if isinstance(self.pmac, PPmacSshInterface):
             self.PpmacGlobalStatusScreen.show()

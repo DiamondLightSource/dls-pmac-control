@@ -643,7 +643,7 @@ class UiControlForm:
         self.btnJogStop.clicked.connect(control_form.jog_stop)
         self.btnJogTo.clicked.connect(control_form.jog_go_to_position)
         self.btnSettings.clicked.connect(control_form.jog_parameters)
-        self.btnStatus.clicked.connect(control_form.status_screen)
+        self.btnStatus.clicked.connect(control_form.show_status_screen)
         self.btnJogNeg.clicked.connect(control_form.jog_neg)
         self.table.cellDoubleClicked["int", "int"].connect(
             control_form.chooseMotorFromTable
@@ -654,8 +654,8 @@ class UiControlForm:
         self.btnLoadFile.clicked.connect(control_form.pmac_load_config)
         self.btnKillAll.clicked.connect(control_form.kill_all_motors)
         self.btnEnergise.clicked.connect(control_form.pmac_energise_axis)
-        self.btnCSStatus.clicked.connect(control_form.cs_status_screen)
-        self.btnGlobalStatus.clicked.connect(control_form.global_status_screen)
+        self.btnCSStatus.clicked.connect(control_form.show_cs_status_screen)
+        self.btnGlobalStatus.clicked.connect(control_form.show_global_status_screen)
         self.btnHome.clicked.connect(control_form.jog_home)
         self.rbUseSerial.clicked.connect(control_form.use_serial)
         QtCore.QMetaObject.connectSlotsByName(control_form)
