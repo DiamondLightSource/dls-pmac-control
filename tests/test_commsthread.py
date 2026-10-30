@@ -92,6 +92,8 @@ class UpdatefuncTest(unittest.TestCase):
 
         self.test_widget.pmac.sendSeries.assert_called_once_with(data)
 
+        self.assertIs(self.obj.gen, self.test_widget.pmac.sendSeries.return_value)
+
     def test_update_func_sendseries_exception(self):
         data = ["item1", "item2", "item3"]
 
