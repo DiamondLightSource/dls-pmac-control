@@ -1,6 +1,6 @@
 import os
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, call, patch
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtTest import QTest
@@ -718,17 +718,32 @@ class MotorTestSerial(unittest.TestCase):
     def test_load_config(self, mock_dialog, mock_parse):
         # create temp file
         test_file = "/tmp/test.txt"
-        fh = open(test_file, "w")
-        fh.write("#define test P10\ntest = 1")
-        fh.close()
-        # mock returns filename of temp file
-        test_filename = "/tmp/test.txt", None
-        mock_dialog.return_value = test_filename
+        mock_dialog.return_value = (test_file, None)
+
         mock_parse.return_value = ["#define test P10", "test = 1"]
+
+        self.obj.send_series_signal = Mock()
+
         assert self.obj.pmac_load_config() is None
-        assert mock_dialog.called
-        assert mock_parse.called
-        os.remove(test_file)
+
+        mock_dialog.assert_called_once()
+        mock_parse.assert_called_once_with(test_file)
+
+        # close_commands = [(0, "CLOSE"), (0, "CLOSE"), (0, "DELETE GATHER")]
+        self.assertEqual(
+            self.obj.send_series_signal.emit.call_args,
+            call(
+                [
+                    (0, "CLOSE"),
+                    (0, "CLOSE"),
+                    (0, "DELETE GATHER"),
+                    (1, "#define test P10"),
+                    (2, "test = 1"),
+                ]
+            ),
+        )
+
+        self.assertFalse(self.obj.canceledDownload)
 
     def tearDown(self):
         self.obj.die()
