@@ -1,7 +1,3 @@
-from dataclasses import asdict
-
-import pytest
-
 from dls_pmac_control.status_dataclasses import (
     ControllerStatus,
     CurrentCoordinateSystemStatus,
