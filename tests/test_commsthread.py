@@ -97,10 +97,12 @@ class UpdatefuncTest(unittest.TestCase):
 
         self.test_widget.pmac.sendSeries.side_effect = Exception("Error")
 
-        with patch.object(self.obj, "send_complete") as mock_complete:
-            self.obj.send_series(data)
+        with patch("dls_pmac_control.comms_thread.traceback.print_exc") as mock_print:
+            with patch.object(self.obj, "send_complete") as mock_complete:
+                self.obj.send_series(data)
 
         mock_complete.assert_called_once_with("Couldn't start download")
+        mock_print.assert_called_once()
 
     def test_update_func_disable_polling_status(self):
         self.assertFalse(self.obj.disablePollingStatusValue)
