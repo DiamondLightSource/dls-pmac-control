@@ -79,3 +79,7 @@ class TestControllerStatus:
 
         assert status.motors == [motor]
         assert status.motors[0].position == 0.0
+
+    def test_motors_list_none(self):
+        status = dummy_brick()
+        assert status.motors == []
