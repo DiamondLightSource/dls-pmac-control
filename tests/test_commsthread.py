@@ -85,17 +85,22 @@ class UpdatefuncTest(unittest.TestCase):
         self.test_widget = DummyTestWidget()
         self.obj = CommsWorker(self.test_widget)
 
-    # @patch("PyQt6.QtCore.QCoreApplication.postEvent")
-    # @patch("dls_pmac_control.comms_thread.CustomEvent")
-    # @patch("queue.Queue.put")
-    # @patch("queue.Queue.get")
-    # def test_update_func_sendseries(self, mock_get, mock_put, mock_custom, mock_event):
-    # mock_get.return_value = ("sendSeries", "data")
-    # self.obj.parent.pmac.isConnectionOpen = True
-    # self.obj.disable_polling_status(None)
-    # assert self.obj.update_func() is None
-    # self.test_widget.pmac.sendSeries.assert_called_with("data")
-    # mock_get.assert_called_with(block=False)
+    def test_update_func_sendseries(self):
+        data = []
+
+        self.obj.send_series(data)
+
+        self.test_widget.pmac.sendSeries.assert_called_once_with(data)
+
+    def test_update_func_sendseries_exception(self):
+        data = []
+
+        self.test_widget.pmac.sendSeries.side_effect = Exception("Error")
+
+        with patch.object(self.obj, "send_complete") as mock_complete:
+            self.obj.send_series(data)
+
+        mock_complete.assert_called_once_with("Couldn't start download")
 
     def test_update_func_disable_polling_status(self):
         self.assertFalse(self.obj.disablePollingStatusValue)
