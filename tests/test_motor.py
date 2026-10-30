@@ -6,6 +6,11 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtTest import QTest
 
 from dls_pmac_control.__main__ import Controlform
+from dls_pmac_control.status_dataclasses import (
+    ControllerStatus,
+    CurrentCoordinateSystemStatus,
+    MotorStatus,
+)
 
 
 class DummyTestOptionsTelnet:
@@ -888,16 +893,39 @@ class MotorTestSsh(unittest.TestCase):
         self.assertFalse(self.obj.lblPollRate.isEnabled())
         mock_pixmap.assert_called_with(self.obj.greenLedOn)
 
-    # def test_update_motors(self):
-    # attrs = {"resultQueue.return_value": Mock()}
-    # self.obj.comms_worker.configure_mock(**attrs)
-    # attrs = {"qsize.return_value": 5, "get.return_value": ["0", "0", "0", "0", 0]}
-    # self.obj.comms_worker.resultQueue.configure_mock(**attrs)
-    # ret = self.obj.update_motors()
-    # assert ret is None
-    # assert float(self.obj.lblPosition.text()) == 0.0
-    # assert float(self.obj.lblVelo.text()) == 0.0
-    # assert float(self.obj.lblFolErr.text()) == 0.0
+    def test_update_motors(self):
+        self.obj.servoCycleTime = 1.0
+        motor = MotorStatus(
+            number=1,
+            motor_status="E40040070401",
+            position=0.0,
+            velocity=0.0,
+            following_error=0.0,
+            i2t_fault_status=False,
+            overcurrent=False,
+        )
+
+        coord_system = CurrentCoordinateSystemStatus(
+            cs_status="A80020000000000000",
+            feedrate=100.0,
+        )
+
+        status = ControllerStatus(
+            identifier_i65=0,
+            global_status="202001210800",
+            bus_under_voltage=True,
+            bus_over_voltage=False,
+            over_temp=False,
+            coordinate_systems=coord_system,
+            motors=[motor],
+        )
+
+        ret = self.obj.start_updating_motors(status)
+
+        assert ret is None
+        assert float(self.obj.lblPosition.text()) == 0.0
+        assert float(self.obj.lblVelo.text()) == 0.0
+        assert float(self.obj.lblFolErr.text()) == 0.0
 
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.getShortModelName")
     @patch("dls_pmaclib.dls_pmacremote.PPmacSshInterface.sendCommand")
