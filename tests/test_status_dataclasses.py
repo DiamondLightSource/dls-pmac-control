@@ -53,6 +53,12 @@ class TestMotorStatus:
         assert motor.i2t_fault_status is False
         assert motor.overcurrent is False
 
+    def test_motor_neg_values(self):
+        motor = dummy_motor(position=-5.5, velocity=-1.5)
+
+        assert motor.position == -5.5
+        assert motor.velocity == -1.5
+
 
 class TestCurrentCoordinateSystemStatus:
     def test_ccs_values(self):
